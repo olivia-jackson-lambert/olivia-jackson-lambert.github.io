@@ -1,0 +1,25 @@
+project:
+  type: website
+
+website:
+  title: "Olivia Jackson Lambert | Data Science Portfolio"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects.qmd
+        text: Projects
+      - href: about.qmd
+        text: About
+    right:
+      - text: Resume
+        href: assets/Olivia_Jackson_Lambert_Resume.pdf
+      - text: GitHub
+        href: https://github.com/olivia-jackson-lambert
+      - text: LinkedIn
+        href: https://linkedin.com/in/olivia-rose-jackson
+        
+format:
+  html:
+    theme: cosmo
+    toc: true

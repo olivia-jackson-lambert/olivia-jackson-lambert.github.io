@@ -1,0 +1,16 @@
+---
+title: "Home"
+---
+
+## Olivia Jackson Lambert
+
+Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.
+
+- GitHub: https://github.com/olivia-jackson-lambert
+- LinkedIn: https://linkedin.com/in/olivia-rose-jackson
+- Resume: assets/Olivia_Jackson_Lambert_Resume.pdf
+
+### Highlights
+- Deployed ML and data products serving 100K+ monthly users
+- Built forecasting pipelines generating 10K+ monthly forecasts
+- Experience: Python, SQL, Airflow, DBT, Spark, AWS/GCP

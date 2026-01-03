@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\nGitHub: https://github.com/olivia-jackson-lambert\nLinkedIn: https://linkedin.com/in/olivia-rose-jackson\nResume: assets/Olivia_Jackson_Lambert_Resume.pdf\n\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+  },
+  {
+    "objectID": "index.html#olivia-jackson-lambert",
+    "href": "index.html#olivia-jackson-lambert",
+    "title": "Home",
+    "section": "",
+    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\nGitHub: https://github.com/olivia-jackson-lambert\nLinkedIn: https://linkedin.com/in/olivia-rose-jackson\nResume: assets/Olivia_Jackson_Lambert_Resume.pdf\n\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+  }
+]
