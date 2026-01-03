@@ -3,16 +3,8 @@ project:
 
 website:
   title: "Olivia Jackson Lambert"
-  announcement:
-    icon: info-circle
-    dismissable: true
-    content: "Testing"
-    type: dark
-    position: below-navbar
   navbar:
     right:
-      - href: pages/index.qmd
-        text: Home
       - href: project/projects.qmd
         text: Projects
       - href: pages/tools.qmd

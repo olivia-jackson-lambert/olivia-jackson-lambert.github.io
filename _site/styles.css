@@ -38,25 +38,36 @@ h1, h2, h3 {
 /* Tools page layout */
 
 .tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.1rem 1.6rem;
+  margin-top: 0.9rem;
+  margin-bottom: 2.8rem;
+}
+
+.tool-pill {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem 2rem;   /* row gap | column gap */
-  margin-top: 0.75rem;
-  margin-bottom: 2.5rem;
-}
-
-.tools-grid span {
-  display: inline-flex;
   align-items: center;
-  font-size: 0.95rem;
-  font-weight: 500;
-  white-space: nowrap;
+  gap: 0.7rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 10px;
 }
 
-.tools-grid i {
-  margin-right: 0.5rem;
-  font-size: 1.1rem;
+.tool-pill:hover {
+  background: rgba(49, 55, 69, 0.05);
+}
+
+.tool-pill i {
+  font-size: 1.15rem;
   color: var(--bs-primary);
+  width: 1.4rem;
+  text-align: center;
+}
+
+.tool-pill span {
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.2;
 }
 
 h2 {

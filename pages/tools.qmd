@@ -7,61 +7,58 @@ format:
 
 ## Languages
 
-<div class="tools-list">
-<i class="fa-brands fa-python"></i> **Python**  
-<i class="fa-solid fa-database"></i> **SQL** 
-<i class="fa-brands fa-r-project"></i> **R**
-<i class="fa-solid fa-code"></i> **C++** 
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-brands fa-python"></i><span>Python</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-database"></i><span>SQL</span></div>
+  <div class="tool-pill"><i class="fa-brands fa-r-project"></i><span>R</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-code"></i><span>C++</span></div>
 </div>
-
 
 ## Data science & machine learning
 
-<div class="tools-list">
-<i class="fa-solid fa-brain"></i> **scikit-learn** 
-<i class="fa-solid fa-network-wired"></i> **PyTorch**
-<i class="fa-solid fa-chart-line"></i> **TensorFlow / Keras**
-<i class="fa-solid fa-layer-group"></i> **XGBoost** 
-<i class="fa-solid fa-clock"></i> **Prophet / statsmodels**
-<i class="fa-solid fa-table"></i> **pandas, NumPy, SciPy**
-
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-solid fa-brain"></i><span>scikit-learn</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-network-wired"></i><span>PyTorch</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-chart-line"></i><span>TensorFlow / Keras</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-layer-group"></i><span>XGBoost</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-clock"></i><span>Prophet / statsmodels</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-table"></i><span>pandas, NumPy, SciPy</span></div>
+</div>
 
 ## Data engineering & pipelines
 
-<div class="tools-list">
-<i class="fa-solid fa-diagram-project"></i> **Airflow** 
-<i class="fa-solid fa-gears"></i> **dbt** 
-<i class="fa-solid fa-bolt"></i> **Spark / PySpark** 
-<i class="fa-solid fa-dolly"></i> **ETL pipelines**
-<i class="fa-brands fa-docker"></i> **Docker**
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-solid fa-diagram-project"></i><span>Airflow</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-gears"></i><span>dbt</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-bolt"></i><span>Spark / PySpark</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-dolly"></i><span>ETL pipelines</span></div>
+  <div class="tool-pill"><i class="fa-brands fa-docker"></i><span>Docker</span></div>
 </div>
-
 
 ## Cloud & databases
 
-<div class="tools-list">
-<i class="fa-brands fa-aws"></i> **AWS**  
-<i class="fa-brands fa-google"></i> **GCP**  
-<i class="fa-solid fa-database"></i> **PostgreSQL**
-<i class="fa-solid fa-warehouse"></i> **Snowflake / Redshift / BigQuery** 
-<i class="fa-solid fa-sitemap"></i> **MongoDB / Neo4j**  
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-brands fa-aws"></i><span>AWS</span></div>
+  <div class="tool-pill"><i class="fa-brands fa-google"></i><span>GCP</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-database"></i><span>PostgreSQL</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-warehouse"></i><span>Snowflake / Redshift / BigQuery</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-sitemap"></i><span>MongoDB / Neo4j</span></div>
 </div>
-
 
 ## Visualization & BI
 
-<div class="tools-list">
-<i class="fa-solid fa-chart-bar"></i> **Matplotlib / ggplot2**
-<i class="fa-solid fa-gauge-high"></i> **Streamlit** 
-<i class="fa-solid fa-chart-pie"></i> **Tableau** 
-<i class="fa-solid fa-eye"></i> **Looker**
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-solid fa-chart-bar"></i><span>Matplotlib / ggplot2</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-gauge-high"></i><span>Streamlit</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-chart-pie"></i><span>Tableau</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-eye"></i><span>Looker</span></div>
 </div>
 
 ## Methods & concepts
 
-<div class="tools-list">
-<i class="fa-solid fa-flask"></i> Statistical inference and regression  
-<i class="fa-solid fa-vial"></i> A/B testing and experimental design  
-<i class="fa-solid fa-wand-magic-sparkles"></i> Feature engineering  
-<i class="fa-solid fa-check-double"></i> Model evaluation and validation  
+<div class="tools-grid">
+  <div class="tool-pill"><i class="fa-solid fa-flask"></i><span>Statistical inference and regression</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-vial"></i><span>A/B testing and experimental design</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Feature engineering</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-check-double"></i><span>Model evaluation and validation</span></div>
 </div>
