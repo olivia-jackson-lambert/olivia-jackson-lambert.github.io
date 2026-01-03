@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Olivia Jackson Lambert</title>
+<link>https://olivia-jackson-lambert.github.io/project/projects.html</link>
+<atom:link href="https://olivia-jackson-lambert.github.io/project/projects.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.8.26</generator>
+<lastBuildDate>Fri, 02 Jan 2026 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Particle Classifier (CNN)</title>
+  <link>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="callout callout-style-default callout-note callout-empty-content callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>I built a convolutional neural network (CNN) to classify particle types from detector-like image representations. The goal was to learn discriminative spatial patterns and evaluate performance by class (not just overall accuracy).</p>
+<p><strong>What’s on this page</strong> - Problem framing + approach - Training curves (loss and accuracy) - Confusion matrix (per-class performance)</p>
+</section>
+<section id="approach" class="level2">
+<h2 class="anchored" data-anchor-id="approach">Approach</h2>
+<ul>
+<li><strong>Model:</strong> CNN for multi-class classification</li>
+<li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
+<li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
+</ul>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="training-curves" class="level3">
+<h3 class="anchored" data-anchor-id="training-curves">Training curves</h3>
+<p>The model learns quickly in the early epochs, with training/validation accuracy stabilizing after ~10–15 epochs.</p>
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/training_loss.png" class="img-fluid" alt="Training and validation loss over epochs" width="650"></p>
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs" width="650"></p>
+</section>
+<section id="confusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="confusion-matrix">Confusion matrix</h3>
+<p>The confusion matrix below shows where the model performs well and where it struggles. Some particle types are consistently easier to identify, while others are more frequently confused.</p>
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/confusion_matrix.png" class="img-fluid" alt="Confusion matrix for particle classifier" width="700"></p>
+</section>
+</section>
+<section id="notes-and-next-improvements" class="level2">
+<h2 class="anchored" data-anchor-id="notes-and-next-improvements">Notes and next improvements</h2>
+<p>If I were iterating on this further, I would focus on: - class-conditional performance (precision/recall per class) and calibration - data augmentation or class rebalancing if classes are uneven - architecture tweaks (regularization, deeper blocks) and systematic hyperparameter search - adding Grad-CAM / saliency maps to interpret what regions drive predictions</p>
+<section id="reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="reproducibility">Reproducibility</h3>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <category>Deep Learning</category>
+  <category>Computer Vision</category>
+  <guid>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</guid>
+  <pubDate>Fri, 02 Jan 2026 08:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>My First Project</title>
+  <link>https://olivia-jackson-lambert.github.io/project/particle_cnn/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+
+
+ ]]></description>
+  <category>python</category>
+  <category>machine-learning</category>
+  <guid>https://olivia-jackson-lambert.github.io/project/particle_cnn/</guid>
+  <pubDate>Fri, 02 Jan 2026 08:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
