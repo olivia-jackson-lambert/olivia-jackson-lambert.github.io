@@ -1,0 +1,51 @@
+/*-- scss:defaults --*/
+
+$body-bg:                                 #313745 !default;
+$body-color:                              #fdfdfd !default;
+$headings-color:                          $body-color !default;
+$code-block-bg:                           lighten($body-bg, 3%) !default;
+$navbar-bg:                               $body-bg !default;
+$navbar-fg:                               $body-color !default;
+
+$link-color:                              darken($body-color, 30%) !default;
+$link-shade-percentage:                   15% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
+$code-color:                              darken($body-color, 10%) !default;
+$code-bg:                                 lighten($body-bg, 10%) !default;
+
+$card-border-color:                       $body-color !default;
+$form-select-border-color:                $body-color !default;
+
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+$headings-font-family:                    "Lora", serif !default;
+
+/*-- scss:rules --*/
+
+.card-footer {
+    color: lighten($body-bg, 30%);
+    background-color: lighten($body-bg, 2%);
+}
+
+.navbar-brand {
+    font-family: "Lora", serif;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-size: 1.05rem;
+    color: $body-color;
+  }
+
+.fa-solid {
+    color: #9ea1a8;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: $body-color;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+.dark-mode { display: block; }
+.light-mode { display: none; }

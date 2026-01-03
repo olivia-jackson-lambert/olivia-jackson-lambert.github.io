@@ -2,24 +2,55 @@ project:
   type: website
 
 website:
-  title: "Olivia Jackson Lambert | Data Science Portfolio"
+  title: "Olivia Jackson Lambert"
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "Testing"
+    type: dark
+    position: below-navbar
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: projects.qmd
-        text: Projects
-      - href: about.qmd
-        text: About
     right:
-      - text: Resume
-        href: assets/Olivia_Jackson_Lambert_Resume.pdf
-      - text: GitHub
+      - href: pages/index.qmd
+        text: Home
+      - href: project/projects.qmd
+        text: Projects
+      - href: pages/tools.qmd
+        text: Tools
+      - href: pages/about.qmd
+        text: About
+      - icon: github
         href: https://github.com/olivia-jackson-lambert
-      - text: LinkedIn
+        aria-label: GitHub
+        target: _blank
+      - icon: linkedin
         href: https://linkedin.com/in/olivia-rose-jackson
-        
+        aria-label: LinkedIn
+        target: _blank
+      - icon: medium
+        href: https://medium.com/@oliviarosejackson
+        aria-label: Medium
+        target: _blank
+      - icon: file-earmark-person-fill
+        href: assets/Olivia_Jackson_Lambert_Resume.pdf
+        aria-label: Resume
+        target: _blank
+
 format:
   html:
-    theme: cosmo
+    theme:
+      light: [flatly, scss/theme-light.scss]
+      dark:  [darkly, scss/theme-dark.scss]
+    include-in-header:
+      - text: |
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    grid:
+      body-width: 900px
     toc: true
+    css: styles.css
+    code-link: true
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true
+    highlight-style: monokai

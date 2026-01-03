@@ -1,0 +1,67 @@
+---
+title: ""
+format:
+  html:
+    page-layout: full
+---
+
+## Languages
+
+<div class="tools-list">
+<i class="fa-brands fa-python"></i> **Python**  
+<i class="fa-solid fa-database"></i> **SQL** 
+<i class="fa-brands fa-r-project"></i> **R**
+<i class="fa-solid fa-code"></i> **C++** 
+</div>
+
+
+## Data science & machine learning
+
+<div class="tools-list">
+<i class="fa-solid fa-brain"></i> **scikit-learn** 
+<i class="fa-solid fa-network-wired"></i> **PyTorch**
+<i class="fa-solid fa-chart-line"></i> **TensorFlow / Keras**
+<i class="fa-solid fa-layer-group"></i> **XGBoost** 
+<i class="fa-solid fa-clock"></i> **Prophet / statsmodels**
+<i class="fa-solid fa-table"></i> **pandas, NumPy, SciPy**
+
+
+## Data engineering & pipelines
+
+<div class="tools-list">
+<i class="fa-solid fa-diagram-project"></i> **Airflow** 
+<i class="fa-solid fa-gears"></i> **dbt** 
+<i class="fa-solid fa-bolt"></i> **Spark / PySpark** 
+<i class="fa-solid fa-dolly"></i> **ETL pipelines**
+<i class="fa-brands fa-docker"></i> **Docker**
+</div>
+
+
+## Cloud & databases
+
+<div class="tools-list">
+<i class="fa-brands fa-aws"></i> **AWS**  
+<i class="fa-brands fa-google"></i> **GCP**  
+<i class="fa-solid fa-database"></i> **PostgreSQL**
+<i class="fa-solid fa-warehouse"></i> **Snowflake / Redshift / BigQuery** 
+<i class="fa-solid fa-sitemap"></i> **MongoDB / Neo4j**  
+</div>
+
+
+## Visualization & BI
+
+<div class="tools-list">
+<i class="fa-solid fa-chart-bar"></i> **Matplotlib / ggplot2**
+<i class="fa-solid fa-gauge-high"></i> **Streamlit** 
+<i class="fa-solid fa-chart-pie"></i> **Tableau** 
+<i class="fa-solid fa-eye"></i> **Looker**
+</div>
+
+## Methods & concepts
+
+<div class="tools-list">
+<i class="fa-solid fa-flask"></i> Statistical inference and regression  
+<i class="fa-solid fa-vial"></i> A/B testing and experimental design  
+<i class="fa-solid fa-wand-magic-sparkles"></i> Feature engineering  
+<i class="fa-solid fa-check-double"></i> Model evaluation and validation  
+</div>
