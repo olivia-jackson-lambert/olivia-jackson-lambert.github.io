@@ -1,0 +1,114 @@
+[
+  {
+    "objectID": "pages/about.html",
+    "href": "pages/about.html",
+    "title": "Olivia Jackson Lambert",
+    "section": "",
+    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+  },
+  {
+    "objectID": "pages/about.html#olivia-jackson-lambert",
+    "href": "pages/about.html#olivia-jackson-lambert",
+    "title": "Olivia Jackson Lambert",
+    "section": "",
+    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html",
+    "title": "Particle Classifier (CNN)",
+    "section": "",
+    "text": "Note"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#overview",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#overview",
+    "title": "Particle Classifier (CNN)",
+    "section": "Overview",
+    "text": "Overview\nI built a convolutional neural network (CNN) to classify particle types from detector-like image representations. The goal was to learn discriminative spatial patterns and evaluate performance by class (not just overall accuracy).\nWhat’s on this page - Problem framing + approach - Training curves (loss and accuracy) - Confusion matrix (per-class performance)"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#approach",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#approach",
+    "title": "Particle Classifier (CNN)",
+    "section": "Approach",
+    "text": "Approach\n\nModel: CNN for multi-class classification\nTraining: standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)\nEvaluation: accuracy over epochs + confusion matrix to understand which classes are most often confused"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#results",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#results",
+    "title": "Particle Classifier (CNN)",
+    "section": "Results",
+    "text": "Results\n\nTraining curves\nThe model learns quickly in the early epochs, with training/validation accuracy stabilizing after ~10–15 epochs.\n\n\n\n\nConfusion matrix\nThe confusion matrix below shows where the model performs well and where it struggles. Some particle types are consistently easier to identify, while others are more frequently confused."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#notes-and-next-improvements",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#notes-and-next-improvements",
+    "title": "Particle Classifier (CNN)",
+    "section": "Notes and next improvements",
+    "text": "Notes and next improvements\nIf I were iterating on this further, I would focus on: - class-conditional performance (precision/recall per class) and calibration - data augmentation or class rebalancing if classes are uneven - architecture tweaks (regularization, deeper blocks) and systematic hyperparameter search - adding Grad-CAM / saliency maps to interpret what regions drive predictions\n\nReproducibility"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Olivia Jackson Lambert",
+    "section": "",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin velit eu ligula placerat pharetra ac sed dui. Suspendisse vel pulvinar ipsum. Nunc bibendum quam vitae nulla vestibulum convallis. Morbi eros nisl, faucibus at sem in, sollicitudin convallis quam. Ut euismod cursus risus, eget congue lorem gravida ut. Cras iaculis faucibus mauris quis vehicula. Curabitur facilisis dictum diam, a ornare odio faucibus non. Integer faucibus convallis turpis, et elementum nibh consectetur eget.\nPraesent accumsan lectus in cursus porttitor. Suspendisse ut lectus pharetra, dapibus justo in, vestibulum mi. Donec at lobortis justo, nec placerat odio. Duis at dapibus leo, non fermentum mi. Mauris dignissim quis lorem ac porttitor. Duis eu hendrerit leo. Proin augue ex, placerat ac felis ut, aliquet congue sapien. Donec vel gravida nibh, eu molestie felis. Donec volutpat magna ultricies arcu scelerisque, quis pellentesque ante interdum. Nulla facilisi.\nClass aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras et diam sed purus placerat sagittis nec id massa. Aenean id urna erat. Mauris lobortis ex id sem euismod, in tincidunt dui condimentum. Ut tellus nibh, viverra a urna sit amet, pretium laoreet lorem. Nullam eu turpis porttitor, maximus ante at, tristique quam. Pellentesque egestas dictum nibh eget fringilla. Vivamus scelerisque elementum interdum.\nMaecenas quam turpis, ullamcorper sit amet felis non, fringilla viverra sapien. Nunc feugiat laoreet blandit. Nam at ipsum in purus condimentum tincidunt sit amet at dolor. Morbi eu tellus pretium, interdum ex ac, viverra magna. Proin rhoncus fringilla dignissim. Sed vel feugiat turpis. Donec id leo dictum, venenatis massa sed, ornare mauris. Nullam laoreet, enim nec consequat lobortis, mauris dui suscipit arcu, ut molestie risus orci suscipit dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin quam arcu, pellentesque id consectetur eget, laoreet eget dui. Cras malesuada sit amet ligula vel tristique. Fusce interdum convallis justo. Aenean interdum suscipit porta.\nMorbi non diam non odio viverra malesuada eget vel mauris. Praesent sit amet purus eu ante vestibulum sollicitudin. Duis tempus eros sed mi lobortis, et pharetra felis ultrices. Donec tempor pretium varius. Vestibulum eget consectetur nisi, sed pretium neque. Mauris eget molestie erat. Etiam eget commodo erat, at ornare mi. Donec nec turpis id nunc scelerisque ullamcorper. Maecenas ullamcorper sit amet eros ut sollicitudin. Fusce rutrum dui quam, placerat hendrerit justo tempor nec. In hac habitasse platea dictumst. Aliquam at tortor ipsum. Etiam eu aliquet magna. Maecenas id posuere nibh."
+  },
+  {
+    "objectID": "project/projects.html",
+    "href": "project/projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nParticle Classifier (CNN)\n\n1 min\n\nA convolutional neural network that classifies particle types from detector-style images. Includes training curves and a confusion matrix.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\n\n\n\n\n\nMy First Project\n\n1 min\n\nOne-line summary of what you built.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "pages/tools.html",
+    "href": "pages/tools.html",
+    "title": "Olivia Jackson Lambert",
+    "section": "",
+    "text": "Python\n\n\nSQL\n\n\nR\n\n\nC++"
+  },
+  {
+    "objectID": "pages/tools.html#languages",
+    "href": "pages/tools.html#languages",
+    "title": "Olivia Jackson Lambert",
+    "section": "",
+    "text": "Python\n\n\nSQL\n\n\nR\n\n\nC++"
+  },
+  {
+    "objectID": "pages/tools.html#data-science-machine-learning",
+    "href": "pages/tools.html#data-science-machine-learning",
+    "title": "Olivia Jackson Lambert",
+    "section": "Data science & machine learning",
+    "text": "Data science & machine learning\n\n\nscikit-learn\n\n\nPyTorch\n\n\nTensorFlow / Keras\n\n\nXGBoost\n\n\nProphet / statsmodels\n\n\npandas, NumPy, SciPy"
+  },
+  {
+    "objectID": "pages/tools.html#data-engineering-pipelines",
+    "href": "pages/tools.html#data-engineering-pipelines",
+    "title": "Olivia Jackson Lambert",
+    "section": "Data engineering & pipelines",
+    "text": "Data engineering & pipelines\n\n\nAirflow\n\n\ndbt\n\n\nSpark / PySpark\n\n\nETL pipelines\n\n\nDocker"
+  },
+  {
+    "objectID": "pages/tools.html#cloud-databases",
+    "href": "pages/tools.html#cloud-databases",
+    "title": "Olivia Jackson Lambert",
+    "section": "Cloud & databases",
+    "text": "Cloud & databases\n\n\nAWS\n\n\nGCP\n\n\nPostgreSQL\n\n\nSnowflake / Redshift / BigQuery\n\n\nMongoDB / Neo4j"
+  },
+  {
+    "objectID": "pages/tools.html#visualization-bi",
+    "href": "pages/tools.html#visualization-bi",
+    "title": "Olivia Jackson Lambert",
+    "section": "Visualization & BI",
+    "text": "Visualization & BI\n\n\nMatplotlib / ggplot2\n\n\nStreamlit\n\n\nTableau\n\n\nLooker"
+  },
+  {
+    "objectID": "pages/tools.html#methods-concepts",
+    "href": "pages/tools.html#methods-concepts",
+    "title": "Olivia Jackson Lambert",
+    "section": "Methods & concepts",
+    "text": "Methods & concepts\n\n\nStatistical inference and regression\n\n\nA/B testing and experimental design\n\n\nFeature engineering\n\n\nModel evaluation and validation"
+  }
+]
