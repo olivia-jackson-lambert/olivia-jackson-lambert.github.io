@@ -12,72 +12,6 @@
 <generator>quarto-1.8.26</generator>
 <lastBuildDate>Fri, 02 Jan 2026 08:00:00 GMT</lastBuildDate>
 <item>
-  <title>Particle Classifier (CNN)</title>
-  <link>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<div class="callout callout-style-default callout-note callout-empty-content callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>I built a convolutional neural network (CNN) to classify particle types from detector-like image representations. The goal was to learn discriminative spatial patterns and evaluate performance by class (not just overall accuracy).</p>
-<p><strong>What’s on this page</strong> - Problem framing + approach - Training curves (loss and accuracy) - Confusion matrix (per-class performance)</p>
-</section>
-<section id="approach" class="level2">
-<h2 class="anchored" data-anchor-id="approach">Approach</h2>
-<ul>
-<li><strong>Model:</strong> CNN for multi-class classification</li>
-<li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
-<li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
-</ul>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<section id="training-curves" class="level3">
-<h3 class="anchored" data-anchor-id="training-curves">Training curves</h3>
-<p>The model learns quickly in the early epochs, with training/validation accuracy stabilizing after ~10–15 epochs.</p>
-<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/training_loss.png" class="img-fluid" alt="Training and validation loss over epochs" width="650"></p>
-<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs" width="650"></p>
-</section>
-<section id="confusion-matrix" class="level3">
-<h3 class="anchored" data-anchor-id="confusion-matrix">Confusion matrix</h3>
-<p>The confusion matrix below shows where the model performs well and where it struggles. Some particle types are consistently easier to identify, while others are more frequently confused.</p>
-<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/confusion_matrix.png" class="img-fluid" alt="Confusion matrix for particle classifier" width="700"></p>
-</section>
-</section>
-<section id="notes-and-next-improvements" class="level2">
-<h2 class="anchored" data-anchor-id="notes-and-next-improvements">Notes and next improvements</h2>
-<p>If I were iterating on this further, I would focus on: - class-conditional performance (precision/recall per class) and calibration - data augmentation or class rebalancing if classes are uneven - architecture tweaks (regularization, deeper blocks) and systematic hyperparameter search - adding Grad-CAM / saliency maps to interpret what regions drive predictions</p>
-<section id="reproducibility" class="level3">
-<h3 class="anchored" data-anchor-id="reproducibility">Reproducibility</h3>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>Machine Learning</category>
-  <category>Deep Learning</category>
-  <category>Computer Vision</category>
-  <guid>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</guid>
-  <pubDate>Fri, 02 Jan 2026 08:00:00 GMT</pubDate>
-</item>
-<item>
   <title>My First Project</title>
   <link>https://olivia-jackson-lambert.github.io/project/particle_cnn/</link>
   <description><![CDATA[ 
@@ -94,6 +28,201 @@ Note
   <category>machine-learning</category>
   <guid>https://olivia-jackson-lambert.github.io/project/particle_cnn/</guid>
   <pubDate>Fri, 02 Jan 2026 08:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>High Energy Particle CNN Classifier</title>
+  <link>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="data-exploration" class="level1">
+<h1>Data Exploration</h1>
+<section id="particle-types-in-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="particle-types-in-the-dataset">Particle Types in the Dataset</h2>
+<p>This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.<br>
+Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Particle</th>
+<th>Symbol</th>
+<th>Charge (e)</th>
+<th>Mass (MeV/c²)</th>
+<th>Typical detector signature</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Electron</td>
+<td>e⁻</td>
+<td>−1</td>
+<td>0.511</td>
+<td>Light, long, branching tracks</td>
+</tr>
+<tr class="even">
+<td>Positron</td>
+<td>e⁺</td>
+<td>+1</td>
+<td>0.511</td>
+<td>Similar topology to electrons</td>
+</tr>
+<tr class="odd">
+<td>Muon</td>
+<td>μ⁻</td>
+<td>−1</td>
+<td>105.7</td>
+<td>Long, straight, penetrating tracks</td>
+</tr>
+<tr class="even">
+<td>Pion</td>
+<td>π⁺</td>
+<td>+1</td>
+<td>139.6</td>
+<td>Moderately long, hadronic tracks</td>
+</tr>
+<tr class="odd">
+<td>Proton</td>
+<td>p</td>
+<td>+1</td>
+<td>938.3</td>
+<td>Short tracks with dense energy deposition</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-particle-tracks-across-the-momentum-range" class="level2">
+<h2 class="anchored" data-anchor-id="example-particle-tracks-across-the-momentum-range">Example Particle Tracks Across the Momentum Range</h2>
+<p>The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.</p>
+<p>While many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.</p>
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/particle_types.gif" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+</section>
+<section id="truth-level-feature-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
+<p>The figure below summarizes the <strong>truth-level kinematic and spatial features</strong> associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.</p>
+<p>The momentum components <img src="https://latex.codecogs.com/png.latex?p_x">, <img src="https://latex.codecogs.com/png.latex?p_y">, and <img src="https://latex.codecogs.com/png.latex?p_z"> are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The <strong>total momentum</strong> is strictly positive and is defined as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap%20=%20%5Csqrt%7Bp_x%5E2%20+%20p_y%5E2%20+%20p_z%5E2%7D.%0A"></p>
+<p>As a result, its distribution spans a broad range of values that increases with particle energy.</p>
+<p>The production coordinates ( <img src="https://latex.codecogs.com/png.latex?x,%20y,%20z"> ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.</p>
+<p>All histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.</p>
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/truth_arrays.gif" class="img-fluid" alt="Truth arrays by particle type" width="1000"></p>
+</section>
+</section>
+<section id="initial-model" class="level1">
+<h1>Initial Model</h1>
+<section id="approach-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="approach-architecture">Approach &amp; Architecture</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><strong>Model:</strong> CNN for multi-class classification</li>
+<li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
+<li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/init_cnn_architecture_blocks.png" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+</div>
+</div>
+</section>
+<section id="initial-model-performance" class="level2">
+<h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
+<section id="training-dynamics" class="level3">
+<h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
+<p>The plots below show how the CNN learns over the first five training epochs.</p>
+<section id="key-observations" class="level4">
+<h4 class="anchored" data-anchor-id="key-observations">Key observations</h4>
+<ul>
+<li>Training loss decreases steadily, indicating that the model is learning meaningful features.</li>
+<li>Validation loss spikes early on, then stabilizes and moves closer to the training loss.</li>
+<li>Training and validation accuracy both increase with each epoch.</li>
+<li>By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.</li>
+</ul>
+<p>Overall, the model learns quickly and remains stable despite the short training run.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/init_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:45%;">
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/init_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="classification-performance" class="level3">
+<h3 class="anchored" data-anchor-id="classification-performance">Classification Performance</h3>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>The normalized confusion matrix summarizes how well the model distinguishes between particle types.</p>
+<section id="key-observations-1" class="level4">
+<h4 class="anchored" data-anchor-id="key-observations-1">Key observations</h4>
+<ul>
+<li>Electrons, positrons, and protons are classified with high accuracy.</li>
+<li>Muons and pions show increased confusion with other particle types.</li>
+<li>Most misclassifications occur between physically similar particles.</li>
+</ul>
+<p>These errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement.</p>
+</section>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<p><img src="https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/assets/init_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="hyperparameter-optimization" class="level1">
+<h1>Hyperparameter Optimization</h1>
+<section id="first-round" class="level2">
+<h2 class="anchored" data-anchor-id="first-round">First Round</h2>
+</section>
+<section id="second-round" class="level2">
+<h2 class="anchored" data-anchor-id="second-round">Second Round</h2>
+</section>
+</section>
+<section id="final-model" class="level1">
+<h1>Final Model</h1>
+<section id="performance-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h2>
+<section id="training-dynamics-1" class="level3">
+<h3 class="anchored" data-anchor-id="training-dynamics-1">Training Dynamics</h3>
+</section>
+<section id="categorical-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="categorical-accuracy">Categorical Accuracy</h3>
+</section>
+</section>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+
+
+</section>
+
+ ]]></description>
+  <category>Machine Learning</category>
+  <category>Deep Learning</category>
+  <category>Computer Vision</category>
+  <category>Supervised Learning</category>
+  <category>Python</category>
+  <category>Convolutional Neural Network</category>
+  <category>Particle Physics</category>
+  <category>Hyperparameter Optimization</category>
+  <category>Keras</category>
+  <category>TensorFlow</category>
+  <guid>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</guid>
+  <pubDate>Thu, 02 Jan 2025 08:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

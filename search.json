@@ -16,37 +16,65 @@
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
     "href": "project/projects_files/particle-classifier/particle-classifier.html",
-    "title": "Particle Classifier (CNN)",
+    "title": "High Energy Particle CNN Classifier",
     "section": "",
-    "text": "Note"
+    "text": "This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition\n\n\n\n\n\n\nThe figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.\nWhile many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.\n\n\n\n\nThe figure below summarizes the truth-level kinematic and spatial features associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The total momentum is strictly positive and is defined as\n\\[\np = \\sqrt{p_x^2 + p_y^2 + p_z^2}.\n\\]\nAs a result, its distribution spans a broad range of values that increases with particle energy.\nThe production coordinates ( \\(x, y, z\\) ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.\nAll histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#overview",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#overview",
-    "title": "Particle Classifier (CNN)",
-    "section": "Overview",
-    "text": "Overview\nI built a convolutional neural network (CNN) to classify particle types from detector-like image representations. The goal was to learn discriminative spatial patterns and evaluate performance by class (not just overall accuracy).\nWhat’s on this page - Problem framing + approach - Training curves (loss and accuracy) - Confusion matrix (per-class performance)"
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "",
+    "text": "This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#approach",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#approach",
-    "title": "Particle Classifier (CNN)",
-    "section": "Approach",
-    "text": "Approach\n\nModel: CNN for multi-class classification\nTraining: standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)\nEvaluation: accuracy over epochs + confusion matrix to understand which classes are most often confused"
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "",
+    "text": "The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.\nWhile many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#results",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#results",
-    "title": "Particle Classifier (CNN)",
-    "section": "Results",
-    "text": "Results\n\nTraining curves\nThe model learns quickly in the early epochs, with training/validation accuracy stabilizing after ~10–15 epochs.\n\n\n\n\nConfusion matrix\nThe confusion matrix below shows where the model performs well and where it struggles. Some particle types are consistently easier to identify, while others are more frequently confused."
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "",
+    "text": "The figure below summarizes the truth-level kinematic and spatial features associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The total momentum is strictly positive and is defined as\n\\[\np = \\sqrt{p_x^2 + p_y^2 + p_z^2}.\n\\]\nAs a result, its distribution spans a broad range of values that increases with particle energy.\nThe production coordinates ( \\(x, y, z\\) ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.\nAll histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#notes-and-next-improvements",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#notes-and-next-improvements",
-    "title": "Particle Classifier (CNN)",
-    "section": "Notes and next improvements",
-    "text": "Notes and next improvements\nIf I were iterating on this further, I would focus on: - class-conditional performance (precision/recall per class) and calibration - data augmentation or class rebalancing if classes are uneven - architecture tweaks (regularization, deeper blocks) and systematic hyperparameter search - adding Grad-CAM / saliency maps to interpret what regions drive predictions\n\nReproducibility"
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#approach-architecture",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#approach-architecture",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Approach & Architecture",
+    "text": "Approach & Architecture\n\n\n\nModel: CNN for multi-class classification\nTraining: standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)\nEvaluation: accuracy over epochs + confusion matrix to understand which classes are most often confused"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Initial Model Performance",
+    "text": "Initial Model Performance\n\nTraining Dynamics\nThe plots below show how the CNN learns over the first five training epochs.\n\nKey observations\n\nTraining loss decreases steadily, indicating that the model is learning meaningful features.\nValidation loss spikes early on, then stabilizes and moves closer to the training loss.\nTraining and validation accuracy both increase with each epoch.\nBy the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.\n\nOverall, the model learns quickly and remains stable despite the short training run.\n\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\n\n\nThe normalized confusion matrix summarizes how well the model distinguishes between particle types.\n\nKey observations\n\nElectrons, positrons, and protons are classified with high accuracy.\nMuons and pions show increased confusion with other particle types.\nMost misclassifications occur between physically similar particles.\n\nThese errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#first-round",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#first-round",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "First Round",
+    "text": "First Round"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#second-round",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#second-round",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Second Round",
+    "text": "Second Round"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Performance Evaluation",
+    "text": "Performance Evaluation\n\nTraining Dynamics\n\n\nCategorical Accuracy"
   },
   {
     "objectID": "index.html",
@@ -60,7 +88,7 @@
     "href": "project/projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nParticle Classifier (CNN)\n\n1 min\n\nA convolutional neural network that classifies particle types from detector-style images. Includes training curves and a confusion matrix.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\n\n\n\n\n\nMy First Project\n\n1 min\n\nOne-line summary of what you built.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\nNo matching items"
+    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nMy First Project\n\n1 min\n\nOne-line summary of what you built.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n4 min\n\nTest\n\n\n\nJan 2, 2025\n\n\n\n\nJan 3, 2026\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "pages/tools.html",
