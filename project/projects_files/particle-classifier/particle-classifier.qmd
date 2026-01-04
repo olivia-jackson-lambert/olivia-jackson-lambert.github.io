@@ -1,8 +1,8 @@
 ---
-title: "Particle Classifier (CNN)"
-description: "A convolutional neural network that classifies particle types from detector-style images. Includes training curves and a confusion matrix."
-date: 2026-01-02
-categories: [Machine Learning, Deep Learning, Computer Vision]
+title: "High Energy Particle CNN Classifier"
+description: "Test"
+date: 2025-01-02
+categories: [Machine Learning, Deep Learning, Computer Vision, Supervised Learning, Python, Convolutional Neural Network, Particle Physics, Hyperparameter Optimization, Keras, TensorFlow]
 format:
   html:
     page-layout: full
@@ -12,50 +12,120 @@ format:
     code-tools: false
 ---
 
-::: {.callout-note}
+# Data Exploration
 
-:::
+## Particle Types in the Dataset
 
-## Overview
+This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.  
+Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.
 
-I built a convolutional neural network (CNN) to classify particle types from detector-like image representations.
-The goal was to learn discriminative spatial patterns and evaluate performance by class (not just overall accuracy).
+| Particle  | Symbol | Charge (e) | Mass (MeV/c²) | Typical detector signature |
+|----------|--------|------------|---------------|----------------------------|
+| Electron | e⁻     | −1         | 0.511         | Light, long, branching tracks |
+| Positron | e⁺     | +1         | 0.511         | Similar topology to electrons |
+| Muon     | μ⁻     | −1         | 105.7         | Long, straight, penetrating tracks |
+| Pion     | π⁺     | +1         | 139.6         | Moderately long, hadronic tracks |
+| Proton   | p      | +1         | 938.3         | Short tracks with dense energy deposition |
 
-**What’s on this page**
-- Problem framing + approach
-- Training curves (loss and accuracy)
-- Confusion matrix (per-class performance)
+## Example Particle Tracks Across the Momentum Range
 
-## Approach
+The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.
 
+While many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.
+
+![](assets/particle_types.gif){fig-alt="Example particle tracks at different initial momentums by type" width="1000"}
+
+## Truth-Level Feature Distributions
+
+The figure below summarizes the **truth-level kinematic and spatial features** associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.
+
+The momentum components $p_x$, $p_y$, and $p_z$ are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The **total momentum** is strictly positive and is defined as
+
+$$
+p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
+$$
+
+As a result, its distribution spans a broad range of values that increases with particle energy.
+
+The production coordinates \( $x, y, z$ \) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.
+
+All histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.
+
+![](assets/truth_arrays.gif){fig-alt="Truth arrays by particle type" width="1000"}
+
+# Initial Model
+## Approach & Architecture
+::: {.columns}
+
+::: {.column width="45%"}
 - **Model:** CNN for multi-class classification
 - **Training:** standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)
 - **Evaluation:** accuracy over epochs + confusion matrix to understand which classes are most often confused
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+![](assets/init_cnn_architecture_blocks.png){fig-alt="Example particle tracks at different initial momentums by type" width="1000"}
+:::
 
-## Results
+:::
 
-### Training curves
+## Initial Model Performance
 
-The model learns quickly in the early epochs, with training/validation accuracy stabilizing after ~10–15 epochs.
+### Training Dynamics
 
-![](assets/training_loss.png){fig-alt="Training and validation loss over epochs" width="650"}
+The plots below show how the CNN learns over the first five training epochs.
 
-![](assets/training_accuracy.png){fig-alt="Training and validation accuracy over epochs" width="650"}
+#### Key observations
+- Training loss decreases steadily, indicating that the model is learning meaningful features.
+- Validation loss spikes early on, then stabilizes and moves closer to the training loss.
+- Training and validation accuracy both increase with each epoch.
+- By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.
 
-### Confusion matrix
+Overall, the model learns quickly and remains stable despite the short training run.
 
-The confusion matrix below shows where the model performs well and where it struggles.
-Some particle types are consistently easier to identify, while others are more frequently confused.
+::: {.columns}
 
-![](assets/confusion_matrix.png){fig-alt="Confusion matrix for particle classifier" width="700"}
+::: {.column width="45%"}
+![](assets/init_cnn_training_loss.png){fig-alt="Training and validation loss over epochs"}
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="45%"}
+![](assets/init_cnn_training_accuracy.png){fig-alt="Training and validation accuracy over epochs"}
+:::
 
-## Notes and next improvements
+:::
 
-If I were iterating on this further, I would focus on:
-- class-conditional performance (precision/recall per class) and calibration
-- data augmentation or class rebalancing if classes are uneven
-- architecture tweaks (regularization, deeper blocks) and systematic hyperparameter search
-- adding Grad-CAM / saliency maps to interpret what regions drive predictions
+### Classification Performance
+::: {.columns}
 
-### Reproducibility
+::: {.column width="45%"}
+The normalized confusion matrix summarizes how well the model distinguishes between particle types.
 
+#### Key observations
+- Electrons, positrons, and protons are classified with high accuracy.
+- Muons and pions show increased confusion with other particle types.
+- Most misclassifications occur between physically similar particles.
+
+These errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement.
+
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+![](assets/init_cnn_confusion_matrix.png){fig-alt="Normalized confusion matrix for particle classifier" width="700"}
+:::
+
+:::
+
+# Hyperparameter Optimization
+## First Round
+## Second Round
+
+# Final Model
+## Performance Evaluation
+### Training Dynamics
+### Categorical Accuracy
+
+# Next Steps
