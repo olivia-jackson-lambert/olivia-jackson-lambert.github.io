@@ -1,11 +1,15 @@
 ---
-title: ""
+title: "Tools & Technologies"
 format:
   html:
     page-layout: full
 ---
 
-## Languages
+::: {.tools-intro}
+Technologies and tools I use to build production ML systems, data pipelines, and analytics solutions end-to-end.
+:::
+
+## Core Languages
 
 <div class="tools-grid">
   <div class="tool-pill"><i class="fa-brands fa-python"></i><span>Python</span></div>
@@ -14,18 +18,25 @@ format:
   <div class="tool-pill"><i class="fa-solid fa-code"></i><span>C++</span></div>
 </div>
 
-## Data science & machine learning
+## Building ML Models
+
+<div class="tools-section-desc"></div>
 
 <div class="tools-grid">
+  <div class="tool-pill"><i class="fa-solid fa-table"></i><span>pandas, NumPy, SciPy</span></div>
   <div class="tool-pill"><i class="fa-solid fa-brain"></i><span>scikit-learn</span></div>
   <div class="tool-pill"><i class="fa-solid fa-network-wired"></i><span>PyTorch</span></div>
   <div class="tool-pill"><i class="fa-solid fa-chart-line"></i><span>TensorFlow / Keras</span></div>
   <div class="tool-pill"><i class="fa-solid fa-layer-group"></i><span>XGBoost</span></div>
   <div class="tool-pill"><i class="fa-solid fa-clock"></i><span>Prophet / statsmodels</span></div>
-  <div class="tool-pill"><i class="fa-solid fa-table"></i><span>pandas, NumPy, SciPy</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-flask"></i><span>Statistical inference</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Feature engineering</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-check-double"></i><span>Model evaluation</span></div>
 </div>
 
-## Data engineering & pipelines
+## Data Engineering & Pipelines
+
+<div class="tools-section-desc"></div>
 
 <div class="tools-grid">
   <div class="tool-pill"><i class="fa-solid fa-diagram-project"></i><span>Airflow</span></div>
@@ -35,7 +46,9 @@ format:
   <div class="tool-pill"><i class="fa-brands fa-docker"></i><span>Docker</span></div>
 </div>
 
-## Cloud & databases
+## Cloud Infrastructure & Data Storage
+
+<div class="tools-section-desc"></div>
 
 <div class="tools-grid">
   <div class="tool-pill"><i class="fa-brands fa-aws"></i><span>AWS</span></div>
@@ -45,7 +58,9 @@ format:
   <div class="tool-pill"><i class="fa-solid fa-sitemap"></i><span>MongoDB / Neo4j</span></div>
 </div>
 
-## Visualization & BI
+## Visualization & Analytics
+
+<div class="tools-section-desc"></div>
 
 <div class="tools-grid">
   <div class="tool-pill"><i class="fa-solid fa-chart-bar"></i><span>Matplotlib / ggplot2</span></div>
@@ -54,11 +69,12 @@ format:
   <div class="tool-pill"><i class="fa-solid fa-eye"></i><span>Looker</span></div>
 </div>
 
-## Methods & concepts
+## Research & Experimentation
+
+<div class="tools-section-desc"></div>
 
 <div class="tools-grid">
-  <div class="tool-pill"><i class="fa-solid fa-flask"></i><span>Statistical inference and regression</span></div>
-  <div class="tool-pill"><i class="fa-solid fa-vial"></i><span>A/B testing and experimental design</span></div>
-  <div class="tool-pill"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Feature engineering</span></div>
-  <div class="tool-pill"><i class="fa-solid fa-check-double"></i><span>Model evaluation and validation</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-vial"></i><span>A/B testing</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-flask"></i><span>Experimental design</span></div>
+  <div class="tool-pill"><i class="fa-solid fa-check-double"></i><span>Model validation</span></div>
 </div>

@@ -1,16 +1,21 @@
 ---
-title: ""
-format:
-  html:
-    page-layout: full
+page-layout: custom
+comments: false
+body-class: landing-page
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin velit eu ligula placerat pharetra ac sed dui. Suspendisse vel pulvinar ipsum. Nunc bibendum quam vitae nulla vestibulum convallis. Morbi eros nisl, faucibus at sem in, sollicitudin convallis quam. Ut euismod cursus risus, eget congue lorem gravida ut. Cras iaculis faucibus mauris quis vehicula. Curabitur facilisis dictum diam, a ornare odio faucibus non. Integer faucibus convallis turpis, et elementum nibh consectetur eget.
+::: light-mode
+<div class="landing-animation">
+  <video autoplay loop muted playsinline>
+    <source src="assets/welcome_light.mp4" type="video/mp4">
+  </video>
+</div>
+:::
 
-Praesent accumsan lectus in cursus porttitor. Suspendisse ut lectus pharetra, dapibus justo in, vestibulum mi. Donec at lobortis justo, nec placerat odio. Duis at dapibus leo, non fermentum mi. Mauris dignissim quis lorem ac porttitor. Duis eu hendrerit leo. Proin augue ex, placerat ac felis ut, aliquet congue sapien. Donec vel gravida nibh, eu molestie felis. Donec volutpat magna ultricies arcu scelerisque, quis pellentesque ante interdum. Nulla facilisi.
-
-Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras et diam sed purus placerat sagittis nec id massa. Aenean id urna erat. Mauris lobortis ex id sem euismod, in tincidunt dui condimentum. Ut tellus nibh, viverra a urna sit amet, pretium laoreet lorem. Nullam eu turpis porttitor, maximus ante at, tristique quam. Pellentesque egestas dictum nibh eget fringilla. Vivamus scelerisque elementum interdum.
-
-Maecenas quam turpis, ullamcorper sit amet felis non, fringilla viverra sapien. Nunc feugiat laoreet blandit. Nam at ipsum in purus condimentum tincidunt sit amet at dolor. Morbi eu tellus pretium, interdum ex ac, viverra magna. Proin rhoncus fringilla dignissim. Sed vel feugiat turpis. Donec id leo dictum, venenatis massa sed, ornare mauris. Nullam laoreet, enim nec consequat lobortis, mauris dui suscipit arcu, ut molestie risus orci suscipit dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin quam arcu, pellentesque id consectetur eget, laoreet eget dui. Cras malesuada sit amet ligula vel tristique. Fusce interdum convallis justo. Aenean interdum suscipit porta.
-
-Morbi non diam non odio viverra malesuada eget vel mauris. Praesent sit amet purus eu ante vestibulum sollicitudin. Duis tempus eros sed mi lobortis, et pharetra felis ultrices. Donec tempor pretium varius. Vestibulum eget consectetur nisi, sed pretium neque. Mauris eget molestie erat. Etiam eget commodo erat, at ornare mi. Donec nec turpis id nunc scelerisque ullamcorper. Maecenas ullamcorper sit amet eros ut sollicitudin. Fusce rutrum dui quam, placerat hendrerit justo tempor nec. In hac habitasse platea dictumst. Aliquam at tortor ipsum. Etiam eu aliquet magna. Maecenas id posuere nibh.
+::: dark-mode
+<div class="landing-animation">
+  <video autoplay loop muted playsinline>
+    <source src="assets/welcome_dark.mp4" type="video/mp4">
+  </video>
+</div>
+:::

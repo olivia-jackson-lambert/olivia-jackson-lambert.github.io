@@ -12,6 +12,8 @@ format:
     code-tools: false
 ---
 
+This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance.
+
 # Data Exploration
 
 ## Particle Types in the Dataset
@@ -72,6 +74,8 @@ All histograms are shown with a shared y-axis scale to enable direct comparison 
 
 ## Initial Model Performance
 
+cat_acc: 0.8292 - loss: 0.4224 - val_cat_acc: 0.8236 - val_loss: 0.4084 - learning_rate: 0.0010
+
 ### Training Dynamics
 
 The plots below show how the CNN learns over the first five training epochs.
@@ -120,8 +124,49 @@ These errors are expected, as particle tracks can appear similar depending on en
 :::
 
 # Hyperparameter Optimization
-## First Round
-## Second Round
+###
+First round explain
+
+### First Round Results
+
+A first round of hyperparameter optimisation was performed to assess the sensitivity of the model to architectural and optimisation choices. Across all experiments, the learning rate had the strongest influence on validation performance. Increasing the learning rate improved both convergence speed and final accuracy, with the best-performing configuration reaching a validation accuracy of 83.2%.
+
+In contrast, increasing model capacity through wider convolutional filters or larger dense layers did not yield consistent improvements, suggesting that the baseline architecture was already sufficiently expressive. Adjustments to regularisation strength showed that the model was not strongly overfitting, while the removal of batch normalization significantly degraded performance. These results indicate that further gains are more likely to come from optimisation strategies rather than architectural complexity.
+
+Each model was set to run for a maximum of 30 epochs, but most converged after 4-5. This indicates that the dominant discriminative features are learned within only a few epochs, suggesting that the convolutional architecture is well matched to the structure of the particle track images and that performance is primarily limited by the available information in the data rather than model capacity.
+
+The table below summarizes the performance of each configuration tested during hyperparameter optimization. Models are ranked by their best validation categorical accuracy.
+
+| Configuration          | Key Change                              | Best Validation Accuracy | Final Validation Loss |
+|------------------------|------------------------------------------|--------------------------|-----------------------|
+| **Higher learning rate** | Increased learning rate (2e-3) | **0.832** | **0.410** |
+| Less dropout            | Reduced dropout regularization            | 0.814 | 0.462 |
+| Baseline                | Reference architecture                    | 0.813 | 0.464 |
+| Average pooling         | Replaced max pooling with average pooling | 0.806 | 0.458 |
+| More dropout            | Increased dropout regularization          | 0.790 | 0.501 |
+| Wider filters           | Increased convolutional filters           | 0.782 | 0.481 |
+| No batch normalization  | Removed batch normalization               | 0.763 | 0.525 |
+| Larger dense head       | Increased dense layer width               | 0.759 | 0.515 |
+| Lower learning rate     | Reduced learning rate (3e-4)              | 0.721 | 0.607 |
+
+
+
+### Second Round Results
+
+For the second round of optimization, three values of learning rate were explored, with the epochs set to 25. 
+
+In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.
+
+
+| Initial learning rate | Best validation accuracy | Final validation loss | LR plateau enabled |
+|----------------------|--------------------------|-----------------------|--------------------|
+| 1.0e−3 | **0.834** | 0.422 | No |
+| 1.2e−3 | 0.679 | 0.701 | No |
+| 1.5e−3 | 0.633 | 1.258 | No |
+| 2.0e−3 | 0.654 | 7.596 | No |
+| 3.0e−3 | 0.641 | 1.233 | No |
+
+
 
 # Final Model
 ## Performance Evaluation
