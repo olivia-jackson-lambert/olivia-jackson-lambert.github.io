@@ -3,6 +3,8 @@ project:
 
 website:
   title: "Olivia Jackson Lambert"
+  description: "Personal website of Olivia Jackson Lambert"
+  site-url: "https://olivia-jackson-lambert.github.io/"
   navbar:
     right:
       - href: project/projects.qmd
@@ -20,6 +22,10 @@ website:
       - icon: medium
         href: https://medium.com/@oliviarosejackson
         aria-label: Medium
+        target: _blank
+      - icon: mortarboard-fill
+        href: https://scholar.google.com/citations?user=X1oWKpQAAAAJ&hl=en
+        aria-label: Google Scholar
         target: _blank
       - icon: file-earmark-person-fill
         href: assets/Olivia_Jackson_Lambert_Resume.pdf
