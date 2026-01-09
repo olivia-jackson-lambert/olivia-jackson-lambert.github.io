@@ -7,8 +7,6 @@ website:
     right:
       - href: project/projects.qmd
         text: Projects
-      - href: pages/tools.qmd
-        text: Tools
       - href: pages/about.qmd
         text: About
       - icon: github

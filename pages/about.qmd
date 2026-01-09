@@ -1,25 +1,297 @@
 ---
-title: ""
+title: "About"
 format:
   html:
     page-layout: full
 ---
 
+```{=html}
+<style>
+.about-hero {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.about-name {
+  letter-spacing: 0.06em;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.about-subtitle {
+  opacity: 0.85;
+  line-height: 1.6;
+  max-width: 44rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.about-links {
+  margin-bottom: 1.5rem;
+}
+.about-links a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(127,127,127,0.35);
+  margin-right: 0.5rem;
+}
+.about-links a:hover {
+  border-bottom-color: currentColor;
+}
+.headshot {
+  width: 280px;
+  max-width: 85%;
+  border-radius: 999px;
+  display: block;
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  border: 1px solid rgba(127,127,127,0.25);
+  border-radius: 14px;
+  padding: 1rem;
+  background: rgba(127,127,127,0.06);
+}
+.kpi .label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+.kpi .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.section-title {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.06em;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem 0;
+}
+.card {
+  border: 1px solid rgba(127,127,127,0.25);
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: rgba(127,127,127,0.05);
+}
+.card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.card p {
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.timeline {
+  border-left: 2px solid rgba(127,127,127,0.25);
+  padding-left: 1.5rem;
+  margin: 1rem 0 2rem 0;
+}
+.timeline-item {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -1.75rem;
+  top: 0.25rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(127,127,127,0.5);
+  border: 2px solid rgba(127,127,127,0.25);
+}
+.timeline-item .when {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+.timeline-item .role {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.15rem;
+}
+.timeline-item .org {
+  opacity: 0.9;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 2rem 0;
+}
+.chip {
+  border: 1px solid rgba(127,127,127,0.28);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+  background: rgba(127,127,127,0.06);
+}
+</style>
+```
+
+::: {.about-hero}
 ::: {.columns}
+::: {.column width="38%"}
 
-::: {.column width="50%"}
-![](../assets/headshot.png){.headshot}
+```{=html}
+<img src="../assets/headshot.png" alt="" class="headshot">
+```
+
 :::
 
-::: {.column width="50%"}
-## Olivia Jackson Lambert
 
-Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.
+::: {.column width="62%"}
 
-### Highlights
-- Deployed ML and data products serving 100K+ monthly users
-- Built forecasting pipelines generating 10K+ monthly forecasts
-- Experience: Python, SQL, Airflow, DBT, Spark, AWS/GCP
-:::
+::: {.about-subtitle}
+Hi! I'm **Olivia Jackson Lambert**, a data scientist and analytics engineer with a background in physics and ML. I enjoy building end-to-end systems that connect data, models, and decision-making.
+
+When I’m not working, I’m usually kayaking, reading, making art, or hanging out with my three cats.
 :::
 
+```{=html}
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="label">Currently</div>
+    <div class="value">UC Berkeley MIDS</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Focus</div>
+    <div class="value">ML + Analytics</div>
+  </div>
+  <div class="kpi">
+    <div class="label">Based in</div>
+    <div class="value">San Francisco</div>
+  </div>
+</div>
+```
+
+:::
+:::
+:::
+
+---
+
+## Highlights
+
+```{=html}
+<div class="card-grid">
+  <div class="card">
+    <h4>Building things end to end</h4>
+    <p>I enjoy working across the whole stack, from wrangling messy data to shipping models and building dashboards people rely on.</p>
+  </div>
+  <div class="card">
+    <h4>Thoughtful data foundations</h4>
+    <p>I care a lot about clean, well-structured data. I like setting up pipelines and metrics that make analysis easier and more trustworthy down the line.</p>
+  </div>
+  <div class="card">
+    <h4>Comfortable with uncertainty</h4>
+    <p>My physics background means I’m used to noisy signals and imperfect data. I focus on understanding what models are really telling us, not just optimizing scores.</p>
+  </div>
+  <div class="card">
+    <h4>Practical problem solving</h4>
+    <p>From consulting work, I’m used to open-ended problems, tight timelines, and adapting quickly based on feedback from non-technical stakeholders.</p>
+  </div>
+</div>
+```
+
+---
+
+## Experience
+
+```{=html}
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="when">Sep 2024 – Nov 2024</div>
+    <div class="role">Analytics Engineer</div>
+    <div class="org">Democratic National Committee</div>
+  </div>
+  <div class="timeline-item">
+    <div class="when">Sep 2023 – Mar 2024</div>
+    <div class="role">Consulting Data Scientist</div>
+    <div class="org">Kenvue - Johnson & Johnson</div>
+  </div>
+  <div class="timeline-item">
+    <div class="when">Mar 2023 – Sep 2023</div>
+    <div class="role">Consulting Data Scientist</div>
+    <div class="org">Fidera</div>
+  </div>
+  <div class="timeline-item">
+    <div class="when">2015 – 2021 (various)</div>
+    <div class="role">Research Assistant Roles</div>
+    <div class="org">University of Edinburgh, Asteria (Space & Satellites), NPL, and others</div>
+  </div>
+</div>
+```
+
+---
+
+## Education
+
+- **UC Berkeley School of Information** — Master's in Information & Data Science (MIDS)
+- **University of Edinburgh** — Master of Physics, Astrophysics
+
+---
+
+## Tools + Skills
+
+```{=html}
+<div class="chips">
+  <span class="chip">Python</span>
+  <span class="chip">SQL</span>
+  <span class="chip">R</span>
+  <span class="chip">PyTorch</span>
+  <span class="chip">TensorFlow</span>
+  <span class="chip">scikit-learn</span>
+  <span class="chip">Airflow</span>
+  <span class="chip">dbt</span>
+  <span class="chip">Spark</span>
+  <span class="chip">AWS</span>
+  <span class="chip">GCP</span>
+  <span class="chip">Docker</span>
+  <span class="chip">PostgreSQL</span>
+  <span class="chip">MongoDB</span>
+  <span class="chip">Neo4j</span>
+  <span class="chip">Redis</span>
+  <span class="chip">Snowflake</span>
+  <span class="chip">Tableau</span>
+  <span class="chip">Streamlit</span>
+</div>
+```
+
+---
+
+## Certifications
+
+```{=html}
+<div class="chips">
+  <span class="chip">AWS Cloud Practitioner</span>
+  <span class="chip">dbt Fundamentals</span>
+  <span class="chip">PCAP</span>
+</div>
+```
+
+---
+
+## Writing / Publication
+
+- [The need for large sample numbers to demonstrate that Martian environments are lifeless](https://www.nature.com/articles/s41550-024-02443-0). (2024), *Nature Astronomy*.
