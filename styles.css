@@ -16,114 +16,93 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
-/* Tools page: icon-as-bullet layout */
-.tools-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 0.6rem;
-  margin-top: 0.75rem;
+.hero-title {
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  font-weight: 900;
+  font-size: 3.5em;
 }
 
-.tools-list i {
-  width: 1.6rem;
-  margin-right: 0.6rem;
-  color: var(--bs-primary);
-}
-
-.tools-list > * {
-  display: flex;
-  align-items: baseline;
-}
-
-/* Tools page layout */
-
-.tools-intro {
-  font-size: 1.1rem;
-  color: var(--bs-body-color);
-  opacity: 0.85;
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
-  max-width: 700px;
-}
-
-.tools-section-desc {
-  font-size: 0.95rem;
-  color: var(--bs-body-color);
-  opacity: 0.7;
-  font-style: italic;
-  margin-top: -0.5rem;
-  margin-bottom: 0.8rem;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.2rem 1.6rem;
-  margin-top: 1.2rem;
-  margin-bottom: 3rem;
-}
-
-.tool-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: 12px;
-  transition: all 0.2s ease;
-  cursor: default;
-  border: 1px solid transparent;
-}
-
-.tool-pill:hover {
-  background: rgba(49, 55, 69, 0.08);
-  border-color: rgba(49, 55, 69, 0.12);
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.tool-pill i {
-  font-size: 1.2rem;
-  color: var(--bs-primary);
-  width: 1.5rem;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-
-.tool-pill:hover i {
-  transform: scale(1.1);
-}
-
-.tool-pill span {
-  font-weight: 600;
-  font-size: 0.98rem;
-  line-height: 1.3;
-  transition: color 0.2s ease;
-}
-
-h2 {
-  margin-bottom: 0.5rem;
-  margin-top: 2rem;
-}
-
-h2:first-of-type {
-  margin-top: 0;
-}
-
-.landing-animation {
-  position: fixed;
-  top: 64px;        /* adjust to match navbar height */
-  left: 0;
+/* Put the hero on the right side of the page */
+.hero-right {
   width: 100%;
-  height: calc(100vh - 64px);
-  overflow: hidden;
-  z-index: -1;
+  max-width: 1100px;   /* optional: keeps it from stretching too wide */
+  margin-left: auto;   /* pushes the whole block to the right */
+  text-align: right;   /* right-align text inside */
 }
 
-.landing-animation video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;    
-  object-position: left center;
+/* Stack static line + animated line */
+.hero-right .hero-static {
   display: block;
-  pointer-events: none;
+}
+
+/* Make the typewriter line sit underneath and align right */
+.hero-right .tw {
+  display: block;
+  justify-content: flex-end; /* since .tw is inline-flex in your earlier CSS */
+  width: 100%;
+  margin-top: -0.3em;
+}
+
+.tw {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12em;
+}
+
+/* Typewriter font + spacing */
+.tw-text {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  font-size: 0.9em;
+  line-height: 1.05;
+  letter-spacing: -0.02em; /* subtle tightening */
+  text-transform: lowercase;
+}
+
+.tw-caret {
+  display: inline-block;
+  transform: translateY(-0.05em);
+  animation: caretBlink 800ms steps(1) infinite;
+  font-size: 0.8em;
+  font-weight: 50;
+  width: 1px;
+  height: 0.75em; 
+}
+
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-caret { animation: none; }
+}
+
+/* Fullscreen background image layer */
+.bg-wrap {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 100vh;
+  z-index: -1;         /* sit behind everything */
+  overflow: hidden;
+}
+
+.bg-img{
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center bottom !important;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;        /* move content toward top */
+  justify-content: flex-end;      /* keeps right alignment logic intact */
+  padding-top: 18vh;              /* controls vertical position */
+  padding-right: clamp(2rem, 6vw, 5rem);
+  padding-left: clamp(2rem, 6vw, 5rem);
 }

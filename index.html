@@ -303,14 +303,92 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<div class="hero-overlay">
+<h1 class="hero-title hero-right">
+<span class="hero-static">experiments in</span> <span class="tw" aria-live="polite"> <span class="tw-text"></span><span class="tw-caret" aria-hidden="true">|</span> </span>
+</h1>
+</div>
+<script>
+(() => {
+  // Change these phrases to whatever you want
+  const phrases = [
+    "machine learning",
+    "data science",
+    "applied physics"
+  ];
+
+  // Tuning knobs
+  const typeSpeed = 45;      // ms per character
+  const deleteSpeed = 28;    // ms per character
+  const holdAfterType = 1100; // pause after typing a phrase
+  const holdAfterDelete = 300; // pause after deleting
+  const loop = true;
+  const deleteBetweenPhrases = true;
+
+  // Respect reduced motion
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const textEl = document.querySelector(".tw-text");
+  if (!textEl) return;
+
+  if (prefersReducedMotion) {
+    textEl.textContent = phrases[0];
+    return;
+  }
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  function tick() {
+    const current = phrases[phraseIndex];
+
+    if (!deleting) {
+      charIndex++;
+      textEl.textContent = current.slice(0, charIndex);
+
+      if (charIndex >= current.length) {
+        if (!deleteBetweenPhrases && loop) {
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          charIndex = 0;
+          setTimeout(tick, holdAfterType);
+          return;
+        }
+        if (!loop && phraseIndex === phrases.length - 1) return;
+        deleting = deleteBetweenPhrases;
+        setTimeout(tick, holdAfterType);
+        return;
+      }
+
+      setTimeout(tick, typeSpeed);
+      return;
+    }
+
+    // deleting
+    charIndex--;
+    textEl.textContent = current.slice(0, charIndex);
+
+    if (charIndex <= 0) {
+      deleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      setTimeout(tick, holdAfterDelete);
+      return;
+    }
+
+    setTimeout(tick, deleteSpeed);
+  }
+
+  tick();
+})();
+</script>
 <div class="light-mode">
-<div class="landing-animation">
-<p><video autoplay="" loop="" muted="" playsinline=""> <source src="assets/welcome_light.mp4" type="video/mp4"> </video></p>
+<div class="bg-wrap">
+<p><img class="bg-img" src="assets/welcome_light.png" alt="" aria-hidden="true"></p>
 </div>
 </div>
 <div class="dark-mode">
-<div class="landing-animation">
-<p><video autoplay="" loop="" muted="" playsinline=""> <source src="assets/welcome_dark.mp4" type="video/mp4"> </video></p>
+<div class="bg-wrap">
+<p><img class="bg-img" src="assets/welcome_dark.png" alt="" aria-hidden="true"></p>
 </div>
 </div>
 
