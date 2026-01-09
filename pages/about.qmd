@@ -154,7 +154,7 @@ format:
 ::: {.column width="38%"}
 
 ```{=html}
-<img src="../assets/headshot.png" alt="" class="headshot">
+<img src="../assets/headshot.jpg" alt="" class="headshot">
 ```
 
 :::
