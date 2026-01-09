@@ -2,16 +2,51 @@
   {
     "objectID": "pages/about.html",
     "href": "pages/about.html",
-    "title": "Olivia Jackson Lambert",
+    "title": "About",
     "section": "",
-    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+    "text": "Hi! I’m Olivia Jackson Lambert, a data scientist and analytics engineer with a background in physics and ML. I enjoy building end-to-end systems that connect data, models, and decision-making.\nWhen I’m not working, I’m usually kayaking, reading, making art, or hanging out with my three cats.\n\n\n  \n    Currently\n    UC Berkeley MIDS\n  \n  \n    Focus\n    ML + Analytics\n  \n  \n    Based in\n    San Francisco"
   },
   {
-    "objectID": "pages/about.html#olivia-jackson-lambert",
-    "href": "pages/about.html#olivia-jackson-lambert",
-    "title": "Olivia Jackson Lambert",
-    "section": "",
-    "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
+    "objectID": "pages/about.html#highlights",
+    "href": "pages/about.html#highlights",
+    "title": "About",
+    "section": "Highlights",
+    "text": "Highlights\n\n  \n    Building things end to end\n    I enjoy working across the whole stack, from wrangling messy data to shipping models and building dashboards people rely on.\n  \n  \n    Thoughtful data foundations\n    I care a lot about clean, well-structured data. I like setting up pipelines and metrics that make analysis easier and more trustworthy down the line.\n  \n  \n    Comfortable with uncertainty\n    My physics background means I’m used to noisy signals and imperfect data. I focus on understanding what models are really telling us, not just optimizing scores.\n  \n  \n    Practical problem solving\n    From consulting work, I’m used to open-ended problems, tight timelines, and adapting quickly based on feedback from non-technical stakeholders."
+  },
+  {
+    "objectID": "pages/about.html#experience",
+    "href": "pages/about.html#experience",
+    "title": "About",
+    "section": "Experience",
+    "text": "Experience\n\n  \n    Sep 2024 – Nov 2024\n    Analytics Engineer\n    Democratic National Committee\n  \n  \n    Sep 2023 – Mar 2024\n    Consulting Data Scientist\n    Kenvue - Johnson & Johnson\n  \n  \n    Mar 2023 – Sep 2023\n    Consulting Data Scientist\n    Fidera\n  \n  \n    2015 – 2021 (various)\n    Research Assistant Roles\n    University of Edinburgh, Asteria (Space & Satellites), NPL, and others"
+  },
+  {
+    "objectID": "pages/about.html#education",
+    "href": "pages/about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\n\nUC Berkeley School of Information — Master’s in Information & Data Science (MIDS)\nUniversity of Edinburgh — Master of Physics, Astrophysics"
+  },
+  {
+    "objectID": "pages/about.html#tools-skills",
+    "href": "pages/about.html#tools-skills",
+    "title": "About",
+    "section": "Tools + Skills",
+    "text": "Tools + Skills\n\n  Python\n  SQL\n  R\n  PyTorch\n  TensorFlow\n  scikit-learn\n  Airflow\n  dbt\n  Spark\n  AWS\n  GCP\n  Docker\n  PostgreSQL\n  MongoDB\n  Neo4j\n  Redis\n  Snowflake\n  Tableau\n  Streamlit"
+  },
+  {
+    "objectID": "pages/about.html#certifications",
+    "href": "pages/about.html#certifications",
+    "title": "About",
+    "section": "Certifications",
+    "text": "Certifications\n\n  AWS Cloud Practitioner\n  dbt Fundamentals\n  PCAP"
+  },
+  {
+    "objectID": "pages/about.html#writing-publication",
+    "href": "pages/about.html#writing-publication",
+    "title": "About",
+    "section": "Writing / Publication",
+    "text": "Writing / Publication\n\nThe need for large sample numbers to demonstrate that Martian environments are lifeless. (2024), Nature Astronomy."
   },
   {
     "objectID": "project/projects.html",
