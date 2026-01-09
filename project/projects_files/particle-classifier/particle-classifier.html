@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-1b3db88def35042d172274863c1cdcf0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-08490afe157aa79fa223a4bb75ec792f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-a7bdc1ccdcaa607b7b56393b98bf74bd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-08490afe157aa79fa223a4bb75ec792f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-b2ae3957829e0fbea2be8abaf70fefb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-28a28b2a105b6bfa4e18626fbea27f78.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-b2ae3957829e0fbea2be8abaf70fefb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -354,8 +354,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#hyperparameter-optimization" id="toc-hyperparameter-optimization" class="nav-link" data-scroll-target="#hyperparameter-optimization">Hyperparameter Optimization</a>
   <ul class="collapse">
-  <li><a href="#first-round" id="toc-first-round" class="nav-link" data-scroll-target="#first-round">First Round</a></li>
-  <li><a href="#second-round" id="toc-second-round" class="nav-link" data-scroll-target="#second-round">Second Round</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#first-round-results" id="toc-first-round-results" class="nav-link" data-scroll-target="#first-round-results">First Round Results</a></li>
+  <li><a href="#second-round-results" id="toc-second-round-results" class="nav-link" data-scroll-target="#second-round-results">Second Round Results</a></li>
   </ul></li>
   <li><a href="#final-model" id="toc-final-model" class="nav-link" data-scroll-target="#final-model">Final Model</a>
   <ul class="collapse">
@@ -415,6 +416,7 @@ window.Quarto = {
 </header>
 
 
+<p>This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance.</p>
 <section id="data-exploration" class="level1">
 <h1>Data Exploration</h1>
 <section id="particle-types-in-the-dataset" class="level2">
@@ -516,6 +518,7 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="initial-model-performance" class="level2">
 <h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
+<p>cat_acc: 0.8292 - loss: 0.4224 - val_cat_acc: 0.8236 - val_loss: 0.4084 - learning_rate: 0.0010</p>
 <section id="training-dynamics" class="level3">
 <h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
 <p>The plots below show how the CNN learns over the first five training epochs.</p>
@@ -564,11 +567,141 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="hyperparameter-optimization" class="level1">
 <h1>Hyperparameter Optimization</h1>
-<section id="first-round" class="level2">
-<h2 class="anchored" data-anchor-id="first-round">First Round</h2>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p>First round explain</p>
 </section>
-<section id="second-round" class="level2">
-<h2 class="anchored" data-anchor-id="second-round">Second Round</h2>
+<section id="first-round-results" class="level3">
+<h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
+<p>A first round of hyperparameter optimisation was performed to assess the sensitivity of the model to architectural and optimisation choices. Across all experiments, the learning rate had the strongest influence on validation performance. Increasing the learning rate improved both convergence speed and final accuracy, with the best-performing configuration reaching a validation accuracy of 83.2%.</p>
+<p>In contrast, increasing model capacity through wider convolutional filters or larger dense layers did not yield consistent improvements, suggesting that the baseline architecture was already sufficiently expressive. Adjustments to regularisation strength showed that the model was not strongly overfitting, while the removal of batch normalization significantly degraded performance. These results indicate that further gains are more likely to come from optimisation strategies rather than architectural complexity.</p>
+<p>Each model was set to run for a maximum of 30 epochs, but most converged after 4-5. This indicates that the dominant discriminative features are learned within only a few epochs, suggesting that the convolutional architecture is well matched to the structure of the particle track images and that performance is primarily limited by the available information in the data rather than model capacity.</p>
+<p>The table below summarizes the performance of each configuration tested during hyperparameter optimization. Models are ranked by their best validation categorical accuracy.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 36%">
+<col style="width: 22%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Configuration</th>
+<th>Key Change</th>
+<th>Best Validation Accuracy</th>
+<th>Final Validation Loss</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Higher learning rate</strong></td>
+<td>Increased learning rate (2e-3)</td>
+<td><strong>0.832</strong></td>
+<td><strong>0.410</strong></td>
+</tr>
+<tr class="even">
+<td>Less dropout</td>
+<td>Reduced dropout regularization</td>
+<td>0.814</td>
+<td>0.462</td>
+</tr>
+<tr class="odd">
+<td>Baseline</td>
+<td>Reference architecture</td>
+<td>0.813</td>
+<td>0.464</td>
+</tr>
+<tr class="even">
+<td>Average pooling</td>
+<td>Replaced max pooling with average pooling</td>
+<td>0.806</td>
+<td>0.458</td>
+</tr>
+<tr class="odd">
+<td>More dropout</td>
+<td>Increased dropout regularization</td>
+<td>0.790</td>
+<td>0.501</td>
+</tr>
+<tr class="even">
+<td>Wider filters</td>
+<td>Increased convolutional filters</td>
+<td>0.782</td>
+<td>0.481</td>
+</tr>
+<tr class="odd">
+<td>No batch normalization</td>
+<td>Removed batch normalization</td>
+<td>0.763</td>
+<td>0.525</td>
+</tr>
+<tr class="even">
+<td>Larger dense head</td>
+<td>Increased dense layer width</td>
+<td>0.759</td>
+<td>0.515</td>
+</tr>
+<tr class="odd">
+<td>Lower learning rate</td>
+<td>Reduced learning rate (3e-4)</td>
+<td>0.721</td>
+<td>0.607</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="second-round-results" class="level3">
+<h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
+<p>For the second round of optimization, three values of learning rate were explored, with the epochs set to 25.</p>
+<p>In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 28%">
+<col style="width: 25%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Initial learning rate</th>
+<th>Best validation accuracy</th>
+<th>Final validation loss</th>
+<th>LR plateau enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.0e−3</td>
+<td><strong>0.834</strong></td>
+<td>0.422</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>1.2e−3</td>
+<td>0.679</td>
+<td>0.701</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>1.5e−3</td>
+<td>0.633</td>
+<td>1.258</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>2.0e−3</td>
+<td>0.654</td>
+<td>7.596</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>3.0e−3</td>
+<td>0.641</td>
+<td>1.233</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="final-model" class="level1">

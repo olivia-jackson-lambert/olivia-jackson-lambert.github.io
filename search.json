@@ -14,32 +14,39 @@
     "text": "Data science master’s student at UC Berkeley (MIDS, graduating May 2027). I build production ML and analytics systems end-to-end: data pipelines, modeling, and dashboards.\n\n\n\nDeployed ML and data products serving 100K+ monthly users\nBuilt forecasting pipelines generating 10K+ monthly forecasts\nExperience: Python, SQL, Airflow, DBT, Spark, AWS/GCP"
   },
   {
+    "objectID": "project/projects.html",
+    "href": "project/projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n8 min\n\nTest\n\n\n\nJan 2, 2025\n\n\n\n\nJan 8, 2026\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
     "href": "project/projects_files/particle-classifier/particle-classifier.html",
     "title": "High Energy Particle CNN Classifier",
     "section": "",
-    "text": "This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition\n\n\n\n\n\n\nThe figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.\nWhile many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.\n\n\n\n\nThe figure below summarizes the truth-level kinematic and spatial features associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The total momentum is strictly positive and is defined as\n\\[\np = \\sqrt{p_x^2 + p_y^2 + p_z^2}.\n\\]\nAs a result, its distribution spans a broad range of values that increases with particle energy.\nThe production coordinates ( \\(x, y, z\\) ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.\nAll histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification."
+    "text": "This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
     "href": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
     "title": "High Energy Particle CNN Classifier",
-    "section": "",
-    "text": "This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
+    "section": "Particle Types in the Dataset",
+    "text": "Particle Types in the Dataset\nThis dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
     "href": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
     "title": "High Energy Particle CNN Classifier",
-    "section": "",
-    "text": "The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.\nWhile many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images."
+    "section": "Example Particle Tracks Across the Momentum Range",
+    "text": "Example Particle Tracks Across the Momentum Range\nThe figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.\nWhile many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
     "href": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
     "title": "High Energy Particle CNN Classifier",
-    "section": "",
-    "text": "The figure below summarizes the truth-level kinematic and spatial features associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The total momentum is strictly positive and is defined as\n\\[\np = \\sqrt{p_x^2 + p_y^2 + p_z^2}.\n\\]\nAs a result, its distribution spans a broad range of values that increases with particle energy.\nThe production coordinates ( \\(x, y, z\\) ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.\nAll histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification."
+    "section": "Truth-Level Feature Distributions",
+    "text": "Truth-Level Feature Distributions\nThe figure below summarizes the truth-level kinematic and spatial features associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The total momentum is strictly positive and is defined as\n\\[\np = \\sqrt{p_x^2 + p_y^2 + p_z^2}.\n\\]\nAs a result, its distribution spans a broad range of values that increases with particle energy.\nThe production coordinates ( \\(x, y, z\\) ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.\nAll histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#approach-architecture",
@@ -53,21 +60,7 @@
     "href": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
     "title": "High Energy Particle CNN Classifier",
     "section": "Initial Model Performance",
-    "text": "Initial Model Performance\n\nTraining Dynamics\nThe plots below show how the CNN learns over the first five training epochs.\n\nKey observations\n\nTraining loss decreases steadily, indicating that the model is learning meaningful features.\nValidation loss spikes early on, then stabilizes and moves closer to the training loss.\nTraining and validation accuracy both increase with each epoch.\nBy the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.\n\nOverall, the model learns quickly and remains stable despite the short training run.\n\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\n\n\nThe normalized confusion matrix summarizes how well the model distinguishes between particle types.\n\nKey observations\n\nElectrons, positrons, and protons are classified with high accuracy.\nMuons and pions show increased confusion with other particle types.\nMost misclassifications occur between physically similar particles.\n\nThese errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement."
-  },
-  {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#first-round",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#first-round",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "First Round",
-    "text": "First Round"
-  },
-  {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#second-round",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#second-round",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Second Round",
-    "text": "Second Round"
+    "text": "Initial Model Performance\ncat_acc: 0.8292 - loss: 0.4224 - val_cat_acc: 0.8236 - val_loss: 0.4084 - learning_rate: 0.0010\n\nTraining Dynamics\nThe plots below show how the CNN learns over the first five training epochs.\n\nKey observations\n\nTraining loss decreases steadily, indicating that the model is learning meaningful features.\nValidation loss spikes early on, then stabilizes and moves closer to the training loss.\nTraining and validation accuracy both increase with each epoch.\nBy the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.\n\nOverall, the model learns quickly and remains stable despite the short training run.\n\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\n\n\nThe normalized confusion matrix summarizes how well the model distinguishes between particle types.\n\nKey observations\n\nElectrons, positrons, and protons are classified with high accuracy.\nMuons and pions show increased confusion with other particle types.\nMost misclassifications occur between physically similar particles.\n\nThese errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
@@ -77,66 +70,52 @@
     "text": "Performance Evaluation\n\nTraining Dynamics\n\n\nCategorical Accuracy"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Olivia Jackson Lambert",
-    "section": "",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin velit eu ligula placerat pharetra ac sed dui. Suspendisse vel pulvinar ipsum. Nunc bibendum quam vitae nulla vestibulum convallis. Morbi eros nisl, faucibus at sem in, sollicitudin convallis quam. Ut euismod cursus risus, eget congue lorem gravida ut. Cras iaculis faucibus mauris quis vehicula. Curabitur facilisis dictum diam, a ornare odio faucibus non. Integer faucibus convallis turpis, et elementum nibh consectetur eget.\nPraesent accumsan lectus in cursus porttitor. Suspendisse ut lectus pharetra, dapibus justo in, vestibulum mi. Donec at lobortis justo, nec placerat odio. Duis at dapibus leo, non fermentum mi. Mauris dignissim quis lorem ac porttitor. Duis eu hendrerit leo. Proin augue ex, placerat ac felis ut, aliquet congue sapien. Donec vel gravida nibh, eu molestie felis. Donec volutpat magna ultricies arcu scelerisque, quis pellentesque ante interdum. Nulla facilisi.\nClass aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras et diam sed purus placerat sagittis nec id massa. Aenean id urna erat. Mauris lobortis ex id sem euismod, in tincidunt dui condimentum. Ut tellus nibh, viverra a urna sit amet, pretium laoreet lorem. Nullam eu turpis porttitor, maximus ante at, tristique quam. Pellentesque egestas dictum nibh eget fringilla. Vivamus scelerisque elementum interdum.\nMaecenas quam turpis, ullamcorper sit amet felis non, fringilla viverra sapien. Nunc feugiat laoreet blandit. Nam at ipsum in purus condimentum tincidunt sit amet at dolor. Morbi eu tellus pretium, interdum ex ac, viverra magna. Proin rhoncus fringilla dignissim. Sed vel feugiat turpis. Donec id leo dictum, venenatis massa sed, ornare mauris. Nullam laoreet, enim nec consequat lobortis, mauris dui suscipit arcu, ut molestie risus orci suscipit dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin quam arcu, pellentesque id consectetur eget, laoreet eget dui. Cras malesuada sit amet ligula vel tristique. Fusce interdum convallis justo. Aenean interdum suscipit porta.\nMorbi non diam non odio viverra malesuada eget vel mauris. Praesent sit amet purus eu ante vestibulum sollicitudin. Duis tempus eros sed mi lobortis, et pharetra felis ultrices. Donec tempor pretium varius. Vestibulum eget consectetur nisi, sed pretium neque. Mauris eget molestie erat. Etiam eget commodo erat, at ornare mi. Donec nec turpis id nunc scelerisque ullamcorper. Maecenas ullamcorper sit amet eros ut sollicitudin. Fusce rutrum dui quam, placerat hendrerit justo tempor nec. In hac habitasse platea dictumst. Aliquam at tortor ipsum. Etiam eu aliquet magna. Maecenas id posuere nibh."
-  },
-  {
-    "objectID": "project/projects.html",
-    "href": "project/projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nMy First Project\n\n1 min\n\nOne-line summary of what you built.\n\n\n\nJan 2, 2026\n\n\n\n\nJan 3, 2026\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n4 min\n\nTest\n\n\n\nJan 2, 2025\n\n\n\n\nJan 3, 2026\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "pages/tools.html",
     "href": "pages/tools.html",
-    "title": "Olivia Jackson Lambert",
+    "title": "Tools & Technologies",
     "section": "",
-    "text": "Python\n\n\nSQL\n\n\nR\n\n\nC++"
+    "text": "Technologies and tools I use to build production ML systems, data pipelines, and analytics solutions end-to-end."
   },
   {
-    "objectID": "pages/tools.html#languages",
-    "href": "pages/tools.html#languages",
-    "title": "Olivia Jackson Lambert",
-    "section": "",
-    "text": "Python\n\n\nSQL\n\n\nR\n\n\nC++"
+    "objectID": "pages/tools.html#core-languages",
+    "href": "pages/tools.html#core-languages",
+    "title": "Tools & Technologies",
+    "section": "Core Languages",
+    "text": "Core Languages\n\n\nPython\n\n\nSQL\n\n\nR\n\n\nC++"
   },
   {
-    "objectID": "pages/tools.html#data-science-machine-learning",
-    "href": "pages/tools.html#data-science-machine-learning",
-    "title": "Olivia Jackson Lambert",
-    "section": "Data science & machine learning",
-    "text": "Data science & machine learning\n\n\nscikit-learn\n\n\nPyTorch\n\n\nTensorFlow / Keras\n\n\nXGBoost\n\n\nProphet / statsmodels\n\n\npandas, NumPy, SciPy"
+    "objectID": "pages/tools.html#building-ml-models",
+    "href": "pages/tools.html#building-ml-models",
+    "title": "Tools & Technologies",
+    "section": "Building ML Models",
+    "text": "Building ML Models\n\n\n\n\n\npandas, NumPy, SciPy\n\n\nscikit-learn\n\n\nPyTorch\n\n\nTensorFlow / Keras\n\n\nXGBoost\n\n\nProphet / statsmodels\n\n\nStatistical inference\n\n\nFeature engineering\n\n\nModel evaluation"
   },
   {
     "objectID": "pages/tools.html#data-engineering-pipelines",
     "href": "pages/tools.html#data-engineering-pipelines",
-    "title": "Olivia Jackson Lambert",
-    "section": "Data engineering & pipelines",
-    "text": "Data engineering & pipelines\n\n\nAirflow\n\n\ndbt\n\n\nSpark / PySpark\n\n\nETL pipelines\n\n\nDocker"
+    "title": "Tools & Technologies",
+    "section": "Data Engineering & Pipelines",
+    "text": "Data Engineering & Pipelines\n\n\n\n\n\nAirflow\n\n\ndbt\n\n\nSpark / PySpark\n\n\nETL pipelines\n\n\nDocker"
   },
   {
-    "objectID": "pages/tools.html#cloud-databases",
-    "href": "pages/tools.html#cloud-databases",
-    "title": "Olivia Jackson Lambert",
-    "section": "Cloud & databases",
-    "text": "Cloud & databases\n\n\nAWS\n\n\nGCP\n\n\nPostgreSQL\n\n\nSnowflake / Redshift / BigQuery\n\n\nMongoDB / Neo4j"
+    "objectID": "pages/tools.html#cloud-infrastructure-data-storage",
+    "href": "pages/tools.html#cloud-infrastructure-data-storage",
+    "title": "Tools & Technologies",
+    "section": "Cloud Infrastructure & Data Storage",
+    "text": "Cloud Infrastructure & Data Storage\n\n\n\n\n\nAWS\n\n\nGCP\n\n\nPostgreSQL\n\n\nSnowflake / Redshift / BigQuery\n\n\nMongoDB / Neo4j"
   },
   {
-    "objectID": "pages/tools.html#visualization-bi",
-    "href": "pages/tools.html#visualization-bi",
-    "title": "Olivia Jackson Lambert",
-    "section": "Visualization & BI",
-    "text": "Visualization & BI\n\n\nMatplotlib / ggplot2\n\n\nStreamlit\n\n\nTableau\n\n\nLooker"
+    "objectID": "pages/tools.html#visualization-analytics",
+    "href": "pages/tools.html#visualization-analytics",
+    "title": "Tools & Technologies",
+    "section": "Visualization & Analytics",
+    "text": "Visualization & Analytics\n\n\n\n\n\nMatplotlib / ggplot2\n\n\nStreamlit\n\n\nTableau\n\n\nLooker"
   },
   {
-    "objectID": "pages/tools.html#methods-concepts",
-    "href": "pages/tools.html#methods-concepts",
-    "title": "Olivia Jackson Lambert",
-    "section": "Methods & concepts",
-    "text": "Methods & concepts\n\n\nStatistical inference and regression\n\n\nA/B testing and experimental design\n\n\nFeature engineering\n\n\nModel evaluation and validation"
+    "objectID": "pages/tools.html#research-experimentation",
+    "href": "pages/tools.html#research-experimentation",
+    "title": "Tools & Technologies",
+    "section": "Research & Experimentation",
+    "text": "Research & Experimentation\n\n\n\n\n\nA/B testing\n\n\nExperimental design\n\n\nModel validation"
   }
 ]
