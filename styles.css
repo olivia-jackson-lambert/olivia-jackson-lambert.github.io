@@ -135,18 +135,18 @@ h1, h2, h3 {
     white-space: nowrap;
     overflow: visible;
     text-overflow: clip;
-    font-size: 1.05rem; /* tweak: 0.9–1.05 */
+    font-size: 1.0rem; /* tweak: 0.9–1.05 */
   }
 
   /* Reduce icon crowding so the title has room */
   .navbar .navbar-nav {
-    column-gap: 0.5rem;
+    column-gap: 0rem;
   }
 
   /* If you have lots of navbar icons, this prevents them stealing width */
   .navbar .navbar-nav .nav-link {
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
   }
 
   .hero-title {
@@ -161,5 +161,9 @@ h1, h2, h3 {
 
   .tw-caret {
     font-size: 0.7em;
+  }
+
+  .navbar {
+    flex-wrap: nowrap;
   }
 }

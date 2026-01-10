@@ -5,6 +5,7 @@ website:
   title: "Olivia Jackson Lambert"
   description: "Personal website of Olivia Jackson Lambert"
   site-url: "https://olivia-jackson-lambert.github.io/"
+  favicon: assets/favicon.ico
   navbar:
     search: false
     right:
