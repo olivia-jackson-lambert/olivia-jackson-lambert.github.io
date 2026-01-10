@@ -6,6 +6,7 @@ website:
   description: "Personal website of Olivia Jackson Lambert"
   site-url: "https://olivia-jackson-lambert.github.io/"
   navbar:
+    search: false
     right:
       - href: project/projects.qmd
         text: Projects

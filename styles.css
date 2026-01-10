@@ -5,7 +5,7 @@ h1, h2, h3 {
     text-transform: uppercase;
   }
   
-  .page-columns {
+.page-columns {
     gap: 2rem;
   }
 
@@ -79,13 +79,34 @@ h1, h2, h3 {
   .tw-caret { animation: none; }
 }
 
-/* Fullscreen background image layer */
+/* Background layer */
 .bg-wrap {
   position: fixed;
   inset: auto 0 0 0;
   height: 100vh;
   z-index: -1;         /* sit behind everything */
   overflow: hidden;
+}
+
+/* Force image to behave like a true background */
+.bg-wrap > img.bg-img {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important; /* override Quarto/Bootstrap img defaults */
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center bottom !important; /* if you want it pinned bottom */
+  display: block;
+}
+
+/* Default: desktop image */
+.bg-mobile { display: none; }
+.bg-desktop { display: block; }
+
+/* Mobile breakpoint: swap to mobile image */
+@media (max-width: 768px) {
+  .bg-desktop { display: none; }
+  .bg-mobile  { display: block; }
 }
 
 .bg-img{
@@ -105,4 +126,40 @@ h1, h2, h3 {
   padding-top: 18vh;              /* controls vertical position */
   padding-right: clamp(2rem, 6vw, 5rem);
   padding-left: clamp(2rem, 6vw, 5rem);
+}
+
+/* Mobile navbar: let the site title/brand use more space */
+@media (max-width: 768px) {
+  .navbar .navbar-brand {
+    max-width: none;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 1.05rem; /* tweak: 0.9–1.05 */
+  }
+
+  /* Reduce icon crowding so the title has room */
+  .navbar .navbar-nav {
+    column-gap: 0.5rem;
+  }
+
+  /* If you have lots of navbar icons, this prevents them stealing width */
+  .navbar .navbar-nav .nav-link {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+  }
+
+  .hero-title {
+    font-size: 2.4em;   /* was 3.5em; adjust to taste */
+    letter-spacing: 0.02em;
+  }
+
+  .tw-text {
+    font-size: 0.75em;  /* was 0.9em */
+    letter-spacing: -0.015em;
+  }
+
+  .tw-caret {
+    font-size: 0.7em;
+  }
 }

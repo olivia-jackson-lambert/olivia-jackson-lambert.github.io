@@ -89,13 +89,15 @@ body-class: home
 
 
 ::: light-mode
-<div class="bg-wrap">
-  <img class="bg-img" src="assets/welcome_light.png" alt="" aria-hidden="true">
+<div class="bg-wrap" aria-hidden="true">
+  <img class="bg-img bg-desktop" src="assets/bg-light-desktop.png" alt="">
+  <img class="bg-img bg-mobile"  src="assets/bg-light-mobile.png"  alt="">
 </div>
 :::
 
 ::: dark-mode
-<div class="bg-wrap">
-  <img class="bg-img" src="assets/welcome_dark.png" alt="" aria-hidden="true">
+<div class="bg-wrap" aria-hidden="true">
+  <img class="bg-img bg-desktop" src="assets/bg-dark-desktop.png" alt="">
+  <img class="bg-img bg-mobile"  src="assets/bg-dark-mobile.png"  alt="">
 </div>
 :::
