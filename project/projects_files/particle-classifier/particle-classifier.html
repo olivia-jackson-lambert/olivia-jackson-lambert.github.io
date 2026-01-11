@@ -358,13 +358,14 @@ window.Quarto = {
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#first-round-results" id="toc-first-round-results" class="nav-link" data-scroll-target="#first-round-results">First Round Results</a></li>
   <li><a href="#second-round-results" id="toc-second-round-results" class="nav-link" data-scroll-target="#second-round-results">Second Round Results</a></li>
+  <li><a href="#validation-accuracy-comparison-with-vs-without-lr-plateau" id="toc-validation-accuracy-comparison-with-vs-without-lr-plateau" class="nav-link" data-scroll-target="#validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</a></li>
   </ul></li>
   <li><a href="#final-model" id="toc-final-model" class="nav-link" data-scroll-target="#final-model">Final Model</a>
   <ul class="collapse">
   <li><a href="#performance-evaluation" id="toc-performance-evaluation" class="nav-link" data-scroll-target="#performance-evaluation">Performance Evaluation</a>
   <ul class="collapse">
   <li><a href="#training-dynamics-1" id="toc-training-dynamics-1" class="nav-link" data-scroll-target="#training-dynamics-1">Training Dynamics</a></li>
-  <li><a href="#categorical-accuracy" id="toc-categorical-accuracy" class="nav-link" data-scroll-target="#categorical-accuracy">Categorical Accuracy</a></li>
+  <li><a href="#classification-performance-1" id="toc-classification-performance-1" class="nav-link" data-scroll-target="#classification-performance-1">Classification Performance</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
@@ -495,7 +496,7 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 \]</span></p>
 <p>As a result, its distribution spans a broad range of values that increases with particle energy.</p>
 <p>The production coordinates ( <span class="math inline">\(x, y, z\)</span> ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.</p>
-<p>All histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.</p>
+<p>Histograms of each particle type are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.</p>
 <p><img src="assets/truth_arrays.gif" class="img-fluid" alt="Truth arrays by particle type" width="1000"></p>
 </section>
 </section>
@@ -519,7 +520,6 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="initial-model-performance" class="level2">
 <h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
-<p>cat_acc: 0.8292 - loss: 0.4224 - val_cat_acc: 0.8236 - val_loss: 0.4084 - learning_rate: 0.0010</p>
 <section id="training-dynamics" class="level3">
 <h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
 <p>The plots below show how the CNN learns over the first five training epochs.</p>
@@ -531,7 +531,7 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <li>Training and validation accuracy both increase with each epoch.</li>
 <li>By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.</li>
 </ul>
-<p>Overall, the model learns quickly and remains stable despite the short training run.</p>
+<p>Overall, the model learns quickly and remains stable despite the short training run. The final cateogrical accuracy is 82.9% and the validation accuracy is 82.4%.</p>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><img src="assets/init_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
@@ -655,51 +655,54 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
 <p>For the second round of optimization, three values of learning rate were explored, with the epochs set to 25.</p>
 <p>In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.</p>
+</section>
+<section id="validation-accuracy-comparison-with-vs-without-lr-plateau" class="level3">
+<h3 class="anchored" data-anchor-id="validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</h3>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 28%">
-<col style="width: 25%">
 <col style="width: 21%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Initial learning rate</th>
-<th>Best validation accuracy</th>
-<th>Final validation loss</th>
-<th>LR plateau enabled</th>
+<th>Best val acc (no LR plateau)</th>
+<th>Best val acc (with LR plateau)</th>
+<th>Δ (with − without)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1.0e−3</td>
-<td><strong>0.834</strong></td>
-<td>0.422</td>
-<td>No</td>
+<td>0.8344</td>
+<td><strong>0.8912</strong></td>
+<td>+0.0568</td>
 </tr>
 <tr class="even">
 <td>1.2e−3</td>
-<td>0.679</td>
-<td>0.701</td>
-<td>No</td>
+<td>0.6792</td>
+<td>0.7352</td>
+<td>+0.0560</td>
 </tr>
 <tr class="odd">
 <td>1.5e−3</td>
-<td>0.633</td>
-<td>1.258</td>
-<td>No</td>
+<td>0.6332</td>
+<td>0.8200</td>
+<td>+0.1868</td>
 </tr>
 <tr class="even">
 <td>2.0e−3</td>
-<td>0.654</td>
-<td>7.596</td>
-<td>No</td>
+<td>0.6538</td>
+<td>0.8322</td>
+<td>+0.1784</td>
 </tr>
 <tr class="odd">
 <td>3.0e−3</td>
-<td>0.641</td>
-<td>1.233</td>
-<td>No</td>
+<td>0.6408</td>
+<td>0.8436</td>
+<td>+0.2028</td>
 </tr>
 </tbody>
 </table>
@@ -711,9 +714,19 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <h2 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h2>
 <section id="training-dynamics-1" class="level3">
 <h3 class="anchored" data-anchor-id="training-dynamics-1">Training Dynamics</h3>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><img src="assets/final_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:45%;">
+<p><img src="assets/final_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
+</div>
+</div>
 </section>
-<section id="categorical-accuracy" class="level3">
-<h3 class="anchored" data-anchor-id="categorical-accuracy">Categorical Accuracy</h3>
+<section id="classification-performance-1" class="level3">
+<h3 class="anchored" data-anchor-id="classification-performance-1">Classification Performance</h3>
+<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"> <img src="assets/cnn_example_predictions.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
 </section>
 </section>
 </section>
