@@ -51,7 +51,7 @@ As a result, its distribution spans a broad range of values that increases with 
 
 The production coordinates \( $x, y, z$ \) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.
 
-All histograms are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.
+Histograms of each particle type are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.
 
 ![](assets/truth_arrays.gif){fig-alt="Truth arrays by particle type" width="1000"}
 
@@ -74,8 +74,6 @@ All histograms are shown with a shared y-axis scale to enable direct comparison 
 
 ## Initial Model Performance
 
-cat_acc: 0.8292 - loss: 0.4224 - val_cat_acc: 0.8236 - val_loss: 0.4084 - learning_rate: 0.0010
-
 ### Training Dynamics
 
 The plots below show how the CNN learns over the first five training epochs.
@@ -86,7 +84,7 @@ The plots below show how the CNN learns over the first five training epochs.
 - Training and validation accuracy both increase with each epoch.
 - By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.
 
-Overall, the model learns quickly and remains stable despite the short training run.
+Overall, the model learns quickly and remains stable despite the short training run. The final cateogrical accuracy is 82.9% and the validation accuracy is 82.4%. 
 
 ::: {.columns}
 
@@ -158,19 +156,36 @@ For the second round of optimization, three values of learning rate were explore
 In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.
 
 
-| Initial learning rate | Best validation accuracy | Final validation loss | LR plateau enabled |
-|----------------------|--------------------------|-----------------------|--------------------|
-| 1.0e−3 | **0.834** | 0.422 | No |
-| 1.2e−3 | 0.679 | 0.701 | No |
-| 1.5e−3 | 0.633 | 1.258 | No |
-| 2.0e−3 | 0.654 | 7.596 | No |
-| 3.0e−3 | 0.641 | 1.233 | No |
+### Validation accuracy comparison: with vs without LR Plateau
 
+| Initial learning rate | Best val acc (no LR plateau) | Best val acc (with LR plateau) | Δ (with − without) |
+|----------------------|------------------------------|--------------------------------|--------------------|
+| 1.0e−3 | 0.8344 | **0.8912** | +0.0568 |
+| 1.2e−3 | 0.6792 | 0.7352 | +0.0560 |
+| 1.5e−3 | 0.6332 | 0.8200 | +0.1868 |
+| 2.0e−3 | 0.6538 | 0.8322 | +0.1784 |
+| 3.0e−3 | 0.6408 | 0.8436 | +0.2028 |
 
 
 # Final Model
 ## Performance Evaluation
 ### Training Dynamics
-### Categorical Accuracy
+::: {.columns}
+
+::: {.column width="45%"}
+![](assets/final_cnn_training_loss.png){fig-alt="Training and validation loss over epochs"}
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="45%"}
+![](assets/final_cnn_training_accuracy.png){fig-alt="Training and validation accuracy over epochs"}
+:::
+
+:::
+
+### Classification Performance
+
+![](assets/final_cnn_confusion_matrix.png){fig-alt="Normalized confusion matrix for particle classifier" width="700"}
+![](assets/cnn_example_predictions.png){fig-alt="Normalized confusion matrix for particle classifier" width="700"}
 
 # Next Steps
