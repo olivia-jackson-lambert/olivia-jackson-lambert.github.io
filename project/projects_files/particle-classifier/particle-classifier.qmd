@@ -1,12 +1,12 @@
 ---
 title: "High Energy Particle CNN Classifier"
 description: "CNN classification for particle tracks with explainable diagnostics."
-image: /project/cover_assets/particle_types.gif
+image: /project/cover_assets/particle_types_cropped.gif
 date: 2025-01-02
 categories: [Machine Learning, Deep Learning, Computer Vision, Supervised Learning, Python, Convolutional Neural Network, Particle Physics, Hyperparameter Optimization, Keras, TensorFlow]
 format:
   html:
-    page-layout: full
+    page-layout: article
     toc: true
     toc-location: right
     code-fold: true
@@ -19,8 +19,7 @@ This project is inspired by the MicroBooNE Collaboration’s work on using convo
 
 ## Particle Types in the Dataset
 
-This dataset contains five charged particle types commonly observed in liquid argon time projection chambers.  
-Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.
+This dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.
 
 | Particle  | Symbol | Charge (e) | Mass (MeV/c²) | Typical detector signature |
 |----------|--------|------------|---------------|----------------------------|

@@ -1,29 +1,36 @@
-/* Custom site styles (paired with scss/theme-light.scss and scss/theme-dark.scss) */
+/* ==========================================================================
+  Custom site styles
+  Paired with scss/theme-light.scss and scss/theme-dark.scss
+  ========================================================================== */
 
-/* -----------------------------
-   1) Design tokens / layout vars
------------------------------- */
-:root {
-  --content-max: 680px;
+
+/* ==========================================================================
+  1) Design tokens
+  ========================================================================== */
+  :root {
+  /* Layout */
+  --content-max: 680px; /* article width */
   --content-pad: clamp(1.25rem, 4vw, 2.25rem);
 
+  /* Radii */
   --radius-lg: 1.25rem;
   --radius-md: 0.75rem;
 
+  /* Icon sidebar */
   --iconbar-collapsed: 64px;
   --iconbar-expanded: 188px;
+
+  /* Common widths */
+  --projects-max: 1200px;
+  --reflections-max: 980px;
 }
 
-/* -----------------------------
-   2) Global layout constraints
------------------------------- */
+
+/* ==========================================================================
+    2) Global layout + typography safety
+    ========================================================================== */
 .page-columns {
   gap: 2rem;
-}
-
-.content,
-main.content {
-  max-width: var(--content-max);
 }
 
 .page-columns .content,
@@ -34,20 +41,36 @@ main.content {
   padding-right: var(--content-pad);
 }
 
+/* Only pages using page-layout: article */
+#quarto-content.page-layout-article .content,
+#quarto-content.page-layout-article main.content {
+  max-width: var(--content-max);
+}
+
 /* Keep long code blocks from breaking layout */
 pre {
   overflow: auto;
 }
 
-/* Media styling */
+
+/* ==========================================================================
+    3) Global media defaults
+    ========================================================================== */
 img,
 figure img {
   border-radius: var(--radius-lg);
 }
 
-/* -----------------------------
-   3) Listings (blog/projects)
------------------------------- */
+
+/* ==========================================================================
+    4) Quarto meta + listing defaults
+    ========================================================================== */
+.quarto-title-meta,
+.quarto-title-meta-contents {
+  font-size: 0.92rem;
+}
+
+/* Default listing cards (general) */
 .quarto-listing .card {
   border-radius: var(--radius-lg);
 }
@@ -64,17 +87,10 @@ figure img {
   margin-top: 0.35rem;
 }
 
-/* -----------------------------
-   4) Page title metadata
------------------------------- */
-.quarto-title-meta,
-.quarto-title-meta-contents {
-  font-size: 0.92rem;
-}
 
-/* -----------------------------
-   6) Typewriter (used on home)
------------------------------- */
+/* ==========================================================================
+    5) Typewriter (home)
+    ========================================================================== */
 .tw {
   display: inline-flex;
   align-items: baseline;
@@ -102,19 +118,23 @@ figure img {
   .tw-caret { animation: none; }
 }
 
-/* -----------------------------
-   6.5) Consistent buttons (use site-wide)
------------------------------- */
+
+/* ==========================================================================
+    6) Buttons (site-wide, consistent)
+    ========================================================================== */
 .btnx {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+
   padding: 0.65rem 1.05rem;
   border-radius: 999px;
+
   font-weight: 650;
-  text-decoration: none;
   line-height: 1;
+  text-decoration: none;
+
   border: 1px solid transparent;
   cursor: pointer;
 }
@@ -159,9 +179,10 @@ body.quarto-dark .btnx-ghost:hover {
   text-underline-offset: 0.35em;
 }
 
-/* -----------------------------
-   7) Icon sidebar navigation
------------------------------- */
+
+/* ==========================================================================
+    7) Icon sidebar navigation
+    ========================================================================== */
 /* Hide Quarto’s default navbar (we use the icon sidebar instead) */
 .navbar,
 .quarto-navbar {
@@ -172,13 +193,16 @@ body.quarto-dark .btnx-ghost:hover {
   position: fixed;
   top: 0;
   left: 0;
+
   height: 100dvh;
   width: var(--iconbar-collapsed);
   padding: 14px 10px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
+
   z-index: 1000;
 
   background: var(--bs-body-bg);
@@ -233,12 +257,13 @@ body.quarto-dark .iconbar-item:hover {
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity 140ms ease, transform 140ms ease;
+
   white-space: nowrap;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-/* Desktop behavior: expand sidebar on hover, keep content clear */
+/* Desktop: expand sidebar on hover + pad body so centering stays stable */
 @media (min-width: 992px) {
   .iconbar { transition: width 160ms ease; }
   .iconbar:hover { width: var(--iconbar-expanded); }
@@ -248,19 +273,20 @@ body.quarto-dark .iconbar-item:hover {
     transform: translateX(0);
   }
 
-  /* Use body padding instead of margin hacks, keeps centering stable */
   body { padding-left: var(--iconbar-collapsed); }
 }
 
-/* Mobile: turn into a bottom bar */
+/* Mobile: bottom bar */
 @media (max-width: 991.98px) {
   body { padding-left: 0; padding-bottom: 72px; }
 
   .iconbar {
     top: auto;
     bottom: 0;
+
     width: 100%;
     height: 64px;
+
     flex-direction: row;
     border-right: none;
     border-top: 1px solid rgba(0, 0, 0, 0.10);
@@ -281,9 +307,10 @@ body.quarto-dark .iconbar-item:hover {
   .iconbar-text { display: none; }
 }
 
-/* -----------------------------
-   8) Home page hero (new design)
------------------------------- */
+
+/* ==========================================================================
+    8) Home page
+    ========================================================================== */
 .home-hero {
   min-height: 100dvh;
   display: flex;
@@ -295,6 +322,7 @@ body.quarto-dark .iconbar-item:hover {
   max-width: 1100px;
   margin: 0 auto;
   padding: clamp(1.25rem, 4vw, 3rem);
+
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(1.25rem, 4vw, 3rem);
@@ -329,68 +357,26 @@ body.quarto-dark .iconbar-item:hover {
   flex-wrap: wrap;
 }
 
-.home-btn {
-  padding: 0.65rem 1.05rem;
-  border-radius: 999px;
+/* Secondary nav links under CTA */
+.home-links {
+  margin-top: 1rem;
   font-weight: 650;
+  opacity: 0.85;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.home-links a {
   text-decoration: none;
 }
 
-.home-link {
-  font-weight: 650;
-  text-decoration: none;
-}
-
-.home-link:hover {
+.home-links a:hover {
   text-decoration: underline;
   text-underline-offset: 0.35em;
 }
 
-/* Typing block */
-.home-type {
-  justify-self: end;
-  text-align: right;
-}
-
-.home-type-label {
-  font-size: 0.95rem;
-  opacity: 0.7;
-  margin-bottom: 0.7rem;
-}
-
-.home-type-line {
-  font-weight: 850;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
-  font-size: clamp(2.0rem, 4.2vw, 3.2rem);
-}
-
-.home-type-static {
-  display: block;
-}
-
-.home-type-foot {
-  margin-top: 0.9rem;
-  font-size: 0.95rem;
-  opacity: 0.8;
-}
-
-.home-mini {
-  text-decoration: none;
-  font-weight: 650;
-}
-
-.home-mini:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
-}
-
-.home-dot {
-  padding: 0 0.4rem;
-  opacity: 0.6;
-}
-
-/* Home: photo + cleaner right column (Option A utilities) */
+/* Photo layout (Option A) */
 .home-hero-a {
   grid-template-columns: 1.2fr 0.8fr;
   align-items: center;
@@ -410,27 +396,9 @@ body.quarto-dark .iconbar-item:hover {
   border-radius: 999px;
 }
 
-.home-links {
-  margin-top: 1rem;
-  font-weight: 650;
-  opacity: 0.85;
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.home-links a {
-  text-decoration: none;
-}
-
-.home-links a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
-}
-
 .home-now {
   padding: 1rem 1.1rem;
-  border-radius: 1.25rem;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
@@ -449,29 +417,29 @@ body.quarto-dark .home-now {
   letter-spacing: -0.02em;
 }
 
-/* Mobile adjustments for photo layout */
+/* Mobile */
 @media (max-width: 900px) {
+  .home-hero-inner { grid-template-columns: 1fr; }
   .home-hero-a { grid-template-columns: 1fr; }
   .home-right { justify-self: start; text-align: left; }
   .home-photo { width: min(320px, 85vw); }
 }
 
-@media (max-width: 900px) {
-  .home-hero-inner { grid-template-columns: 1fr; }
-  .home-type {
-    justify-self: start;
-    text-align: left;
-    margin-top: 0.5rem;
-  }
-}
 
-/* Safer projects grid styling (no overlay) */
+/* ==========================================================================
+    9) Projects listing (grid cards)
+    Notes:
+    - overrides global listing image rounding so covers look clean
+    ========================================================================== */
+
+/* Card shell for listing items */
 .quarto-listing .quarto-grid-item .card {
   border-radius: 0;
   overflow: hidden;
-  border: 1px solid rgba(127,127,127,0.22);
+  border: 1px solid rgba(127, 127, 127, 0.22);
 }
 
+/* Image cover style (generic for your grid listings) */
 .quarto-listing .quarto-grid-item img.card-img-top {
   width: 100%;
   height: 340px;
@@ -484,18 +452,424 @@ body.quarto-dark .home-now {
   text-decoration: none;
 }
 
-/* Projects page: allow a wide gallery layout */
+/* Projects page: allow a wider gallery layout */
 body.projects main.content,
 body.projects .content,
 body.projects .page-columns .content,
 body.projects .page-columns main.content,
 body.projects #quarto-content {
-  max-width: 1200px !important;
+  max-width: var(--projects-max) !important;
 }
 
 body.projects .quarto-listing-container,
 body.projects .quarto-listing {
-  max-width: 1200px;
+  max-width: var(--projects-max);
   margin-left: auto;
   margin-right: auto;
 }
+
+
+/* ==========================================================================
+    10) Reflections timeline (left thumbnail + continuous line)
+    Uses #listing-reflections-timeline ID directly (no body class dependency)
+    ========================================================================== */
+
+/* Container width */
+#listing-reflections-timeline.quarto-listing-container-grid {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Timeline: the grid container with line */
+#listing-reflections-timeline .list.grid {
+  position: relative !important;
+  padding-left: 44px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 22px !important;
+}
+
+/* Vertical timeline line */
+#listing-reflections-timeline .list.grid::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 16px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 2px !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 1px !important;
+  display: block !important;
+}
+
+body.quarto-dark #listing-reflections-timeline .list.grid::before {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Each grid cell (.g-col-1) - position for dot */
+#listing-reflections-timeline .g-col-1 {
+  position: relative !important;
+}
+
+/* Timeline dot on each item */
+#listing-reflections-timeline .g-col-1::before {
+  content: "" !important;
+  position: absolute !important;
+  left: -34px !important;
+  top: 28px !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: #111 !important;
+  border: 2px solid var(--bs-body-bg) !important;
+  box-sizing: border-box !important;
+  z-index: 1 !important;
+  display: block !important;
+}
+
+body.quarto-dark #listing-reflections-timeline .g-col-1::before {
+  background: #fff !important;
+}
+
+/* Card: horizontal layout with side thumbnail */
+#listing-reflections-timeline .quarto-grid-item.card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+  border-radius: var(--radius-lg) !important;
+  min-height: 200px !important;
+  height: 200px !important;
+}
+
+/* Image wrapper (works for both div and p variants) */
+#listing-reflections-timeline .quarto-grid-item.card .card-img-top {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 260px !important;
+  width: 260px !important;
+  min-height: 180px !important;
+}
+
+/* Image itself - override any inline height */
+#listing-reflections-timeline .quarto-grid-item.card .card-img-top img {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 180px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  display: block !important;
+}
+
+/* Text area */
+#listing-reflections-timeline .quarto-grid-item.card .card-body {
+  padding: 20px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+  overflow: hidden !important;
+}
+
+/* Description text - limit lines */
+#listing-reflections-timeline .quarto-grid-item.card .listing-description {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Title styling */
+#listing-reflections-timeline .quarto-grid-item.card .card-title {
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Pin date to bottom */
+#listing-reflections-timeline .quarto-grid-item.card .card-attribution {
+  margin-top: auto !important;
+  padding-top: 0.75rem !important;
+  opacity: 0.7 !important;
+  font-size: 0.9rem !important;
+}
+
+/* Mobile: stack vertically, keep timeline */
+@media (max-width: 700px) {
+  #listing-reflections-timeline .list.grid {
+    padding-left: 32px !important;
+  }
+
+  #listing-reflections-timeline .list.grid::before {
+    left: 10px !important;
+  }
+
+  #listing-reflections-timeline .g-col-1::before {
+    left: -26px !important;
+    top: 20px !important;
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  #listing-reflections-timeline .quarto-grid-item.card {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  #listing-reflections-timeline .quarto-grid-item.card .card-img-top {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 180px !important;
+  }
+
+  #listing-reflections-timeline .quarto-grid-item.card .card-img-top img {
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+}
+
+/* ==========================================================================
+    11) Visuals gallery (image-only grid)
+    ========================================================================== */
+
+/* Container */
+#listing-visuals-gallery.quarto-listing-container-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Grid layout */
+#listing-visuals-gallery .list.grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
+}
+
+/* Card: image-only, no padding */
+#listing-visuals-gallery .quarto-grid-item.card {
+  border: none !important;
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+#listing-visuals-gallery .quarto-grid-item.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+body.quarto-dark #listing-visuals-gallery .quarto-grid-item.card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Hide any card body/text elements */
+#listing-visuals-gallery .quarto-grid-item.card .card-body,
+#listing-visuals-gallery .quarto-grid-item.card .card-title,
+#listing-visuals-gallery .quarto-grid-item.card .card-text,
+#listing-visuals-gallery .quarto-grid-item.card .listing-description {
+  display: none !important;
+}
+
+/* Image fills the card */
+#listing-visuals-gallery .quarto-grid-item.card .card-img-top {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#listing-visuals-gallery .quarto-grid-item.card .card-img-top img {
+  width: 100% !important;
+  height: 280px !important;
+  object-fit: cover !important;
+  border-radius: var(--radius-lg) !important;
+  display: block !important;
+}
+
+/* Responsive: 2 columns on tablet, 1 on mobile */
+@media (max-width: 900px) {
+  #listing-visuals-gallery .list.grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #listing-visuals-gallery .list.grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  #listing-visuals-gallery .quarto-grid-item.card .card-img-top img {
+    height: 220px !important;
+  }
+}
+
+/* ==========================================================================
+    12) Articles cards (text-focused grid cards)
+    ========================================================================== */
+
+/* Container */
+#listing-articles-list.quarto-listing-container-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Grid layout */
+#listing-articles-list .list.grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 20px !important;
+}
+
+/* Card styling */
+#listing-articles-list .quarto-grid-item.card {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: var(--radius-lg) !important;
+  background: var(--bs-body-bg) !important;
+  overflow: hidden !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  height: 100% !important;
+}
+
+body.quarto-dark #listing-articles-list .quarto-grid-item.card {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#listing-articles-list .quarto-grid-item.card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.quarto-dark #listing-articles-list .quarto-grid-item.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Hide any images */
+#listing-articles-list .quarto-grid-item.card .card-img-top,
+#listing-articles-list .quarto-grid-item.card .thumbnail {
+  display: none !important;
+}
+
+/* Card body */
+#listing-articles-list .quarto-grid-item.card .card-body {
+  padding: 1.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+/* Title */
+#listing-articles-list .quarto-grid-item.card .card-title {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.3 !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+#listing-articles-list .quarto-grid-item.card .card-title a {
+  text-decoration: none !important;
+  color: var(--bs-body-color) !important;
+}
+
+#listing-articles-list .quarto-grid-item.card .card-title a:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 0.15em !important;
+}
+
+/* Description */
+#listing-articles-list .quarto-grid-item.card .listing-description {
+  font-size: 0.92rem !important;
+  opacity: 0.75 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  flex-grow: 1 !important;
+}
+
+/* Categories (tags) */
+#listing-articles-list .quarto-grid-item.card .listing-categories {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.4rem !important;
+  margin-top: 1rem !important;
+}
+
+#listing-articles-list .quarto-grid-item.card .listing-category {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  padding: 0.2rem 0.55rem !important;
+  border-radius: 999px !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: var(--bs-body-color) !important;
+  text-decoration: none !important;
+}
+
+body.quarto-dark #listing-articles-list .quarto-grid-item.card .listing-category {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Date */
+#listing-articles-list .quarto-grid-item.card .card-attribution {
+  font-size: 0.8rem !important;
+  opacity: 0.55 !important;
+  margin-top: 0.75rem !important;
+}
+
+/* Responsive: single column on mobile */
+@media (max-width: 700px) {
+  #listing-articles-list .list.grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==========================================================================
+    Theme toggle (fixed top-right)
+    ========================================================================== */
+    .theme-toggle {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1101;
+    
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+    
+      padding: 0;
+      line-height: 0;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    
+      background: var(--bs-body-bg);
+      color: var(--bs-body-color);
+    
+      border: 1px solid rgba(127, 127, 127, 0.28);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    
+      cursor: pointer;
+    }
+    
+    body.quarto-dark .theme-toggle {
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+    
+    .theme-toggle:hover { transform: translateY(-1px); }
+    .theme-toggle:active { transform: translateY(0); }
+    
+    .theme-toggle iconify-icon {
+      font-size: 18px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%);
+      display: block;
+    }
+    
+    @media (max-width: 991.98px) {
+      .theme-toggle { top: 12px; right: 12px; }
+    }

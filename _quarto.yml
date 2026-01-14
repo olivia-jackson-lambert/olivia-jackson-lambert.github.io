@@ -3,7 +3,7 @@ project:
 
 website:
   navbar:
-    title: false
+    title: "Olivia Jackson Lambert"
     search: false
     left: []
     right: []
@@ -11,14 +11,13 @@ website:
 
 format:
   html:
-    include-in-header: includes/iconify.html
+    include-in-header: 
+      - includes/iconify.html
+      - includes/favicon.html
     include-before-body: includes/icon-sidebar.html
     theme:
       light: [default, scss/theme-light.scss]
       dark:  [default, scss/theme-dark.scss]
-    grid:
-      body-width: 680px
-      margin-width: 260px
     highlight-style: github
     css: styles.css
     toc: true

@@ -1,0 +1,21 @@
+---
+title: "Reflections"
+page-layout: article
+body-class: reflections
+comments: false
+
+listing:
+  id: reflections-timeline
+  contents: .
+  type: grid
+  sort: "date desc"
+  fields: [image, title, description, date]
+  grid-columns: 1
+  grid-item-border: true
+  image-height: 190px
+  filter-ui: false
+  sort-ui: false
+---
+
+::: {#reflections-timeline}
+:::

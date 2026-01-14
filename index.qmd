@@ -1,5 +1,6 @@
 ---
 title: ""
+pagetitle: "Olivia Jackson Lambert"
 page-layout: custom
 comments: false
 body-class: home
@@ -17,15 +18,14 @@ body-class: home
       </h1>
 
       <p class="home-sub">
-        Data science master’s student at UC Berkeley. I turn messy problems into clean, shipped work,
-        especially where machine learning meets scientific thinking.
+          Data science master’s student at UC Berkeley. I build data-driven tools and models that make messy, real-world problems easier to understand and act on.
       </p>
 
       <div class="home-cta">
         <a class="btnx btnx-primary" href="/project/projects.html">Projects</a>
-        <a class="btnx btnx-ghost" href="/blog/blog.html">Blog</a>
+        <a class="btnx btnx-ghost" href="/blog/blog.html">Articles</a>
         <a class="btnx btnx-ghost" href="/visualizations/visualizations.html">Visuals</a>
-        <a class="btnx btnx-ghost" href="/pages/about.html">About</a>
+        <a class="btnx btnx-ghost" href="/about.html">About</a>
       </div>
     </div>
 
@@ -39,7 +39,7 @@ body-class: home
 
 <script>
 (() => {
-  const phrases = ["models.", "visualizations.", "data products.", "experiments."];
+  const phrases = ["models.", "pipelines.", "dashboards.", "experiments."];
   const typeSpeed = 50, deleteSpeed = 28, holdAfterType = 1100, holdAfterDelete = 300;
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

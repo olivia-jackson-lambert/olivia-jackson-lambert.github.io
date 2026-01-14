@@ -1,0 +1,27 @@
+---
+title: "Articles"
+page-layout: full
+body-class: articles
+comments: false
+
+format:
+  html:
+    grid:
+      body-width: 1000px
+      margin-width: 0px
+
+listing:
+  id: articles-list
+  contents: .
+  type: grid
+  sort: "date desc"
+  page-size: 20
+  fields: [title, description, date, categories]
+  grid-columns: 2
+  date-format: "MMM D, YYYY"
+  filter-ui: false
+  sort-ui: false
+---
+
+::: {#articles-list}
+:::

@@ -10,17 +10,22 @@
         <span class="iconbar-text">Projects</span>
       </a>
   
-      <a class="iconbar-item" href="/blog/blog.html" aria-label="Blog">
+      <a class="iconbar-item" href="/articles/articles.html" aria-label="Articles">
         <iconify-icon icon="lucide:notebook-text"></iconify-icon>
-        <span class="iconbar-text">Blog</span>
+        <span class="iconbar-text">Articles</span>
       </a>
   
-      <a class="iconbar-item" href="/vizualisation/Visualizations.html" aria-label="Visualizations">
+      <a class="iconbar-item" href="/visuals/visuals.html" aria-label="Visuals">
         <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
-        <span class="iconbar-text">Visualizations</span>
+        <span class="iconbar-text">Visuals</span>
       </a>
 
-      <a class="iconbar-item" href="/pages/about.html" aria-label="About">
+      <a class="iconbar-item" href="/reflections/reflections.html" aria-label="Reflections">
+        <iconify-icon icon="lucide:brain"></iconify-icon>
+        <span class="iconbar-text">Reflections</span>
+      </a>
+
+      <a class="iconbar-item" href="/about.html" aria-label="About">
         <iconify-icon icon="lucide:user"></iconify-icon>
         <span class="iconbar-text">About</span>
       </a>
@@ -48,9 +53,58 @@
         <span class="iconbar-text">Scholar</span>
       </a>
   
-      <a class="iconbar-item" href="https://YOUR-SITE.com/assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
+      <a class="iconbar-item" href="/assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
         <iconify-icon icon="lucide:file-text"></iconify-icon>
         <span class="iconbar-text">Resume</span>
       </a>
     </div>
   </nav>
+
+<!-- Light/Dark mode toggle (fixed top-right) -->
+<button class="theme-toggle" type="button" aria-label="Toggle light/dark mode">
+  <iconify-icon id="theme-toggle-icon" icon="lucide:moon"></iconify-icon>
+</button>
+
+<script>
+  (function () {
+    function isDark() {
+      return (
+        document.body.classList.contains("quarto-dark") ||
+        document.documentElement.dataset.bsTheme === "dark"
+      );
+    }
+
+    function setIcon() {
+      var icon = document.getElementById("theme-toggle-icon");
+      if (!icon) return;
+      icon.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      var btn = document.querySelector(".theme-toggle");
+      if (!btn) return;
+
+      setIcon();
+
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Preferred: Quarto built-in toggle (works when light/dark themes are configured)
+        if (window.quartoToggleColorScheme) {
+          window.quartoToggleColorScheme();
+        } else {
+          // Fallback
+          var dark = isDark();
+          document.body.classList.toggle("quarto-dark", !dark);
+          document.body.classList.toggle("quarto-light", dark);
+          document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
+          try {
+            localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark");
+          } catch (err) {}
+        }
+
+        setTimeout(setIcon, 60);
+      });
+    });
+  })();
+</script>

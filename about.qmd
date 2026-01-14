@@ -61,6 +61,7 @@ format:
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   margin: 1.5rem 0;
+  margin-bottom: 3rem;
 }
 .kpi {
   border: 1px solid rgba(127,127,127,0.25);
@@ -131,7 +132,7 @@ format:
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(127,127,127,0.5);
+  background: rgba(127,127,127,1);
   border: 2px solid rgba(127,127,127,0.25);
 }
 .timeline-item .when {
@@ -166,16 +167,18 @@ format:
 ::: {.about-hero}
 ::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="53%"}
 ::: {.about-subtitle}
-Hi! I'm **Olivia Jackson Lambert**, a data scientist and engineer. I enjoy building end-to-end systems that connect data, models, and decision-making.
+Hi! I'm **Olivia Jackson Lambert**, a data scientist and engineer. I enjoy building systems that support decision making and strategy.
 
-When I’m not working, I’m usually kayaking, reading, making art, or hanging out with my three cats.
+When I’m not working, I’m usually kayaking, reading, making art, or hanging out with my husband and three cats.
+
+If you'd like to read more about what I'm up to, check out my monthly reflections [here](/reflections/reflections.html).
 :::
 :::
 
-::: {.column width="40%"}
-![](../assets/about.jpg)
+::: {.column width="47%"}
+![](/assets/about.jpg)
 :::
 
 :::
@@ -185,44 +188,50 @@ When I’m not working, I’m usually kayaking, reading, making art, or hanging 
 <div class="kpi-grid">
   <div class="kpi">
     <div class="label">Currently</div>
-    <div class="value">UC Berkeley MIDS</div>
+    <div class="value">UC Berkeley MIDS Program</div>
   </div>
   <div class="kpi">
     <div class="label">Focus</div>
-    <div class="value">ML + Analytics</div>
+    <div class="value">Machine Learning</div>
   </div>
   <div class="kpi">
     <div class="label">Based in</div>
-    <div class="value">San Francisco</div>
+    <div class="value">San Francisco, California</div>
   </div>
 </div>
 ```
----
 
 ## Highlights
 
 ```{=html}
 <div class="card-grid">
   <div class="card">
-    <h4>Building things end to end</h4>
-    <p>I enjoy working across the whole stack, from wrangling messy data to shipping models and building dashboards people rely on.</p>
+    <h4>Time-series forecasting </h4>
+    <p>Built a global product demand forecasting pipeline using Python, prophet and SQL, delivering 10K+ consumer goods forecasts every month to teams on 5 continents.</p>
   </div>
   <div class="card">
-    <h4>Thoughtful data foundations</h4>
-    <p>I care a lot about clean, well-structured data. I like setting up pipelines and metrics that make analysis easier and more trustworthy down the line.</p>
+    <h4>Reliable pipelines</h4>
+    <p>Released scores generated from advanced machine learning models at the Democratic National Committee to 100K+ monthly users for 160+ million voters.</p>
   </div>
   <div class="card">
-    <h4>Comfortable with uncertainty</h4>
-    <p>My physics background means I’m used to noisy signals and imperfect data. I focus on understanding what models are really telling us, not just optimizing scores.</p>
+    <h4>Autonomous devices</h4>
+    <p>Implemented OpenCV to analyze live cloud cover over forests in Oxford with autonomous devices, improving satellite re-entry over forested areas. </p>
   </div>
   <div class="card">
-    <h4>Practical problem solving</h4>
-    <p>From consulting work, I’m used to open-ended problems, tight timelines, and adapting quickly based on feedback from non-technical stakeholders.</p>
+    <h4>Computer vision</h4>
+    <p>Analyzed 100s of images of Type 1a supernovae from the Sloan Digital Sky Survey, applying computer vision algorithms to study the local environment. </p>
+  </div>
+  <div class="card">
+    <h4>Machine learning</h4>
+    <p>Designed an algorithm to predict the hydration states of magnesium sulphate salts based from Raman spectra for use in future planetary exploration vehicles. </p>
+  </div>
+  <div class="card">
+    <h4>Statistical methods</h4>
+    <p>Applied statistical methods to explore the feasability and scientific value of Mars sample return missions, modeling different sampling approaches.</p>
   </div>
 </div>
 ```
 
----
 
 ## Experience
 
@@ -251,14 +260,14 @@ When I’m not working, I’m usually kayaking, reading, making art, or hanging 
 </div>
 ```
 
----
 
 ## Education
 
 - **UC Berkeley School of Information** — Master's in Information & Data Science (MIDS)
 - **University of Edinburgh** — Master of Physics, Astrophysics
+- **Nanyang Technological Univeristy** - Semester Abroad
+- **University of Hong Kong** - Semester Abroad
 
----
 
 ## Tools + Skills
 
@@ -286,7 +295,6 @@ When I’m not working, I’m usually kayaking, reading, making art, or hanging 
 </div>
 ```
 
----
 
 ## Certifications
 
@@ -297,8 +305,6 @@ When I’m not working, I’m usually kayaking, reading, making art, or hanging 
   <span class="chip">PCAP</span>
 </div>
 ```
-
----
 
 ## Writing / Publication
 

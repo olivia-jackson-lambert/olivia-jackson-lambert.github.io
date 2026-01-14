@@ -1,0 +1,13 @@
+---
+title: "Visual"
+image: /project/cover_assets/particle_types_cropped.gif
+date: 2025-01-02
+categories: []
+format:
+  html:
+    page-layout: article
+    toc: true
+    toc-location: right
+    code-fold: true
+    code-tools: false
+---

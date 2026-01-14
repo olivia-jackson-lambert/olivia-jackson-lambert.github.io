@@ -1,0 +1,27 @@
+---
+title: "Visualizations"
+page-layout: full
+body-class: visuals
+comments: false
+
+format:
+  html:
+    grid:
+      body-width: 1200px
+      margin-width: 0px
+
+listing:
+  id: visuals-gallery
+  contents: .
+  type: grid
+  sort: "date desc"
+  page-size: 40
+  fields: [image]
+  grid-columns: 3
+  image-height: 280px
+  filter-ui: false
+  sort-ui: false
+---
+
+::: {#visuals-gallery}
+:::

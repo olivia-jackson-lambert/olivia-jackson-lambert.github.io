@@ -1,0 +1,13 @@
+---
+title: "February 2026"
+subtitle: "Monthly review and reflections"
+date: 2026-02-28
+description: ""
+categories: ["Monthly Reflections"]
+tags: [""]
+format:
+  html:
+    page-layout: article
+    grid:
+      body-width: 500px
+---
