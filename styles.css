@@ -1,74 +1,97 @@
-/* css styles */
+/* Custom site styles (paired with scss/theme-light.scss and scss/theme-dark.scss) */
 
-h1, h2, h3 {
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  
+/* -----------------------------
+   1) Design tokens / layout vars
+------------------------------ */
+:root {
+  --content-max: 680px;
+  --content-pad: clamp(1.25rem, 4vw, 2.25rem);
+
+  --radius-lg: 1.25rem;
+  --radius-md: 0.75rem;
+
+  --iconbar-collapsed: 64px;
+  --iconbar-expanded: 188px;
+}
+
+/* -----------------------------
+   2) Global layout constraints
+------------------------------ */
 .page-columns {
-    gap: 2rem;
-  }
-
-.headshot {
-  border-radius: 50%;
-  max-width: 200px;
-  display: block;
-  margin: 0 auto;
+  gap: 2rem;
 }
 
-.hero-title {
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  font-weight: 900;
-  font-size: 3.5em;
+.content,
+main.content {
+  max-width: var(--content-max);
 }
 
-/* Put the hero on the right side of the page */
-.hero-right {
-  width: 100%;
-  max-width: 1100px;   /* optional: keeps it from stretching too wide */
-  margin-left: auto;   /* pushes the whole block to the right */
-  text-align: right;   /* right-align text inside */
+.page-columns .content,
+.page-columns main.content {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--content-pad);
+  padding-right: var(--content-pad);
 }
 
-/* Stack static line + animated line */
-.hero-right .hero-static {
-  display: block;
+/* Keep long code blocks from breaking layout */
+pre {
+  overflow: auto;
 }
 
-/* Make the typewriter line sit underneath and align right */
-.hero-right .tw {
-  display: block;
-  justify-content: flex-end; /* since .tw is inline-flex in your earlier CSS */
-  width: 100%;
-  margin-top: -0.3em;
+/* Media styling */
+img,
+figure img {
+  border-radius: var(--radius-lg);
 }
 
+/* -----------------------------
+   3) Listings (blog/projects)
+------------------------------ */
+.quarto-listing .card {
+  border-radius: var(--radius-lg);
+}
+
+.quarto-listing .card .card-body {
+  padding: 1.25rem;
+}
+
+.quarto-listing .card-title {
+  margin-bottom: 0.35rem;
+}
+
+.quarto-listing .listing-description {
+  margin-top: 0.35rem;
+}
+
+/* -----------------------------
+   4) Page title metadata
+------------------------------ */
+.quarto-title-meta,
+.quarto-title-meta-contents {
+  font-size: 0.92rem;
+}
+
+/* -----------------------------
+   6) Typewriter (used on home)
+------------------------------ */
 .tw {
   display: inline-flex;
   align-items: baseline;
   gap: 0.12em;
 }
 
-/* Typewriter font + spacing */
 .tw-text {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 100;
-  font-size: 0.9em;
-  line-height: 1.05;
-  letter-spacing: -0.02em; /* subtle tightening */
-  text-transform: lowercase;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 .tw-caret {
   display: inline-block;
   transform: translateY(-0.05em);
   animation: caretBlink 800ms steps(1) infinite;
-  font-size: 0.8em;
-  font-weight: 50;
   width: 1px;
-  height: 0.75em; 
+  height: 0.75em;
 }
 
 @keyframes caretBlink {
@@ -79,91 +102,400 @@ h1, h2, h3 {
   .tw-caret { animation: none; }
 }
 
-/* Background layer */
-.bg-wrap {
-  position: fixed;
-  inset: auto 0 0 0;
-  height: 100vh;
-  z-index: -1;         /* sit behind everything */
-  overflow: hidden;
+/* -----------------------------
+   6.5) Consistent buttons (use site-wide)
+------------------------------ */
+.btnx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.05rem;
+  border-radius: 999px;
+  font-weight: 650;
+  text-decoration: none;
+  line-height: 1;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
-/* Force image to behave like a true background */
-.bg-wrap > img.bg-img {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: none !important; /* override Quarto/Bootstrap img defaults */
-  max-height: none !important;
-  object-fit: cover !important;
-  object-position: center bottom !important; /* if you want it pinned bottom */
+.btnx-primary {
+  background: var(--bs-body-color);
+  color: var(--bs-body-bg);
+  border-color: var(--bs-body-color);
+}
+
+.btnx-primary:hover {
+  opacity: 0.92;
+}
+
+.btnx-ghost {
+  background: transparent;
+  color: var(--bs-body-color);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+body.quarto-dark .btnx-ghost {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btnx-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.quarto-dark .btnx-ghost:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.btnx-link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--bs-body-color);
+}
+
+.btnx-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+/* -----------------------------
+   7) Icon sidebar navigation
+------------------------------ */
+/* Hide Quarto’s default navbar (we use the icon sidebar instead) */
+.navbar,
+.quarto-navbar {
+  display: none !important;
+}
+
+.iconbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: var(--iconbar-collapsed);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 1000;
+
+  background: var(--bs-body-bg);
+  border-right: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+body.quarto-dark .iconbar {
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.iconbar-top,
+.iconbar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.iconbar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.iconbar-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.quarto-dark .iconbar-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Support either Bootstrap <i> icons or Iconify <iconify-icon> */
+.iconbar-item i,
+.iconbar-item iconify-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  text-align: center;
+}
+
+/* Hover labels */
+.iconbar-text {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 140ms ease, transform 140ms ease;
+  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Desktop behavior: expand sidebar on hover, keep content clear */
+@media (min-width: 992px) {
+  .iconbar { transition: width 160ms ease; }
+  .iconbar:hover { width: var(--iconbar-expanded); }
+
+  .iconbar:hover .iconbar-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Use body padding instead of margin hacks, keeps centering stable */
+  body { padding-left: var(--iconbar-collapsed); }
+}
+
+/* Mobile: turn into a bottom bar */
+@media (max-width: 991.98px) {
+  body { padding-left: 0; padding-bottom: 72px; }
+
+  .iconbar {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 64px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.10);
+    padding: 10px 12px;
+  }
+
+  body.quarto-dark .iconbar {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .iconbar-top,
+  .iconbar-bottom {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .iconbar-text { display: none; }
+}
+
+/* -----------------------------
+   8) Home page hero (new design)
+------------------------------ */
+.home-hero {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+.home-hero-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(1.25rem, 4vw, 3rem);
+}
+
+.home-eyebrow {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  opacity: 0.85;
+  margin-bottom: 0.75rem;
+}
+
+.home-h1 {
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1.03;
+  font-size: clamp(2.2rem, 4.2vw, 3.5rem);
+  margin: 0 0 0.9rem 0;
+}
+
+.home-sub {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  max-width: 48ch;
+  margin: 0 0 1.25rem 0;
+}
+
+.home-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.home-btn {
+  padding: 0.65rem 1.05rem;
+  border-radius: 999px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.home-link {
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.home-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+/* Typing block */
+.home-type {
+  justify-self: end;
+  text-align: right;
+}
+
+.home-type-label {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin-bottom: 0.7rem;
+}
+
+.home-type-line {
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  font-size: clamp(2.0rem, 4.2vw, 3.2rem);
+}
+
+.home-type-static {
   display: block;
 }
 
-/* Default: desktop image */
-.bg-mobile { display: none; }
-.bg-desktop { display: block; }
-
-/* Mobile breakpoint: swap to mobile image */
-@media (max-width: 768px) {
-  .bg-desktop { display: none; }
-  .bg-mobile  { display: block; }
+.home-type-foot {
+  margin-top: 0.9rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
 }
 
-.bg-img{
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: none !important;
-  object-fit: cover !important;
-  object-position: center bottom !important;
-  overflow: hidden;
+.home-mini {
+  text-decoration: none;
+  font-weight: 650;
 }
 
-.hero-overlay {
-  min-height: 100vh;
+.home-mini:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+.home-dot {
+  padding: 0 0.4rem;
+  opacity: 0.6;
+}
+
+/* Home: photo + cleaner right column (Option A utilities) */
+.home-hero-a {
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+}
+
+.home-right {
+  justify-self: end;
+  text-align: right;
+  display: grid;
+  gap: 1rem;
+}
+
+.home-photo {
+  width: min(360px, 36vw);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 999px;
+}
+
+.home-links {
+  margin-top: 1rem;
+  font-weight: 650;
+  opacity: 0.85;
   display: flex;
-  align-items: flex-start;        /* move content toward top */
-  justify-content: flex-end;      /* keeps right alignment logic intact */
-  padding-top: 18vh;              /* controls vertical position */
-  padding-right: clamp(2rem, 6vw, 5rem);
-  padding-left: clamp(2rem, 6vw, 5rem);
+  gap: 0.6rem;
+  flex-wrap: wrap;
 }
 
-/* Mobile navbar: let the site title/brand use more space */
-@media (max-width: 768px) {
-  .navbar .navbar-brand {
-    max-width: none;
-    white-space: nowrap;
-    overflow: visible;
-    text-overflow: clip;
-    font-size: 1.0rem; /* tweak: 0.9–1.05 */
-  }
+.home-links a {
+  text-decoration: none;
+}
 
-  /* Reduce icon crowding so the title has room */
-  .navbar .navbar-nav {
-    column-gap: 0rem;
-  }
+.home-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
 
-  /* If you have lots of navbar icons, this prevents them stealing width */
-  .navbar .navbar-nav .nav-link {
-    padding-left: 0rem;
-    padding-right: 0rem;
-  }
+.home-now {
+  padding: 1rem 1.1rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+}
 
-  .hero-title {
-    font-size: 2.4em;   /* was 3.5em; adjust to taste */
-    letter-spacing: 0.02em;
-  }
+body.quarto-dark .home-now {
+  border-color: rgba(255, 255, 255, 0.12);
+}
 
-  .tw-text {
-    font-size: 0.75em;  /* was 0.9em */
-    letter-spacing: -0.015em;
-  }
+.home-now-label {
+  font-size: 0.92rem;
+  opacity: 0.7;
+  margin-bottom: 0.25rem;
+}
 
-  .tw-caret {
-    font-size: 0.7em;
-  }
+.home-now-text {
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
 
-  .navbar {
-    flex-wrap: nowrap;
+/* Mobile adjustments for photo layout */
+@media (max-width: 900px) {
+  .home-hero-a { grid-template-columns: 1fr; }
+  .home-right { justify-self: start; text-align: left; }
+  .home-photo { width: min(320px, 85vw); }
+}
+
+@media (max-width: 900px) {
+  .home-hero-inner { grid-template-columns: 1fr; }
+  .home-type {
+    justify-self: start;
+    text-align: left;
+    margin-top: 0.5rem;
   }
+}
+
+/* Safer projects grid styling (no overlay) */
+.quarto-listing .quarto-grid-item .card {
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px solid rgba(127,127,127,0.22);
+}
+
+.quarto-listing .quarto-grid-item img.card-img-top {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 0 !important;
+  display: block;
+}
+
+.quarto-listing .quarto-grid-item .card-title a {
+  text-decoration: none;
+}
+
+/* Projects page: allow a wide gallery layout */
+body.projects main.content,
+body.projects .content,
+body.projects .page-columns .content,
+body.projects .page-columns main.content,
+body.projects #quarto-content {
+  max-width: 1200px !important;
+}
+
+body.projects .quarto-listing-container,
+body.projects .quarto-listing {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }

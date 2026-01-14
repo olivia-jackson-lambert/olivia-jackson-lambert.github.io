@@ -4,7 +4,7 @@
     "href": "pages/about.html",
     "title": "About",
     "section": "",
-    "text": "Hi! I’m Olivia Jackson Lambert, a data scientist and analytics engineer with a background in physics and ML. I enjoy building end-to-end systems that connect data, models, and decision-making.\nWhen I’m not working, I’m usually kayaking, reading, making art, or hanging out with my three cats.\n\n\n  \n    Currently\n    UC Berkeley MIDS\n  \n  \n    Focus\n    ML + Analytics\n  \n  \n    Based in\n    San Francisco"
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
   },
   {
     "objectID": "pages/about.html#highlights",
@@ -49,18 +49,11 @@
     "text": "Writing / Publication\n\nThe need for large sample numbers to demonstrate that Martian environments are lifeless. (2024), Nature Astronomy."
   },
   {
-    "objectID": "project/projects.html",
-    "href": "project/projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n9 min\n\nTest\n\n\n\nJan 2, 2025\n\n\n\n\nJan 10, 2026\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
     "href": "project/projects_files/particle-classifier/particle-classifier.html",
     "title": "High Energy Particle CNN Classifier",
     "section": "",
-    "text": "This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance."
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
@@ -105,52 +98,17 @@
     "text": "Performance Evaluation\n\nTraining Dynamics\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance"
   },
   {
-    "objectID": "pages/tools.html",
-    "href": "pages/tools.html",
-    "title": "Tools & Technologies",
+    "objectID": "blog/blog.html",
+    "href": "blog/blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "Technologies and tools I use to build production ML systems, data pipelines, and analytics solutions end-to-end."
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "pages/tools.html#core-languages",
-    "href": "pages/tools.html#core-languages",
-    "title": "Tools & Technologies",
-    "section": "Core Languages",
-    "text": "Core Languages\n\n\nPython\n\n\nSQL\n\n\nR\n\n\nC++"
-  },
-  {
-    "objectID": "pages/tools.html#building-ml-models",
-    "href": "pages/tools.html#building-ml-models",
-    "title": "Tools & Technologies",
-    "section": "Building ML Models",
-    "text": "Building ML Models\n\n\n\n\n\npandas, NumPy, SciPy\n\n\nscikit-learn\n\n\nPyTorch\n\n\nTensorFlow / Keras\n\n\nXGBoost\n\n\nProphet / statsmodels\n\n\nStatistical inference\n\n\nFeature engineering\n\n\nModel evaluation"
-  },
-  {
-    "objectID": "pages/tools.html#data-engineering-pipelines",
-    "href": "pages/tools.html#data-engineering-pipelines",
-    "title": "Tools & Technologies",
-    "section": "Data Engineering & Pipelines",
-    "text": "Data Engineering & Pipelines\n\n\n\n\n\nAirflow\n\n\ndbt\n\n\nSpark / PySpark\n\n\nETL pipelines\n\n\nDocker"
-  },
-  {
-    "objectID": "pages/tools.html#cloud-infrastructure-data-storage",
-    "href": "pages/tools.html#cloud-infrastructure-data-storage",
-    "title": "Tools & Technologies",
-    "section": "Cloud Infrastructure & Data Storage",
-    "text": "Cloud Infrastructure & Data Storage\n\n\n\n\n\nAWS\n\n\nGCP\n\n\nPostgreSQL\n\n\nSnowflake / Redshift / BigQuery\n\n\nMongoDB / Neo4j"
-  },
-  {
-    "objectID": "pages/tools.html#visualization-analytics",
-    "href": "pages/tools.html#visualization-analytics",
-    "title": "Tools & Technologies",
-    "section": "Visualization & Analytics",
-    "text": "Visualization & Analytics\n\n\n\n\n\nMatplotlib / ggplot2\n\n\nStreamlit\n\n\nTableau\n\n\nLooker"
-  },
-  {
-    "objectID": "pages/tools.html#research-experimentation",
-    "href": "pages/tools.html#research-experimentation",
-    "title": "Tools & Technologies",
-    "section": "Research & Experimentation",
-    "text": "Research & Experimentation\n\n\n\n\n\nA/B testing\n\n\nExperimental design\n\n\nModel validation"
+    "objectID": "project/projects.html",
+    "href": "project/projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n\nCNN classification for particle tracks with explainable diagnostics.\n\n\n\n\n\nNo matching items"
   }
 ]
