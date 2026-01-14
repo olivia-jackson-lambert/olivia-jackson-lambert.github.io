@@ -2,53 +2,28 @@ project:
   type: website
 
 website:
-  title: "Olivia Jackson Lambert"
-  description: "Personal website of Olivia Jackson Lambert"
-  site-url: "https://olivia-jackson-lambert.github.io/"
-  favicon: assets/favicon.ico
   navbar:
+    title: false
     search: false
-    right:
-      - href: project/projects.qmd
-        text: Projects
-      - href: pages/about.qmd
-        text: About
-      - icon: github
-        href: https://github.com/olivia-jackson-lambert
-        aria-label: GitHub
-        target: _blank
-      - icon: linkedin
-        href: https://linkedin.com/in/olivia-rose-jackson
-        aria-label: LinkedIn
-        target: _blank
-      - icon: medium
-        href: https://medium.com/@oliviarosejackson
-        aria-label: Medium
-        target: _blank
-      - icon: mortarboard-fill
-        href: https://scholar.google.com/citations?user=X1oWKpQAAAAJ&hl=en
-        aria-label: Google Scholar
-        target: _blank
-      - icon: file-earmark-person-fill
-        href: assets/Olivia_Jackson_Lambert_Resume.pdf
-        aria-label: Resume
-        target: _blank
+    left: []
+    right: []
+  sidebar: false
 
 format:
   html:
+    include-in-header: includes/iconify.html
+    include-before-body: includes/icon-sidebar.html
     theme:
-      light: [flatly, scss/theme-light.scss]
-      dark:  [darkly, scss/theme-dark.scss]
-    include-in-header:
-      - text: |
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+      light: [default, scss/theme-light.scss]
+      dark:  [default, scss/theme-dark.scss]
     grid:
-      body-width: 900px
-    toc: true
+      body-width: 680px
+      margin-width: 260px
+    highlight-style: github
     css: styles.css
+    toc: true
     code-link: true
     anchor-sections: true
     fig-cap-location: margin
     reference-location: margin
     footnotes-hover: true
-    highlight-style: monokai

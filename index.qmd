@@ -1,49 +1,54 @@
 ---
+title: ""
 page-layout: custom
 comments: false
 body-class: home
 ---
 
-<div class="hero-overlay">
-  <h1 class="hero-title hero-right">
-    <span class="hero-static">experiments in</span>
-    <span class="tw" aria-live="polite">
-      <span class="tw-text"></span><span class="tw-caret" aria-hidden="true">|</span>
-    </span>
-  </h1>
+```{=html}
+<div class="home-hero">
+  <div class="home-hero-inner home-hero-a">
+
+    <div class="home-left">
+      <div class="home-eyebrow">Olivia Jackson Lambert</div>
+
+      <h1 class="home-h1">
+        I build <span class="tw"><span class="tw-text"></span><span class="tw-caret" aria-hidden="true">|</span></span>
+      </h1>
+
+      <p class="home-sub">
+        Data science master’s student at UC Berkeley. I turn messy problems into clean, shipped work,
+        especially where machine learning meets scientific thinking.
+      </p>
+
+      <div class="home-cta">
+        <a class="btnx btnx-primary" href="/project/projects.html">Projects</a>
+        <a class="btnx btnx-ghost" href="/blog/blog.html">Blog</a>
+        <a class="btnx btnx-ghost" href="/visualizations/visualizations.html">Visuals</a>
+        <a class="btnx btnx-ghost" href="/pages/about.html">About</a>
+      </div>
+    </div>
+
+    <div class="home-right">
+      <img class="home-photo" src="/assets/headshot.jpg" alt="Portrait of Olivia Jackson Lambert" />
+    </div>
+  </div>
 </div>
+
+```
 
 <script>
 (() => {
-  // Change these phrases to whatever you want
-  const phrases = [
-    "machine learning",
-    "data science",
-    "applied physics"
-  ];
+  const phrases = ["models.", "visualizations.", "data products.", "experiments."];
+  const typeSpeed = 50, deleteSpeed = 28, holdAfterType = 1100, holdAfterDelete = 300;
 
-  // Tuning knobs
-  const typeSpeed = 45;      // ms per character
-  const deleteSpeed = 28;    // ms per character
-  const holdAfterType = 1100; // pause after typing a phrase
-  const holdAfterDelete = 300; // pause after deleting
-  const loop = true;
-  const deleteBetweenPhrases = true;
-
-  // Respect reduced motion
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   const textEl = document.querySelector(".tw-text");
   if (!textEl) return;
 
-  if (prefersReducedMotion) {
-    textEl.textContent = phrases[0];
-    return;
-  }
+  if (prefersReducedMotion) { textEl.textContent = phrases[0]; return; }
 
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
+  let phraseIndex = 0, charIndex = 0, deleting = false;
 
   function tick() {
     const current = phrases[phraseIndex];
@@ -51,53 +56,17 @@ body-class: home
     if (!deleting) {
       charIndex++;
       textEl.textContent = current.slice(0, charIndex);
-
-      if (charIndex >= current.length) {
-        if (!deleteBetweenPhrases && loop) {
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          charIndex = 0;
-          setTimeout(tick, holdAfterType);
-          return;
-        }
-        if (!loop && phraseIndex === phrases.length - 1) return;
-        deleting = deleteBetweenPhrases;
-        setTimeout(tick, holdAfterType);
-        return;
-      }
-
+      if (charIndex >= current.length) { deleting = true; setTimeout(tick, holdAfterType); return; }
       setTimeout(tick, typeSpeed);
       return;
     }
 
-    // deleting
     charIndex--;
     textEl.textContent = current.slice(0, charIndex);
-
-    if (charIndex <= 0) {
-      deleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-      setTimeout(tick, holdAfterDelete);
-      return;
-    }
-
+    if (charIndex <= 0) { deleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(tick, holdAfterDelete); return; }
     setTimeout(tick, deleteSpeed);
   }
 
   tick();
 })();
 </script>
-
-
-::: light-mode
-<div class="bg-wrap" aria-hidden="true">
-  <img class="bg-img bg-desktop" src="assets/bg-light-desktop.png" alt="">
-  <img class="bg-img bg-mobile"  src="assets/bg-light-mobile.png"  alt="">
-</div>
-:::
-
-::: dark-mode
-<div class="bg-wrap" aria-hidden="true">
-  <img class="bg-img bg-desktop" src="assets/bg-dark-desktop.png" alt="">
-  <img class="bg-img bg-mobile"  src="assets/bg-dark-mobile.png"  alt="">
-</div>
-:::

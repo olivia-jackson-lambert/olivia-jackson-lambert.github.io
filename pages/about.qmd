@@ -2,7 +2,7 @@
 title: "About"
 format:
   html:
-    page-layout: full
+    page-layout: article
 ---
 
 ```{=html}
@@ -11,6 +11,25 @@ format:
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+.about-hero .columns {
+  align-items: flex-start;
+}
+
+.about-hero .column {
+  margin-top: 0;
+}
+
+/* If the image still sits a hair lower, this nudges it up */
+.about-hero .column img {
+  display: block;
+  margin-top: 0;
+}
+
+/* --- Remove rounded corners across the About page components --- */
+.about-hero img {
+  border-radius: 0.75rem !important;
+}
+
 .about-name {
   letter-spacing: 0.06em;
   font-size: 2rem;
@@ -21,6 +40,8 @@ format:
   line-height: 1.6;
   max-width: 44rem;
   margin-bottom: 1.5rem;
+  margin-top: 0;
+  margin-right: 2rem;
   font-size: 1.1rem;
 }
 .about-links {
@@ -34,14 +55,7 @@ format:
 .about-links a:hover {
   border-bottom-color: currentColor;
 }
-.headshot {
-  width: 280px;
-  max-width: 85%;
-  border-radius: 999px;
-  display: block;
-  margin: 0 auto 2rem auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-}
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -151,21 +165,20 @@ format:
 
 ::: {.about-hero}
 ::: {.columns}
-::: {.column width="38%"}
 
-```{=html}
-<img src="../assets/headshot.jpg" alt="" class="headshot">
-```
-
-:::
-
-
-::: {.column width="62%"}
-
+::: {.column width="60%"}
 ::: {.about-subtitle}
-Hi! I'm **Olivia Jackson Lambert**, a data scientist and analytics engineer with a background in physics and ML. I enjoy building end-to-end systems that connect data, models, and decision-making.
+Hi! I'm **Olivia Jackson Lambert**, a data scientist and engineer. I enjoy building end-to-end systems that connect data, models, and decision-making.
 
 When I’m not working, I’m usually kayaking, reading, making art, or hanging out with my three cats.
+:::
+:::
+
+::: {.column width="40%"}
+![](../assets/about.jpg)
+:::
+
+:::
 :::
 
 ```{=html}
@@ -184,11 +197,6 @@ When I’m not working, I’m usually kayaking, reading, making art, or hanging 
   </div>
 </div>
 ```
-
-:::
-:::
-:::
-
 ---
 
 ## Highlights

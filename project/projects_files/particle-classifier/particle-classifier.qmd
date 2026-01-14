@@ -1,6 +1,7 @@
 ---
 title: "High Energy Particle CNN Classifier"
-description: "Test"
+description: "CNN classification for particle tracks with explainable diagnostics."
+image: /project/cover_assets/particle_types.gif
 date: 2025-01-02
 categories: [Machine Learning, Deep Learning, Computer Vision, Supervised Learning, Python, Convolutional Neural Network, Particle Physics, Hyperparameter Optimization, Keras, TensorFlow]
 format:

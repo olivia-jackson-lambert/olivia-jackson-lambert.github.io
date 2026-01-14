@@ -1,28 +1,24 @@
 ---
 title: "Projects"
-listing:
-  id: listing
-  contents: .
-  fields: [image, date, title, reading-time, description, file-modified]
-  field-display-names:
-    file-modified: "Updated"
-  sort: "date desc"
-  type: grid
-  categories: numbered
-  sort-ui: [date, file-modified]
-  filter-ui: false
-  feed: 
-    categories: R
-    items: 40
-  page-size: 40
 page-layout: full
+body-class: projects
 comments: false
-date-format: medium
-author: ""
-date-modified: ""
 
 format:
   html:
-    page-layout: full
----
+    grid:
+      body-width: 1200px
+      margin-width: 0px
 
+listing:
+  id: listing
+  contents: .
+  type: grid
+  sort: "date desc"
+  page-size: 40
+  fields: [image, title, description]
+  grid-columns: 3
+  image-height: 300px
+  filter-ui: false
+  sort-ui: false
+---
