@@ -1,12 +1,27 @@
 [
   {
-    "listing": "/blog/blog.html",
-    "items": []
+    "listing": "/visuals/visuals.html",
+    "items": [
+      "/visuals/projects_files/particle-classifier/particle-classifier.html"
+    ]
   },
   {
     "listing": "/project/projects.html",
     "items": [
       "/project/projects_files/particle-classifier/particle-classifier.html"
+    ]
+  },
+  {
+    "listing": "/articles/articles.html",
+    "items": [
+      "/articles/articles/test.html"
+    ]
+  },
+  {
+    "listing": "/reflections/reflections.html",
+    "items": [
+      "/reflections/posts/feb-2026-reflections.html",
+      "/reflections/posts/jan-2026-reflections.html"
     ]
   }
 ]

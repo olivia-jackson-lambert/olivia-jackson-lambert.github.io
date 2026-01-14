@@ -1,66 +1,143 @@
 [
   {
-    "objectID": "pages/about.html",
-    "href": "pages/about.html",
+    "objectID": "visuals/visuals.html",
+    "href": "visuals/visuals.html",
+    "title": "Visualizations",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "project/projects.html",
+    "href": "project/projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n\nCNN classification for particle tracks with explainable diagnostics.\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
   },
   {
-    "objectID": "pages/about.html#highlights",
-    "href": "pages/about.html#highlights",
+    "objectID": "about.html#highlights",
+    "href": "about.html#highlights",
     "title": "About",
     "section": "Highlights",
-    "text": "Highlights\n\n  \n    Building things end to end\n    I enjoy working across the whole stack, from wrangling messy data to shipping models and building dashboards people rely on.\n  \n  \n    Thoughtful data foundations\n    I care a lot about clean, well-structured data. I like setting up pipelines and metrics that make analysis easier and more trustworthy down the line.\n  \n  \n    Comfortable with uncertainty\n    My physics background means I’m used to noisy signals and imperfect data. I focus on understanding what models are really telling us, not just optimizing scores.\n  \n  \n    Practical problem solving\n    From consulting work, I’m used to open-ended problems, tight timelines, and adapting quickly based on feedback from non-technical stakeholders."
+    "text": "Highlights\n\n  \n    Time-series forecasting \n    Built a global product demand forecasting pipeline using Python, prophet and SQL, delivering 10K+ consumer goods forecasts every month to teams on 5 continents.\n  \n  \n    Reliable pipelines\n    Released scores generated from advanced machine learning models at the Democratic National Committee to 100K+ monthly users for 160+ million voters.\n  \n  \n    Autonomous devices\n    Implemented OpenCV to analyze live cloud cover over forests in Oxford with autonomous devices, improving satellite re-entry over forested areas. \n  \n  \n    Computer vision\n    Analyzed 100s of images of Type 1a supernovae from the Sloan Digital Sky Survey, applying computer vision algorithms to study the local environment. \n  \n  \n    Machine learning\n    Designed an algorithm to predict the hydration states of magnesium sulphate salts based from Raman spectra for use in future planetary exploration vehicles. \n  \n  \n    Statistical methods\n    Applied statistical methods to explore the feasability and scientific value of Mars sample return missions, modeling different sampling approaches."
   },
   {
-    "objectID": "pages/about.html#experience",
-    "href": "pages/about.html#experience",
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
     "title": "About",
     "section": "Experience",
     "text": "Experience\n\n  \n    Sep 2024 – Nov 2024\n    Analytics Engineer\n    Democratic National Committee\n  \n  \n    Sep 2023 – Mar 2024\n    Consulting Data Scientist\n    Kenvue - Johnson & Johnson\n  \n  \n    Mar 2023 – Sep 2023\n    Consulting Data Scientist\n    Fidera\n  \n  \n    2015 – 2021 (various)\n    Research Assistant Roles\n    University of Edinburgh, Asteria (Space & Satellites), NPL, and others"
   },
   {
-    "objectID": "pages/about.html#education",
-    "href": "pages/about.html#education",
+    "objectID": "about.html#education",
+    "href": "about.html#education",
     "title": "About",
     "section": "Education",
-    "text": "Education\n\nUC Berkeley School of Information — Master’s in Information & Data Science (MIDS)\nUniversity of Edinburgh — Master of Physics, Astrophysics"
+    "text": "Education\n\nUC Berkeley School of Information — Master’s in Information & Data Science (MIDS)\nUniversity of Edinburgh — Master of Physics, Astrophysics\nNanyang Technological Univeristy - Semester Abroad\nUniversity of Hong Kong - Semester Abroad"
   },
   {
-    "objectID": "pages/about.html#tools-skills",
-    "href": "pages/about.html#tools-skills",
+    "objectID": "about.html#tools-skills",
+    "href": "about.html#tools-skills",
     "title": "About",
     "section": "Tools + Skills",
     "text": "Tools + Skills\n\n  Python\n  SQL\n  R\n  PyTorch\n  TensorFlow\n  scikit-learn\n  Airflow\n  dbt\n  Spark\n  AWS\n  GCP\n  Docker\n  PostgreSQL\n  MongoDB\n  Neo4j\n  Redis\n  Snowflake\n  Tableau\n  Streamlit"
   },
   {
-    "objectID": "pages/about.html#certifications",
-    "href": "pages/about.html#certifications",
+    "objectID": "about.html#certifications",
+    "href": "about.html#certifications",
     "title": "About",
     "section": "Certifications",
     "text": "Certifications\n\n  AWS Cloud Practitioner\n  dbt Fundamentals\n  PCAP"
   },
   {
-    "objectID": "pages/about.html#writing-publication",
-    "href": "pages/about.html#writing-publication",
+    "objectID": "about.html#writing-publication",
+    "href": "about.html#writing-publication",
     "title": "About",
     "section": "Writing / Publication",
     "text": "Writing / Publication\n\nThe need for large sample numbers to demonstrate that Martian environments are lifeless. (2024), Nature Astronomy."
+  },
+  {
+    "objectID": "articles/articles.html",
+    "href": "articles/articles.html",
+    "title": "Articles",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLorem ipsum dolor sit amet,\n\n\n\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut\n\n\n\nJan 2, 2025\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "reflections/reflections.html",
+    "href": "reflections/reflections.html",
+    "title": "Reflections",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFebruary 2026\n\n\n\n\n\n\nFeb 28, 2026\n\n\n\n\n\n\n\n\n\n\n\nJanuary 2026\n\n\n\n\n\n\nJan 31, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html",
+    "href": "reflections/posts/jan-2026-reflections.html",
+    "title": "January 2026",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-created",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-created",
+    "title": "January 2026",
+    "section": "What I Created",
+    "text": "What I Created\n\nThis Website\n\n\nParticle Classifier Project\n\n\nPrivate Social Media Project\n\n\nVegetables\nThis recipe was very quick, easy and hearty. I was looking for something that used aubergines, as I had a huge harvest of them from my hydroponic tower.\nBean + Aubergine Caponata"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-learned",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-learned",
+    "title": "January 2026",
+    "section": "What I Learned",
+    "text": "What I Learned\n\nMandarin\n\n\n207 ML Concepts"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
+    "title": "January 2026",
+    "section": "What I Reflected on",
+    "text": "What I Reflected on\n\nAlbum\n\nOIL OF EVERY PEARL’S UN-INSIDES - SOPHIE\nWhen I got a record player a few years ago, this was one of the first albums I bought, and I still come back to it often. The whole album feels ahead of its time, but it still balances a certain ancient, human quality. Lately I’ve been listening a lot to “Is It Cold in the Water?”, and depending on where and how I hear it, it becomes a completely different experience. On vinyl it sounds eerie, sad, and lonely, like an old god being forced to adapt to the times. But when I’m walking somewhere with headphones, it transforms into a story about seeking growth and taking the plunge, pushing through apprehension, and moving past the inertia that stems from fearing change.\nThis month especially, I’ve enjoyed returning to it because it keeps circling themes of consciousness and the relationship between the physical body, the mind, and the spirit, which are themes I’ve been exploring through other media and writing. A new year brings new challenges and unfamiliar territory, and this album understands both the pain and the euphoria of becoming someone new.\n\n\n\n\nArticle\n\nAn Act of Cosmic Sabotage - Ross Andersen\n-tie it back to my Bachelor’s thesis ml model for mars salts\n\n\n\nArtwork\n\nTe Quiero Inti - Miguel Arzabe\nI saw this piece during my recent visit to the de Young Museum and I was drawn to the texture the artist creates by weaving strips of canvas together. The technique is inspired by Bolivian weaving, and it gives the work a very tactile, lively feel. I also love that it’s so personal: the piece celebrates the artist’s daughter, who’s named after Inti, the Quechua sun god.\n\n\n\n\nBook\n\nData Detective\n\n\n\nComic/Manga/Anime\n\nUzumaki - Junji Ito\nI visited the Manga exhibition at the de Young this month, and it inspired me to return to reading Junji Ito’s Uzumaki. Uzumaki is a horror manga about spirals. You may think, spirals? What’s scary about spirals? But let me assure you, Junji Ito can do some pretty twisted things with the motif of spirals. He manages to translate a sense of doom and rising tension about something that shouldn’t be horrifying. Plus the art is just so cool.\n photo credit - https://www.yokogaomag.com/editorial/junji-ito-horror\n\n\n\nFilm\n\nRan - Akira Kurosawa\n Image credit: https://moviemezzanine.com/remembering-takao-saito-and-the-castle-attack-in-akira-kurosawas-ran/\n\nTransformation and rebirth (as a powerless/old man)\nFlattery vs. truth\nSwayed by method of communication instead of content\nThe insulation of the powerful from the violence they inflict\n\n\n\n\nMemory\n\nCambodia 2020\nWhen I think of new years and new beginnings, a strong memory I have is of watching the sunrise at 4am over Angkor Wat, stumbling over jagged edges in the dark, disoriented on three hours of sleep while solo travelling. I went to Siem Reap in January 2020 and stayed with Sophat, a tuk-tuk driver and Airbnb host who rented out one of the rooms in his family home to me. I ate some incredible fruit on that trip.\nThe whole experience has a haze to it in my memory, probably because that first day I was so sleep-deprived that everything felt slow and slightly unreal. I’ve always been attracted to places of religion, because they often hold the history and power of a community, and they’re monuments to art and divinity. Angkor Wat is next level: the sheer size of it is impressive on its own. But what I find most special is the way nature has started reclaiming it and reintegrating it into the environment. Roots push the stones apart (tripping hazard, beware), and huge trees break through, or sometimes even support, the structures. It’s in a unique flux of balancing destruction and preservation.\n\n\n\n\n\nTV Show\n\nPluribus\n\n\n\nVideo Essay\n\nDisney’s Living Characters: A Broken Promise - Defunctland\n Image credit: https://insidethemagic.net/2011/09/disney-imagineers-use-amazing-destini-to-further-audio-animatronics-research-at-2011-d23-expo/"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
+    "title": "January 2026",
+    "section": "What I Want To Do Next",
+    "text": "What I Want To Do Next\n\nCreate Stories for Mandarin Characters\n\n\nLearn How to Do a Russian Split\n\n\nParticipate in the Berkeley Civil Innovation Challenge"
+  },
+  {
+    "objectID": "reflections/posts/feb-2026-reflections.html",
+    "href": "reflections/posts/feb-2026-reflections.html",
+    "title": "February 2026",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+  },
+  {
+    "objectID": "articles/articles/test.html",
+    "href": "articles/articles/test.html",
+    "title": "Lorem ipsum dolor sit amet,",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”"
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
     "href": "project/projects_files/particle-classifier/particle-classifier.html",
     "title": "High Energy Particle CNN Classifier",
     "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance."
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance."
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
     "href": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
     "title": "High Energy Particle CNN Classifier",
     "section": "Particle Types in the Dataset",
-    "text": "Particle Types in the Dataset\nThis dataset contains five charged particle types commonly observed in liquid argon time projection chambers.\nEach particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
+    "text": "Particle Types in the Dataset\nThis dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
   },
   {
     "objectID": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
@@ -98,17 +175,10 @@
     "text": "Performance Evaluation\n\nTraining Dynamics\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance"
   },
   {
-    "objectID": "blog/blog.html",
-    "href": "blog/blog.html",
-    "title": "Blog",
+    "objectID": "visuals/projects_files/particle-classifier/particle-classifier.html",
+    "href": "visuals/projects_files/particle-classifier/particle-classifier.html",
+    "title": "Visual",
     "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Updated - Oldest\n      \n      \n        Updated - Newest\n      \n    \n  \n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "project/projects.html",
-    "href": "project/projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Blog\n      \n  \n      \n        \n        Visualizations\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n\nCNN classification for particle tracks with explainable diagnostics.\n\n\n\n\n\nNo matching items"
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
   }
 ]

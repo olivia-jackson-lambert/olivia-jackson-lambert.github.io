@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://olivia-jackson-lambert.github.io/pages/about.html</loc>
-    <lastmod>2026-01-14T05:21:04.204Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</loc>
-    <lastmod>2026-01-14T05:51:38.489Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/index.html</loc>
-    <lastmod>2026-01-14T04:00:17.180Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/blog/blog.html</loc>
-    <lastmod>2026-01-11T23:11:13.700Z</lastmod>
+    <loc>https://olivia-jackson-lambert.github.io/visuals/visuals.html</loc>
+    <lastmod>2026-01-15T06:28:28.000Z</lastmod>
   </url>
   <url>
     <loc>https://olivia-jackson-lambert.github.io/project/projects.html</loc>
     <lastmod>2026-01-14T06:02:39.158Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/about.html</loc>
+    <lastmod>2026-01-14T19:42:52.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/articles/articles.html</loc>
+    <lastmod>2026-01-15T07:46:10.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/reflections/reflections.html</loc>
+    <lastmod>2026-01-14T19:52:19.340Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/reflections/posts/jan-2026-reflections.html</loc>
+    <lastmod>2026-01-14T09:30:41.874Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/reflections/posts/feb-2026-reflections.html</loc>
+    <lastmod>2026-01-14T09:05:53.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/articles/articles/test.html</loc>
+    <lastmod>2026-01-14T23:41:58.615Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/index.html</loc>
+    <lastmod>2026-01-14T18:47:36.417Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</loc>
+    <lastmod>2026-01-14T09:45:22.699Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/visuals/projects_files/particle-classifier/particle-classifier.html</loc>
+    <lastmod>2026-01-14T09:27:58.865Z</lastmod>
   </url>
 </urlset>

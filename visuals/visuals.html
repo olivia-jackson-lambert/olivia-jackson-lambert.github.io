@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Projects</title>
+<title>Visualizations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -77,20 +77,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-visuals-gallery .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-image','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
       searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-visuals-gallery'] = new List('listing-visuals-gallery', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -468,7 +468,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
+<h1 class="title">Visualizations</h1>
 </div>
 
 
@@ -485,31 +485,24 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div id="listing-visuals-gallery" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNTdXBlcnZpc2VkJTIwTGVhcm5pbmclMkNQeXRob24lMkNDb252b2x1dGlvbmFsJTIwTmV1cmFsJTIwTmV0d29yayUyQ1BhcnRpY2xlJTIwUGh5c2ljcyUyQ0h5cGVycGFyYW1ldGVyJTIwT3B0aW1pemF0aW9uJTJDS2VyYXMlMkNUZW5zb3JGbG93" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1768383922699" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1634">
-<a href="../project/projects_files/particle-classifier/particle-classifier.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1768382878865" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<a href="../visuals/projects_files/particle-classifier/particle-classifier.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="../project/cover_assets/particle_types_cropped.gif" class="thumbnail-image card-img" style="height: 300px;">
+<img loading="lazy" src="../project/cover_assets/particle_types_cropped.gif" class="thumbnail-image card-img" style="height: 280px;">
 </p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-High Energy Particle CNN Classifier
-</h5>
-<div class="card-text listing-description delink">
-<p>CNN classification for particle tracks with explainable diagnostics.</p>
-</div>
-</div>
 </div></a>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
