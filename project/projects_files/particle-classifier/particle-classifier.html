@@ -342,7 +342,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#hyperparameter-optimization" id="toc-hyperparameter-optimization" class="nav-link" data-scroll-target="#hyperparameter-optimization">Hyperparameter Optimization</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#first-round-results" id="toc-first-round-results" class="nav-link" data-scroll-target="#first-round-results">First Round Results</a></li>
   <li><a href="#second-round-results" id="toc-second-round-results" class="nav-link" data-scroll-target="#second-round-results">Second Round Results</a></li>
   <li><a href="#validation-accuracy-comparison-with-vs-without-lr-plateau" id="toc-validation-accuracy-comparison-with-vs-without-lr-plateau" class="nav-link" data-scroll-target="#validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</a></li>
@@ -355,7 +354,12 @@ window.Quarto = {
   <li><a href="#classification-performance-1" id="toc-classification-performance-1" class="nav-link" data-scroll-target="#classification-performance-1">Classification Performance</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a>
+  <ul class="collapse">
+  <li><a href="#model-enhancements" id="toc-model-enhancements" class="nav-link" data-scroll-target="#model-enhancements">Model Enhancements</a></li>
+  <li><a href="#data-and-evaluation" id="toc-data-and-evaluation" class="nav-link" data-scroll-target="#data-and-evaluation">Data and Evaluation</a></li>
+  <li><a href="#integration-and-deployment" id="toc-integration-and-deployment" class="nav-link" data-scroll-target="#integration-and-deployment">Integration and Deployment</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -600,19 +604,12 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <h1>Initial Model</h1>
 <section id="approach-architecture" class="level2">
 <h2 class="anchored" data-anchor-id="approach-architecture">Approach &amp; Architecture</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
 <ul>
 <li><strong>Model:</strong> CNN for multi-class classification</li>
 <li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
 <li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
 </ul>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:50%;">
 <p><img src="assets/init_cnn_architecture_blocks.png" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
-</div>
-</div>
 </section>
 <section id="initial-model-performance" class="level2">
 <h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
@@ -641,8 +638,6 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="classification-performance" class="level3">
 <h3 class="anchored" data-anchor-id="classification-performance">Classification Performance</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
 <p>The normalized confusion matrix summarizes how well the model distinguishes between particle types.</p>
 <section id="key-observations-1" class="level4">
 <h4 class="anchored" data-anchor-id="key-observations-1">Key observations</h4>
@@ -652,22 +647,13 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <li>Most misclassifications occur between physically similar particles.</li>
 </ul>
 <p>These errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement.</p>
-</section>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:50%;">
 <p><img src="assets/init_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
-</div>
-</div>
+</section>
 </section>
 </section>
 </section>
 <section id="hyperparameter-optimization" class="level1">
 <h1>Hyperparameter Optimization</h1>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
-<p>First round explain</p>
-</section>
 <section id="first-round-results" class="level3">
 <h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
 <p>A first round of hyperparameter optimisation was performed to assess the sensitivity of the model to architectural and optimisation choices. Across all experiments, the learning rate had the strongest influence on validation performance. Increasing the learning rate improved both convergence speed and final accuracy, with the best-performing configuration reaching a validation accuracy of 83.2%.</p>
@@ -822,14 +808,36 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="classification-performance-1" class="level3">
 <h3 class="anchored" data-anchor-id="classification-performance-1">Classification Performance</h3>
-<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"> <img src="assets/cnn_example_predictions.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
+<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
+<p>The final model achieves a validation accuracy of <strong>89.1%</strong>, a significant improvement over the initial baseline of 82.4%. The confusion matrix shows that the optimized architecture better distinguishes between all particle types, with particularly improved performance for muons and pions that were previously confused more often.</p>
+<p>Example predictions from the final model demonstrate the classifier’s ability to correctly identify particle types across different momentum ranges and track morphologies. The model shows strong performance on clear, well-defined tracks while maintaining reasonable accuracy on more ambiguous cases that are inherently challenging due to overlapping physical signatures.</p>
+<p><img src="assets/cnn_example_predictions.png" class="img-fluid" alt="Example predictions from the final CNN model showing correctly classified particle tracks" width="700"></p>
 </section>
 </section>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
+<p>Several directions for future work could further improve the classifier’s performance and expand its capabilities:</p>
+<section id="model-enhancements" class="level2">
+<h2 class="anchored" data-anchor-id="model-enhancements">Model Enhancements</h2>
+<p><strong>Architecture exploration</strong>: While the current CNN architecture performs well, exploring more modern architectures such as residual networks (ResNets) or attention mechanisms could yield additional gains, especially for distinguishing between similar particle types.</p>
+<p><strong>Ensemble methods</strong>: Combining predictions from multiple models trained with different initializations or architectures could improve robustness and final accuracy.</p>
+<p><strong>Transfer learning</strong>: Pre-training on related particle physics datasets or general image classification tasks could help the model learn more generalizable features.</p>
+</section>
+<section id="data-and-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-evaluation">Data and Evaluation</h2>
+<p><strong>Larger training set</strong>: Increasing the dataset size would allow for more robust training and better generalization, potentially improving performance on edge cases.</p>
+<p><strong>Test set evaluation</strong>: Evaluating on a held-out test set would provide a more reliable estimate of generalization performance beyond the validation set.</p>
+<p><strong>Uncertainty quantification</strong>: Adding uncertainty estimates to predictions would help identify cases where the model is less confident, which is valuable for real-world applications where reliability is critical.</p>
+</section>
+<section id="integration-and-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="integration-and-deployment">Integration and Deployment</h2>
+<p><strong>Real-time inference</strong>: Optimizing the model for faster inference could enable real-time particle classification in detector systems.</p>
+<p><strong>Explainability</strong>: Using techniques like Grad-CAM or SHAP values to visualize which parts of the detector images the model focuses on would improve interpretability and trust in the classifier’s decisions.</p>
+<p><strong>Production deployment</strong>: Packaging the model with proper versioning, monitoring, and continuous evaluation would make it suitable for deployment in production particle physics experiments.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
