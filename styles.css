@@ -70,6 +70,19 @@ figure img {
   font-size: 0.92rem;
 }
 
+/* Add whitespace above page titles */
+.quarto-title-block,
+.quarto-title {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+
+#quarto-content .quarto-title-block {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+
+
 /* Default listing cards (general) */
 .quarto-listing .card {
   border-radius: var(--radius-lg);
@@ -278,19 +291,31 @@ body.quarto-dark .iconbar-item:hover {
 
 /* Mobile: bottom bar */
 @media (max-width: 991.98px) {
-  body { padding-left: 0; padding-bottom: 72px; }
+  body { padding-left: 0; padding-bottom: 56px; }
 
   .iconbar {
     top: auto;
     bottom: 0;
 
     width: 100%;
-    height: 64px;
+    height: 56px;
+    max-width: 100vw;
 
     flex-direction: row;
     border-right: none;
     border-top: 1px solid rgba(0, 0, 0, 0.10);
-    padding: 10px 12px;
+    padding: 6px 8px;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 2px;
+  }
+
+  .iconbar::-webkit-scrollbar {
+    display: none;
   }
 
   body.quarto-dark .iconbar {
@@ -301,10 +326,47 @@ body.quarto-dark .iconbar-item:hover {
   .iconbar-bottom {
     flex-direction: row;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    flex: 0 1 auto;
+    justify-content: center;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  
+  .iconbar-top {
+    flex: 1;
+  }
+  
+  .iconbar-bottom {
+    flex: 0 0 auto;
+  }
+
+  .iconbar-item {
+    height: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    padding: 0;
+    justify-content: center;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+  }
+
+  .iconbar-item i,
+  .iconbar-item iconify-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
   }
 
   .iconbar-text { display: none; }
+  
+  /* Hide Google Scholar, Resume, and Medium on mobile */
+  .iconbar-item[href*="scholar.google.com"],
+  .iconbar-item[href*="Resume.pdf"],
+  .iconbar-item[href*="medium.com"] {
+    display: none;
+  }
 }
 
 
@@ -327,6 +389,7 @@ body.quarto-dark .iconbar-item:hover {
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(1.25rem, 4vw, 3rem);
 }
+
 
 .home-eyebrow {
   font-weight: 700;
@@ -355,25 +418,6 @@ body.quarto-dark .iconbar-item:hover {
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
-}
-
-/* Secondary nav links under CTA */
-.home-links {
-  margin-top: 1rem;
-  font-weight: 650;
-  opacity: 0.85;
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.home-links a {
-  text-decoration: none;
-}
-
-.home-links a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
 }
 
 /* Photo layout (Option A) */
@@ -419,10 +463,47 @@ body.quarto-dark .home-now {
 
 /* Mobile */
 @media (max-width: 900px) {
-  .home-hero-inner { grid-template-columns: 1fr; }
+  body.home #quarto-content .content,
+  body.home #quarto-content main.content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  .home-hero {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0;
+  }
+  
+  .home-hero-inner,
+  .home-hero-inner.home-hero-a { 
+    grid-template-columns: 1fr !important;
+    padding-top: clamp(1.25rem, 4vw, 2.25rem) !important;
+    padding-bottom: clamp(1.25rem, 4vw, 2.25rem) !important;
+    padding-left: var(--content-pad) !important;
+    padding-right: var(--content-pad) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box;
+  }
+  
   .home-hero-a { grid-template-columns: 1fr; }
-  .home-right { justify-self: start; text-align: left; }
-  .home-photo { width: min(320px, 85vw); }
+  .home-right { justify-self: center; text-align: center; }
+  .home-left { text-align: left; }
+  .home-photo { width: min(320px, 85vw); margin: 0 auto; display: block; }
+  
+  /* Hide Visuals button on mobile */
+  .home-cta {
+    justify-content: flex-start;
+  }
+  
+  .home-cta a[href="/visuals/visuals.html"],
+  .home-cta a[href*="visuals"] {
+    display: none !important;
+  }
 }
 
 
@@ -463,6 +544,32 @@ body.projects #quarto-content {
 
 body.projects .quarto-listing-container,
 body.projects .quarto-listing {
+  max-width: var(--projects-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Visuals page: match projects page styling */
+body.visuals #quarto-content,
+body.visuals #quarto-content .content,
+body.visuals #quarto-content main.content {
+  max-width: var(--projects-max) !important;
+  padding-left: var(--content-pad) !important;
+  padding-right: var(--content-pad) !important;
+}
+
+body.visuals #title-block-header,
+body.visuals .quarto-title-block {
+  padding-left: var(--content-pad) !important;
+  padding-right: var(--content-pad) !important;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--projects-max);
+  box-sizing: border-box;
+}
+
+body.visuals .quarto-listing-container,
+body.visuals .quarto-listing {
   max-width: var(--projects-max);
   margin-left: auto;
   margin-right: auto;

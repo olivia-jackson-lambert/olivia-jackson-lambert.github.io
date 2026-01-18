@@ -82,6 +82,46 @@ format:
   .kpi-grid {
     grid-template-columns: 1fr;
   }
+  
+  .about-subtitle {
+    font-size: 1.05rem;
+    margin-right: 0;
+    line-height: 1.7;
+  }
+  
+  .about-name {
+    font-size: 1.75rem;
+  }
+  
+  .card h4 {
+    font-size: 1.15rem;
+  }
+  
+  .card p {
+    font-size: 1rem;
+  }
+  
+  .timeline-item .role {
+    font-size: 1.1rem;
+  }
+  
+  .kpi .value {
+    font-size: 1.15rem;
+  }
+  
+  /* Stack columns on mobile */
+  .about-hero .columns {
+    flex-direction: column;
+  }
+  
+  .about-hero .column {
+    width: 100% !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-hero .column:last-child {
+    margin-bottom: 0;
+  }
 }
 .section-title {
   margin-top: 2.5rem;
@@ -265,7 +305,7 @@ If you'd like to read more about what I'm up to, check out my monthly reflection
 
 - **UC Berkeley School of Information** — Master's in Information & Data Science (MIDS)
 - **University of Edinburgh** — Master of Physics, Astrophysics
-- **Nanyang Technological Univeristy** - Semester Abroad
+- **Nanyang Technological University** - Semester Abroad
 - **University of Hong Kong** - Semester Abroad
 
 
