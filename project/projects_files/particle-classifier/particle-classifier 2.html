@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-01-02">
+<meta name="description" content="CNN classification for particle tracks with explainable diagnostics.">
 
-<title>Projects</title>
+<title>High Energy Particle CNN Classifier</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,30 +25,28 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-114013297ac08e17f9e2375decb9094d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-69332ce0e771f3a3d078173a5fee4cad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-13421fe158a39abf999af719474c0881.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-69332ce0e771f3a3d078173a5fee4cad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-114013297ac08e17f9e2375decb9094d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-12b55ead4ba76762d1c7efd6ed0aa47f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-57483fb5445d6de0b45f84f3bdea548c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-12b55ead4ba76762d1c7efd6ed0aa47f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,55 +74,26 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
-<link rel="icon" href="../assets/favicon.ico" sizes="any" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
+<link rel="icon" href="../../../assets/favicon.ico" sizes="any" media="(prefers-color-scheme: light)">
 
 <!-- Dark favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="../assets/dark-favicon-32x32.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="16x16" href="../assets/dark-favicon-16x16.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="../assets/dark-favicon.ico" sizes="any" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/dark-favicon-32x32.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/dark-favicon-16x16.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../../assets/dark-favicon.ico" sizes="any" media="(prefers-color-scheme: dark)">
 
 <!-- Apple touch icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png" media="(prefers-color-scheme: light)">
-<link rel="apple-touch-icon" sizes="180x180" href="../assets/dark-apple-touch-icon.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/dark-apple-touch-icon.png" media="(prefers-color-scheme: dark)">
 
 <!-- Android / PWA icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="../assets/android-chrome-192x192.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="512x512" href="../assets/android-chrome-512x512.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="192x192" href="../assets/dark-android-chrome-192x192.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="512x512" href="../assets/dark-android-chrome-512x512.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/android-chrome-192x192.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/android-chrome-512x512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/dark-android-chrome-192x192.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/dark-android-chrome-512x512.png" media="(prefers-color-scheme: dark)">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -154,7 +125,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -326,7 +297,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Olivia Jackson Lambert</span>
     </a>
   </div>
@@ -346,43 +317,83 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link active" data-scroll-target="#data-exploration">Data Exploration</a>
+  <ul class="collapse">
+  <li><a href="#particle-types-in-the-dataset" id="toc-particle-types-in-the-dataset" class="nav-link" data-scroll-target="#particle-types-in-the-dataset">Particle Types in the Dataset</a></li>
+  <li><a href="#example-particle-tracks-across-the-momentum-range" id="toc-example-particle-tracks-across-the-momentum-range" class="nav-link" data-scroll-target="#example-particle-tracks-across-the-momentum-range">Example Particle Tracks Across the Momentum Range</a></li>
+  <li><a href="#truth-level-feature-distributions" id="toc-truth-level-feature-distributions" class="nav-link" data-scroll-target="#truth-level-feature-distributions">Truth-Level Feature Distributions</a></li>
+  </ul></li>
+  <li><a href="#initial-model" id="toc-initial-model" class="nav-link" data-scroll-target="#initial-model">Initial Model</a>
+  <ul class="collapse">
+  <li><a href="#approach-architecture" id="toc-approach-architecture" class="nav-link" data-scroll-target="#approach-architecture">Approach &amp; Architecture</a></li>
+  <li><a href="#initial-model-performance" id="toc-initial-model-performance" class="nav-link" data-scroll-target="#initial-model-performance">Initial Model Performance</a>
+  <ul class="collapse">
+  <li><a href="#training-dynamics" id="toc-training-dynamics" class="nav-link" data-scroll-target="#training-dynamics">Training Dynamics</a></li>
+  <li><a href="#classification-performance" id="toc-classification-performance" class="nav-link" data-scroll-target="#classification-performance">Classification Performance</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#hyperparameter-optimization" id="toc-hyperparameter-optimization" class="nav-link" data-scroll-target="#hyperparameter-optimization">Hyperparameter Optimization</a>
+  <ul class="collapse">
+  <li><a href="#first-round-results" id="toc-first-round-results" class="nav-link" data-scroll-target="#first-round-results">First Round Results</a></li>
+  <li><a href="#second-round-results" id="toc-second-round-results" class="nav-link" data-scroll-target="#second-round-results">Second Round Results</a></li>
+  <li><a href="#validation-accuracy-comparison-with-vs-without-lr-plateau" id="toc-validation-accuracy-comparison-with-vs-without-lr-plateau" class="nav-link" data-scroll-target="#validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</a></li>
+  </ul></li>
+  <li><a href="#final-model" id="toc-final-model" class="nav-link" data-scroll-target="#final-model">Final Model</a>
+  <ul class="collapse">
+  <li><a href="#performance-evaluation" id="toc-performance-evaluation" class="nav-link" data-scroll-target="#performance-evaluation">Performance Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#training-dynamics-1" id="toc-training-dynamics-1" class="nav-link" data-scroll-target="#training-dynamics-1">Training Dynamics</a></li>
+  <li><a href="#classification-performance-1" id="toc-classification-performance-1" class="nav-link" data-scroll-target="#classification-performance-1">Classification Performance</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a>
+  <ul class="collapse">
+  <li><a href="#model-enhancements" id="toc-model-enhancements" class="nav-link" data-scroll-target="#model-enhancements">Model Enhancements</a></li>
+  <li><a href="#data-and-evaluation" id="toc-data-and-evaluation" class="nav-link" data-scroll-target="#data-and-evaluation">Data and Evaluation</a></li>
+  <li><a href="#integration-and-deployment" id="toc-integration-and-deployment" class="nav-link" data-scroll-target="#integration-and-deployment">Integration and Deployment</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <nav class="iconbar" aria-label="Site">
     <div class="iconbar-top">
-      <a class="iconbar-item" href="../index.html" aria-label="Home">
+      <a class="iconbar-item" href="../../../index.html" aria-label="Home">
         <iconify-icon icon="lucide:home"></iconify-icon>
         <span class="iconbar-text">Home</span>
       </a>
   
-      <a class="iconbar-item" href="../project/projects.html" aria-label="Projects">
+      <a class="iconbar-item" href="../../../project/projects.html" aria-label="Projects">
         <iconify-icon icon="lucide:layout-grid"></iconify-icon>
         <span class="iconbar-text">Projects</span>
       </a>
   
-      <a class="iconbar-item" href="../articles/articles.html" aria-label="Articles">
+      <a class="iconbar-item" href="../../../articles/articles.html" aria-label="Articles">
         <iconify-icon icon="lucide:notebook-text"></iconify-icon>
         <span class="iconbar-text">Articles</span>
       </a>
   
-      <a class="iconbar-item" href="../visuals/visuals.html" aria-label="Visuals">
+      <a class="iconbar-item" href="../../../visuals/visuals.html" aria-label="Visuals">
         <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
         <span class="iconbar-text">Visuals</span>
       </a>
 
-      <a class="iconbar-item" href="../reflections/reflections.html" aria-label="Reflections">
+      <a class="iconbar-item" href="../../../reflections/reflections.html" aria-label="Reflections">
         <iconify-icon icon="lucide:brain"></iconify-icon>
         <span class="iconbar-text">Reflections</span>
       </a>
 
-      <a class="iconbar-item" href="../about.html" aria-label="About">
+      <a class="iconbar-item" href="../../../about.html" aria-label="About">
         <iconify-icon icon="lucide:user"></iconify-icon>
         <span class="iconbar-text">About</span>
       </a>
@@ -410,7 +421,7 @@ window.Quarto = {
         <span class="iconbar-text">Scholar</span>
       </a>
   
-      <a class="iconbar-item" href="../assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
+      <a class="iconbar-item" href="../../../assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
         <iconify-icon icon="lucide:file-text"></iconify-icon>
         <span class="iconbar-text">Resume</span>
       </a>
@@ -468,14 +479,37 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
+<h1 class="title">High Energy Particle CNN Classifier</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Machine Learning</div>
+    <div class="quarto-category">Deep Learning</div>
+    <div class="quarto-category">Computer Vision</div>
+    <div class="quarto-category">Supervised Learning</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Convolutional Neural Network</div>
+    <div class="quarto-category">Particle Physics</div>
+    <div class="quarto-category">Hyperparameter Optimization</div>
+    <div class="quarto-category">Keras</div>
+    <div class="quarto-category">TensorFlow</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    CNN classification for particle tracks with explainable diagnostics.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 2, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -485,31 +519,328 @@ window.Quarto = {
 </header>
 
 
+<p>This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance.</p>
+<section id="data-exploration" class="level1">
+<h1>Data Exploration</h1>
+<section id="particle-types-in-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="particle-types-in-the-dataset">Particle Types in the Dataset</h2>
+<p>This dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Particle</th>
+<th>Symbol</th>
+<th>Charge (e)</th>
+<th>Mass (MeV/c²)</th>
+<th>Typical detector signature</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Electron</td>
+<td>e⁻</td>
+<td>−1</td>
+<td>0.511</td>
+<td>Light, long, branching tracks</td>
+</tr>
+<tr class="even">
+<td>Positron</td>
+<td>e⁺</td>
+<td>+1</td>
+<td>0.511</td>
+<td>Similar topology to electrons</td>
+</tr>
+<tr class="odd">
+<td>Muon</td>
+<td>μ⁻</td>
+<td>−1</td>
+<td>105.7</td>
+<td>Long, straight, penetrating tracks</td>
+</tr>
+<tr class="even">
+<td>Pion</td>
+<td>π⁺</td>
+<td>+1</td>
+<td>139.6</td>
+<td>Moderately long, hadronic tracks</td>
+</tr>
+<tr class="odd">
+<td>Proton</td>
+<td>p</td>
+<td>+1</td>
+<td>938.3</td>
+<td>Short tracks with dense energy deposition</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-particle-tracks-across-the-momentum-range" class="level2">
+<h2 class="anchored" data-anchor-id="example-particle-tracks-across-the-momentum-range">Example Particle Tracks Across the Momentum Range</h2>
+<p>The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.</p>
+<p>While many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.</p>
+<p><img src="assets/particle_types.gif" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+</section>
+<section id="truth-level-feature-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
+<p>The figure below summarizes the <strong>truth-level kinematic and spatial features</strong> associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.</p>
+<p>The momentum components <span class="math inline">\(p_x\)</span>, <span class="math inline">\(p_y\)</span>, and <span class="math inline">\(p_z\)</span> are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The <strong>total momentum</strong> is strictly positive and is defined as</p>
+<p><span class="math display">\[
+p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
+\]</span></p>
+<p>As a result, its distribution spans a broad range of values that increases with particle energy.</p>
+<p>The production coordinates ( <span class="math inline">\(x, y, z\)</span> ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.</p>
+<p>Histograms of each particle type are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.</p>
+<p><img src="assets/truth_arrays.gif" class="img-fluid" alt="Truth arrays by particle type" width="1000"></p>
+</section>
+</section>
+<section id="initial-model" class="level1">
+<h1>Initial Model</h1>
+<section id="approach-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="approach-architecture">Approach &amp; Architecture</h2>
+<ul>
+<li><strong>Model:</strong> CNN for multi-class classification</li>
+<li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
+<li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
+</ul>
+<p><img src="assets/init_cnn_architecture_blocks.png" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+</section>
+<section id="initial-model-performance" class="level2">
+<h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
+<section id="training-dynamics" class="level3">
+<h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
+<p>The plots below show how the CNN learns over the first five training epochs.</p>
+<section id="key-observations" class="level4">
+<h4 class="anchored" data-anchor-id="key-observations">Key observations</h4>
+<ul>
+<li>Training loss decreases steadily, indicating that the model is learning meaningful features.</li>
+<li>Validation loss spikes early on, then stabilizes and moves closer to the training loss.</li>
+<li>Training and validation accuracy both increase with each epoch.</li>
+<li>By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.</li>
+</ul>
+<p>Overall, the model learns quickly and remains stable despite the short training run. The final cateogrical accuracy is 82.9% and the validation accuracy is 82.4%.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><img src="assets/init_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
+</div><div class="column" style="width:5%;">
 
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNTdXBlcnZpc2VkJTIwTGVhcm5pbmclMkNQeXRob24lMkNDb252b2x1dGlvbmFsJTIwTmV1cmFsJTIwTmV0d29yayUyQ1BhcnRpY2xlJTIwUGh5c2ljcyUyQ0h5cGVycGFyYW1ldGVyJTIwT3B0aW1pemF0aW9uJTJDS2VyYXMlMkNUZW5zb3JGbG93" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1769045787841" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1386">
-<a href="../project/projects_files/particle-classifier/particle-classifier.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="../project/cover_assets/particle_types_cropped.gif" class="thumbnail-image card-img" style="height: 300px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-High Energy Particle CNN Classifier
-</h5>
-<div class="card-text listing-description delink">
-<p>Classifying particle types from liquid argon detector images using convolutional neural networks.</p>
+</div><div class="column" style="width:45%;">
+<p><img src="assets/init_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
 </div>
 </div>
-</div></a>
+</section>
+</section>
+<section id="classification-performance" class="level3">
+<h3 class="anchored" data-anchor-id="classification-performance">Classification Performance</h3>
+<p>The normalized confusion matrix summarizes how well the model distinguishes between particle types.</p>
+<section id="key-observations-1" class="level4">
+<h4 class="anchored" data-anchor-id="key-observations-1">Key observations</h4>
+<ul>
+<li>Electrons, positrons, and protons are classified with high accuracy.</li>
+<li>Muons and pions show increased confusion with other particle types.</li>
+<li>Most misclassifications occur between physically similar particles.</li>
+</ul>
+<p>These errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement.</p>
+<p><img src="assets/init_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
+</section>
+</section>
+</section>
+</section>
+<section id="hyperparameter-optimization" class="level1">
+<h1>Hyperparameter Optimization</h1>
+<section id="first-round-results" class="level3">
+<h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
+<p>A first round of hyperparameter optimisation was performed to assess the sensitivity of the model to architectural and optimisation choices. Across all experiments, the learning rate had the strongest influence on validation performance. Increasing the learning rate improved both convergence speed and final accuracy, with the best-performing configuration reaching a validation accuracy of 83.2%.</p>
+<p>In contrast, increasing model capacity through wider convolutional filters or larger dense layers did not yield consistent improvements, suggesting that the baseline architecture was already sufficiently expressive. Adjustments to regularisation strength showed that the model was not strongly overfitting, while the removal of batch normalization significantly degraded performance. These results indicate that further gains are more likely to come from optimisation strategies rather than architectural complexity.</p>
+<p>Each model was set to run for a maximum of 30 epochs, but most converged after 4-5. This indicates that the dominant discriminative features are learned within only a few epochs, suggesting that the convolutional architecture is well matched to the structure of the particle track images and that performance is primarily limited by the available information in the data rather than model capacity.</p>
+<p>The table below summarizes the performance of each configuration tested during hyperparameter optimization. Models are ranked by their best validation categorical accuracy.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 36%">
+<col style="width: 22%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Configuration</th>
+<th>Key Change</th>
+<th>Best Validation Accuracy</th>
+<th>Final Validation Loss</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Higher learning rate</strong></td>
+<td>Increased learning rate (2e-3)</td>
+<td><strong>0.832</strong></td>
+<td><strong>0.410</strong></td>
+</tr>
+<tr class="even">
+<td>Less dropout</td>
+<td>Reduced dropout regularization</td>
+<td>0.814</td>
+<td>0.462</td>
+</tr>
+<tr class="odd">
+<td>Baseline</td>
+<td>Reference architecture</td>
+<td>0.813</td>
+<td>0.464</td>
+</tr>
+<tr class="even">
+<td>Average pooling</td>
+<td>Replaced max pooling with average pooling</td>
+<td>0.806</td>
+<td>0.458</td>
+</tr>
+<tr class="odd">
+<td>More dropout</td>
+<td>Increased dropout regularization</td>
+<td>0.790</td>
+<td>0.501</td>
+</tr>
+<tr class="even">
+<td>Wider filters</td>
+<td>Increased convolutional filters</td>
+<td>0.782</td>
+<td>0.481</td>
+</tr>
+<tr class="odd">
+<td>No batch normalization</td>
+<td>Removed batch normalization</td>
+<td>0.763</td>
+<td>0.525</td>
+</tr>
+<tr class="even">
+<td>Larger dense head</td>
+<td>Increased dense layer width</td>
+<td>0.759</td>
+<td>0.515</td>
+</tr>
+<tr class="odd">
+<td>Lower learning rate</td>
+<td>Reduced learning rate (3e-4)</td>
+<td>0.721</td>
+<td>0.607</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="second-round-results" class="level3">
+<h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
+<p>For the second round of optimization, three values of learning rate were explored, with the epochs set to 25.</p>
+<p>In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.</p>
+</section>
+<section id="validation-accuracy-comparison-with-vs-without-lr-plateau" class="level3">
+<h3 class="anchored" data-anchor-id="validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Initial learning rate</th>
+<th>Best val acc (no LR plateau)</th>
+<th>Best val acc (with LR plateau)</th>
+<th>Δ (with − without)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.0e−3</td>
+<td>0.8344</td>
+<td><strong>0.8912</strong></td>
+<td>+0.0568</td>
+</tr>
+<tr class="even">
+<td>1.2e−3</td>
+<td>0.6792</td>
+<td>0.7352</td>
+<td>+0.0560</td>
+</tr>
+<tr class="odd">
+<td>1.5e−3</td>
+<td>0.6332</td>
+<td>0.8200</td>
+<td>+0.1868</td>
+</tr>
+<tr class="even">
+<td>2.0e−3</td>
+<td>0.6538</td>
+<td>0.8322</td>
+<td>+0.1784</td>
+</tr>
+<tr class="odd">
+<td>3.0e−3</td>
+<td>0.6408</td>
+<td>0.8436</td>
+<td>+0.2028</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="final-model" class="level1">
+<h1>Final Model</h1>
+<section id="performance-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h2>
+<section id="training-dynamics-1" class="level3">
+<h3 class="anchored" data-anchor-id="training-dynamics-1">Training Dynamics</h3>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><img src="assets/final_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:45%;">
+<p><img src="assets/final_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
 </div>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</section>
+<section id="classification-performance-1" class="level3">
+<h3 class="anchored" data-anchor-id="classification-performance-1">Classification Performance</h3>
+<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
+<p>The final model achieves a validation accuracy of <strong>89.1%</strong>, a significant improvement over the initial baseline of 82.4%. The confusion matrix shows that the optimized architecture better distinguishes between all particle types, with particularly improved performance for muons and pions that were previously confused more often.</p>
+<p>Example predictions from the final model demonstrate the classifier’s ability to correctly identify particle types across different momentum ranges and track morphologies. The model shows strong performance on clear, well-defined tracks while maintaining reasonable accuracy on more ambiguous cases that are inherently challenging due to overlapping physical signatures.</p>
+<p><img src="assets/cnn_example_predictions.png" class="img-fluid" alt="Example predictions from the final CNN model showing correctly classified particle tracks" width="700"></p>
+</section>
+</section>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p>Several directions for future work could further improve the classifier’s performance and expand its capabilities:</p>
+<section id="model-enhancements" class="level2">
+<h2 class="anchored" data-anchor-id="model-enhancements">Model Enhancements</h2>
+<p><strong>Architecture exploration</strong>: While the current CNN architecture performs well, exploring more modern architectures such as residual networks (ResNets) or attention mechanisms could yield additional gains, especially for distinguishing between similar particle types.</p>
+<p><strong>Ensemble methods</strong>: Combining predictions from multiple models trained with different initializations or architectures could improve robustness and final accuracy.</p>
+<p><strong>Transfer learning</strong>: Pre-training on related particle physics datasets or general image classification tasks could help the model learn more generalizable features.</p>
+</section>
+<section id="data-and-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-evaluation">Data and Evaluation</h2>
+<p><strong>Larger training set</strong>: Increasing the dataset size would allow for more robust training and better generalization, potentially improving performance on edge cases.</p>
+<p><strong>Test set evaluation</strong>: Evaluating on a held-out test set would provide a more reliable estimate of generalization performance beyond the validation set.</p>
+<p><strong>Uncertainty quantification</strong>: Adding uncertainty estimates to predictions would help identify cases where the model is less confident, which is valuable for real-world applications where reliability is critical.</p>
+</section>
+<section id="integration-and-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="integration-and-deployment">Integration and Deployment</h2>
+<p><strong>Real-time inference</strong>: Optimizing the model for faster inference could enable real-time particle classification in detector systems.</p>
+<p><strong>Explainability</strong>: Using techniques like Grad-CAM or SHAP values to visualize which parts of the detector images the model focuses on would improve interpretability and trust in the classifier’s decisions.</p>
+<p><strong>Production deployment</strong>: Packaging the model with proper versioning, monitoring, and continuous evaluation would make it suitable for deployment in production particle physics experiments.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -596,7 +927,7 @@ High Energy Particle CNN Classifier
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

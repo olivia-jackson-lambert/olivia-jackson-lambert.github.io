@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2025-01-02">
-<meta name="description" content="CNN classification for particle tracks with explainable diagnostics.">
+<meta name="description" content="Classifying particle types from liquid argon detector images using convolutional neural networks.">
 
 <title>High Energy Particle CNN Classifier</title>
 <style>
@@ -333,7 +333,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#initial-model" id="toc-initial-model" class="nav-link" data-scroll-target="#initial-model">Initial Model</a>
   <ul class="collapse">
-  <li><a href="#approach-architecture" id="toc-approach-architecture" class="nav-link" data-scroll-target="#approach-architecture">Approach &amp; Architecture</a></li>
+  <li><a href="#architecture" id="toc-architecture" class="nav-link" data-scroll-target="#architecture">Architecture</a></li>
   <li><a href="#initial-model-performance" id="toc-initial-model-performance" class="nav-link" data-scroll-target="#initial-model-performance">Initial Model Performance</a>
   <ul class="collapse">
   <li><a href="#training-dynamics" id="toc-training-dynamics" class="nav-link" data-scroll-target="#training-dynamics">Training Dynamics</a></li>
@@ -344,7 +344,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#first-round-results" id="toc-first-round-results" class="nav-link" data-scroll-target="#first-round-results">First Round Results</a></li>
   <li><a href="#second-round-results" id="toc-second-round-results" class="nav-link" data-scroll-target="#second-round-results">Second Round Results</a></li>
-  <li><a href="#validation-accuracy-comparison-with-vs-without-lr-plateau" id="toc-validation-accuracy-comparison-with-vs-without-lr-plateau" class="nav-link" data-scroll-target="#validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</a></li>
+  <li><a href="#impact-of-learning-rate-scheduling" id="toc-impact-of-learning-rate-scheduling" class="nav-link" data-scroll-target="#impact-of-learning-rate-scheduling">Impact of Learning Rate Scheduling</a></li>
   </ul></li>
   <li><a href="#final-model" id="toc-final-model" class="nav-link" data-scroll-target="#final-model">Final Model</a>
   <ul class="collapse">
@@ -354,12 +354,8 @@ window.Quarto = {
   <li><a href="#classification-performance-1" id="toc-classification-performance-1" class="nav-link" data-scroll-target="#classification-performance-1">Classification Performance</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a>
-  <ul class="collapse">
-  <li><a href="#model-enhancements" id="toc-model-enhancements" class="nav-link" data-scroll-target="#model-enhancements">Model Enhancements</a></li>
-  <li><a href="#data-and-evaluation" id="toc-data-and-evaluation" class="nav-link" data-scroll-target="#data-and-evaluation">Data and Evaluation</a></li>
-  <li><a href="#integration-and-deployment" id="toc-integration-and-deployment" class="nav-link" data-scroll-target="#integration-and-deployment">Integration and Deployment</a></li>
-  </ul></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -496,7 +492,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    CNN classification for particle tracks with explainable diagnostics.
+    Classifying particle types from liquid argon detector images using convolutional neural networks.
   </div>
 </div>
 
@@ -519,7 +515,8 @@ window.Quarto = {
 </header>
 
 
-<p>This project is inspired by the MicroBooNE Collaboration’s work on using convolutional neural networks (CNNs) to identify particle types from detector images. Their results showed that CNNs can learn the visual patterns in these images directly, without relying on hand-engineered physics rules, which makes the approach both scalable and reproducible. I used the paper’s model as a starting point because it provides a proven baseline for this exact kind of data, then iterated on the architecture to better fit my dataset and compute constraints, including changes to the filter widths, regularization, pooling strategy, and training setup. The goal of my project is to replicate the core idea in a simplified setting, validate the approach end-to-end, and evaluate which design choices actually matter for performance.</p>
+<p>This project classifies particle types (electrons, positrons, muons, pions, and protons) from liquid argon time projection chamber detector images using convolutional neural networks. Building on the MicroBooNE Collaboration’s approach [1], the model learns visual patterns directly from the data rather than relying on hand-engineered physics rules. Through systematic hyperparameter optimization focused on learning rate scheduling, the final model achieves 89.1% validation accuracy.</p>
+<p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/high-energy-particle-classifier">github.com/olivia-jackson-lambert/high-energy-particle-classifier</a></p>
 <section id="data-exploration" class="level1">
 <h1>Data Exploration</h1>
 <section id="particle-types-in-the-dataset" class="level2">
@@ -583,48 +580,35 @@ window.Quarto = {
 </section>
 <section id="example-particle-tracks-across-the-momentum-range" class="level2">
 <h2 class="anchored" data-anchor-id="example-particle-tracks-across-the-momentum-range">Example Particle Tracks Across the Momentum Range</h2>
-<p>The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each column corresponds to a different momentum value, while rows show the three detector projections (X–Y, Y–Z, Z–X). Examples were selected by grouping events by particle type and choosing evenly spaced momentum values, ensuring the visualizations capture behavior across the full energy range rather than a narrow subset of events.</p>
-<p>While many tracks appear visually similar, consistent differences emerge. Higher-mass particles tend to produce shorter, denser tracks, while lighter particles travel farther and scatter more. Branching is visible across all classes but occurs less frequently for electrons and muons. These subtle spatial patterns motivate the use of convolutional neural networks, which are well suited to learning geometric differences in detector images.</p>
-<p><img src="assets/particle_types.gif" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+<p>The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each row shows one of three detector projections (X–Y, Y–Z, Z–X).</p>
+<p>Higher-mass particles produce shorter, denser tracks, while lighter particles travel farther and scatter more. These subtle visual differences are what the CNN learns to distinguish.</p>
+<p><img src="assets/particle_types.gif" class="img-fluid" style="width:100.0%" alt="Example particle tracks at different initial momentums by type"></p>
 </section>
 <section id="truth-level-feature-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
-<p>The figure below summarizes the <strong>truth-level kinematic and spatial features</strong> associated with each particle class. These quantities accompany every detector image and provide physical context for the observed particle trajectories.</p>
-<p>The momentum components <span class="math inline">\(p_x\)</span>, <span class="math inline">\(p_y\)</span>, and <span class="math inline">\(p_z\)</span> are symmetric around zero, reflecting the fact that particle directions are equally likely to be positive or negative along each axis. The <strong>total momentum</strong> is strictly positive and is defined as</p>
-<p><span class="math display">\[
-p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
-\]</span></p>
-<p>As a result, its distribution spans a broad range of values that increases with particle energy.</p>
-<p>The production coordinates ( <span class="math inline">\(x, y, z\)</span> ) exhibit bounded, approximately uniform distributions. These shapes are primarily determined by the detector geometry rather than by the underlying particle dynamics.</p>
-<p>Histograms of each particle type are shown with a shared y-axis scale to enable direct comparison across features. Together, these distributions highlight which aspects of the truth data encode meaningful physical structure and motivate the feature representations used for downstream classification.</p>
-<p><img src="assets/truth_arrays.gif" class="img-fluid" alt="Truth arrays by particle type" width="1000"></p>
+<p>Each detector image comes with kinematic and spatial features that provide physical context for the particle trajectories.</p>
+<p>The momentum components <span class="math inline">\(p_x\)</span>, <span class="math inline">\(p_y\)</span>, and <span class="math inline">\(p_z\)</span> are symmetric around zero since particles are equally likely to move in any direction. Total momentum is defined as <span class="math inline">\(p = \sqrt{p_x^2 + p_y^2 + p_z^2}\)</span>.</p>
+<p>The production coordinates <span class="math inline">\((x, y, z)\)</span> are bounded and approximately uniform, reflecting the detector geometry.</p>
+<p><img src="assets/truth_arrays.gif" class="img-fluid" style="width:100.0%" alt="Truth arrays by particle type"></p>
 </section>
 </section>
 <section id="initial-model" class="level1">
 <h1>Initial Model</h1>
-<section id="approach-architecture" class="level2">
-<h2 class="anchored" data-anchor-id="approach-architecture">Approach &amp; Architecture</h2>
-<ul>
-<li><strong>Model:</strong> CNN for multi-class classification</li>
-<li><strong>Training:</strong> standard supervised learning with a train/validation split and early stopping/checkpointing (from the notebook workflow)</li>
-<li><strong>Evaluation:</strong> accuracy over epochs + confusion matrix to understand which classes are most often confused</li>
-</ul>
-<p><img src="assets/init_cnn_architecture_blocks.png" class="img-fluid" alt="Example particle tracks at different initial momentums by type" width="1000"></p>
+<section id="architecture" class="level2">
+<h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
+<p>The model uses a convolutional neural network with three conv blocks, each containing two convolutional layers with batch normalization and ReLU activation. After each block, max pooling reduces spatial dimensions while dropout provides regularization. The feature maps start at 16 filters and double with each block (16 → 32 → 64), allowing the network to learn increasingly abstract representations of particle tracks.</p>
+<p>Global average pooling compresses the final feature maps into a fixed-length vector, which feeds into a small dense layer before the 5-way softmax classifier. This architecture balances expressiveness with efficiency. It is simple enough to train quickly, but with enough capacity to capture the visual patterns that distinguish particle types.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/init_cnn_architecture_blocks.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="CNN architecture diagram showing three convolutional blocks"></p>
+</figure>
+</div>
 </section>
 <section id="initial-model-performance" class="level2">
 <h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
 <section id="training-dynamics" class="level3">
 <h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
-<p>The plots below show how the CNN learns over the first five training epochs.</p>
-<section id="key-observations" class="level4">
-<h4 class="anchored" data-anchor-id="key-observations">Key observations</h4>
-<ul>
-<li>Training loss decreases steadily, indicating that the model is learning meaningful features.</li>
-<li>Validation loss spikes early on, then stabilizes and moves closer to the training loss.</li>
-<li>Training and validation accuracy both increase with each epoch.</li>
-<li>By the final epoch, training and validation accuracy are similar, suggesting limited overfitting at this stage.</li>
-</ul>
-<p>Overall, the model learns quickly and remains stable despite the short training run. The final cateogrical accuracy is 82.9% and the validation accuracy is 82.4%.</p>
+<p>The model learns quickly, with training and validation accuracy tracking closely. The final training accuracy is 82.9% and validation accuracy is 82.4%, suggesting minimal overfitting.</p>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><img src="assets/init_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
@@ -635,20 +619,14 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </div>
 </div>
 </section>
-</section>
 <section id="classification-performance" class="level3">
 <h3 class="anchored" data-anchor-id="classification-performance">Classification Performance</h3>
-<p>The normalized confusion matrix summarizes how well the model distinguishes between particle types.</p>
-<section id="key-observations-1" class="level4">
-<h4 class="anchored" data-anchor-id="key-observations-1">Key observations</h4>
-<ul>
-<li>Electrons, positrons, and protons are classified with high accuracy.</li>
-<li>Muons and pions show increased confusion with other particle types.</li>
-<li>Most misclassifications occur between physically similar particles.</li>
-</ul>
-<p>These errors are expected, as particle tracks can appear similar depending on energy and interaction patterns. The confusion matrix highlights both the strengths of the current architecture and the particle classes that would benefit most from further refinement.</p>
-<p><img src="assets/init_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
-</section>
+<p>Electrons, positrons, and protons are classified with high accuracy, while muons and pions show more confusion with other particle types. This may be due to particle tracks with similar energies looking visually alike.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/init_cnn_confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%" alt="Normalized confusion matrix for particle classifier"></p>
+</figure>
+</div>
 </section>
 </section>
 </section>
@@ -656,10 +634,9 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <h1>Hyperparameter Optimization</h1>
 <section id="first-round-results" class="level3">
 <h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
-<p>A first round of hyperparameter optimisation was performed to assess the sensitivity of the model to architectural and optimisation choices. Across all experiments, the learning rate had the strongest influence on validation performance. Increasing the learning rate improved both convergence speed and final accuracy, with the best-performing configuration reaching a validation accuracy of 83.2%.</p>
-<p>In contrast, increasing model capacity through wider convolutional filters or larger dense layers did not yield consistent improvements, suggesting that the baseline architecture was already sufficiently expressive. Adjustments to regularisation strength showed that the model was not strongly overfitting, while the removal of batch normalization significantly degraded performance. These results indicate that further gains are more likely to come from optimisation strategies rather than architectural complexity.</p>
-<p>Each model was set to run for a maximum of 30 epochs, but most converged after 4-5. This indicates that the dominant discriminative features are learned within only a few epochs, suggesting that the convolutional architecture is well matched to the structure of the particle track images and that performance is primarily limited by the available information in the data rather than model capacity.</p>
-<p>The table below summarizes the performance of each configuration tested during hyperparameter optimization. Models are ranked by their best validation categorical accuracy.</p>
+<p>The first hyperparameter sweep tested architectural and optimization choices. Learning rate had the strongest impact on performance, with an increase to 2e-3 raising the validation accuracy to 83.2%.</p>
+<p>Wider filters and larger dense layers didn’t help, suggesting the baseline architecture was already expressive enough. Removing batch normalization significantly hurt performance, while dropout adjustments had minimal effect.</p>
+<p>Most models converged within 4-5 epochs, indicating the architecture is well-suited to the data and that the main gains would come from optimization rather than model capacity.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -735,56 +712,56 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="second-round-results" class="level3">
 <h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
-<p>For the second round of optimization, three values of learning rate were explored, with the epochs set to 25.</p>
-<p>In the initial hyperparameter sweep, adaptive learning-rate scheduling was used to stabilize training across a wide range of architectural configurations. This allowed for efficient comparison of model capacity and regularization choices, though it means results reflect performance under an automatically tuned optimizer rather than fixed learning rates. Subsequent experiments explicitly isolate learning rate effects by disabling adaptive scheduling.</p>
+<p>The second round tested learning rates more systematically. The first sweep used adaptive learning-rate scheduling for stability, but this round disabled it to isolate the effect of different initial learning rates.</p>
 </section>
-<section id="validation-accuracy-comparison-with-vs-without-lr-plateau" class="level3">
-<h3 class="anchored" data-anchor-id="validation-accuracy-comparison-with-vs-without-lr-plateau">Validation accuracy comparison: with vs without LR Plateau</h3>
+<section id="impact-of-learning-rate-scheduling" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-learning-rate-scheduling">Impact of Learning Rate Scheduling</h3>
+<p>Adding learning rate plateau scheduling dramatically improved performance across all initial learning rates. The best configuration (1.0e-3 with plateau) reached 89.1% validation accuracy—a 5.7 percentage point improvement over the fixed rate.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 21%">
-<col style="width: 28%">
+<col style="width: 22%">
 <col style="width: 30%">
-<col style="width: 19%">
+<col style="width: 32%">
+<col style="width: 13%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Initial learning rate</th>
 <th>Best val acc (no LR plateau)</th>
 <th>Best val acc (with LR plateau)</th>
-<th>Δ (with − without)</th>
+<th>Improvement</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1.0e−3</td>
-<td>0.8344</td>
-<td><strong>0.8912</strong></td>
-<td>+0.0568</td>
+<td>0.834</td>
+<td><strong>0.891</strong></td>
+<td>+5.7pp</td>
 </tr>
 <tr class="even">
 <td>1.2e−3</td>
-<td>0.6792</td>
-<td>0.7352</td>
-<td>+0.0560</td>
+<td>0.679</td>
+<td>0.735</td>
+<td>+5.6pp</td>
 </tr>
 <tr class="odd">
 <td>1.5e−3</td>
-<td>0.6332</td>
-<td>0.8200</td>
-<td>+0.1868</td>
+<td>0.633</td>
+<td>0.820</td>
+<td>+18.7pp</td>
 </tr>
 <tr class="even">
 <td>2.0e−3</td>
-<td>0.6538</td>
-<td>0.8322</td>
-<td>+0.1784</td>
+<td>0.654</td>
+<td>0.832</td>
+<td>+17.8pp</td>
 </tr>
 <tr class="odd">
 <td>3.0e−3</td>
-<td>0.6408</td>
-<td>0.8436</td>
-<td>+0.2028</td>
+<td>0.641</td>
+<td>0.844</td>
+<td>+20.3pp</td>
 </tr>
 </tbody>
 </table>
@@ -796,6 +773,7 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 <h2 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h2>
 <section id="training-dynamics-1" class="level3">
 <h3 class="anchored" data-anchor-id="training-dynamics-1">Training Dynamics</h3>
+<p>The final model trained for 14 epochs with learning rate plateau scheduling. Training was stable throughout, with the learning rate reducing from 1e-3 to 2e-4 at epoch 9, and again to 4e-5 at epoch 12 as validation loss plateaued. The model achieved peak validation accuracy of 89.1% at epoch 10, with training and validation curves remaining close, indicating good generalization without overfitting.</p>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><img src="assets/final_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
@@ -808,36 +786,28 @@ p = \sqrt{p_x^2 + p_y^2 + p_z^2}.
 </section>
 <section id="classification-performance-1" class="level3">
 <h3 class="anchored" data-anchor-id="classification-performance-1">Classification Performance</h3>
-<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid" alt="Normalized confusion matrix for particle classifier" width="700"></p>
-<p>The final model achieves a validation accuracy of <strong>89.1%</strong>, a significant improvement over the initial baseline of 82.4%. The confusion matrix shows that the optimized architecture better distinguishes between all particle types, with particularly improved performance for muons and pions that were previously confused more often.</p>
-<p>Example predictions from the final model demonstrate the classifier’s ability to correctly identify particle types across different momentum ranges and track morphologies. The model shows strong performance on clear, well-defined tracks while maintaining reasonable accuracy on more ambiguous cases that are inherently challenging due to overlapping physical signatures.</p>
-<p><img src="assets/cnn_example_predictions.png" class="img-fluid" alt="Example predictions from the final CNN model showing correctly classified particle tracks" width="700"></p>
+<p>The final model achieves <strong>89.1% validation accuracy</strong> - a 6.7 percentage point improvement over the baseline. The confusion matrix shows much better distinction between muons and pions, which were the most challenging classes initially.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%" alt="Normalized confusion matrix for particle classifier"></p>
+</figure>
+</div>
+<p>Example predictions show the model correctly classifying particles across different momentum ranges and track morphologies.</p>
+<p><img src="assets/cnn_example_predictions.png" class="img-fluid" style="width:100.0%" alt="Example predictions from the final CNN model showing correctly classified particle tracks"></p>
 </section>
 </section>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p>Several directions for future work could further improve the classifier’s performance and expand its capabilities:</p>
-<section id="model-enhancements" class="level2">
-<h2 class="anchored" data-anchor-id="model-enhancements">Model Enhancements</h2>
-<p><strong>Architecture exploration</strong>: While the current CNN architecture performs well, exploring more modern architectures such as residual networks (ResNets) or attention mechanisms could yield additional gains, especially for distinguishing between similar particle types.</p>
-<p><strong>Ensemble methods</strong>: Combining predictions from multiple models trained with different initializations or architectures could improve robustness and final accuracy.</p>
-<p><strong>Transfer learning</strong>: Pre-training on related particle physics datasets or general image classification tasks could help the model learn more generalizable features.</p>
+<p><strong>Architecture</strong>: Test modern architectures like ResNets or attention mechanisms to better distinguish similar particle types.</p>
+<p><strong>Evaluation</strong>: Evaluate on a held-out test set and add uncertainty quantification to identify low-confidence predictions.</p>
+<p><strong>Explainability</strong>: Use Grad-CAM to visualize which parts of detector images drive predictions, improving model interpretability.</p>
 </section>
-<section id="data-and-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="data-and-evaluation">Data and Evaluation</h2>
-<p><strong>Larger training set</strong>: Increasing the dataset size would allow for more robust training and better generalization, potentially improving performance on edge cases.</p>
-<p><strong>Test set evaluation</strong>: Evaluating on a held-out test set would provide a more reliable estimate of generalization performance beyond the validation set.</p>
-<p><strong>Uncertainty quantification</strong>: Adding uncertainty estimates to predictions would help identify cases where the model is less confident, which is valuable for real-world applications where reliability is critical.</p>
-</section>
-<section id="integration-and-deployment" class="level2">
-<h2 class="anchored" data-anchor-id="integration-and-deployment">Integration and Deployment</h2>
-<p><strong>Real-time inference</strong>: Optimizing the model for faster inference could enable real-time particle classification in detector systems.</p>
-<p><strong>Explainability</strong>: Using techniques like Grad-CAM or SHAP values to visualize which parts of the detector images the model focuses on would improve interpretability and trust in the classifier’s decisions.</p>
-<p><strong>Production deployment</strong>: Packaging the model with proper versioning, monitoring, and continuous evaluation would make it suitable for deployment in production particle physics experiments.</p>
+<section id="references" class="level1">
+<h1>References</h1>
+<p>[1] MicroBooNE Collaboration. “A Convolutional Neural Network for Multiple Particle Identification in the MicroBooNE Liquid Argon Time Projection Chamber.” arXiv:2010.08653 (2020). <a href="https://arxiv.org/abs/2010.08653">https://arxiv.org/abs/2010.08653</a></p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

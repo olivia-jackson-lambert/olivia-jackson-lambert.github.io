@@ -491,7 +491,7 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNTdXBlcnZpc2VkJTIwTGVhcm5pbmclMkNQeXRob24lMkNDb252b2x1dGlvbmFsJTIwTmV1cmFsJTIwTmV0d29yayUyQ1BhcnRpY2xlJTIwUGh5c2ljcyUyQ0h5cGVycGFyYW1ldGVyJTIwT3B0aW1pemF0aW9uJTJDS2VyYXMlMkNUZW5zb3JGbG93" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1769045787841" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1386">
+<div class="g-col-1" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNTdXBlcnZpc2VkJTIwTGVhcm5pbmclMkNQeXRob24lMkNDb252b2x1dGlvbmFsJTIwTmV1cmFsJTIwTmV0d29yayUyQ1BhcnRpY2xlJTIwUGh5c2ljcyUyQ0h5cGVycGFyYW1ldGVyJTIwT3B0aW1pemF0aW9uJTJDS2VyYXMlMkNUZW5zb3JGbG93" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1768614368069" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1940">
 <a href="../project/projects_files/particle-classifier/particle-classifier.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -502,7 +502,7 @@ window.Quarto = {
 High Energy Particle CNN Classifier
 </h5>
 <div class="card-text listing-description delink">
-<p>Classifying particle types from liquid argon detector images using convolutional neural networks.</p>
+<p>CNN classification for particle tracks with explainable diagnostics.</p>
 </div>
 </div>
 </div></a>
@@ -596,7 +596,7 @@ High Energy Particle CNN Classifier
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
