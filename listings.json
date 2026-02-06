@@ -8,20 +8,20 @@
   {
     "listing": "/project/projects.html",
     "items": [
+      "/project/projects_files/sentence-transformer/sentence-transformer.html",
       "/project/projects_files/particle-classifier/particle-classifier.html"
-    ]
-  },
-  {
-    "listing": "/articles/articles.html",
-    "items": [
-      "/articles/articles/test.html"
     ]
   },
   {
     "listing": "/reflections/reflections.html",
     "items": [
-      "/reflections/posts/feb-2026-reflections.html",
       "/reflections/posts/jan-2026-reflections.html"
+    ]
+  },
+  {
+    "listing": "/articles/articles.html",
+    "items": [
+      "/articles/articles/mlops-future-data-science.html"
     ]
   }
 ]

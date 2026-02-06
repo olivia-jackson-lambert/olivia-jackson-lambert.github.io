@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-01-31">
+<meta name="dcterms.date" content="2026-01-15">
+<meta name="description" content="The operational gap between prototype and production is where most AI investments go to die">
 
-<title>January 2026</title>
+<title>Why Your ML Models Aren’t Making It to Production</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -295,38 +296,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-i-created" id="toc-what-i-created" class="nav-link active" data-scroll-target="#what-i-created">What I Created</a>
+  <li><a href="#the-85-problem" id="toc-the-85-problem" class="nav-link active" data-scroll-target="#the-85-problem">The 85% Problem</a></li>
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#what-makes-ml-different" id="toc-what-makes-ml-different" class="nav-link" data-scroll-target="#what-makes-ml-different">What Makes ML Different</a></li>
+  <li><a href="#why-it-matters-now" id="toc-why-it-matters-now" class="nav-link" data-scroll-target="#why-it-matters-now">Why It Matters Now</a></li>
+  <li><a href="#what-you-actually-need" id="toc-what-you-actually-need" class="nav-link" data-scroll-target="#what-you-actually-need">What You Actually Need</a></li>
+  <li><a href="#the-hard-part" id="toc-the-hard-part" class="nav-link" data-scroll-target="#the-hard-part">The Hard Part</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link" data-scroll-target="#why-this-matters">Why This Matters</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
   <ul class="collapse">
-  <li><a href="#this-website" id="toc-this-website" class="nav-link" data-scroll-target="#this-website">This Website</a></li>
-  <li><a href="#particle-classifier-project" id="toc-particle-classifier-project" class="nav-link" data-scroll-target="#particle-classifier-project">Particle Classifier Project</a></li>
-  <li><a href="#private-social-media-project" id="toc-private-social-media-project" class="nav-link" data-scroll-target="#private-social-media-project">Private Social Media Project</a></li>
-  <li><a href="#vegetables" id="toc-vegetables" class="nav-link" data-scroll-target="#vegetables">Vegetables</a></li>
+  <li><a href="#tools-and-documentation" id="toc-tools-and-documentation" class="nav-link" data-scroll-target="#tools-and-documentation">Tools and Documentation</a></li>
   </ul></li>
-  <li><a href="#what-i-learned" id="toc-what-i-learned" class="nav-link" data-scroll-target="#what-i-learned">What I Learned</a>
+  <li><a href="#the-failure-rate-nobody-talks-about" id="toc-the-failure-rate-nobody-talks-about" class="nav-link" data-scroll-target="#the-failure-rate-nobody-talks-about">The Failure Rate Nobody Talks About</a></li>
+  <li><a href="#where-things-go-wrong" id="toc-where-things-go-wrong" class="nav-link" data-scroll-target="#where-things-go-wrong">Where Things Go Wrong</a></li>
+  <li><a href="#what-operational-maturity-looks-like" id="toc-what-operational-maturity-looks-like" class="nav-link" data-scroll-target="#what-operational-maturity-looks-like">What Operational Maturity Looks Like</a></li>
+  <li><a href="#the-part-that-isnt-about-technology" id="toc-the-part-that-isnt-about-technology" class="nav-link" data-scroll-target="#the-part-that-isnt-about-technology">The Part That Isn’t About Technology</a></li>
+  <li><a href="#large-language-models-have-made-this-urgent" id="toc-large-language-models-have-made-this-urgent" class="nav-link" data-scroll-target="#large-language-models-have-made-this-urgent">Large Language Models Have Made This Urgent</a></li>
+  <li><a href="#the-compounding-advantage" id="toc-the-compounding-advantage" class="nav-link" data-scroll-target="#the-compounding-advantage">The Compounding Advantage</a></li>
+  <li><a href="#references-1" id="toc-references-1" class="nav-link" data-scroll-target="#references-1">References</a>
   <ul class="collapse">
-  <li><a href="#mandarin" id="toc-mandarin" class="nav-link" data-scroll-target="#mandarin">Mandarin</a></li>
-  <li><a href="#ml-concepts" id="toc-ml-concepts" class="nav-link" data-scroll-target="#ml-concepts">207 ML Concepts</a></li>
+  <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
   </ul></li>
-  <li><a href="#what-i-reflected-on" id="toc-what-i-reflected-on" class="nav-link" data-scroll-target="#what-i-reflected-on">What I Reflected on</a>
-  <ul class="collapse">
-  <li><a href="#album" id="toc-album" class="nav-link" data-scroll-target="#album">Album</a></li>
-  <li><a href="#article" id="toc-article" class="nav-link" data-scroll-target="#article">Article</a></li>
-  <li><a href="#artwork" id="toc-artwork" class="nav-link" data-scroll-target="#artwork">Artwork</a></li>
-  <li><a href="#book" id="toc-book" class="nav-link" data-scroll-target="#book">Book</a></li>
-  <li><a href="#manga" id="toc-manga" class="nav-link" data-scroll-target="#manga">Manga</a></li>
-  <li><a href="#film" id="toc-film" class="nav-link" data-scroll-target="#film">Film</a></li>
-  <li><a href="#memory" id="toc-memory" class="nav-link" data-scroll-target="#memory">Memory</a></li>
-  <li><a href="#tv-show" id="toc-tv-show" class="nav-link" data-scroll-target="#tv-show">TV Show</a></li>
-  <li><a href="#video-essay" id="toc-video-essay" class="nav-link" data-scroll-target="#video-essay">Video Essay</a></li>
-  </ul></li>
-  <li><a href="#what-i-want-to-do-next" id="toc-what-i-want-to-do-next" class="nav-link" data-scroll-target="#what-i-want-to-do-next">What I Want To Do Next</a>
-  <ul class="collapse">
-  <li><a href="#participate-in-the-berkeley-civil-innovation-challenge" id="toc-participate-in-the-berkeley-civil-innovation-challenge" class="nav-link" data-scroll-target="#participate-in-the-berkeley-civil-innovation-challenge">Participate in the Berkeley Civil Innovation Challenge</a></li>
-  <li><a href="#create-stories-for-mandarin-characters" id="toc-create-stories-for-mandarin-characters" class="nav-link" data-scroll-target="#create-stories-for-mandarin-characters">Create Stories for Mandarin Characters</a></li>
-  <li><a href="#continue-work-on-private-social-media-project" id="toc-continue-work-on-private-social-media-project" class="nav-link" data-scroll-target="#continue-work-on-private-social-media-project">Continue Work on Private Social Media Project</a></li>
-  <li><a href="#finish-crochet-circles" id="toc-finish-crochet-circles" class="nav-link" data-scroll-target="#finish-crochet-circles">Finish Crochet Circles</a></li>
-  </ul></li>
-  <li><a href="#image-credits" id="toc-image-credits" class="nav-link" data-scroll-target="#image-credits">Image Credits</a></li>
   </ul>
 </nav>
     </div>
@@ -446,13 +437,19 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">January 2026</h1>
-<p class="subtitle lead">Monthly review and reflections</p>
+<h1 class="title">Why Your ML Models Aren’t Making It to Production</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Monthly Reflections</div>
+    <div class="quarto-category">MLOps</div>
+    <div class="quarto-category">Data Science</div>
+    <div class="quarto-category">Machine Learning Engineering</div>
   </div>
   </div>
 
+<div>
+  <div class="description">
+    The operational gap between prototype and production is where most AI investments go to die
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -461,7 +458,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 31, 2026</p>
+      <p class="date">2026-01-15</p>
     </div>
   </div>
   
@@ -473,156 +470,156 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="what-i-created" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-created">What I Created</h2>
-<section id="this-website" class="level3">
-<h3 class="anchored" data-anchor-id="this-website">This Website</h3>
-<p>This month I made this website with Quarto. It went through a few iterations before I landed on a relatively minimal design. My first paid job (I was 13, and it was probably not compliant with child labor laws) was building a website for a restaurant on the high street in my hometown. This one turned out much better. Web design has become a lot easier since then.</p>
+<section id="the-85-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-85-problem">The 85% Problem</h2>
+<p>Most machine learning projects fail. Not because the algorithms don’t work, but because organizations can’t operationalize them. A 2024 analysis found that 85% of ML initiatives never deliver business value in production (<a href="https://galileo.ai/blog/ml-observability-framework">Galileo</a>), a staggering figure for technology that many companies are betting their futures and resources on.</p>
+<p>The pattern is familiar to anyone who’s worked in data science. A team spends months developing a model. The metrics look perfect, the stakeholders are excited, and six months from now everyone will have quietly moved on, the model still trapped in a Jupyter notebook. The graveyard of promising models is vast.</p>
+<p>This isn’t a talent problem or a tools problem. It’s an infrastructure problem. The discipline that addresses it, MLOps, has become the difference between organizations that extract value from ML and those that don’t.</p>
 </section>
-<section id="particle-classifier-project" class="level3">
-<h3 class="anchored" data-anchor-id="particle-classifier-project">Particle Classifier Project</h3>
-<p>I revisited and updated one of my earlier CNN projects, exploring additional hyperparameter optimisation and running new experiments. It was interesting to come back to this work while taking a graduate machine learning course, which has been deepening my understanding of my previous projects.</p>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<!-- Image suggestion: A split-screen visualization showing a Jupyter notebook on one side with perfect metrics, and a production dashboard on the other side showing degraded performance or error logs. Could be abstract/illustrative. -->
+<p>Somewhere in your organization, a data scientist is building a model that will never see the light of day. The metrics look perfect, the stakeholders are excited, and six months from now everyone will have quietly moved on, the model still trapped in a Jupyter notebook. This is not a failure of machine learning. It is a failure of infrastructure, of process, and the complexities between “it works on my laptop” and “it works at scale, reliably, for millions of users.”</p>
+<p>Consider what happens when models do make it to production. An e-commerce company spends months developing a recommendation system that achieves strong performance on test sets and shows promising results in A/B testing, but when deployed, the model’s performance degrades significantly within weeks. The training data might have been collected during a holiday season, causing the model to learn patterns specific to that period that don’t generalize to normal shopping behavior. Without proper monitoring and drift detection, this degradation goes unnoticed until customer complaints about irrelevant recommendations start piling up. This scenario, documented in case studies from companies like Zalando and Netflix, illustrates how operational constraints often cause more production failures than algorithmic problems themselves (<a href="https://dl.acm.org/doi/10.1145/3109859.3109897">Zalando case study</a>, <a href="https://netflixtechblog.medium.com/recsysops-best-practices-for-operating-a-large-scale-recommender-system-95bbe195a841">Netflix RecSysOps</a>).</p>
+<p>When models do see the light of day, they often fail in ways that take months to notice. An e-commerce company I spoke with spent the better part of a year developing a recommendation system. Test performance was strong. A/B results looked promising. Within weeks of deployment, the whole thing started falling apart. The culprit was banal: the training data had been collected during a holiday season, and the model had learned shopping patterns that evaporated once normal life resumed. Without drift detection, nobody noticed until customer complaints about bizarre recommendations reached a critical mass. Case studies from Zalando and Netflix tell similar stories. Operational failures, it turns out, cause more production problems than algorithmic ones (<a href="https://dl.acm.org/doi/10.1145/3109859.3109897">Zalando case study</a>, <a href="https://netflixtechblog.medium.com/recsysops-best-practices-for-operating-a-large-scale-recommender-system-95bbe195a841">Netflix RecSysOps</a>).</p>
 </section>
-<section id="private-social-media-project" class="level3">
-<h3 class="anchored" data-anchor-id="private-social-media-project">Private Social Media Project</h3>
-<p>I’ve been exploring web app design by building a social media app for private use. It’s been useful to think more deliberately about user experience and user journeys, rather than focusing purely on technical or data-driven perspectives.</p>
+<section id="what-makes-ml-different" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-ml-different">What Makes ML Different</h2>
+<!-- Image suggestion: A diagram showing the difference between traditional software (linear flow: code → test → deploy → works) versus ML systems (complex web with feedback loops, data dependencies, model decay arrows, etc.). Could be a flowchart or network diagram style. -->
+<p>You could describe MLOps as DevOps for machine learning, but that undersells the strangeness of what we’re dealing with. Traditional software is, in a sense, honest. You write code, you test it, you deploy it, and it does what you told it to do. Machine learning systems are different. They are shaped by data in ways that make them unpredictable, even to the people who built them.</p>
+<p>The same code can produce wildly different outputs as data distributions shift. A model that worked brilliantly yesterday might fail tomorrow, and nothing in the codebase will have changed. Performance degrades as the real world drifts away from the world captured in training data. Random seeds, hardware quirks, and dependency versions conspire to make reproducibility a constant struggle. And in regulated industries, you need explainability and audit trails that traditional software never demanded.</p>
+<p>The seminal paper on this subject, “Hidden Technical Debt in Machine Learning Systems,” put it starkly: the ML code itself represents only a tiny fraction of a production system’s complexity. The rest is data collection, feature extraction, configuration, serving infrastructure, and monitoring. The model is the easy part (<a href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Sculley et al., 2015</a>).</p>
+<p>Uber learned this the hard way with their ETA predictions. Models trained on San Francisco traffic failed catastrophically in Mumbai. Models that worked in January degraded by March as patterns shifted. Their solution was to build automated pipelines that monitor accuracy and trigger retraining without human intervention, a system that required feature stores, model registries, and testing infrastructure that rivals anything in traditional software engineering (<a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Uber Michelangelo</a>, <a href="https://www.uber.com/blog/deepeta-how-uber-predicts-arrival-times/">DeepETA</a>).</p>
 </section>
-<section id="vegetables" class="level3">
-<h3 class="anchored" data-anchor-id="vegetables">Vegetables</h3>
-<p>I had a huge harvest of tomatoes, basil, and aubergines from my hydroponic tower this month. I made <a href="https://nourishingamy.com/2023/10/30/creamy-bean-and-aubergine-caponata-vegan-high-protein/">this caponata recipe</a> from Nourishing Amy, and it turned out great!</p>
-<p><img src="../media/jan-2026/recipe.jpg" class="img-fluid" style="width:100.0%"></p>
+<section id="why-it-matters-now" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-matters-now">Why It Matters Now</h2>
+<!-- Image suggestion: A comparison diagram showing traditional ML workflow vs LLMOps workflow. -->
+<p>For years, machine learning lived in the back office. It powered internal analytics, batch processing, things that happened overnight while everyone slept. That era is over. ChatGPT handles hundreds of millions of conversations every week. Voice assistants respond in real time. Recommendation algorithms shape what billions of people see, read, and buy. Search engines have started generating answers instead of just pointing to them.</p>
+<p>When machine learning moves from analytics to product, everything changes. A notebook model can take hours to run. A consumer product must respond in milliseconds. A notebook model can fail quietly. A consumer product that fails visibly destroys trust. A notebook model can be retrained whenever someone gets around to it. A consumer product must adapt continuously without going dark.</p>
+<p>Netflix processes billions of interactions daily while simultaneously retraining the models that power recommendations. This requires coordinating hundreds of models across multiple services, a feat of orchestration that would have seemed absurd a decade ago (<a href="https://netflixtechblog.com/maestro-netflixs-workflow-orchestrator-ee13a06f9c78">Netflix Maestro</a>, <a href="https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39">Netflix foundation model</a>).</p>
+<p>Large language models have made all of this more urgent. They power chatbots and coding assistants and creative tools, but they also introduce failure modes we’re only beginning to understand: hallucinations, prompt injection attacks, outputs that seem confident but are completely wrong. LLMOps, as practitioners have started calling it, focuses less on training from scratch and more on prompt engineering, fine-tuning, and figuring out how to deploy responsibly (<a href="https://openai.com/index/introducing-gpt-realtime/">OpenAI Realtime API</a>).</p>
+<p>Regulators have noticed. The EU AI Act now requires organizations to demonstrate model governance, explainability, and auditability. Research suggests that 85% of ML projects fail to deliver business value in production, often because of silent failures, distribution drift, and pipeline breaks that nobody catches until real damage is done (<a href="https://galileo.ai/blog/ml-observability-framework">ML Observability Framework</a>). In consumer-facing applications, these failures aren’t silent at all. Users notice. Revenue suffers.</p>
 </section>
+<section id="what-you-actually-need" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-actually-need">What You Actually Need</h2>
+<!-- Image suggestion: An architectural diagram showing the components of an MLOps system: data versioning, model registry, feature store, monitoring dashboards, deployment pipelines. -->
+<p>A startup with one model has different needs than a bank running hundreds of risk models. Still, certain components show up everywhere.</p>
+<p>Version control needs to extend beyond code. Models, data, configurations, and experiments all need versioning because the relationships between them determine how models behave. Tools like <a href="https://dvc.org/doc">DVC</a>, <a href="https://mlflow.org/docs/latest/tracking.html">MLflow</a>, and <a href="https://wandb.ai/site/guides">Weights &amp; Biases</a> can track the full lineage from raw data to deployment. This becomes critical when you need to understand, months later, why a model made a particular decision.</p>
+<p>Reproducible environments matter more than people expect. A model trained with TensorFlow 2.8 might produce different outputs when deployed with TensorFlow 2.9, even with identical weights. Changes in numerical precision and optimization algorithms can shift results in subtle ways. Strict containerization and pinned dependencies are the only reliable defense.</p>
+<p>Testing has to happen at multiple levels because ML systems fail in ways traditional software doesn’t. You need unit tests for data processing, integration tests for pipelines, validation tests for data quality and schema drift, performance tests against accuracy thresholds, and infrastructure tests for deployment configurations.</p>
+<p>Monitoring splits into three domains. System monitoring tracks the usual suspects: CPU, memory, latency. Data monitoring watches feature distributions, missing values, schema changes. Model monitoring tracks prediction distributions, accuracy over time, and drift. Tools like <a href="https://www.evidentlyai.com/blog">Evidently AI</a> and <a href="https://whylabs.ai/blog">WhyLabs</a> can help, though custom dashboards on Prometheus and Grafana remain common.</p>
+<!-- Image suggestion: A monitoring dashboard mockup showing three panels: system metrics, data quality metrics, and model performance metrics. -->
+<p>Airbnb discovered something subtle about their pricing models: individual predictions looked reasonable, but in aggregate, the system was pricing every property in certain neighborhoods too high during peak periods. Catching this required monitoring not just individual outputs but aggregate patterns and business metrics (<a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Airbnb pricing</a>).</p>
+<p>A model registry centralizes metadata, performance metrics, and approval workflows, making it possible to roll back when something goes wrong. Feature stores solve the problem of teams reimplementing the same feature engineering logic across projects, introducing inconsistencies that are maddening to debug. Uber’s Palette system serves features for both real-time inference and training, ensuring that what the model learned matches what it sees in production (<a href="https://www.uber.com/blog/palette-meta-store-journey/">Uber Palette</a>).</p>
 </section>
-<section id="what-i-learned" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-learned">What I Learned</h2>
-<section id="mandarin" class="level3">
-<h3 class="anchored" data-anchor-id="mandarin">Mandarin</h3>
-<p>My husband and I have been learning Mandarin as our New Year’s resolution. When we were in high school, he became fluent in Japanese in a few months because he wanted to read Japanese murder mysteries. I’ve studied Mandarin a few times before, at the University of Hong Kong and through the Confucius Institute, but I have significant difficulty processing spoken language. When it comes to learning languages, my mind can feel like a sieve, and I lose skills quickly if I don’t use them regularly.</p>
-<p>This time, I want to approach it differently by integrating Mandarin into my daily routine through flashcards and writing practice. We’re also doing a weekly session using a textbook from one of my previous courses. It has been fun to revisit, and I’ve found that I’m remembering characters more quickly than I expected.</p>
+<section id="the-hard-part" class="level2">
+<h2 class="anchored" data-anchor-id="the-hard-part">The Hard Part</h2>
+<!-- Image suggestion: An organizational chart showing siloed teams vs. a collaborative MLOps team structure. -->
+<p>None of this is primarily a technology problem. The hardest part is organizational.</p>
+<p>Data scientists, ML engineers, DevOps engineers, and product managers need to work together in ways that traditional corporate structures actively discourage. Silos that took years to build have to come down. The culture has to shift from “move fast and break things” toward something more like “move deliberately and watch everything.”</p>
+<p>MLOps demands a blend of data science, software engineering, and infrastructure expertise that few individuals possess. Some organizations have responded by creating dedicated ML platform teams that build tooling and infrastructure, freeing data scientists to focus on modeling while platform engineers handle operational complexity.</p>
+<p>Perhaps the deepest challenge is defining what success actually means. Traditional software metrics like uptime and latency don’t capture what matters for ML systems. A recommendation engine might boost click-through rates while trapping users in filter bubbles. A fraud detection system might achieve high accuracy while flagging so many legitimate transactions that customers abandon ship. These tradeoffs require judgment that spans both technical and business domains, and organizations that can’t make those judgments well tend to build systems that optimize for the wrong things.</p>
 </section>
-<section id="ml-concepts" class="level3">
-<h3 class="anchored" data-anchor-id="ml-concepts">207 ML Concepts</h3>
-<p>This semester in the MIDS program, I’m taking Machine Learning. It’s still early, but I’m enjoying the examples we’ve been introduced to so far, as well as the chance to have my skills tested through different projects. It’s been helpful to revisit familiar ideas in a more formal framework while also being pushed into new ways of thinking about them.</p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
+<!-- Image suggestion: A roadmap showing progression from basic MLOps (versioning) to advanced (full automation). -->
+<p>If you’re starting from scratch, resist the urge to build everything at once. Version your models and data first. Even basic versioning provides enormous value and creates the foundation for everything else. Add monitoring next, starting simple: prediction distributions, latency, error rates. Pick one manual process and automate it, whether that’s deployment or retraining or testing. Learn from that before expanding.</p>
+<p>The organizations that succeed tend to start with their biggest pain points rather than with some idealized architecture. MLOps is iterative. You build what you need, discover new problems, and build again.</p>
 </section>
+<section id="why-this-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h2>
+<!-- Image suggestion: A visual metaphor of a bridge connecting "Research" and "Production" with MLOps as the structure. -->
+<p>MLOps is no longer optional. As machine learning moves from research curiosity to production infrastructure, organizations that invest in operational excellence will pull ahead. More importantly, robust operations are becoming a prerequisite for responsible deployment.</p>
+<p>The models we build now influence loan approvals, medical diagnoses, hiring decisions, and resource allocation at a scale that would have been unimaginable a decade ago. Deploying these systems without proper monitoring, governance, and operational discipline isn’t just bad engineering. It is, in a meaningful sense, reckless.</p>
+<p>The future of this field isn’t just about building better models. It’s about building models that work reliably, transparently, and ethically once they leave the notebook. MLOps is the bridge that makes that possible.</p>
 </section>
-<section id="what-i-reflected-on" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-reflected-on">What I Reflected on</h2>
-<section id="album" class="level3">
-<h3 class="anchored" data-anchor-id="album">Album</h3>
-<section id="oil-of-every-pearls-un-insides---sophie" class="level5">
-<h5 class="anchored" data-anchor-id="oil-of-every-pearls-un-insides---sophie">Oil of Every Pearl’s Un-Insides - SOPHIE</h5>
-<p>When I got a record player a few years ago, this was one of the first albums I bought, and I still come back to it often. The whole album feels ahead of its time, but it still balances a certain ancient, human quality. Lately I’ve been listening a lot to “Is It Cold in the Water?”, and depending on where and how I hear it, it becomes a completely different experience. On vinyl it sounds eerie, sad, and lonely, like an old god being forced to adapt to the times. But when I’m walking somewhere with headphones, it transforms into a story about seeking growth and taking the plunge, pushing through apprehension, and moving past the inertia that stems from fearing change.</p>
-<p>This month especially, I’ve enjoyed returning to it because it keeps circling themes of consciousness and the relationship between the physical body, the mind, and the spirit, which are themes I’ve been exploring through other media and writing. A new year brings new challenges and unfamiliar territory, and this album understands both the pain and the euphoria of becoming someone new.</p>
-<p><img src="../media/jan-2026/music.jpg" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="article" class="level3">
-<h3 class="anchored" data-anchor-id="article">Article</h3>
-<section id="an-act-of-cosmic-sabotage---ross-andersen" class="level5">
-<h5 class="anchored" data-anchor-id="an-act-of-cosmic-sabotage---ross-andersen">An Act of Cosmic Sabotage - Ross Andersen</h5>
-<p>I was disappointed to learn that the Mars Sample Return mission associated with Perseverance is being defunded. Sample return has long been understood as the necessary next step in Mars exploration and astrobiology. Without it, much of the scientific value of in situ rover work remains unresolved, and years of planning, engineering, and data collection risk being left incomplete.</p>
-<p>Both my bachelor’s and master’s theses focused on applying machine learning and statistical methods to Mars exploration. My undergraduate work, in particular, centred on diagnosing hydration states of magnesium salts using Raman spectroscopy, which is the same technique Perseverance uses for in situ analysis. Sample return would allow much higher resolution laboratory analysis, which would be incredibly informative for future missions and work.</p>
-<p>The current administration’s continued defunding of scientific programmes at NASA will likely have effects that extend well beyond a single mission. Fields that depend on long-term continuity, like astrobiology, are especially vulnerable, and the consequences of these decisions will be felt for decades rather than years.</p>
-<p><img src="../media/jan-2026/article.jpg" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="artwork" class="level3">
-<h3 class="anchored" data-anchor-id="artwork">Artwork</h3>
-<section id="te-quiero-inti---miguel-arzabe" class="level5">
-<h5 class="anchored" data-anchor-id="te-quiero-inti---miguel-arzabe">Te Quiero Inti - Miguel Arzabe</h5>
-<p>I saw this piece during my recent visit to the de Young Museum and I was drawn to the texture the artist creates by weaving strips of canvas together. The technique is inspired by Bolivian weaving, and it gives the work a very tactile, lively feel. I also love that it’s so personal: the piece celebrates the artist’s daughter, who’s named after Inti, the Quechua sun god.</p>
-<p><img src="../media/jan-2026/art.jpg" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="book" class="level3">
-<h3 class="anchored" data-anchor-id="book">Book</h3>
-<section id="data-detective---tim-harford" class="level5">
-<h5 class="anchored" data-anchor-id="data-detective---tim-harford">Data Detective - Tim Harford</h5>
-<p>For my Research Design class last semester, we read Data Detective. I learned a lot from it, including that Florence Nightingale created polar diagrams. I honoured her in my own work by making my <a href="https://olivia-jackson-lambert.github.io/visuals/posts/jan-15-25-daylight.html">first visualization</a> a polar diagram.</p>
-<p>As someone with a physics background, my training has predisposed me to put a lot of weight on data and numerical outcomes. Physics experiments are often fairly clean-cut, and relationships are usually well enough understood to directly connect theory and evidence. This book was a good reminder to approach statistics and data with skepticism, especially when definitions are not precise, as is often the case with surveys and other forms of human data collection.</p>
-<p><img src="../media/jan-2026/book.jpg" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="manga" class="level3">
-<h3 class="anchored" data-anchor-id="manga">Manga</h3>
-<section id="uzumaki---junji-ito" class="level5">
-<h5 class="anchored" data-anchor-id="uzumaki---junji-ito">Uzumaki - Junji Ito</h5>
-<p>I visited the Manga exhibition at the de Young this month, and it inspired me to return to reading Junji Ito’s Uzumaki. Uzumaki is a horror manga about spirals. You may think, spirals? What’s scary about spirals? But let me assure you, Junji Ito can do some pretty twisted things with the motif of spirals. He manages to translate a sense of doom and rising tension about something that shouldn’t be horrifying. Plus the art is just so cool.</p>
-<p><img src="../media/jan-2026/comic.png" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="film" class="level3">
-<h3 class="anchored" data-anchor-id="film">Film</h3>
-<section id="ran---akira-kurosawa" class="level5">
-<h5 class="anchored" data-anchor-id="ran---akira-kurosawa">Ran - Akira Kurosawa</h5>
-<p>I have been obsessed with Akira Kurosawa since I saw Dreams last year at The Roxie Theatre. I then watched Ran with my parents when they visited last March, and later ended up buying a ticket to the Akira Kurosawa four-movie event in September.</p>
-<p>They didn’t like the movie much. It was subtitled, and they didn’t bring their glasses. I loved it, and I wanted to watch it again this January because of how the film explores rebirth through the augmentation of power, and the tension between flattery and truth. It feels especially relevant in the current climate, where yes men are raised to the highest ranks of government.</p>
-<p>Hidetora is an interesting character, because he is both a victim and perpertrator of violence. Until this point in time, he has been insulated from the pain he causes others, because of his station in life and physicality. But age strips him of this, and he is finally forced to confront his own hubris, especially when he encounters a victim of one of his expansionist campaigns, a man he blinded, and whose family he destroyed.</p>
-<p>I also love a great battle scene, and this has one of the best I’ve seen. Red and yellow flags converge and the ground is so dark it barely feels like Earth anymore.</p>
-<p><img src="../media/jan-2026/film.png" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="memory" class="level3">
-<h3 class="anchored" data-anchor-id="memory">Memory</h3>
-<section id="cambodia-2020" class="level5">
-<h5 class="anchored" data-anchor-id="cambodia-2020">Cambodia 2020</h5>
-<p>When I think of new years and new beginnings, a strong memory I have is of watching the sunrise at 4am over Angkor Wat, stumbling over jagged edges in the dark, disoriented on three hours of sleep while solo travelling. I went to Siem Reap in January 2020 and stayed with Sophat, a tuk-tuk driver and Airbnb host who rented out one of the rooms in his family home to me. I ate some incredible fruit on that trip.</p>
-<p>The whole experience has a haze to it in my memory, probably because that first day I was so sleep-deprived that everything felt slow and slightly unreal. I’ve always been attracted to places of religion, because they often hold the history and power of a community, and they’re monuments to art and divinity. Angkor Wat is huge and magical, and Mother Nature is always trying to reclaim and reintegrate it into the environment. Roots push the stones apart (tripping hazard, beware), and huge trees break through, or sometimes even support, the structures.</p>
-<p><img src="../media/jan-2026/memory-1.jpg" class="img-fluid" style="width:100.0%"></p>
-<p><img src="../media/jan-2026/memory-2.jpg" class="img-fluid" style="width:100.0%"></p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><p>Sculley, D., et al.&nbsp;(2015). “Hidden Technical Debt in Machine Learning Systems.” <em>Advances in Neural Information Processing Systems</em>, 28. <a href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Paper</a></p></li>
+<li><p>Netflix Engineering. (2021). “RecSysOps: Best Practices for Operating a Large-Scale Recommender System.” <em>Netflix Tech Blog</em>. <a href="https://netflixtechblog.medium.com/recsysops-best-practices-for-operating-a-large-scale-recommender-system-95bbe195a841">Article</a></p></li>
+<li><p>Netflix Engineering. (2023). “Foundation Model for Personalized Recommendation.” <em>Netflix Tech Blog</em>. <a href="https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39">Article</a></p></li>
+<li><p>Netflix Engineering. (2020). “Maestro: Netflix’s Workflow Orchestrator.” <em>Netflix Tech Blog</em>. <a href="https://netflixtechblog.com/maestro-netflixs-workflow-orchestrator-ee13a06f9c78">Article</a></p></li>
+<li><p>Uber Engineering. (2017). “Meet Michelangelo: Uber’s Machine Learning Platform.” <em>Uber Engineering Blog</em>. <a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Article</a></p></li>
+<li><p>Uber Engineering. (2022). “DeepETA: How Uber Predicts Arrival Times Using Deep Learning.” <em>Uber Blog</em>. <a href="https://www.uber.com/blog/deepeta-how-uber-predicts-arrival-times/">Article</a></p></li>
+<li><p>Uber Engineering. (2021). “Palette Meta Store Journey.” <em>Uber Blog</em>. <a href="https://www.uber.com/blog/palette-meta-store-journey/">Article</a></p></li>
+<li><p>Airbnb Engineering. (2018). “Customized Regression Model for Airbnb Dynamic Pricing.” <em>KDD 2018</em>. <a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Paper</a></p></li>
+<li><p>Zalando Research. (2017). “Practical Lessons from Developing a Large-Scale Recommender System at Zalando.” <em>RecSys 2017</em>. <a href="https://dl.acm.org/doi/10.1145/3109859.3109897">Paper</a></p></li>
+<li><p>Stitch Fix Engineering. (2023). “Accelerating AI: Implementing Multi-GPU Distributed Training for Personalized Recommendations.” <em>Multithreaded Blog</em>. <a href="https://multithreaded.stitchfix.com/blog/2023/06/08/distributed-model-training/">Article</a></p></li>
+<li><p>McKinsey Digital. (2024). “MLOps so AI can scale.” <em>McKinsey &amp; Company</em>. <a href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/mlops-so-ai-can-scale">Article</a></p></li>
+<li><p>Google Cloud. (2024). “How L’Oréal’s tech accelerator built its end-to-end MLOps platform.” <em>Google Cloud Blog</em>. <a href="https://cloud.google.com/blog/products/ai-machine-learning/how-loreals-tech-accelerator-built-its-end-to-end-mlops-platform">Article</a></p></li>
+<li><p>Galileo AI. (2024). “A Guide to Reliable ML Observability to Prevent 85% of Production Failures.” <em>Galileo AI Blog</em>. <a href="https://galileo.ai/blog/ml-observability-framework">Article</a></p></li>
+<li><p>OpenAI. (2025). “Introducing gpt-realtime and Realtime API updates for production voice agents.” <em>OpenAI Blog</em>. <a href="https://openai.com/index/introducing-gpt-realtime/">Article</a></p></li>
+</ul>
+<section id="tools-and-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="tools-and-documentation">Tools and Documentation</h3>
+<ul>
+<li><a href="https://mlflow.org/docs/latest/index.html">MLflow Documentation</a> - Experiment tracking and model registry</li>
+<li><a href="https://dvc.org/doc">DVC Documentation</a> - Data version control</li>
+<li><a href="https://wandb.ai/site/guides">Weights &amp; Biases Guides</a> - Experiment tracking</li>
+<li><a href="https://docs.feast.dev/">Feast Documentation</a> - Feature store framework</li>
+<li><a href="https://www.tecton.ai/blog/">Tecton Blog</a> - Feature store architecture</li>
+<li><a href="https://www.evidentlyai.com/blog">Evidently AI Blog</a> - ML monitoring and observability</li>
+<li><a href="https://whylabs.ai/blog">WhyLabs Blog</a> - Data quality monitoring</li>
+</ul>
 </section>
 </section>
-<section id="tv-show" class="level3">
-<h3 class="anchored" data-anchor-id="tv-show">TV Show</h3>
-<section id="pluribus" class="level5">
-<h5 class="anchored" data-anchor-id="pluribus">Pluribus</h5>
-<p>Pluribus explores alternative forms of communication and the meaning of community through a really interesting lens. I find the idea of a hivemind compelling, and many of the issues the show raises feel very relevant to current AI adoption. Like an LLM, the hive operates with explicit guardrails meant to prevent violence or harm to living beings. At the same time, it finds ways to work around those constraints through emotional manipulation and underhanded strategies to gain control over characters who remain unjoined.</p>
-<p>The parallels to sycophancy in AI are clear. As more people turn to AI systems for emotional support or decision-making, that tendency becomes increasingly troubling. With AI products becoming more monetised, for example through companies like OpenAI moving toward advertising models, I worry there will be less incentive to actively reduce sycophancy or strengthen existing protections.</p>
-<p><img src="../media/jan-2026/tv.jpg" class="img-fluid" style="width:100.0%"></p>
+<section id="the-failure-rate-nobody-talks-about" class="level2">
+<h2 class="anchored" data-anchor-id="the-failure-rate-nobody-talks-about">The Failure Rate Nobody Talks About</h2>
+<p>A recent analysis found that 85% of machine learning projects never deliver business value in production (<a href="https://galileo.ai/blog/ml-observability-framework">Galileo</a>). That number should be shocking, but if you’ve spent time in the industry, it probably isn’t. You’ve seen the pattern: a team spends months on a model, the accuracy metrics look strong, leadership gets excited, and then the project stalls somewhere between “working prototype” and “deployed system.” Or it launches, degrades quietly, and gets shut down a year later when someone finally audits it.</p>
+<p>The problem isn’t that machine learning doesn’t work. The problem is that most organizations have no idea how to run it in production. They’ve hired data scientists, bought cloud compute, maybe even acquired some promising startups. What they haven’t done is build the operational infrastructure that turns experimental models into reliable systems. The industry has started calling this infrastructure MLOps, a name that doesn’t do justice to how important it is.</p>
 </section>
+<section id="where-things-go-wrong" class="level2">
+<h2 class="anchored" data-anchor-id="where-things-go-wrong">Where Things Go Wrong</h2>
+<p>The most common failure isn’t a bad algorithm. It’s a good model that slowly stops working because nobody’s watching it.</p>
+<p>Machine learning models are trained on historical data, but the world doesn’t stay still. Customer preferences shift. Competitors change their pricing. Fraud patterns evolve. A recommendation model trained on last year’s behavior might be confidently suggesting products that nobody wants anymore. Zalando documented this happening to their own systems; accuracy degraded substantially before anyone noticed, and by then the user experience damage was done (<a href="https://dl.acm.org/doi/10.1145/3109859.3109897">Zalando</a>).</p>
+<p>The second class of failures is more subtle. During training, a model learns from features computed by one pipeline. In production, those same features get computed by a different system, often built by a different team. Small inconsistencies creep in. A timestamp gets parsed differently. A null value gets handled differently. The model sees data that doesn’t quite match what it learned from, and its predictions suffer. Uber built their entire Michelangelo platform largely to eliminate this problem, which tells you how serious it is (<a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Uber</a>).</p>
+<p>Then there’s the reproducibility problem, which tends to bite at the worst times. Someone needs to retrain a model that’s been running for a year. The original data scientist has left. The notebook they used references data that’s been moved, dependencies that have been updated, and parameters that were tweaked by hand and never recorded. Reconstructing the model becomes archaeology. I’ve watched teams spend weeks trying to reproduce results that took days to generate originally.</p>
 </section>
-<section id="video-essay" class="level3">
-<h3 class="anchored" data-anchor-id="video-essay">Video Essay</h3>
-<section id="disneys-living-characters-a-broken-promise---defunctland" class="level5">
-<h5 class="anchored" data-anchor-id="disneys-living-characters-a-broken-promise---defunctland">Disney’s Living Characters: A Broken Promise - Defunctland</h5>
-<p>Disney has long positioned itself as an innovator, and this video essay traces decades of R&amp;D around its idea of “Living Characters.” Yes, it is over four hours long. But it goes into incredibly detailed and thoughtful discussion of the logistical and technical challenges involved in creating live, responsive character experiences using robots and animatronics.</p>
-<p>I enjoyed how the technology developed was framed primarily as an experience rather than as a tool. Designing systems meant to imitate life, be emotionally coherent, and safe for unpredictable human interaction requires a very different set of constraints than most technical projects. That perspective made me rethink how I approach design more generally, especially in contexts where users are not just interacting with a system, but forming expectations and emotional responses to it.</p>
-<p>The essay also discusses an experimental AI fortune-teller robot called Destini, which used relatively simple computer vision to respond live to guests. Although it was never deployed in parks, it raises interesting questions about how AI could be incorporated into character-based experiences in the future.</p>
-<p>Disney’s intense focus on protecting its IP makes this especially complex. Any character AI would need to be carefully constrained to avoid breaking immersion, violating brand expectations, or creating negative guest experiences. In that sense, the challenges Disney faced feel closely related to broader questions about deploying AI in emotionally charged, public-facing environments like healthcare.</p>
-<p><img src="../media/jan-2026/video.jpg" class="img-fluid" style="width:100.0%"></p>
+<section id="what-operational-maturity-looks-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-operational-maturity-looks-like">What Operational Maturity Looks Like</h2>
+<p>The organizations that consistently get value from ML have built infrastructure that most companies lack.</p>
+<p>They version everything, not just code. Training data, model weights, feature definitions, hyperparameters, environment configurations. The goal is to answer a simple question: what exactly produced this prediction? If you can’t reconstruct a model’s lineage on demand, you can’t audit decisions, debug production issues, or reliably retrain. Tools like DVC and MLflow help, but plenty of organizations still haven’t adopted them systematically (<a href="https://dvc.org/doc">DVC</a>, <a href="https://mlflow.org/docs/latest/index.html">MLflow</a>).</p>
+<p>They’ve centralized feature management. Once you’re running more than a handful of models, having each team compute its own features becomes a liability. Definitions diverge. Training and serving get out of sync. Bugs become nearly impossible to trace. Feature stores provide a single source of truth, and the good ones serve features with low enough latency for real-time inference while maintaining exact parity with offline training. Uber’s Palette handles millions of lookups per second this way (<a href="https://www.uber.com/blog/palette-meta-store-journey/">Palette</a>).</p>
+<p>They monitor at multiple levels. Traditional application monitoring, the kind that tracks latency and error rates, isn’t enough. You also need to track the distribution of predictions, the drift in input features, and actual model accuracy when ground truth becomes available. Airbnb learned this when they discovered their pricing models were systematically overpricing certain neighborhoods. Individual predictions looked reasonable; only business-level monitoring revealed the aggregate problem (<a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Airbnb</a>).</p>
 </section>
+<section id="the-part-that-isnt-about-technology" class="level2">
+<h2 class="anchored" data-anchor-id="the-part-that-isnt-about-technology">The Part That Isn’t About Technology</h2>
+<p>The tools exist. The harder problem is organizational.</p>
+<p>Data scientists and engineers have different objectives. Data scientists want to maximize model performance. Engineers want systems that are reliable, maintainable, and don’t page them at 3am. These goals aren’t always compatible, and without deliberate effort to align them, the handoff from research to production becomes adversarial. I’ve seen promising models die in that gap because neither side felt ownership of getting them across.</p>
+<p>Some companies have addressed this by creating dedicated platform teams that build ML infrastructure for everyone else. Others have invested in a hybrid role, the ML engineer, who can work on both sides of the divide. What doesn’t work is treating production deployment as someone else’s problem.</p>
 </section>
+<section id="large-language-models-have-made-this-urgent" class="level2">
+<h2 class="anchored" data-anchor-id="large-language-models-have-made-this-urgent">Large Language Models Have Made This Urgent</h2>
+<p>LLMs compress timelines and raise stakes. Organizations expect to deploy AI capabilities in weeks now, not quarters. The models power customer-facing products with failure modes we’re still learning to handle: hallucinations, prompt injection, outputs that sound authoritative but are wrong. They require specialized infrastructure for inference at scale.</p>
+<p>The operational challenges differ from traditional ML. There’s less focus on training and more on prompt engineering, fine-tuning, and figuring out how to evaluate outputs that don’t have clean right-or-wrong answers. But the core lesson is the same: the gap between “working demo” and “production system” is where most initiatives fail.</p>
 </section>
-<section id="what-i-want-to-do-next" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-want-to-do-next">What I Want To Do Next</h2>
-<section id="participate-in-the-berkeley-civil-innovation-challenge" class="level3">
-<h3 class="anchored" data-anchor-id="participate-in-the-berkeley-civil-innovation-challenge">Participate in the Berkeley Civil Innovation Challenge</h3>
-<p>At the start of February, I’m participating in the inaugural cohort of the <a href="https://bigideascontest.org/cic/">Berkeley Civil Innovation Challenge</a> on the Housing Access &amp; Awareness track. It will be a seven-day, in-person design sprint focused on developing innovative solutions to urgent civic challenges facing the City of Berkeley.</p>
+<section id="the-compounding-advantage" class="level2">
+<h2 class="anchored" data-anchor-id="the-compounding-advantage">The Compounding Advantage</h2>
+<p>The 85% failure rate isn’t distributed evenly. Organizations with mature operations deploy models faster, catch problems earlier, and build institutional knowledge that compounds. Those without keep investing in data science while watching projects stall.</p>
+<p>The gap will widen. As ML becomes infrastructure rather than experiment, the ability to operate it reliably becomes the bottleneck. Companies that solve MLOps will be able to use AI. Everyone else will keep running pilots.</p>
 </section>
-<section id="create-stories-for-mandarin-characters" class="level3">
-<h3 class="anchored" data-anchor-id="create-stories-for-mandarin-characters">Create Stories for Mandarin Characters</h3>
-<p>I’d like to explore whether I can train or prompt a model to generate short stories to help me remember Mandarin characters more effectively. When I was learning Mandarin during my time at the University of Hong Kong, my professor was really good at breaking characters down into components to make them easier to remember and write.</p>
-<p>For example, the word for Chinese language in Mandarin is 汉语 (Hànyǔ). I remember the first character because it includes the water radical and a component that looks like a fish, which I associate with the Han River and early Chinese civilisation. The second character includes the speech radical, what looks like a mouth, and the character for five which helps reinforce that it relates to spoken language and the five tones of Mandarin.</p>
-<p>It would be interesting to see if I could generate similar mnemonic stories for the 300+ characters in the HSK 1 list and integrate them into my flashcards for study.</p>
-</section>
-<section id="continue-work-on-private-social-media-project" class="level3">
-<h3 class="anchored" data-anchor-id="continue-work-on-private-social-media-project">Continue Work on Private Social Media Project</h3>
-<p>I want to deploy my private social media project and start using it with friends and family.</p>
-</section>
-<section id="finish-crochet-circles" class="level3">
-<h3 class="anchored" data-anchor-id="finish-crochet-circles">Finish Crochet Circles</h3>
-<p>I started this crochet project a long time ago and need to finally finish it. It’s tricky because circles are difficult to join in crochet, and each connection point requires improvising a way to fill the gaps. It originally functioned as a hot water bottle cover when I lived in Edinburgh and was constantly cold, but I think turning it into a wall hanging might make more sense now.</p>
-<p><img src="../media/jan-2026/crochet.jpg" class="img-fluid" style="width:100.0%"></p>
-</section>
-</section>
-<section id="image-credits" class="level2">
-<h2 class="anchored" data-anchor-id="image-credits">Image Credits</h2>
-<p><a href="https://www.yokogaomag.com/editorial/junji-ito-horror">Manga</a></p>
-<p><a href="https://moviemezzanine.com/remembering-takao-saito-and-the-castle-attack-in-akira-kurosawas-ran/">Film</a></p>
-<p><a href="https://www.polygon.com/pluribus-finale-reveals-all-about-the-hivemind/">TV Show</a></p>
-<p><a href="https://insidethemagic.net/2011/09/disney-imagineers-use-amazing-destini-to-further-audio-animatronics-research-at-2011-d23-expo/">Video Essay</a></p>
+<section id="references-1" class="level2">
+<h2 class="anchored" data-anchor-id="references-1">References</h2>
+<ul>
+<li>Sculley, D., et al.&nbsp;(2015). “Hidden Technical Debt in Machine Learning Systems.” <em>NeurIPS</em>. <a href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Paper</a></li>
+<li>Netflix Engineering. (2021). “RecSysOps.” <a href="https://netflixtechblog.medium.com/recsysops-best-practices-for-operating-a-large-scale-recommender-system-95bbe195a841">Article</a></li>
+<li>Uber Engineering. (2017). “Michelangelo.” <a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Article</a></li>
+<li>Uber Engineering. (2021). “Palette.” <a href="https://www.uber.com/blog/palette-meta-store-journey/">Article</a></li>
+<li>Airbnb Engineering. (2018). “Dynamic Pricing.” <a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Paper</a></li>
+<li>Zalando Research. (2017). “Large-Scale Recommender System.” <a href="https://dl.acm.org/doi/10.1145/3109859.3109897">Paper</a></li>
+<li>Galileo AI. (2024). “ML Observability.” <a href="https://galileo.ai/blog/ml-observability-framework">Article</a></li>
+</ul>
+<section id="tools" class="level3">
+<h3 class="anchored" data-anchor-id="tools">Tools</h3>
+<ul>
+<li><a href="https://mlflow.org/docs/latest/index.html">MLflow</a>, <a href="https://dvc.org/doc">DVC</a> - Versioning and tracking</li>
+<li><a href="https://docs.feast.dev/">Feast</a> - Feature store</li>
+<li><a href="https://www.evidentlyai.com/blog">Evidently AI</a>, <a href="https://whylabs.ai/blog">WhyLabs</a> - Monitoring</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

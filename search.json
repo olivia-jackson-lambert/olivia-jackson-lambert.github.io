@@ -11,7 +11,231 @@
     "href": "project/projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n\nClassifying particle types from liquid argon detector images using convolutional neural networks.\n\n\n\n\n\nNo matching items"
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMulti-Task Sentence Transformer for Receipt Processing\n\n\nBuilding a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.\n\n\n\n\n\n\n\n\n\n\n\n\nHigh Energy Particle CNN Classifier\n\n\nClassifying particle types from liquid argon detector images using convolutional neural networks.\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project classifies particle types (electrons, positrons, muons, pions, and protons) from liquid argon time projection chamber detector images using convolutional neural networks. Building on the MicroBooNE Collaboration’s approach [1], the model learns visual patterns directly from the data rather than relying on hand-engineered physics rules. Through systematic hyperparameter optimization focused on learning rate scheduling, the final model achieves 89.1% validation accuracy.\nSource code: github.com/olivia-jackson-lambert/high-energy-particle-classifier"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Particle Types in the Dataset",
+    "text": "Particle Types in the Dataset\nThis dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Example Particle Tracks Across the Momentum Range",
+    "text": "Example Particle Tracks Across the Momentum Range\nThe figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each row shows one of three detector projections (X–Y, Y–Z, Z–X).\nHigher-mass particles produce shorter, denser tracks, while lighter particles travel farther and scatter more. These subtle visual differences are what the CNN learns to distinguish."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Truth-Level Feature Distributions",
+    "text": "Truth-Level Feature Distributions\nEach detector image comes with kinematic and spatial features that provide physical context for the particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero since particles are equally likely to move in any direction. Total momentum is defined as \\(p = \\sqrt{p_x^2 + p_y^2 + p_z^2}\\).\nThe production coordinates \\((x, y, z)\\) are bounded and approximately uniform, reflecting the detector geometry."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#architecture",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#architecture",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Architecture",
+    "text": "Architecture\nThe model uses a convolutional neural network with three conv blocks, each containing two convolutional layers with batch normalization and ReLU activation. After each block, max pooling reduces spatial dimensions while dropout provides regularization. The feature maps start at 16 filters and double with each block (16 → 32 → 64), allowing the network to learn increasingly abstract representations of particle tracks.\nGlobal average pooling compresses the final feature maps into a fixed-length vector, which feeds into a small dense layer before the 5-way softmax classifier. This architecture balances expressiveness with efficiency. It is simple enough to train quickly, but with enough capacity to capture the visual patterns that distinguish particle types."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Initial Model Performance",
+    "text": "Initial Model Performance\n\nTraining Dynamics\nThe model learns quickly, with training and validation accuracy tracking closely. The final training accuracy is 82.9% and validation accuracy is 82.4%, suggesting minimal overfitting.\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\nElectrons, positrons, and protons are classified with high accuracy, while muons and pions show more confusion with other particle types. This may be due to particle tracks with similar energies looking visually alike."
+  },
+  {
+    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
+    "href": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
+    "title": "High Energy Particle CNN Classifier",
+    "section": "Performance Evaluation",
+    "text": "Performance Evaluation\n\nTraining Dynamics\nThe final model trained for 14 epochs with learning rate plateau scheduling. Training was stable throughout, with the learning rate reducing from 1e-3 to 2e-4 at epoch 9, and again to 4e-5 at epoch 12 as validation loss plateaued. The model achieved peak validation accuracy of 89.1% at epoch 10, with training and validation curves remaining close, indicating good generalization without overfitting.\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\nThe final model achieves 89.1% validation accuracy - a 6.7 percentage point improvement over the baseline. The confusion matrix shows much better distinction between muons and pions, which were the most challenging classes initially.\n\n\n\n\n\nExample predictions show the model correctly classifying particles across different momentum ranges and track morphologies."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html",
+    "href": "articles/articles/mlops-future-data-science.html",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-85-problem",
+    "href": "articles/articles/mlops-future-data-science.html#the-85-problem",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The 85% Problem",
+    "text": "The 85% Problem\nMost machine learning projects fail. Not because the algorithms don’t work, but because organizations can’t operationalize them. A 2024 analysis found that 85% of ML initiatives never deliver business value in production (Galileo), a staggering figure for technology that many companies are betting their futures and resources on.\nThe pattern is familiar to anyone who’s worked in data science. A team spends months developing a model. The metrics look perfect, the stakeholders are excited, and six months from now everyone will have quietly moved on, the model still trapped in a Jupyter notebook. The graveyard of promising models is vast.\nThis isn’t a talent problem or a tools problem. It’s an infrastructure problem. The discipline that addresses it, MLOps, has become the difference between organizations that extract value from ML and those that don’t."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-problem",
+    "href": "articles/articles/mlops-future-data-science.html#the-problem",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The Problem",
+    "text": "The Problem\n\nSomewhere in your organization, a data scientist is building a model that will never see the light of day. The metrics look perfect, the stakeholders are excited, and six months from now everyone will have quietly moved on, the model still trapped in a Jupyter notebook. This is not a failure of machine learning. It is a failure of infrastructure, of process, and the complexities between “it works on my laptop” and “it works at scale, reliably, for millions of users.”\nConsider what happens when models do make it to production. An e-commerce company spends months developing a recommendation system that achieves strong performance on test sets and shows promising results in A/B testing, but when deployed, the model’s performance degrades significantly within weeks. The training data might have been collected during a holiday season, causing the model to learn patterns specific to that period that don’t generalize to normal shopping behavior. Without proper monitoring and drift detection, this degradation goes unnoticed until customer complaints about irrelevant recommendations start piling up. This scenario, documented in case studies from companies like Zalando and Netflix, illustrates how operational constraints often cause more production failures than algorithmic problems themselves (Zalando case study, Netflix RecSysOps).\nWhen models do see the light of day, they often fail in ways that take months to notice. An e-commerce company I spoke with spent the better part of a year developing a recommendation system. Test performance was strong. A/B results looked promising. Within weeks of deployment, the whole thing started falling apart. The culprit was banal: the training data had been collected during a holiday season, and the model had learned shopping patterns that evaporated once normal life resumed. Without drift detection, nobody noticed until customer complaints about bizarre recommendations reached a critical mass. Case studies from Zalando and Netflix tell similar stories. Operational failures, it turns out, cause more production problems than algorithmic ones (Zalando case study, Netflix RecSysOps)."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#what-makes-ml-different",
+    "href": "articles/articles/mlops-future-data-science.html#what-makes-ml-different",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "What Makes ML Different",
+    "text": "What Makes ML Different\n\nYou could describe MLOps as DevOps for machine learning, but that undersells the strangeness of what we’re dealing with. Traditional software is, in a sense, honest. You write code, you test it, you deploy it, and it does what you told it to do. Machine learning systems are different. They are shaped by data in ways that make them unpredictable, even to the people who built them.\nThe same code can produce wildly different outputs as data distributions shift. A model that worked brilliantly yesterday might fail tomorrow, and nothing in the codebase will have changed. Performance degrades as the real world drifts away from the world captured in training data. Random seeds, hardware quirks, and dependency versions conspire to make reproducibility a constant struggle. And in regulated industries, you need explainability and audit trails that traditional software never demanded.\nThe seminal paper on this subject, “Hidden Technical Debt in Machine Learning Systems,” put it starkly: the ML code itself represents only a tiny fraction of a production system’s complexity. The rest is data collection, feature extraction, configuration, serving infrastructure, and monitoring. The model is the easy part (Sculley et al., 2015).\nUber learned this the hard way with their ETA predictions. Models trained on San Francisco traffic failed catastrophically in Mumbai. Models that worked in January degraded by March as patterns shifted. Their solution was to build automated pipelines that monitor accuracy and trigger retraining without human intervention, a system that required feature stores, model registries, and testing infrastructure that rivals anything in traditional software engineering (Uber Michelangelo, DeepETA)."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#why-it-matters-now",
+    "href": "articles/articles/mlops-future-data-science.html#why-it-matters-now",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "Why It Matters Now",
+    "text": "Why It Matters Now\n\nFor years, machine learning lived in the back office. It powered internal analytics, batch processing, things that happened overnight while everyone slept. That era is over. ChatGPT handles hundreds of millions of conversations every week. Voice assistants respond in real time. Recommendation algorithms shape what billions of people see, read, and buy. Search engines have started generating answers instead of just pointing to them.\nWhen machine learning moves from analytics to product, everything changes. A notebook model can take hours to run. A consumer product must respond in milliseconds. A notebook model can fail quietly. A consumer product that fails visibly destroys trust. A notebook model can be retrained whenever someone gets around to it. A consumer product must adapt continuously without going dark.\nNetflix processes billions of interactions daily while simultaneously retraining the models that power recommendations. This requires coordinating hundreds of models across multiple services, a feat of orchestration that would have seemed absurd a decade ago (Netflix Maestro, Netflix foundation model).\nLarge language models have made all of this more urgent. They power chatbots and coding assistants and creative tools, but they also introduce failure modes we’re only beginning to understand: hallucinations, prompt injection attacks, outputs that seem confident but are completely wrong. LLMOps, as practitioners have started calling it, focuses less on training from scratch and more on prompt engineering, fine-tuning, and figuring out how to deploy responsibly (OpenAI Realtime API).\nRegulators have noticed. The EU AI Act now requires organizations to demonstrate model governance, explainability, and auditability. Research suggests that 85% of ML projects fail to deliver business value in production, often because of silent failures, distribution drift, and pipeline breaks that nobody catches until real damage is done (ML Observability Framework). In consumer-facing applications, these failures aren’t silent at all. Users notice. Revenue suffers."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#what-you-actually-need",
+    "href": "articles/articles/mlops-future-data-science.html#what-you-actually-need",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "What You Actually Need",
+    "text": "What You Actually Need\n\nA startup with one model has different needs than a bank running hundreds of risk models. Still, certain components show up everywhere.\nVersion control needs to extend beyond code. Models, data, configurations, and experiments all need versioning because the relationships between them determine how models behave. Tools like DVC, MLflow, and Weights & Biases can track the full lineage from raw data to deployment. This becomes critical when you need to understand, months later, why a model made a particular decision.\nReproducible environments matter more than people expect. A model trained with TensorFlow 2.8 might produce different outputs when deployed with TensorFlow 2.9, even with identical weights. Changes in numerical precision and optimization algorithms can shift results in subtle ways. Strict containerization and pinned dependencies are the only reliable defense.\nTesting has to happen at multiple levels because ML systems fail in ways traditional software doesn’t. You need unit tests for data processing, integration tests for pipelines, validation tests for data quality and schema drift, performance tests against accuracy thresholds, and infrastructure tests for deployment configurations.\nMonitoring splits into three domains. System monitoring tracks the usual suspects: CPU, memory, latency. Data monitoring watches feature distributions, missing values, schema changes. Model monitoring tracks prediction distributions, accuracy over time, and drift. Tools like Evidently AI and WhyLabs can help, though custom dashboards on Prometheus and Grafana remain common.\n\nAirbnb discovered something subtle about their pricing models: individual predictions looked reasonable, but in aggregate, the system was pricing every property in certain neighborhoods too high during peak periods. Catching this required monitoring not just individual outputs but aggregate patterns and business metrics (Airbnb pricing).\nA model registry centralizes metadata, performance metrics, and approval workflows, making it possible to roll back when something goes wrong. Feature stores solve the problem of teams reimplementing the same feature engineering logic across projects, introducing inconsistencies that are maddening to debug. Uber’s Palette system serves features for both real-time inference and training, ensuring that what the model learned matches what it sees in production (Uber Palette)."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-hard-part",
+    "href": "articles/articles/mlops-future-data-science.html#the-hard-part",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The Hard Part",
+    "text": "The Hard Part\n\nNone of this is primarily a technology problem. The hardest part is organizational.\nData scientists, ML engineers, DevOps engineers, and product managers need to work together in ways that traditional corporate structures actively discourage. Silos that took years to build have to come down. The culture has to shift from “move fast and break things” toward something more like “move deliberately and watch everything.”\nMLOps demands a blend of data science, software engineering, and infrastructure expertise that few individuals possess. Some organizations have responded by creating dedicated ML platform teams that build tooling and infrastructure, freeing data scientists to focus on modeling while platform engineers handle operational complexity.\nPerhaps the deepest challenge is defining what success actually means. Traditional software metrics like uptime and latency don’t capture what matters for ML systems. A recommendation engine might boost click-through rates while trapping users in filter bubbles. A fraud detection system might achieve high accuracy while flagging so many legitimate transactions that customers abandon ship. These tradeoffs require judgment that spans both technical and business domains, and organizations that can’t make those judgments well tend to build systems that optimize for the wrong things."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#getting-started",
+    "href": "articles/articles/mlops-future-data-science.html#getting-started",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "Getting Started",
+    "text": "Getting Started\n\nIf you’re starting from scratch, resist the urge to build everything at once. Version your models and data first. Even basic versioning provides enormous value and creates the foundation for everything else. Add monitoring next, starting simple: prediction distributions, latency, error rates. Pick one manual process and automate it, whether that’s deployment or retraining or testing. Learn from that before expanding.\nThe organizations that succeed tend to start with their biggest pain points rather than with some idealized architecture. MLOps is iterative. You build what you need, discover new problems, and build again."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#why-this-matters",
+    "href": "articles/articles/mlops-future-data-science.html#why-this-matters",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "Why This Matters",
+    "text": "Why This Matters\n\nMLOps is no longer optional. As machine learning moves from research curiosity to production infrastructure, organizations that invest in operational excellence will pull ahead. More importantly, robust operations are becoming a prerequisite for responsible deployment.\nThe models we build now influence loan approvals, medical diagnoses, hiring decisions, and resource allocation at a scale that would have been unimaginable a decade ago. Deploying these systems without proper monitoring, governance, and operational discipline isn’t just bad engineering. It is, in a meaningful sense, reckless.\nThe future of this field isn’t just about building better models. It’s about building models that work reliably, transparently, and ethically once they leave the notebook. MLOps is the bridge that makes that possible."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#references",
+    "href": "articles/articles/mlops-future-data-science.html#references",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "References",
+    "text": "References\n\nSculley, D., et al. (2015). “Hidden Technical Debt in Machine Learning Systems.” Advances in Neural Information Processing Systems, 28. Paper\nNetflix Engineering. (2021). “RecSysOps: Best Practices for Operating a Large-Scale Recommender System.” Netflix Tech Blog. Article\nNetflix Engineering. (2023). “Foundation Model for Personalized Recommendation.” Netflix Tech Blog. Article\nNetflix Engineering. (2020). “Maestro: Netflix’s Workflow Orchestrator.” Netflix Tech Blog. Article\nUber Engineering. (2017). “Meet Michelangelo: Uber’s Machine Learning Platform.” Uber Engineering Blog. Article\nUber Engineering. (2022). “DeepETA: How Uber Predicts Arrival Times Using Deep Learning.” Uber Blog. Article\nUber Engineering. (2021). “Palette Meta Store Journey.” Uber Blog. Article\nAirbnb Engineering. (2018). “Customized Regression Model for Airbnb Dynamic Pricing.” KDD 2018. Paper\nZalando Research. (2017). “Practical Lessons from Developing a Large-Scale Recommender System at Zalando.” RecSys 2017. Paper\nStitch Fix Engineering. (2023). “Accelerating AI: Implementing Multi-GPU Distributed Training for Personalized Recommendations.” Multithreaded Blog. Article\nMcKinsey Digital. (2024). “MLOps so AI can scale.” McKinsey & Company. Article\nGoogle Cloud. (2024). “How L’Oréal’s tech accelerator built its end-to-end MLOps platform.” Google Cloud Blog. Article\nGalileo AI. (2024). “A Guide to Reliable ML Observability to Prevent 85% of Production Failures.” Galileo AI Blog. Article\nOpenAI. (2025). “Introducing gpt-realtime and Realtime API updates for production voice agents.” OpenAI Blog. Article\n\n\nTools and Documentation\n\nMLflow Documentation - Experiment tracking and model registry\nDVC Documentation - Data version control\nWeights & Biases Guides - Experiment tracking\nFeast Documentation - Feature store framework\nTecton Blog - Feature store architecture\nEvidently AI Blog - ML monitoring and observability\nWhyLabs Blog - Data quality monitoring"
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-failure-rate-nobody-talks-about",
+    "href": "articles/articles/mlops-future-data-science.html#the-failure-rate-nobody-talks-about",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The Failure Rate Nobody Talks About",
+    "text": "The Failure Rate Nobody Talks About\nA recent analysis found that 85% of machine learning projects never deliver business value in production (Galileo). That number should be shocking, but if you’ve spent time in the industry, it probably isn’t. You’ve seen the pattern: a team spends months on a model, the accuracy metrics look strong, leadership gets excited, and then the project stalls somewhere between “working prototype” and “deployed system.” Or it launches, degrades quietly, and gets shut down a year later when someone finally audits it.\nThe problem isn’t that machine learning doesn’t work. The problem is that most organizations have no idea how to run it in production. They’ve hired data scientists, bought cloud compute, maybe even acquired some promising startups. What they haven’t done is build the operational infrastructure that turns experimental models into reliable systems. The industry has started calling this infrastructure MLOps, a name that doesn’t do justice to how important it is."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#where-things-go-wrong",
+    "href": "articles/articles/mlops-future-data-science.html#where-things-go-wrong",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "Where Things Go Wrong",
+    "text": "Where Things Go Wrong\nThe most common failure isn’t a bad algorithm. It’s a good model that slowly stops working because nobody’s watching it.\nMachine learning models are trained on historical data, but the world doesn’t stay still. Customer preferences shift. Competitors change their pricing. Fraud patterns evolve. A recommendation model trained on last year’s behavior might be confidently suggesting products that nobody wants anymore. Zalando documented this happening to their own systems; accuracy degraded substantially before anyone noticed, and by then the user experience damage was done (Zalando).\nThe second class of failures is more subtle. During training, a model learns from features computed by one pipeline. In production, those same features get computed by a different system, often built by a different team. Small inconsistencies creep in. A timestamp gets parsed differently. A null value gets handled differently. The model sees data that doesn’t quite match what it learned from, and its predictions suffer. Uber built their entire Michelangelo platform largely to eliminate this problem, which tells you how serious it is (Uber).\nThen there’s the reproducibility problem, which tends to bite at the worst times. Someone needs to retrain a model that’s been running for a year. The original data scientist has left. The notebook they used references data that’s been moved, dependencies that have been updated, and parameters that were tweaked by hand and never recorded. Reconstructing the model becomes archaeology. I’ve watched teams spend weeks trying to reproduce results that took days to generate originally."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#what-operational-maturity-looks-like",
+    "href": "articles/articles/mlops-future-data-science.html#what-operational-maturity-looks-like",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "What Operational Maturity Looks Like",
+    "text": "What Operational Maturity Looks Like\nThe organizations that consistently get value from ML have built infrastructure that most companies lack.\nThey version everything, not just code. Training data, model weights, feature definitions, hyperparameters, environment configurations. The goal is to answer a simple question: what exactly produced this prediction? If you can’t reconstruct a model’s lineage on demand, you can’t audit decisions, debug production issues, or reliably retrain. Tools like DVC and MLflow help, but plenty of organizations still haven’t adopted them systematically (DVC, MLflow).\nThey’ve centralized feature management. Once you’re running more than a handful of models, having each team compute its own features becomes a liability. Definitions diverge. Training and serving get out of sync. Bugs become nearly impossible to trace. Feature stores provide a single source of truth, and the good ones serve features with low enough latency for real-time inference while maintaining exact parity with offline training. Uber’s Palette handles millions of lookups per second this way (Palette).\nThey monitor at multiple levels. Traditional application monitoring, the kind that tracks latency and error rates, isn’t enough. You also need to track the distribution of predictions, the drift in input features, and actual model accuracy when ground truth becomes available. Airbnb learned this when they discovered their pricing models were systematically overpricing certain neighborhoods. Individual predictions looked reasonable; only business-level monitoring revealed the aggregate problem (Airbnb)."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-part-that-isnt-about-technology",
+    "href": "articles/articles/mlops-future-data-science.html#the-part-that-isnt-about-technology",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The Part That Isn’t About Technology",
+    "text": "The Part That Isn’t About Technology\nThe tools exist. The harder problem is organizational.\nData scientists and engineers have different objectives. Data scientists want to maximize model performance. Engineers want systems that are reliable, maintainable, and don’t page them at 3am. These goals aren’t always compatible, and without deliberate effort to align them, the handoff from research to production becomes adversarial. I’ve seen promising models die in that gap because neither side felt ownership of getting them across.\nSome companies have addressed this by creating dedicated platform teams that build ML infrastructure for everyone else. Others have invested in a hybrid role, the ML engineer, who can work on both sides of the divide. What doesn’t work is treating production deployment as someone else’s problem."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#large-language-models-have-made-this-urgent",
+    "href": "articles/articles/mlops-future-data-science.html#large-language-models-have-made-this-urgent",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "Large Language Models Have Made This Urgent",
+    "text": "Large Language Models Have Made This Urgent\nLLMs compress timelines and raise stakes. Organizations expect to deploy AI capabilities in weeks now, not quarters. The models power customer-facing products with failure modes we’re still learning to handle: hallucinations, prompt injection, outputs that sound authoritative but are wrong. They require specialized infrastructure for inference at scale.\nThe operational challenges differ from traditional ML. There’s less focus on training and more on prompt engineering, fine-tuning, and figuring out how to evaluate outputs that don’t have clean right-or-wrong answers. But the core lesson is the same: the gap between “working demo” and “production system” is where most initiatives fail."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#the-compounding-advantage",
+    "href": "articles/articles/mlops-future-data-science.html#the-compounding-advantage",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "The Compounding Advantage",
+    "text": "The Compounding Advantage\nThe 85% failure rate isn’t distributed evenly. Organizations with mature operations deploy models faster, catch problems earlier, and build institutional knowledge that compounds. Those without keep investing in data science while watching projects stall.\nThe gap will widen. As ML becomes infrastructure rather than experiment, the ability to operate it reliably becomes the bottleneck. Companies that solve MLOps will be able to use AI. Everyone else will keep running pilots."
+  },
+  {
+    "objectID": "articles/articles/mlops-future-data-science.html#references-1",
+    "href": "articles/articles/mlops-future-data-science.html#references-1",
+    "title": "Why Your ML Models Aren’t Making It to Production",
+    "section": "References",
+    "text": "References\n\nSculley, D., et al. (2015). “Hidden Technical Debt in Machine Learning Systems.” NeurIPS. Paper\nNetflix Engineering. (2021). “RecSysOps.” Article\nUber Engineering. (2017). “Michelangelo.” Article\nUber Engineering. (2021). “Palette.” Article\nAirbnb Engineering. (2018). “Dynamic Pricing.” Paper\nZalando Research. (2017). “Large-Scale Recommender System.” Paper\nGalileo AI. (2024). “ML Observability.” Article\n\n\nTools\n\nMLflow, DVC - Versioning and tracking\nFeast - Feature store\nEvidently AI, WhyLabs - Monitoring"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html",
+    "href": "reflections/posts/jan-2026-reflections.html",
+    "title": "January 2026",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-created",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-created",
+    "title": "January 2026",
+    "section": "What I Created",
+    "text": "What I Created\n\nThis Website\nThis month I made this website with Quarto. It went through a few iterations before I landed on a relatively minimal design. My first paid job (I was 13, and it was probably not compliant with child labor laws) was building a website for a restaurant on the high street in my hometown. This one turned out much better. Web design has become a lot easier since then.\n\n\nParticle Classifier Project\nI revisited and updated one of my earlier CNN projects, exploring additional hyperparameter optimisation and running new experiments. It was interesting to come back to this work while taking a graduate machine learning course, which has been deepening my understanding of my previous projects.\n\n\nPrivate Social Media Project\nI’ve been exploring web app design by building a social media app for private use. It’s been useful to think more deliberately about user experience and user journeys, rather than focusing purely on technical or data-driven perspectives.\n\n\nVegetables\nI had a huge harvest of tomatoes, basil, and aubergines from my hydroponic tower this month. I made this caponata recipe from Nourishing Amy, and it turned out great!"
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-learned",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-learned",
+    "title": "January 2026",
+    "section": "What I Learned",
+    "text": "What I Learned\n\nMandarin\nMy husband and I have been learning Mandarin as our New Year’s resolution. When we were in high school, he became fluent in Japanese in a few months because he wanted to read Japanese murder mysteries. I’ve studied Mandarin a few times before, at the University of Hong Kong and through the Confucius Institute, but I have significant difficulty processing spoken language. When it comes to learning languages, my mind can feel like a sieve, and I lose skills quickly if I don’t use them regularly.\nThis time, I want to approach it differently by integrating Mandarin into my daily routine through flashcards and writing practice. We’re also doing a weekly session using a textbook from one of my previous courses. It has been fun to revisit, and I’ve found that I’m remembering characters more quickly than I expected.\n\n\n207 ML Concepts\nThis semester in the MIDS program, I’m taking Machine Learning. It’s still early, but I’m enjoying the examples we’ve been introduced to so far, as well as the chance to have my skills tested through different projects. It’s been helpful to revisit familiar ideas in a more formal framework while also being pushed into new ways of thinking about them."
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
+    "title": "January 2026",
+    "section": "What I Reflected on",
+    "text": "What I Reflected on\n\nAlbum\n\nOil of Every Pearl’s Un-Insides - SOPHIE\nWhen I got a record player a few years ago, this was one of the first albums I bought, and I still come back to it often. The whole album feels ahead of its time, but it still balances a certain ancient, human quality. Lately I’ve been listening a lot to “Is It Cold in the Water?”, and depending on where and how I hear it, it becomes a completely different experience. On vinyl it sounds eerie, sad, and lonely, like an old god being forced to adapt to the times. But when I’m walking somewhere with headphones, it transforms into a story about seeking growth and taking the plunge, pushing through apprehension, and moving past the inertia that stems from fearing change.\nThis month especially, I’ve enjoyed returning to it because it keeps circling themes of consciousness and the relationship between the physical body, the mind, and the spirit, which are themes I’ve been exploring through other media and writing. A new year brings new challenges and unfamiliar territory, and this album understands both the pain and the euphoria of becoming someone new.\n\n\n\n\nArticle\n\nAn Act of Cosmic Sabotage - Ross Andersen\nI was disappointed to learn that the Mars Sample Return mission associated with Perseverance is being defunded. Sample return has long been understood as the necessary next step in Mars exploration and astrobiology. Without it, much of the scientific value of in situ rover work remains unresolved, and years of planning, engineering, and data collection risk being left incomplete.\nBoth my bachelor’s and master’s theses focused on applying machine learning and statistical methods to Mars exploration. My undergraduate work, in particular, centred on diagnosing hydration states of magnesium salts using Raman spectroscopy, which is the same technique Perseverance uses for in situ analysis. Sample return would allow much higher resolution laboratory analysis, which would be incredibly informative for future missions and work.\nThe current administration’s continued defunding of scientific programmes at NASA will likely have effects that extend well beyond a single mission. Fields that depend on long-term continuity, like astrobiology, are especially vulnerable, and the consequences of these decisions will be felt for decades rather than years.\n\n\n\n\nArtwork\n\nTe Quiero Inti - Miguel Arzabe\nI saw this piece during my recent visit to the de Young Museum and I was drawn to the texture the artist creates by weaving strips of canvas together. The technique is inspired by Bolivian weaving, and it gives the work a very tactile, lively feel. I also love that it’s so personal: the piece celebrates the artist’s daughter, who’s named after Inti, the Quechua sun god.\n\n\n\n\nBook\n\nData Detective - Tim Harford\nFor my Research Design class last semester, we read Data Detective. I learned a lot from it, including that Florence Nightingale created polar diagrams. I honoured her in my own work by making my first visualization a polar diagram.\nAs someone with a physics background, my training has predisposed me to put a lot of weight on data and numerical outcomes. Physics experiments are often fairly clean-cut, and relationships are usually well enough understood to directly connect theory and evidence. This book was a good reminder to approach statistics and data with skepticism, especially when definitions are not precise, as is often the case with surveys and other forms of human data collection.\n\n\n\n\nManga\n\nUzumaki - Junji Ito\nI visited the Manga exhibition at the de Young this month, and it inspired me to return to reading Junji Ito’s Uzumaki. Uzumaki is a horror manga about spirals. You may think, spirals? What’s scary about spirals? But let me assure you, Junji Ito can do some pretty twisted things with the motif of spirals. He manages to translate a sense of doom and rising tension about something that shouldn’t be horrifying. Plus the art is just so cool.\n\n\n\n\nFilm\n\nRan - Akira Kurosawa\nI have been obsessed with Akira Kurosawa since I saw Dreams last year at The Roxie Theatre. I then watched Ran with my parents when they visited last March, and later ended up buying a ticket to the Akira Kurosawa four-movie event in September.\nThey didn’t like the movie much. It was subtitled, and they didn’t bring their glasses. I loved it, and I wanted to watch it again this January because of how the film explores rebirth through the augmentation of power, and the tension between flattery and truth. It feels especially relevant in the current climate, where yes men are raised to the highest ranks of government.\nHidetora is an interesting character, because he is both a victim and perpertrator of violence. Until this point in time, he has been insulated from the pain he causes others, because of his station in life and physicality. But age strips him of this, and he is finally forced to confront his own hubris, especially when he encounters a victim of one of his expansionist campaigns, a man he blinded, and whose family he destroyed.\nI also love a great battle scene, and this has one of the best I’ve seen. Red and yellow flags converge and the ground is so dark it barely feels like Earth anymore.\n\n\n\n\nMemory\n\nCambodia 2020\nWhen I think of new years and new beginnings, a strong memory I have is of watching the sunrise at 4am over Angkor Wat, stumbling over jagged edges in the dark, disoriented on three hours of sleep while solo travelling. I went to Siem Reap in January 2020 and stayed with Sophat, a tuk-tuk driver and Airbnb host who rented out one of the rooms in his family home to me. I ate some incredible fruit on that trip.\nThe whole experience has a haze to it in my memory, probably because that first day I was so sleep-deprived that everything felt slow and slightly unreal. I’ve always been attracted to places of religion, because they often hold the history and power of a community, and they’re monuments to art and divinity. Angkor Wat is huge and magical, and Mother Nature is always trying to reclaim and reintegrate it into the environment. Roots push the stones apart (tripping hazard, beware), and huge trees break through, or sometimes even support, the structures.\n\n\n\n\n\nTV Show\n\nPluribus\nPluribus explores alternative forms of communication and the meaning of community through a really interesting lens. I find the idea of a hivemind compelling, and many of the issues the show raises feel very relevant to current AI adoption. Like an LLM, the hive operates with explicit guardrails meant to prevent violence or harm to living beings. At the same time, it finds ways to work around those constraints through emotional manipulation and underhanded strategies to gain control over characters who remain unjoined.\nThe parallels to sycophancy in AI are clear. As more people turn to AI systems for emotional support or decision-making, that tendency becomes increasingly troubling. With AI products becoming more monetised, for example through companies like OpenAI moving toward advertising models, I worry there will be less incentive to actively reduce sycophancy or strengthen existing protections.\n\n\n\n\nVideo Essay\n\nDisney’s Living Characters: A Broken Promise - Defunctland\nDisney has long positioned itself as an innovator, and this video essay traces decades of R&D around its idea of “Living Characters.” Yes, it is over four hours long. But it goes into incredibly detailed and thoughtful discussion of the logistical and technical challenges involved in creating live, responsive character experiences using robots and animatronics.\nI enjoyed how the technology developed was framed primarily as an experience rather than as a tool. Designing systems meant to imitate life, be emotionally coherent, and safe for unpredictable human interaction requires a very different set of constraints than most technical projects. That perspective made me rethink how I approach design more generally, especially in contexts where users are not just interacting with a system, but forming expectations and emotional responses to it.\nThe essay also discusses an experimental AI fortune-teller robot called Destini, which used relatively simple computer vision to respond live to guests. Although it was never deployed in parks, it raises interesting questions about how AI could be incorporated into character-based experiences in the future.\nDisney’s intense focus on protecting its IP makes this especially complex. Any character AI would need to be carefully constrained to avoid breaking immersion, violating brand expectations, or creating negative guest experiences. In that sense, the challenges Disney faced feel closely related to broader questions about deploying AI in emotionally charged, public-facing environments like healthcare."
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
+    "href": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
+    "title": "January 2026",
+    "section": "What I Want To Do Next",
+    "text": "What I Want To Do Next\n\nParticipate in the Berkeley Civil Innovation Challenge\nAt the start of February, I’m participating in the inaugural cohort of the Berkeley Civil Innovation Challenge on the Housing Access & Awareness track. It will be a seven-day, in-person design sprint focused on developing innovative solutions to urgent civic challenges facing the City of Berkeley.\n\n\nCreate Stories for Mandarin Characters\nI’d like to explore whether I can train or prompt a model to generate short stories to help me remember Mandarin characters more effectively. When I was learning Mandarin during my time at the University of Hong Kong, my professor was really good at breaking characters down into components to make them easier to remember and write.\nFor example, the word for Chinese language in Mandarin is 汉语 (Hànyǔ). I remember the first character because it includes the water radical and a component that looks like a fish, which I associate with the Han River and early Chinese civilisation. The second character includes the speech radical, what looks like a mouth, and the character for five which helps reinforce that it relates to spoken language and the five tones of Mandarin.\nIt would be interesting to see if I could generate similar mnemonic stories for the 300+ characters in the HSK 1 list and integrate them into my flashcards for study.\n\n\nContinue Work on Private Social Media Project\nI want to deploy my private social media project and start using it with friends and family.\n\n\nFinish Crochet Circles\nI started this crochet project a long time ago and need to finally finish it. It’s tricky because circles are difficult to join in crochet, and each connection point requires improvising a way to fill the gaps. It originally functioned as a hot water bottle cover when I lived in Edinburgh and was constantly cold, but I think turning it into a wall hanging might make more sense now."
+  },
+  {
+    "objectID": "reflections/posts/jan-2026-reflections.html#image-credits",
+    "href": "reflections/posts/jan-2026-reflections.html#image-credits",
+    "title": "January 2026",
+    "section": "Image Credits",
+    "text": "Image Credits\nManga\nFilm\nTV Show\nVideo Essay"
+  },
+  {
+    "objectID": "reflections/reflections.html",
+    "href": "reflections/reflections.html",
+    "title": "Reflections",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nJanuary 2026\n\n\n\n\n\n\nJan 31, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "articles/articles.html",
+    "href": "articles/articles.html",
+    "title": "Articles",
+    "section": "",
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhy Your ML Models Aren’t Making It to Production\n\n\n\nMLOps\n\nData Science\n\nMachine Learning Engineering\n\n\n\nWhy MLOps isn’t just DevOps for machine learning—it’s the critical infrastructure that will determine which organizations succeed in the age of AI\n\n\n\nJan 15, 2026\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -63,116 +287,172 @@
     "text": "Writing / Publication\n\nThe need for large sample numbers to demonstrate that Martian environments are lifeless. (2024), Nature Astronomy."
   },
   {
-    "objectID": "articles/articles.html",
-    "href": "articles/articles.html",
-    "title": "Articles",
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
     "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLorem ipsum dolor sit amet,\n\n\n\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut\n\n\n\nJan 2, 2025\n\n\n\n\n\n\nNo matching items"
+    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project implements an end-to-end receipt processing system that combines optical character recognition (OCR) with a multi-task neural network for sentence classification and named entity recognition (NER). The system scans receipt images, extracts text using OCR, and then processes the text with a BGE-M3 transformer backbone to classify sentences and extract entities. By leveraging pre-trained sentence embeddings and joint optimization, the model learns shared representations that benefit both tasks.\nSource code: github.com/olivia-jackson-lambert/sentence-project"
   },
   {
-    "objectID": "reflections/reflections.html",
-    "href": "reflections/reflections.html",
-    "title": "Reflections",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFebruary 2026\n\n\n\n\n\n\nFeb 28, 2026\n\n\n\n\n\n\n\n\n\n\n\nJanuary 2026\n\n\n\n\n\n\nJan 31, 2026\n\n\n\n\n\n\nNo matching items"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#receipt-image-processing",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#receipt-image-processing",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Receipt Image Processing",
+    "text": "Receipt Image Processing\nThe system begins with receipt images captured via camera or uploaded as files. OCR technology extracts text from these images, handling challenges like:\n\nVaried receipt formats: Different store layouts, fonts, and structures\nImage quality: Blurry photos, poor lighting, or low resolution\nText orientation: Rotated or skewed text\nMixed content: Barcodes, logos, and text"
   },
   {
-    "objectID": "reflections/posts/jan-2026-reflections.html",
-    "href": "reflections/posts/jan-2026-reflections.html",
-    "title": "January 2026",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#ocr-implementation",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#ocr-implementation",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "OCR Implementation",
+    "text": "OCR Implementation\nThe project uses Tesseract OCR (via pytesseract) for text extraction, with preprocessing steps to improve accuracy:\n\nImage preprocessing: Grayscale conversion, noise reduction, contrast enhancement\nText detection: Automatic text region detection and orientation correction\nLine segmentation: Splitting OCR output into individual lines and sentences\n\nimport pytesseract\nfrom PIL import Image\nimport cv2\n\ndef preprocess_receipt_image(image_path):\n    \"\"\"Preprocess receipt image for better OCR accuracy\"\"\"\n    img = cv2.imread(image_path)\n    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)\n    # Apply denoising and thresholding\n    denoised = cv2.fastNlMeansDenoising(gray)\n    _, thresh = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)\n    return thresh\n\ndef extract_text_from_receipt(image_path):\n    \"\"\"Extract text from receipt image using OCR\"\"\"\n    processed_img = preprocess_receipt_image(image_path)\n    text = pytesseract.image_to_string(processed_img, config='--psm 6')\n    return text"
   },
   {
-    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-created",
-    "href": "reflections/posts/jan-2026-reflections.html#what-i-created",
-    "title": "January 2026",
-    "section": "What I Created",
-    "text": "What I Created\n\nThis Website\n\n\nParticle Classifier Project\n\n\nPrivate Social Media Project\n\n\nVegetables\nThis recipe was very quick, easy and hearty. I was looking for something that used aubergines, as I had a huge harvest of them from my hydroponic tower.\nBean + Aubergine Caponata"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#text-segmentation",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#text-segmentation",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Text Segmentation",
+    "text": "Text Segmentation\nAfter OCR extraction, the raw text is segmented into sentences using:\n\nRule-based segmentation: Period, newline, and punctuation-based splitting\nSentence boundary detection: Handling abbreviations and decimal numbers\nLine grouping: Combining related lines that belong to the same logical sentence\n\nThe segmented sentences are then tokenized and prepared for the transformer model."
   },
   {
-    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-learned",
-    "href": "reflections/posts/jan-2026-reflections.html#what-i-learned",
-    "title": "January 2026",
-    "section": "What I Learned",
-    "text": "What I Learned\n\nMandarin\n\n\n207 ML Concepts"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#model-choice-bge-m3",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#model-choice-bge-m3",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Model Choice: BGE-M3",
+    "text": "Model Choice: BGE-M3\nThe project uses the BGE-M3 (BAAI General Embedding) model by the Beijing Academy of Artificial Intelligence, selected for its strong performance across multiple NLP tasks. BGE-M3 is optimized for multi-task learning and provides:\n\nGeneralized embeddings: High-quality sentence representations that capture semantic meaning\nEfficient architecture: Lightweight enough for practical applications while maintaining accuracy\nMulti-task optimization: Pre-trained to support diverse NLP tasks simultaneously\nRich token-level representations: Essential for token-level tasks like NER\n\nThe model generates 1024-dimensional embeddings that encode semantic information in a dense vector space, enabling downstream tasks to leverage these rich representations."
   },
   {
-    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
-    "href": "reflections/posts/jan-2026-reflections.html#what-i-reflected-on",
-    "title": "January 2026",
-    "section": "What I Reflected on",
-    "text": "What I Reflected on\n\nAlbum\n\nOIL OF EVERY PEARL’S UN-INSIDES - SOPHIE\nWhen I got a record player a few years ago, this was one of the first albums I bought, and I still come back to it often. The whole album feels ahead of its time, but it still balances a certain ancient, human quality. Lately I’ve been listening a lot to “Is It Cold in the Water?”, and depending on where and how I hear it, it becomes a completely different experience. On vinyl it sounds eerie, sad, and lonely, like an old god being forced to adapt to the times. But when I’m walking somewhere with headphones, it transforms into a story about seeking growth and taking the plunge, pushing through apprehension, and moving past the inertia that stems from fearing change.\nThis month especially, I’ve enjoyed returning to it because it keeps circling themes of consciousness and the relationship between the physical body, the mind, and the spirit, which are themes I’ve been exploring through other media and writing. A new year brings new challenges and unfamiliar territory, and this album understands both the pain and the euphoria of becoming someone new.\n\n\n\n\nArticle\n\nAn Act of Cosmic Sabotage - Ross Andersen\n-tie it back to my Bachelor’s thesis ml model for mars salts\n\n\n\nArtwork\n\nTe Quiero Inti - Miguel Arzabe\nI saw this piece during my recent visit to the de Young Museum and I was drawn to the texture the artist creates by weaving strips of canvas together. The technique is inspired by Bolivian weaving, and it gives the work a very tactile, lively feel. I also love that it’s so personal: the piece celebrates the artist’s daughter, who’s named after Inti, the Quechua sun god.\n\n\n\n\nBook\n\nData Detective\n\n\n\nComic/Manga/Anime\n\nUzumaki - Junji Ito\nI visited the Manga exhibition at the de Young this month, and it inspired me to return to reading Junji Ito’s Uzumaki. Uzumaki is a horror manga about spirals. You may think, spirals? What’s scary about spirals? But let me assure you, Junji Ito can do some pretty twisted things with the motif of spirals. He manages to translate a sense of doom and rising tension about something that shouldn’t be horrifying. Plus the art is just so cool.\n photo credit - https://www.yokogaomag.com/editorial/junji-ito-horror\n\n\n\nFilm\n\nRan - Akira Kurosawa\n Image credit: https://moviemezzanine.com/remembering-takao-saito-and-the-castle-attack-in-akira-kurosawas-ran/\n\nTransformation and rebirth (as a powerless/old man)\nFlattery vs. truth\nSwayed by method of communication instead of content\nThe insulation of the powerful from the violence they inflict\n\n\n\n\nMemory\n\nCambodia 2020\nWhen I think of new years and new beginnings, a strong memory I have is of watching the sunrise at 4am over Angkor Wat, stumbling over jagged edges in the dark, disoriented on three hours of sleep while solo travelling. I went to Siem Reap in January 2020 and stayed with Sophat, a tuk-tuk driver and Airbnb host who rented out one of the rooms in his family home to me. I ate some incredible fruit on that trip.\nThe whole experience has a haze to it in my memory, probably because that first day I was so sleep-deprived that everything felt slow and slightly unreal. I’ve always been attracted to places of religion, because they often hold the history and power of a community, and they’re monuments to art and divinity. Angkor Wat is next level: the sheer size of it is impressive on its own. But what I find most special is the way nature has started reclaiming it and reintegrating it into the environment. Roots push the stones apart (tripping hazard, beware), and huge trees break through, or sometimes even support, the structures. It’s in a unique flux of balancing destruction and preservation.\n\n\n\n\n\nTV Show\n\nPluribus\n\n\n\nVideo Essay\n\nDisney’s Living Characters: A Broken Promise - Defunctland\n Image credit: https://insidethemagic.net/2011/09/disney-imagineers-use-amazing-destini-to-further-audio-animatronics-research-at-2011-d23-expo/"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-embeddings",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-embeddings",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Sentence Embeddings",
+    "text": "Sentence Embeddings\nEach sentence is encoded into a fixed-length vector where semantically similar sentences are positioned close together in the embedding space. The BGE-M3 model processes input text and produces normalized embeddings that capture:\n\nSemantic meaning and context\nSyntactic structure\nDomain-specific patterns\n\nFor a batch of 15 example sentences, the model produces embeddings of shape [15, 1024], where each row represents one sentence’s encoding in the 1024-dimensional space."
   },
   {
-    "objectID": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
-    "href": "reflections/posts/jan-2026-reflections.html#what-i-want-to-do-next",
-    "title": "January 2026",
-    "section": "What I Want To Do Next",
-    "text": "What I Want To Do Next\n\nCreate Stories for Mandarin Characters\n\n\nLearn How to Do a Russian Split\n\n\nParticipate in the Berkeley Civil Innovation Challenge"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-similarity",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-similarity",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Sentence Similarity",
+    "text": "Sentence Similarity\nThe embedding space enables similarity computation between sentences. Cosine similarity measures the angle between embedding vectors, with values close to 1 indicating high semantic similarity and values near 0 indicating dissimilarity.\nThis property is crucial for: - Semantic search: Finding documents or sentences similar to a query - Clustering: Grouping related sentences together - Classification: Using similarity as a feature for downstream tasks"
   },
   {
-    "objectID": "reflections/posts/feb-2026-reflections.html",
-    "href": "reflections/posts/feb-2026-reflections.html",
-    "title": "February 2026",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#clustering-and-visualization",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#clustering-and-visualization",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Clustering and Visualization",
+    "text": "Clustering and Visualization\nUsing K-Means clustering on the embeddings reveals natural groupings of semantically similar sentences. When visualized with t-SNE dimensionality reduction, sentences cluster together based on shared themes, topics, or structures.\nFor receipt processing, this means sentences about products, prices, and store information naturally separate in the embedding space, making classification more effective."
   },
   {
-    "objectID": "articles/articles/test.html",
-    "href": "articles/articles/test.html",
-    "title": "Lorem ipsum dolor sit amet,",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\n      \n    \n  \n\n\n\n  \n\n\n\n\n\n\n\n“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#shared-transformer-backbone",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#shared-transformer-backbone",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Shared Transformer Backbone",
+    "text": "Shared Transformer Backbone\nThe architecture builds on the pre-trained BGE-M3 transformer, which serves as a shared backbone for both tasks. The transformer processes input text and produces:\n\nCLS token embedding: A global sentence representation from the special classification token\nToken-level embeddings: Per-token representations for the entire sequence\n\nThese outputs are routed to two separate task-specific heads that learn specialized patterns for their respective tasks."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "",
-    "text": "Home\n      \n  \n      \n        \n        Projects\n      \n  \n      \n        \n        Articles\n      \n  \n      \n        \n        Visuals\n      \n\n      \n        \n        Reflections\n      \n\n      \n        \n        About\n      \n\n    \n  \n    \n      \n        \n        GitHub\n      \n  \n      \n        \n        LinkedIn\n      \n  \n      \n        \n        Medium\n      \n  \n      \n        \n        Scholar\n      \n  \n      \n        \n        Resume\nThis project classifies particle types (electrons, positrons, muons, pions, and protons) from liquid argon time projection chamber detector images using convolutional neural networks. Building on the MicroBooNE Collaboration’s approach [1], the model learns visual patterns directly from the data rather than relying on hand-engineered physics rules. Through systematic hyperparameter optimization focused on learning rate scheduling, the final model achieves 89.1% validation accuracy.\nSource code: github.com/olivia-jackson-lambert/high-energy-particle-classifier"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-classification-head",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#sentence-classification-head",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Sentence Classification Head",
+    "text": "Sentence Classification Head\nThe classification head categorizes entire sentences into predefined classes (Product Name, Store Name, Price, Other). The architecture consists of:\n\nFirst Linear Layer: Maps the 1024-dimensional CLS embedding to 128 dimensions, reducing dimensionality for efficiency\nReLU Activation: Introduces non-linearity to learn complex patterns while promoting sparse activations\nSecond Linear Layer: Maps to the final number of classes (4 categories)\n\nThe head uses only the CLS token representation, which is trained to capture global sentence meaning during pre-training.\nself.classifier = nn.Sequential(\n    nn.Linear(base_model.config.hidden_size, 128),\n    nn.ReLU(),\n    nn.Linear(128, num_classes)\n)"
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#particle-types-in-the-dataset",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Particle Types in the Dataset",
-    "text": "Particle Types in the Dataset\nThis dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.\n\n\n\n\n\n\n\n\n\n\nParticle\nSymbol\nCharge (e)\nMass (MeV/c²)\nTypical detector signature\n\n\n\n\nElectron\ne⁻\n−1\n0.511\nLight, long, branching tracks\n\n\nPositron\ne⁺\n+1\n0.511\nSimilar topology to electrons\n\n\nMuon\nμ⁻\n−1\n105.7\nLong, straight, penetrating tracks\n\n\nPion\nπ⁺\n+1\n139.6\nModerately long, hadronic tracks\n\n\nProton\np\n+1\n938.3\nShort tracks with dense energy deposition"
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#named-entity-recognition-head",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#named-entity-recognition-head",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Named Entity Recognition Head",
+    "text": "Named Entity Recognition Head\nThe NER head performs token-level classification to identify entities within sentences. Unlike sentence classification, NER requires predictions for each token in the sequence.\nThe architecture is simpler—a single linear layer that maps each token’s hidden state to NER label logits:\nself.ner_head = nn.Linear(base_model.config.hidden_size, num_ner_labels)\nThe model predicts one of five labels per token: - O: Outside entity (not part of any entity) - B-PRODUCT: Beginning of a product name - I-PRODUCT: Inside of a product name - B-PRICE: Beginning of a price entity - I-PRICE: Inside of a price entity\nThis BIO tagging scheme allows the model to identify multi-token entities like “500g Organic Canned Tomatoes” or “$32.66”."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#example-particle-tracks-across-the-momentum-range",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Example Particle Tracks Across the Momentum Range",
-    "text": "Example Particle Tracks Across the Momentum Range\nThe figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each row shows one of three detector projections (X–Y, Y–Z, Z–X).\nHigher-mass particles produce shorter, denser tracks, while lighter particles travel farther and scatter more. These subtle visual differences are what the CNN learns to distinguish."
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#architecture-visualization",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#architecture-visualization",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Architecture Visualization",
+    "text": "Architecture Visualization\nThe diagram below illustrates how input text flows through the transformer backbone and is routed to both task-specific heads:\n\nInput: Tokenized receipt sentences\nTransformer: BGE-M3 processes tokens and produces hidden states\nCLS Token: Extracted for sentence-level classification\nAll Tokens: Used for token-level NER predictions\nOutputs: Classification logits and NER label logits"
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#truth-level-feature-distributions",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Truth-Level Feature Distributions",
-    "text": "Truth-Level Feature Distributions\nEach detector image comes with kinematic and spatial features that provide physical context for the particle trajectories.\nThe momentum components \\(p_x\\), \\(p_y\\), and \\(p_z\\) are symmetric around zero since particles are equally likely to move in any direction. Total momentum is defined as \\(p = \\sqrt{p_x^2 + p_y^2 + p_z^2}\\).\nThe production coordinates \\((x, y, z)\\) are bounded and approximately uniform, reflecting the detector geometry."
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#freezing-strategy",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#freezing-strategy",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Freezing Strategy",
+    "text": "Freezing Strategy\nThe project implements a freezing strategy that balances computational efficiency with task adaptation:\n\nFreezing the Transformer Backbone\nAdvantages: - Only task-specific heads are updated, significantly reducing computational cost - Training is faster since the large transformer parameters remain fixed - Leverages high-quality pre-trained embeddings without modification\nTrade-offs: - Limited adaptation if the target domain differs significantly from pre-training data - May not capture domain-specific nuances in the transformer layers\nFor receipt processing, freezing the backbone is effective because: - BGE-M3 embeddings are general enough to capture receipt text patterns - The task-specific heads can adapt to receipt-specific categories - Computational efficiency is important for practical deployment\n\n\nAlternative Freezing Strategies\nFreezing the entire network: Fastest but least flexible—useful for inference-only scenarios.\nFreezing one task head: Useful when one task is well-learned but the other needs adaptation, though this risks imbalanced learning."
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#architecture",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#architecture",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Architecture",
-    "text": "Architecture\nThe model uses a convolutional neural network with three conv blocks, each containing two convolutional layers with batch normalization and ReLU activation. After each block, max pooling reduces spatial dimensions while dropout provides regularization. The feature maps start at 16 filters and double with each block (16 → 32 → 64), allowing the network to learn increasingly abstract representations of particle tracks.\nGlobal average pooling compresses the final feature maps into a fixed-length vector, which feeds into a small dense layer before the 5-way softmax classifier. This architecture balances expressiveness with efficiency. It is simple enough to train quickly, but with enough capacity to capture the visual patterns that distinguish particle types."
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#transfer-learning",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#transfer-learning",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Transfer Learning",
+    "text": "Transfer Learning\n\nPre-Trained Model Selection\nBGE-M3 was chosen because it: - Supports multi-task learning natively - Provides both sentence-level and token-level representations - Is efficient and scalable for production use - Was trained on diverse text, making it suitable for receipt processing\n\n\nLayer Freezing Rationale\nIn practice, the transformer backbone is frozen while task-specific heads remain trainable. This approach: - Prevents catastrophic forgetting of general language knowledge - Allows heads to adapt to receipt-specific patterns - Reduces training time and memory requirements - Maintains strong baseline performance from pre-trained embeddings"
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#initial-model-performance",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Initial Model Performance",
-    "text": "Initial Model Performance\n\nTraining Dynamics\nThe model learns quickly, with training and validation accuracy tracking closely. The final training accuracy is 82.9% and validation accuracy is 82.4%, suggesting minimal overfitting.\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\nElectrons, positrons, and protons are classified with high accuracy, while muons and pions show more confusion with other particle types. This may be due to particle tracks with similar energies looking visually alike."
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#dataset-structure",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#dataset-structure",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Dataset Structure",
+    "text": "Dataset Structure\nThe model is designed for receipt text processing, with example sentences like: - “Thank you, your total is: $32.66” - “500g Organic Canned Tomatoes”\nEach training sample contains: 1. Raw sentences: Original text 2. Input IDs: Tokenized input sequences 3. Attention masks: Indicate which tokens are real words vs. padding 4. Classification labels: Sentence-level category (0-3) 5. NER labels: Token-level entity tags (0-4)"
   },
   {
-    "objectID": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
-    "href": "project/projects_files/particle-classifier/particle-classifier.html#performance-evaluation",
-    "title": "High Energy Particle CNN Classifier",
-    "section": "Performance Evaluation",
-    "text": "Performance Evaluation\n\nTraining Dynamics\nThe final model trained for 14 epochs with learning rate plateau scheduling. Training was stable throughout, with the learning rate reducing from 1e-3 to 2e-4 at epoch 9, and again to 4e-5 at epoch 12 as validation loss plateaued. The model achieved peak validation accuracy of 89.1% at epoch 10, with training and validation curves remaining close, indicating good generalization without overfitting.\n\n\n\n\n\n\n\n\n\n\n\nClassification Performance\nThe final model achieves 89.1% validation accuracy - a 6.7 percentage point improvement over the baseline. The confusion matrix shows much better distinction between muons and pions, which were the most challenging classes initially.\n\n\n\n\n\nExample predictions show the model correctly classifying particles across different momentum ranges and track morphologies."
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#forward-pass-design",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#forward-pass-design",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Forward Pass Design",
+    "text": "Forward Pass Design\n\nGPU Acceleration\nThe model and tensors are moved to CUDA when available, enabling parallel computation on GPUs for faster training.\n\n\nMini-Batch Processing\nTraining uses mini-batches to: - Optimize memory usage - Stabilize gradient updates - Enable parallel processing on GPUs\n\n\nTask-Specific Outputs\n\nClassification: Uses only the CLS token embedding for sentence-level prediction\nNER: Uses all token embeddings for sequence-level prediction\n\n\n\nJoint Optimization\nBoth tasks are optimized together: - Losses are computed independently for each head - Total loss is the sum of classification and NER losses - Gradients flow through the shared transformer backbone - This allows shared knowledge to improve both tasks simultaneously\n\n\nGradient Clipping\nGradient clipping prevents exploding gradients that could destabilize multi-task learning, especially important when optimizing multiple objectives simultaneously."
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#evaluation-metrics",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#evaluation-metrics",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Evaluation Metrics",
+    "text": "Evaluation Metrics\nThe training loop tracks: - Classification accuracy: Percentage of correctly classified sentences - Classification F1 score: Weighted F1 to handle class imbalance - NER accuracy: Token-level classification accuracy - Separate loss tracking: Monitors each task’s loss independently to detect task imbalance\nBoth training and validation metrics are computed to ensure the model generalizes well to unseen receipt text."
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#training-dynamics",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#training-dynamics",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Training Dynamics",
+    "text": "Training Dynamics\nThe training process shows how both tasks learn simultaneously, with joint optimization allowing shared knowledge to improve performance on both classification and NER."
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#multi-task-model-class",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#multi-task-model-class",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Multi-Task Model Class",
+    "text": "Multi-Task Model Class\nThe MultiTaskModel class inherits from PyTorch’s nn.Module and implements:\n\nInitialization: Sets up the transformer backbone and both task heads\nForward pass: Routes transformer outputs to classification and NER heads\nFlexible architecture: Configurable number of classes and NER labels"
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#training-function",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#training-function",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Training Function",
+    "text": "Training Function\nThe training loop implements: - Epoch-based iteration: Multiple passes through the dataset - Train/validation split: Separate evaluation on held-out data - Loss computation: Combined loss for joint optimization - Metric tracking: Real-time accuracy and F1 score monitoring - Model checkpointing: Ready for saving best models"
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#product-name-classification",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#product-name-classification",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Product Name Classification",
+    "text": "Product Name Classification"
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#price-extraction",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#price-extraction",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Price Extraction",
+    "text": "Price Extraction"
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#store-information",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#store-information",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Store Information",
+    "text": "Store Information"
+  },
+  {
+    "objectID": "project/projects_files/sentence-transformer/sentence-transformer.html#complete-receipt-processing",
+    "href": "project/projects_files/sentence-transformer/sentence-transformer.html#complete-receipt-processing",
+    "title": "Multi-Task Sentence Transformer for Receipt Processing",
+    "section": "Complete Receipt Processing",
+    "text": "Complete Receipt Processing\nThe end-to-end system processes entire receipts, extracting structured information from raw images:"
   },
   {
     "objectID": "visuals/posts/jan-15-25-daylight.html",

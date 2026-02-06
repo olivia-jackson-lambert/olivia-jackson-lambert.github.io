@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-01-24">
+<meta name="description" content="Building a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.">
+
+<title>Multi-Task Sentence Transformer for Receipt Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-114013297ac08e17f9e2375decb9094d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-12b55ead4ba76762d1c7efd6ed0aa47f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-57483fb5445d6de0b45f84f3bdea548c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-12b55ead4ba76762d1c7efd6ed0aa47f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<!-- Light favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
+<link rel="icon" href="../../../assets/favicon.ico" sizes="any" media="(prefers-color-scheme: light)">
+
+<!-- Dark favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/dark-favicon-32x32.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/dark-favicon-16x16.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../../assets/dark-favicon.ico" sizes="any" media="(prefers-color-scheme: dark)">
+
+<!-- Apple touch icons -->
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/dark-apple-touch-icon.png" media="(prefers-color-scheme: dark)">
+
+<!-- Android / PWA icons -->
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/android-chrome-192x192.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/android-chrome-512x512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/dark-android-chrome-192x192.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/dark-android-chrome-512x512.png" media="(prefers-color-scheme: dark)">
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Olivia Jackson Lambert</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#system-overview" id="toc-system-overview" class="nav-link active" data-scroll-target="#system-overview">System Overview</a></li>
+  <li><a href="#ocr-integration" id="toc-ocr-integration" class="nav-link" data-scroll-target="#ocr-integration">OCR Integration</a>
+  <ul class="collapse">
+  <li><a href="#receipt-image-processing" id="toc-receipt-image-processing" class="nav-link" data-scroll-target="#receipt-image-processing">Receipt Image Processing</a></li>
+  <li><a href="#ocr-implementation" id="toc-ocr-implementation" class="nav-link" data-scroll-target="#ocr-implementation">OCR Implementation</a></li>
+  <li><a href="#text-segmentation" id="toc-text-segmentation" class="nav-link" data-scroll-target="#text-segmentation">Text Segmentation</a></li>
+  </ul></li>
+  <li><a href="#sentence-transformer-foundation" id="toc-sentence-transformer-foundation" class="nav-link" data-scroll-target="#sentence-transformer-foundation">Sentence Transformer Foundation</a>
+  <ul class="collapse">
+  <li><a href="#model-choice-bge-m3" id="toc-model-choice-bge-m3" class="nav-link" data-scroll-target="#model-choice-bge-m3">Model Choice: BGE-M3</a></li>
+  <li><a href="#sentence-embeddings" id="toc-sentence-embeddings" class="nav-link" data-scroll-target="#sentence-embeddings">Sentence Embeddings</a></li>
+  <li><a href="#sentence-similarity" id="toc-sentence-similarity" class="nav-link" data-scroll-target="#sentence-similarity">Sentence Similarity</a></li>
+  <li><a href="#clustering-and-visualization" id="toc-clustering-and-visualization" class="nav-link" data-scroll-target="#clustering-and-visualization">Clustering and Visualization</a></li>
+  </ul></li>
+  <li><a href="#multi-task-learning-architecture" id="toc-multi-task-learning-architecture" class="nav-link" data-scroll-target="#multi-task-learning-architecture">Multi-Task Learning Architecture</a>
+  <ul class="collapse">
+  <li><a href="#shared-transformer-backbone" id="toc-shared-transformer-backbone" class="nav-link" data-scroll-target="#shared-transformer-backbone">Shared Transformer Backbone</a></li>
+  <li><a href="#sentence-classification-head" id="toc-sentence-classification-head" class="nav-link" data-scroll-target="#sentence-classification-head">Sentence Classification Head</a></li>
+  <li><a href="#named-entity-recognition-head" id="toc-named-entity-recognition-head" class="nav-link" data-scroll-target="#named-entity-recognition-head">Named Entity Recognition Head</a></li>
+  <li><a href="#architecture-visualization" id="toc-architecture-visualization" class="nav-link" data-scroll-target="#architecture-visualization">Architecture Visualization</a></li>
+  </ul></li>
+  <li><a href="#training-considerations" id="toc-training-considerations" class="nav-link" data-scroll-target="#training-considerations">Training Considerations</a>
+  <ul class="collapse">
+  <li><a href="#freezing-strategy" id="toc-freezing-strategy" class="nav-link" data-scroll-target="#freezing-strategy">Freezing Strategy</a>
+  <ul class="collapse">
+  <li><a href="#freezing-the-transformer-backbone" id="toc-freezing-the-transformer-backbone" class="nav-link" data-scroll-target="#freezing-the-transformer-backbone">Freezing the Transformer Backbone</a></li>
+  <li><a href="#alternative-freezing-strategies" id="toc-alternative-freezing-strategies" class="nav-link" data-scroll-target="#alternative-freezing-strategies">Alternative Freezing Strategies</a></li>
+  </ul></li>
+  <li><a href="#transfer-learning" id="toc-transfer-learning" class="nav-link" data-scroll-target="#transfer-learning">Transfer Learning</a>
+  <ul class="collapse">
+  <li><a href="#pre-trained-model-selection" id="toc-pre-trained-model-selection" class="nav-link" data-scroll-target="#pre-trained-model-selection">Pre-Trained Model Selection</a></li>
+  <li><a href="#layer-freezing-rationale" id="toc-layer-freezing-rationale" class="nav-link" data-scroll-target="#layer-freezing-rationale">Layer Freezing Rationale</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#training-loop-implementation" id="toc-training-loop-implementation" class="nav-link" data-scroll-target="#training-loop-implementation">Training Loop Implementation</a>
+  <ul class="collapse">
+  <li><a href="#dataset-structure" id="toc-dataset-structure" class="nav-link" data-scroll-target="#dataset-structure">Dataset Structure</a></li>
+  <li><a href="#forward-pass-design" id="toc-forward-pass-design" class="nav-link" data-scroll-target="#forward-pass-design">Forward Pass Design</a>
+  <ul class="collapse">
+  <li><a href="#gpu-acceleration" id="toc-gpu-acceleration" class="nav-link" data-scroll-target="#gpu-acceleration">GPU Acceleration</a></li>
+  <li><a href="#mini-batch-processing" id="toc-mini-batch-processing" class="nav-link" data-scroll-target="#mini-batch-processing">Mini-Batch Processing</a></li>
+  <li><a href="#task-specific-outputs" id="toc-task-specific-outputs" class="nav-link" data-scroll-target="#task-specific-outputs">Task-Specific Outputs</a></li>
+  <li><a href="#joint-optimization" id="toc-joint-optimization" class="nav-link" data-scroll-target="#joint-optimization">Joint Optimization</a></li>
+  <li><a href="#gradient-clipping" id="toc-gradient-clipping" class="nav-link" data-scroll-target="#gradient-clipping">Gradient Clipping</a></li>
+  </ul></li>
+  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics">Evaluation Metrics</a></li>
+  <li><a href="#training-dynamics" id="toc-training-dynamics" class="nav-link" data-scroll-target="#training-dynamics">Training Dynamics</a></li>
+  </ul></li>
+  <li><a href="#implementation-highlights" id="toc-implementation-highlights" class="nav-link" data-scroll-target="#implementation-highlights">Implementation Highlights</a>
+  <ul class="collapse">
+  <li><a href="#multi-task-model-class" id="toc-multi-task-model-class" class="nav-link" data-scroll-target="#multi-task-model-class">Multi-Task Model Class</a></li>
+  <li><a href="#training-function" id="toc-training-function" class="nav-link" data-scroll-target="#training-function">Training Function</a></li>
+  </ul></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#example-predictions" id="toc-example-predictions" class="nav-link" data-scroll-target="#example-predictions">Example Predictions</a>
+  <ul class="collapse">
+  <li><a href="#product-name-classification" id="toc-product-name-classification" class="nav-link" data-scroll-target="#product-name-classification">Product Name Classification</a></li>
+  <li><a href="#price-extraction" id="toc-price-extraction" class="nav-link" data-scroll-target="#price-extraction">Price Extraction</a></li>
+  <li><a href="#store-information" id="toc-store-information" class="nav-link" data-scroll-target="#store-information">Store Information</a></li>
+  <li><a href="#complete-receipt-processing" id="toc-complete-receipt-processing" class="nav-link" data-scroll-target="#complete-receipt-processing">Complete Receipt Processing</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<nav class="iconbar" aria-label="Site">
+    <div class="iconbar-top">
+      <a class="iconbar-item" href="../../../index.html" aria-label="Home">
+        <iconify-icon icon="lucide:home"></iconify-icon>
+        <span class="iconbar-text">Home</span>
+      </a>
+  
+      <a class="iconbar-item" href="../../../project/projects.html" aria-label="Projects">
+        <iconify-icon icon="lucide:layout-grid"></iconify-icon>
+        <span class="iconbar-text">Projects</span>
+      </a>
+  
+      <a class="iconbar-item" href="../../../articles/articles.html" aria-label="Articles">
+        <iconify-icon icon="lucide:notebook-text"></iconify-icon>
+        <span class="iconbar-text">Articles</span>
+      </a>
+  
+      <a class="iconbar-item" href="../../../visuals/visuals.html" aria-label="Visuals">
+        <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
+        <span class="iconbar-text">Visuals</span>
+      </a>
+
+      <a class="iconbar-item" href="../../../reflections/reflections.html" aria-label="Reflections">
+        <iconify-icon icon="lucide:brain"></iconify-icon>
+        <span class="iconbar-text">Reflections</span>
+      </a>
+
+      <a class="iconbar-item" href="../../../about.html" aria-label="About">
+        <iconify-icon icon="lucide:user"></iconify-icon>
+        <span class="iconbar-text">About</span>
+      </a>
+
+    </div>
+  
+    <div class="iconbar-bottom">
+      <a class="iconbar-item" href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:github"></iconify-icon>
+        <span class="iconbar-text">GitHub</span>
+      </a>
+  
+      <a class="iconbar-item" href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:linkedin"></iconify-icon>
+        <span class="iconbar-text">LinkedIn</span>
+      </a>
+  
+      <a class="iconbar-item" href="https://medium.com/@oliviarosejackson" aria-label="Medium" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:book-open"></iconify-icon>
+        <span class="iconbar-text">Medium</span>
+      </a>
+  
+      <a class="iconbar-item" href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:graduation-cap"></iconify-icon>
+        <span class="iconbar-text">Scholar</span>
+      </a>
+  
+      <a class="iconbar-item" href="../../../assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:file-text"></iconify-icon>
+        <span class="iconbar-text">Resume</span>
+      </a>
+    </div>
+  </nav>
+
+<!-- Light/Dark mode toggle (fixed top-right) -->
+<button class="theme-toggle" type="button" aria-label="Toggle light/dark mode">
+  <iconify-icon id="theme-toggle-icon" icon="lucide:moon"></iconify-icon>
+</button>
+
+<script>
+  (function () {
+    function isDark() {
+      return (
+        document.body.classList.contains("quarto-dark") ||
+        document.documentElement.dataset.bsTheme === "dark"
+      );
+    }
+
+    function setIcon() {
+      var icon = document.getElementById("theme-toggle-icon");
+      if (!icon) return;
+      icon.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      var btn = document.querySelector(".theme-toggle");
+      if (!btn) return;
+
+      setIcon();
+
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Preferred: Quarto built-in toggle (works when light/dark themes are configured)
+        if (window.quartoToggleColorScheme) {
+          window.quartoToggleColorScheme();
+        } else {
+          // Fallback
+          var dark = isDark();
+          document.body.classList.toggle("quarto-dark", !dark);
+          document.body.classList.toggle("quarto-light", dark);
+          document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
+          try {
+            localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark");
+          } catch (err) {}
+        }
+
+        setTimeout(setIcon, 60);
+      });
+    });
+  })();
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Multi-Task Sentence Transformer for Receipt Processing</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Machine Learning</div>
+    <div class="quarto-category">Deep Learning</div>
+    <div class="quarto-category">Natural Language Processing</div>
+    <div class="quarto-category">Multi-Task Learning</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">PyTorch</div>
+    <div class="quarto-category">Transformers</div>
+    <div class="quarto-category">Sentence Embeddings</div>
+    <div class="quarto-category">Named Entity Recognition</div>
+    <div class="quarto-category">Transfer Learning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Building a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 24, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This project implements an end-to-end receipt processing system that combines optical character recognition (OCR) with a multi-task neural network for sentence classification and named entity recognition (NER). The system scans receipt images, extracts text using OCR, and then processes the text with a BGE-M3 transformer backbone to classify sentences and extract entities. By leveraging pre-trained sentence embeddings and joint optimization, the model learns shared representations that benefit both tasks.</p>
+<p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/sentence-project">github.com/olivia-jackson-lambert/sentence-project</a></p>
+<section id="system-overview" class="level1">
+<h1>System Overview</h1>
+<p>The complete receipt processing pipeline consists of three main stages:</p>
+<ol type="1">
+<li><strong>OCR Stage</strong>: Converts receipt images to text using optical character recognition</li>
+<li><strong>Text Preprocessing</strong>: Cleans and segments OCR output into individual sentences</li>
+<li><strong>Multi-Task NLP Model</strong>: Classifies sentences and extracts entities using transformer embeddings</li>
+</ol>
+<p><img src="assets/system_pipeline.png" class="img-fluid" style="width:100.0%" alt="Complete receipt processing pipeline from image to structured data"></p>
+<p>This end-to-end approach enables users to simply photograph a receipt and automatically extract structured information like product names, prices, store information, and totals.</p>
+</section>
+<section id="ocr-integration" class="level1">
+<h1>OCR Integration</h1>
+<section id="receipt-image-processing" class="level2">
+<h2 class="anchored" data-anchor-id="receipt-image-processing">Receipt Image Processing</h2>
+<p>The system begins with receipt images captured via camera or uploaded as files. OCR technology extracts text from these images, handling challenges like:</p>
+<ul>
+<li><strong>Varied receipt formats</strong>: Different store layouts, fonts, and structures</li>
+<li><strong>Image quality</strong>: Blurry photos, poor lighting, or low resolution</li>
+<li><strong>Text orientation</strong>: Rotated or skewed text</li>
+<li><strong>Mixed content</strong>: Barcodes, logos, and text</li>
+</ul>
+</section>
+<section id="ocr-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="ocr-implementation">OCR Implementation</h2>
+<p>The project uses Tesseract OCR (via <code>pytesseract</code>) for text extraction, with preprocessing steps to improve accuracy:</p>
+<ul>
+<li><strong>Image preprocessing</strong>: Grayscale conversion, noise reduction, contrast enhancement</li>
+<li><strong>Text detection</strong>: Automatic text region detection and orientation correction</li>
+<li><strong>Line segmentation</strong>: Splitting OCR output into individual lines and sentences</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytesseract</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_receipt_image(image_path):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Preprocess receipt image for better OCR accuracy"""</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> cv2.imread(image_path)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    gray <span class="op">=</span> cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply denoising and thresholding</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    denoised <span class="op">=</span> cv2.fastNlMeansDenoising(gray)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    _, thresh <span class="op">=</span> cv2.threshold(denoised, <span class="dv">0</span>, <span class="dv">255</span>, cv2.THRESH_BINARY <span class="op">+</span> cv2.THRESH_OTSU)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> thresh</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_text_from_receipt(image_path):</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract text from receipt image using OCR"""</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    processed_img <span class="op">=</span> preprocess_receipt_image(image_path)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> pytesseract.image_to_string(processed_img, config<span class="op">=</span><span class="st">'--psm 6'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="text-segmentation" class="level2">
+<h2 class="anchored" data-anchor-id="text-segmentation">Text Segmentation</h2>
+<p>After OCR extraction, the raw text is segmented into sentences using:</p>
+<ul>
+<li><strong>Rule-based segmentation</strong>: Period, newline, and punctuation-based splitting</li>
+<li><strong>Sentence boundary detection</strong>: Handling abbreviations and decimal numbers</li>
+<li><strong>Line grouping</strong>: Combining related lines that belong to the same logical sentence</li>
+</ul>
+<p>The segmented sentences are then tokenized and prepared for the transformer model.</p>
+<p><img src="assets/ocr_pipeline.png" class="img-fluid" style="width:100.0%" alt="OCR pipeline showing image preprocessing, text extraction, and segmentation"></p>
+</section>
+</section>
+<section id="sentence-transformer-foundation" class="level1">
+<h1>Sentence Transformer Foundation</h1>
+<section id="model-choice-bge-m3" class="level2">
+<h2 class="anchored" data-anchor-id="model-choice-bge-m3">Model Choice: BGE-M3</h2>
+<p>The project uses the BGE-M3 (BAAI General Embedding) model by the Beijing Academy of Artificial Intelligence, selected for its strong performance across multiple NLP tasks. BGE-M3 is optimized for multi-task learning and provides:</p>
+<ul>
+<li><strong>Generalized embeddings</strong>: High-quality sentence representations that capture semantic meaning</li>
+<li><strong>Efficient architecture</strong>: Lightweight enough for practical applications while maintaining accuracy</li>
+<li><strong>Multi-task optimization</strong>: Pre-trained to support diverse NLP tasks simultaneously</li>
+<li><strong>Rich token-level representations</strong>: Essential for token-level tasks like NER</li>
+</ul>
+<p>The model generates 1024-dimensional embeddings that encode semantic information in a dense vector space, enabling downstream tasks to leverage these rich representations.</p>
+</section>
+<section id="sentence-embeddings" class="level2">
+<h2 class="anchored" data-anchor-id="sentence-embeddings">Sentence Embeddings</h2>
+<p>Each sentence is encoded into a fixed-length vector where semantically similar sentences are positioned close together in the embedding space. The BGE-M3 model processes input text and produces normalized embeddings that capture:</p>
+<ul>
+<li>Semantic meaning and context</li>
+<li>Syntactic structure</li>
+<li>Domain-specific patterns</li>
+</ul>
+<p>For a batch of 15 example sentences, the model produces embeddings of shape <code>[15, 1024]</code>, where each row represents one sentence’s encoding in the 1024-dimensional space.</p>
+<p><img src="assets/embedding_heatmap.png" class="img-fluid" style="width:100.0%" alt="Heatmap visualization of a single sentence embedding showing 1024-dimensional vector"></p>
+</section>
+<section id="sentence-similarity" class="level2">
+<h2 class="anchored" data-anchor-id="sentence-similarity">Sentence Similarity</h2>
+<p>The embedding space enables similarity computation between sentences. Cosine similarity measures the angle between embedding vectors, with values close to 1 indicating high semantic similarity and values near 0 indicating dissimilarity.</p>
+<p>This property is crucial for: - <strong>Semantic search</strong>: Finding documents or sentences similar to a query - <strong>Clustering</strong>: Grouping related sentences together - <strong>Classification</strong>: Using similarity as a feature for downstream tasks</p>
+</section>
+<section id="clustering-and-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-and-visualization">Clustering and Visualization</h2>
+<p>Using K-Means clustering on the embeddings reveals natural groupings of semantically similar sentences. When visualized with t-SNE dimensionality reduction, sentences cluster together based on shared themes, topics, or structures.</p>
+<p>For receipt processing, this means sentences about products, prices, and store information naturally separate in the embedding space, making classification more effective.</p>
+<p><img src="assets/similarity_matrix.png" class="img-fluid" style="width:100.0%" alt="Cosine similarity matrix heatmap showing semantic relationships between sentences"></p>
+<p><img src="assets/tsne_clustering.png" class="img-fluid" style="width:100.0%" alt="t-SNE 2D visualization of sentence embeddings colored by K-means clusters"></p>
+</section>
+</section>
+<section id="multi-task-learning-architecture" class="level1">
+<h1>Multi-Task Learning Architecture</h1>
+<p>The multi-task architecture enables the model to perform both sentence classification and named entity recognition simultaneously, sharing the transformer backbone for efficient learning.</p>
+<p><img src="assets/architecture_diagram.png" class="img-fluid" style="width:100.0%" alt="Multi-task model architecture diagram showing transformer backbone with classification and NER heads"></p>
+<section id="shared-transformer-backbone" class="level2">
+<h2 class="anchored" data-anchor-id="shared-transformer-backbone">Shared Transformer Backbone</h2>
+<p>The architecture builds on the pre-trained BGE-M3 transformer, which serves as a shared backbone for both tasks. The transformer processes input text and produces:</p>
+<ul>
+<li><strong>CLS token embedding</strong>: A global sentence representation from the special classification token</li>
+<li><strong>Token-level embeddings</strong>: Per-token representations for the entire sequence</li>
+</ul>
+<p>These outputs are routed to two separate task-specific heads that learn specialized patterns for their respective tasks.</p>
+</section>
+<section id="sentence-classification-head" class="level2">
+<h2 class="anchored" data-anchor-id="sentence-classification-head">Sentence Classification Head</h2>
+<p>The classification head categorizes entire sentences into predefined classes (Product Name, Store Name, Price, Other). The architecture consists of:</p>
+<ol type="1">
+<li><strong>First Linear Layer</strong>: Maps the 1024-dimensional CLS embedding to 128 dimensions, reducing dimensionality for efficiency</li>
+<li><strong>ReLU Activation</strong>: Introduces non-linearity to learn complex patterns while promoting sparse activations</li>
+<li><strong>Second Linear Layer</strong>: Maps to the final number of classes (4 categories)</li>
+</ol>
+<p>The head uses only the CLS token representation, which is trained to capture global sentence meaning during pre-training.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.classifier <span class="op">=</span> nn.Sequential(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    nn.Linear(base_model.config.hidden_size, <span class="dv">128</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    nn.ReLU(),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    nn.Linear(<span class="dv">128</span>, num_classes)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="named-entity-recognition-head" class="level2">
+<h2 class="anchored" data-anchor-id="named-entity-recognition-head">Named Entity Recognition Head</h2>
+<p>The NER head performs token-level classification to identify entities within sentences. Unlike sentence classification, NER requires predictions for each token in the sequence.</p>
+<p>The architecture is simpler—a single linear layer that maps each token’s hidden state to NER label logits:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.ner_head <span class="op">=</span> nn.Linear(base_model.config.hidden_size, num_ner_labels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The model predicts one of five labels per token: - <strong>O</strong>: Outside entity (not part of any entity) - <strong>B-PRODUCT</strong>: Beginning of a product name - <strong>I-PRODUCT</strong>: Inside of a product name - <strong>B-PRICE</strong>: Beginning of a price entity - <strong>I-PRICE</strong>: Inside of a price entity</p>
+<p>This BIO tagging scheme allows the model to identify multi-token entities like “500g Organic Canned Tomatoes” or “$32.66”.</p>
+</section>
+<section id="architecture-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-visualization">Architecture Visualization</h2>
+<p>The diagram below illustrates how input text flows through the transformer backbone and is routed to both task-specific heads:</p>
+<ul>
+<li><strong>Input</strong>: Tokenized receipt sentences</li>
+<li><strong>Transformer</strong>: BGE-M3 processes tokens and produces hidden states</li>
+<li><strong>CLS Token</strong>: Extracted for sentence-level classification</li>
+<li><strong>All Tokens</strong>: Used for token-level NER predictions</li>
+<li><strong>Outputs</strong>: Classification logits and NER label logits</li>
+</ul>
+<p><img src="assets/forward_pass_flow.png" class="img-fluid" style="width:100.0%" alt="Detailed forward pass flow showing data transformation through each layer"></p>
+</section>
+</section>
+<section id="training-considerations" class="level1">
+<h1>Training Considerations</h1>
+<section id="freezing-strategy" class="level2">
+<h2 class="anchored" data-anchor-id="freezing-strategy">Freezing Strategy</h2>
+<p>The project implements a freezing strategy that balances computational efficiency with task adaptation:</p>
+<section id="freezing-the-transformer-backbone" class="level3">
+<h3 class="anchored" data-anchor-id="freezing-the-transformer-backbone">Freezing the Transformer Backbone</h3>
+<p><strong>Advantages:</strong> - Only task-specific heads are updated, significantly reducing computational cost - Training is faster since the large transformer parameters remain fixed - Leverages high-quality pre-trained embeddings without modification</p>
+<p><strong>Trade-offs:</strong> - Limited adaptation if the target domain differs significantly from pre-training data - May not capture domain-specific nuances in the transformer layers</p>
+<p>For receipt processing, freezing the backbone is effective because: - BGE-M3 embeddings are general enough to capture receipt text patterns - The task-specific heads can adapt to receipt-specific categories - Computational efficiency is important for practical deployment</p>
+</section>
+<section id="alternative-freezing-strategies" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-freezing-strategies">Alternative Freezing Strategies</h3>
+<p><strong>Freezing the entire network</strong>: Fastest but least flexible—useful for inference-only scenarios.</p>
+<p><strong>Freezing one task head</strong>: Useful when one task is well-learned but the other needs adaptation, though this risks imbalanced learning.</p>
+</section>
+</section>
+<section id="transfer-learning" class="level2">
+<h2 class="anchored" data-anchor-id="transfer-learning">Transfer Learning</h2>
+<section id="pre-trained-model-selection" class="level3">
+<h3 class="anchored" data-anchor-id="pre-trained-model-selection">Pre-Trained Model Selection</h3>
+<p>BGE-M3 was chosen because it: - Supports multi-task learning natively - Provides both sentence-level and token-level representations - Is efficient and scalable for production use - Was trained on diverse text, making it suitable for receipt processing</p>
+</section>
+<section id="layer-freezing-rationale" class="level3">
+<h3 class="anchored" data-anchor-id="layer-freezing-rationale">Layer Freezing Rationale</h3>
+<p>In practice, the transformer backbone is frozen while task-specific heads remain trainable. This approach: - Prevents catastrophic forgetting of general language knowledge - Allows heads to adapt to receipt-specific patterns - Reduces training time and memory requirements - Maintains strong baseline performance from pre-trained embeddings</p>
+</section>
+</section>
+</section>
+<section id="training-loop-implementation" class="level1">
+<h1>Training Loop Implementation</h1>
+<section id="dataset-structure" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-structure">Dataset Structure</h2>
+<p>The model is designed for receipt text processing, with example sentences like: - “Thank you, your total is: $32.66” - “500g Organic Canned Tomatoes”</p>
+<p>Each training sample contains: 1. <strong>Raw sentences</strong>: Original text 2. <strong>Input IDs</strong>: Tokenized input sequences 3. <strong>Attention masks</strong>: Indicate which tokens are real words vs.&nbsp;padding 4. <strong>Classification labels</strong>: Sentence-level category (0-3) 5. <strong>NER labels</strong>: Token-level entity tags (0-4)</p>
+</section>
+<section id="forward-pass-design" class="level2">
+<h2 class="anchored" data-anchor-id="forward-pass-design">Forward Pass Design</h2>
+<section id="gpu-acceleration" class="level3">
+<h3 class="anchored" data-anchor-id="gpu-acceleration">GPU Acceleration</h3>
+<p>The model and tensors are moved to CUDA when available, enabling parallel computation on GPUs for faster training.</p>
+</section>
+<section id="mini-batch-processing" class="level3">
+<h3 class="anchored" data-anchor-id="mini-batch-processing">Mini-Batch Processing</h3>
+<p>Training uses mini-batches to: - Optimize memory usage - Stabilize gradient updates - Enable parallel processing on GPUs</p>
+</section>
+<section id="task-specific-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="task-specific-outputs">Task-Specific Outputs</h3>
+<ul>
+<li><strong>Classification</strong>: Uses only the CLS token embedding for sentence-level prediction</li>
+<li><strong>NER</strong>: Uses all token embeddings for sequence-level prediction</li>
+</ul>
+</section>
+<section id="joint-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="joint-optimization">Joint Optimization</h3>
+<p>Both tasks are optimized together: - Losses are computed independently for each head - Total loss is the sum of classification and NER losses - Gradients flow through the shared transformer backbone - This allows shared knowledge to improve both tasks simultaneously</p>
+</section>
+<section id="gradient-clipping" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-clipping">Gradient Clipping</h3>
+<p>Gradient clipping prevents exploding gradients that could destabilize multi-task learning, especially important when optimizing multiple objectives simultaneously.</p>
+</section>
+</section>
+<section id="evaluation-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-metrics">Evaluation Metrics</h2>
+<p>The training loop tracks: - <strong>Classification accuracy</strong>: Percentage of correctly classified sentences - <strong>Classification F1 score</strong>: Weighted F1 to handle class imbalance - <strong>NER accuracy</strong>: Token-level classification accuracy - <strong>Separate loss tracking</strong>: Monitors each task’s loss independently to detect task imbalance</p>
+<p>Both training and validation metrics are computed to ensure the model generalizes well to unseen receipt text.</p>
+</section>
+<section id="training-dynamics" class="level2">
+<h2 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h2>
+<p>The training process shows how both tasks learn simultaneously, with joint optimization allowing shared knowledge to improve performance on both classification and NER.</p>
+<p><img src="assets/training_curves.png" class="img-fluid" style="width:100.0%" alt="Training and validation loss curves for classification and NER tasks over epochs"></p>
+<p><img src="assets/accuracy_curves.png" class="img-fluid" style="width:100.0%" alt="Training and validation accuracy curves showing learning progress for both tasks"></p>
+</section>
+</section>
+<section id="implementation-highlights" class="level1">
+<h1>Implementation Highlights</h1>
+<section id="multi-task-model-class" class="level2">
+<h2 class="anchored" data-anchor-id="multi-task-model-class">Multi-Task Model Class</h2>
+<p>The <code>MultiTaskModel</code> class inherits from PyTorch’s <code>nn.Module</code> and implements:</p>
+<ul>
+<li><strong>Initialization</strong>: Sets up the transformer backbone and both task heads</li>
+<li><strong>Forward pass</strong>: Routes transformer outputs to classification and NER heads</li>
+<li><strong>Flexible architecture</strong>: Configurable number of classes and NER labels</li>
+</ul>
+</section>
+<section id="training-function" class="level2">
+<h2 class="anchored" data-anchor-id="training-function">Training Function</h2>
+<p>The training loop implements: - <strong>Epoch-based iteration</strong>: Multiple passes through the dataset - <strong>Train/validation split</strong>: Separate evaluation on held-out data - <strong>Loss computation</strong>: Combined loss for joint optimization - <strong>Metric tracking</strong>: Real-time accuracy and F1 score monitoring - <strong>Model checkpointing</strong>: Ready for saving best models</p>
+</section>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p><strong>Domain Adaptation</strong>: Fine-tune the transformer backbone on receipt-specific data if initial results show domain mismatch.</p>
+<p><strong>Architecture Improvements</strong>: Experiment with attention mechanisms or more complex head architectures to improve performance on challenging cases.</p>
+<p><strong>Evaluation</strong>: Add comprehensive evaluation on a held-out test set with detailed per-class metrics and confusion matrices.</p>
+<p><strong>Production Deployment</strong>: Optimize the model for inference, including quantization and model compression for faster prediction.</p>
+<p><strong>Extended Entity Types</strong>: Expand NER to recognize additional entities like dates, locations, and payment methods.</p>
+</section>
+<section id="example-predictions" class="level1">
+<h1>Example Predictions</h1>
+<p>The model processes receipt sentences and produces both classification and NER predictions simultaneously. Below are example outputs showing how the system handles different types of receipt text.</p>
+<section id="product-name-classification" class="level2">
+<h2 class="anchored" data-anchor-id="product-name-classification">Product Name Classification</h2>
+<p><img src="assets/example_product_classification.png" class="img-fluid" style="width:100.0%" alt="Example showing product name classification with highlighted entities"></p>
+</section>
+<section id="price-extraction" class="level2">
+<h2 class="anchored" data-anchor-id="price-extraction">Price Extraction</h2>
+<p><img src="assets/example_price_extraction.png" class="img-fluid" style="width:100.0%" alt="Example showing price entity recognition with BIO tags"></p>
+</section>
+<section id="store-information" class="level2">
+<h2 class="anchored" data-anchor-id="store-information">Store Information</h2>
+<p><img src="assets/example_store_info.png" class="img-fluid" style="width:100.0%" alt="Example showing store name classification and extraction"></p>
+</section>
+<section id="complete-receipt-processing" class="level2">
+<h2 class="anchored" data-anchor-id="complete-receipt-processing">Complete Receipt Processing</h2>
+<p>The end-to-end system processes entire receipts, extracting structured information from raw images:</p>
+<p><img src="assets/complete_receipt_example.png" class="img-fluid" style="width:100.0%" alt="Complete example showing OCR output, sentence classification, and entity extraction for a full receipt"></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

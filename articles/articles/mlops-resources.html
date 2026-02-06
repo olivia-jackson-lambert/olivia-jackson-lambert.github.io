@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-02">
-<meta name="description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut">
 
-<title>Lorem ipsum dolor sit amet,</title>
+<title>mlops-resources</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -291,11 +289,68 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#mlops-resources-deep-dive-guide" id="toc-mlops-resources-deep-dive-guide" class="nav-link active" data-scroll-target="#mlops-resources-deep-dive-guide">MLOps Resources: Deep Dive Guide</a>
+  <ul class="collapse">
+  <li><a href="#foundational-reading" id="toc-foundational-reading" class="nav-link" data-scroll-target="#foundational-reading">Foundational Reading</a>
+  <ul class="collapse">
+  <li><a href="#books" id="toc-books" class="nav-link" data-scroll-target="#books">Books</a></li>
+  <li><a href="#papers-research" id="toc-papers-research" class="nav-link" data-scroll-target="#papers-research">Papers &amp; Research</a></li>
+  </ul></li>
+  <li><a href="#advanced-topics" id="toc-advanced-topics" class="nav-link" data-scroll-target="#advanced-topics">Advanced Topics</a>
+  <ul class="collapse">
+  <li><a href="#model-monitoring-observability" id="toc-model-monitoring-observability" class="nav-link" data-scroll-target="#model-monitoring-observability">Model Monitoring &amp; Observability</a></li>
+  <li><a href="#feature-stores" id="toc-feature-stores" class="nav-link" data-scroll-target="#feature-stores">Feature Stores</a></li>
+  <li><a href="#model-versioning-reproducibility" id="toc-model-versioning-reproducibility" class="nav-link" data-scroll-target="#model-versioning-reproducibility">Model Versioning &amp; Reproducibility</a></li>
+  <li><a href="#production-deployment-patterns" id="toc-production-deployment-patterns" class="nav-link" data-scroll-target="#production-deployment-patterns">Production Deployment Patterns</a></li>
+  <li><a href="#data-quality-validation" id="toc-data-quality-validation" class="nav-link" data-scroll-target="#data-quality-validation">Data Quality &amp; Validation</a></li>
+  </ul></li>
+  <li><a href="#industry-best-practices" id="toc-industry-best-practices" class="nav-link" data-scroll-target="#industry-best-practices">Industry Best Practices</a>
+  <ul class="collapse">
+  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies">Case Studies</a></li>
+  <li><a href="#industry-reports" id="toc-industry-reports" class="nav-link" data-scroll-target="#industry-reports">Industry Reports</a></li>
+  </ul></li>
+  <li><a href="#tools-platforms" id="toc-tools-platforms" class="nav-link" data-scroll-target="#tools-platforms">Tools &amp; Platforms</a>
+  <ul class="collapse">
+  <li><a href="#open-source-tools" id="toc-open-source-tools" class="nav-link" data-scroll-target="#open-source-tools">Open Source Tools</a></li>
+  <li><a href="#commercial-platforms" id="toc-commercial-platforms" class="nav-link" data-scroll-target="#commercial-platforms">Commercial Platforms</a></li>
+  </ul></li>
+  <li><a href="#academic-research" id="toc-academic-research" class="nav-link" data-scroll-target="#academic-research">Academic &amp; Research</a>
+  <ul class="collapse">
+  <li><a href="#conferences" id="toc-conferences" class="nav-link" data-scroll-target="#conferences">Conferences</a></li>
+  <li><a href="#research-papers-recent" id="toc-research-papers-recent" class="nav-link" data-scroll-target="#research-papers-recent">Research Papers (Recent)</a></li>
+  </ul></li>
+  <li><a href="#online-courses-tutorials" id="toc-online-courses-tutorials" class="nav-link" data-scroll-target="#online-courses-tutorials">Online Courses &amp; Tutorials</a>
+  <ul class="collapse">
+  <li><a href="#free-courses" id="toc-free-courses" class="nav-link" data-scroll-target="#free-courses">Free Courses</a></li>
+  <li><a href="#technical-blogs" id="toc-technical-blogs" class="nav-link" data-scroll-target="#technical-blogs">Technical Blogs</a></li>
+  </ul></li>
+  <li><a href="#hands-on-practice" id="toc-hands-on-practice" class="nav-link" data-scroll-target="#hands-on-practice">Hands-On Practice</a>
+  <ul class="collapse">
+  <li><a href="#projects-to-build" id="toc-projects-to-build" class="nav-link" data-scroll-target="#projects-to-build">Projects to Build</a></li>
+  <li><a href="#datasets-for-practice" id="toc-datasets-for-practice" class="nav-link" data-scroll-target="#datasets-for-practice">Datasets for Practice</a></li>
+  </ul></li>
+  <li><a href="#communities-networking" id="toc-communities-networking" class="nav-link" data-scroll-target="#communities-networking">Communities &amp; Networking</a>
+  <ul class="collapse">
+  <li><a href="#online-communities" id="toc-online-communities" class="nav-link" data-scroll-target="#online-communities">Online Communities</a></li>
+  <li><a href="#conferences-in-person-virtual" id="toc-conferences-in-person-virtual" class="nav-link" data-scroll-target="#conferences-in-person-virtual">Conferences (In-Person &amp; Virtual)</a></li>
+  </ul></li>
+  <li><a href="#staying-current" id="toc-staying-current" class="nav-link" data-scroll-target="#staying-current">Staying Current</a>
+  <ul class="collapse">
+  <li><a href="#newsletters" id="toc-newsletters" class="nav-link" data-scroll-target="#newsletters">Newsletters</a></li>
+  <li><a href="#podcasts" id="toc-podcasts" class="nav-link" data-scroll-target="#podcasts">Podcasts</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 <nav class="iconbar" aria-label="Site">
     <div class="iconbar-top">
@@ -408,39 +463,469 @@ ul.task-list li input[type="checkbox"] {
   })();
 </script>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Lorem ipsum dolor sit amet,</h1>
-</div>
-
-<div>
-  <div class="description">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  </div>
-</div>
 
 
-<div class="quarto-title-meta">
 
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2025</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
+<section id="mlops-resources-deep-dive-guide" class="level1">
+<h1>MLOps Resources: Deep Dive Guide</h1>
+<p>This document provides curated resources for deepening your understanding of cutting-edge MLOps processes and techniques. These resources are organized by topic and difficulty level.</p>
+<section id="foundational-reading" class="level2">
+<h2 class="anchored" data-anchor-id="foundational-reading">Foundational Reading</h2>
+<section id="books" class="level3">
+<h3 class="anchored" data-anchor-id="books">Books</h3>
+<ul>
+<li><strong>“Building Machine Learning Powered Applications”</strong> by Emmanuel Ameisen (O’Reilly, 2020)
+<ul>
+<li>Practical guide to going from prototype to production</li>
+<li>Covers deployment patterns, monitoring, and iteration strategies</li>
+</ul></li>
+<li><strong>“Machine Learning Engineering”</strong> by Andriy Burkov (2020)
+<ul>
+<li>Comprehensive guide to ML system design</li>
+<li>Covers the full lifecycle from data collection to deployment</li>
+</ul></li>
+<li><strong>“Designing Machine Learning Systems”</strong> by Chip Huyen (O’Reilly, 2022)
+<ul>
+<li>Industry-standard reference on ML system architecture</li>
+<li>Covers MLOps, feature stores, data management, and more</li>
+</ul></li>
+</ul>
+</section>
+<section id="papers-research" class="level3">
+<h3 class="anchored" data-anchor-id="papers-research">Papers &amp; Research</h3>
+<ul>
+<li><strong>“Hidden Technical Debt in Machine Learning Systems”</strong> (Sculley et al., NIPS 2015)
+<ul>
+<li>Classic paper identifying maintenance challenges in ML systems</li>
+<li>Essential reading for understanding why MLOps matters</li>
+</ul></li>
+<li><strong>“Machine Learning: The High-Interest Credit Card of Technical Debt”</strong> (Sculley et al., 2014)
+<ul>
+<li>Explores how ML systems accumulate technical debt differently than traditional software</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="advanced-topics" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-topics">Advanced Topics</h2>
+<section id="model-monitoring-observability" class="level3">
+<h3 class="anchored" data-anchor-id="model-monitoring-observability">Model Monitoring &amp; Observability</h3>
+<ul>
+<li><strong>Evidently AI Blog</strong> (https://www.evidentlyai.com/blog)
+<ul>
+<li>Deep dives on data drift, concept drift, and model monitoring</li>
+<li>Practical guides on implementing monitoring systems</li>
+</ul></li>
+<li><strong>“Monitoring Machine Learning Models in Production”</strong> by Chip Huyen
+<ul>
+<li>Comprehensive guide to what, why, and how of ML monitoring</li>
+<li>Available on her blog: https://huyenchip.com/</li>
+</ul></li>
+<li><strong>WhyLabs Research</strong> (https://whylabs.ai/blog)
+<ul>
+<li>Technical content on data quality monitoring and ML observability</li>
+<li>Case studies from production deployments</li>
+</ul></li>
+</ul>
+</section>
+<section id="feature-stores" class="level3">
+<h3 class="anchored" data-anchor-id="feature-stores">Feature Stores</h3>
+<ul>
+<li><strong>“The Feature Store: A Critical Component of the ML Platform”</strong> by Hopsworks
+<ul>
+<li>White paper on feature store architecture and use cases</li>
+<li>Available: https://www.hopsworks.ai/</li>
+</ul></li>
+<li><strong>Feast Documentation</strong> (https://docs.feast.dev/)
+<ul>
+<li>Open-source feature store framework</li>
+<li>Excellent documentation on feature store patterns</li>
+</ul></li>
+<li><strong>“Building a Feature Store”</strong> by Tecton
+<ul>
+<li>Technical blog series on feature store design</li>
+<li>https://www.tecton.ai/blog/</li>
+</ul></li>
+</ul>
+</section>
+<section id="model-versioning-reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="model-versioning-reproducibility">Model Versioning &amp; Reproducibility</h3>
+<ul>
+<li><strong>MLflow Documentation</strong> (https://mlflow.org/docs/latest/index.html)
+<ul>
+<li>Comprehensive guide to experiment tracking and model registry</li>
+<li>Best practices for reproducible ML</li>
+</ul></li>
+<li><strong>Weights &amp; Biases Guides</strong> (https://wandb.ai/site/guides)
+<ul>
+<li>Advanced techniques for experiment tracking</li>
+<li>Hyperparameter optimization strategies</li>
+</ul></li>
+<li><strong>DVC (Data Version Control)</strong> (https://dvc.org/doc)
+<ul>
+<li>Git-based data versioning</li>
+<li>Essential for managing large datasets in ML workflows</li>
+</ul></li>
+</ul>
+</section>
+<section id="production-deployment-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="production-deployment-patterns">Production Deployment Patterns</h3>
+<ul>
+<li><strong>“The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction”</strong> (Breck et al., 2017)
+<ul>
+<li>Google’s framework for evaluating ML system quality</li>
+<li>Practical checklist for production readiness</li>
+</ul></li>
+<li><strong>“Continuous Training for Production ML in the TensorFlow Extended Platform”</strong> (Baylor et al., 2017)
+<ul>
+<li>Google’s approach to automated retraining pipelines</li>
+<li>Architecture patterns for continuous learning</li>
+</ul></li>
+<li><strong>Kubeflow Documentation</strong> (https://www.kubeflow.org/docs/)
+<ul>
+<li>Kubernetes-native ML platform</li>
+<li>Advanced orchestration patterns</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-quality-validation" class="level3">
+<h3 class="anchored" data-anchor-id="data-quality-validation">Data Quality &amp; Validation</h3>
+<ul>
+<li><strong>Great Expectations Documentation</strong> (https://docs.greatexpectations.io/)
+<ul>
+<li>Data validation framework</li>
+<li>Best practices for data quality testing</li>
+</ul></li>
+<li><strong>“Data Quality for Machine Learning”</strong> by Evidently AI
+<ul>
+<li>Technical guide on detecting and handling data issues</li>
+<li>Available on their blog</li>
+</ul></li>
+<li><strong>Pandera</strong> (https://pandera.readthedocs.io/)
+<ul>
+<li>Statistical validation for pandas DataFrames</li>
+<li>Useful for data pipeline testing</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="industry-best-practices" class="level2">
+<h2 class="anchored" data-anchor-id="industry-best-practices">Industry Best Practices</h2>
+<section id="case-studies" class="level3">
+<h3 class="anchored" data-anchor-id="case-studies">Case Studies</h3>
+<ul>
+<li><strong>Netflix Tech Blog</strong> (https://netflixtechblog.com/)
+<ul>
+<li>Search for “MLOps” or “machine learning” for production ML case studies</li>
+<li>Real-world examples of ML systems at scale</li>
+</ul></li>
+<li><strong>Uber Engineering Blog</strong> (https://eng.uber.com/)
+<ul>
+<li>ML platform architecture and deployment patterns</li>
+<li>Feature store implementation details</li>
+</ul></li>
+<li><strong>Airbnb Engineering &amp; Data Science</strong> (https://medium.com/airbnb-engineering)
+<ul>
+<li>ML infrastructure and tooling decisions</li>
+<li>Lessons learned from production deployments</li>
+</ul></li>
+<li><strong>Stitch Fix Algorithms Blog</strong> (https://multithreaded.stitchfix.com/)
+<ul>
+<li>Deep dives on production ML systems</li>
+<li>Focus on statistical rigor and operational excellence</li>
+</ul></li>
+</ul>
+</section>
+<section id="industry-reports" class="level3">
+<h3 class="anchored" data-anchor-id="industry-reports">Industry Reports</h3>
+<ul>
+<li><strong>“State of MLOps”</strong> by Algorithmia (annual)
+<ul>
+<li>Survey of MLOps adoption and challenges</li>
+<li>Industry benchmarks and trends</li>
+</ul></li>
+<li><strong>“MLOps: Continuous delivery and automation pipelines in machine learning”</strong> by Google Cloud
+<ul>
+<li>Comprehensive guide to MLOps practices</li>
+<li>Available: https://cloud.google.com/resources/mlops-whitepaper</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="tools-platforms" class="level2">
+<h2 class="anchored" data-anchor-id="tools-platforms">Tools &amp; Platforms</h2>
+<section id="open-source-tools" class="level3">
+<h3 class="anchored" data-anchor-id="open-source-tools">Open Source Tools</h3>
+<ul>
+<li><strong>MLflow</strong> (https://mlflow.org/)
+<ul>
+<li>Experiment tracking, model registry, deployment</li>
+<li>Industry standard for ML lifecycle management</li>
+</ul></li>
+<li><strong>Kubeflow</strong> (https://www.kubeflow.org/)
+<ul>
+<li>Kubernetes-native ML platform</li>
+<li>For organizations already using Kubernetes</li>
+</ul></li>
+<li><strong>Feast</strong> (https://feast.dev/)
+<ul>
+<li>Open-source feature store</li>
+<li>Good for organizations building custom ML platforms</li>
+</ul></li>
+<li><strong>Evidently AI</strong> (https://www.evidentlyai.com/)
+<ul>
+<li>Open-source ML monitoring</li>
+<li>Excellent for data drift detection</li>
+</ul></li>
+<li><strong>BentoML</strong> (https://www.bentoml.com/)
+<ul>
+<li>Model serving framework</li>
+<li>Simplifies deployment of ML models</li>
+</ul></li>
+</ul>
+</section>
+<section id="commercial-platforms" class="level3">
+<h3 class="anchored" data-anchor-id="commercial-platforms">Commercial Platforms</h3>
+<ul>
+<li><strong>Databricks MLflow</strong> (managed MLflow)
+<ul>
+<li>Enterprise-grade ML lifecycle management</li>
+<li>Integrated with data platform</li>
+</ul></li>
+<li><strong>Weights &amp; Biases</strong> (https://wandb.ai/)
+<ul>
+<li>Experiment tracking and model registry</li>
+<li>Strong visualization and collaboration features</li>
+</ul></li>
+<li><strong>Tecton</strong> (https://www.tecton.ai/)
+<ul>
+<li>Enterprise feature store</li>
+<li>Advanced feature engineering capabilities</li>
+</ul></li>
+<li><strong>WhyLabs</strong> (https://whylabs.ai/)
+<ul>
+<li>ML observability platform</li>
+<li>Automated monitoring and alerting</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="academic-research" class="level2">
+<h2 class="anchored" data-anchor-id="academic-research">Academic &amp; Research</h2>
+<section id="conferences" class="level3">
+<h3 class="anchored" data-anchor-id="conferences">Conferences</h3>
+<ul>
+<li><strong>NeurIPS MLOps Workshops</strong>
+<ul>
+<li>Annual workshops on ML systems and operations</li>
+<li>Papers and talks available online</li>
+</ul></li>
+<li><strong>ICML ML Systems Workshops</strong>
+<ul>
+<li>Research on scalable ML systems</li>
+<li>Cutting-edge techniques and architectures</li>
+</ul></li>
+<li><strong>SysML Conference</strong> (https://www.sysml.cc/)
+<ul>
+<li>Systems for Machine Learning</li>
+<li>Focus on ML infrastructure and systems</li>
+</ul></li>
+</ul>
+</section>
+<section id="research-papers-recent" class="level3">
+<h3 class="anchored" data-anchor-id="research-papers-recent">Research Papers (Recent)</h3>
+<ul>
+<li><strong>“MLOps: Continuous delivery and automation pipelines in machine learning”</strong> (2021)
+<ul>
+<li>Comprehensive survey of MLOps practices</li>
+<li>Available on arXiv</li>
+</ul></li>
+<li><strong>“Operationalizing Machine Learning: An Interview Study”</strong> (Nahar et al., 2022)
+<ul>
+<li>Empirical study of ML operations challenges</li>
+<li>Insights from industry practitioners</li>
+</ul></li>
+<li><strong>“The Full Stack of End-to-End Machine Learning”</strong> (Polyzotis et al., 2021)
+<ul>
+<li>Google’s perspective on ML platform architecture</li>
+<li>Available on Google Research blog</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="online-courses-tutorials" class="level2">
+<h2 class="anchored" data-anchor-id="online-courses-tutorials">Online Courses &amp; Tutorials</h2>
+<section id="free-courses" class="level3">
+<h3 class="anchored" data-anchor-id="free-courses">Free Courses</h3>
+<ul>
+<li><strong>“Full Stack Deep Learning”</strong> (UC Berkeley)
+<ul>
+<li>https://fullstackdeeplearning.com/</li>
+<li>Covers the full ML lifecycle including deployment</li>
+<li>Excellent practical focus</li>
+</ul></li>
+<li><strong>“Machine Learning Engineering for Production (MLOps)”</strong> (Coursera)
+<ul>
+<li>Andrew Ng’s specialization</li>
+<li>Covers deployment, monitoring, and scaling</li>
+</ul></li>
+<li><strong>“Production Machine Learning Systems”</strong> (Google Cloud)
+<ul>
+<li>Part of Google’s ML Engineer certification</li>
+<li>Practical, hands-on approach</li>
+</ul></li>
+</ul>
+</section>
+<section id="technical-blogs" class="level3">
+<h3 class="anchored" data-anchor-id="technical-blogs">Technical Blogs</h3>
+<ul>
+<li><strong>Chip Huyen’s Blog</strong> (https://huyenchip.com/)
+<ul>
+<li>Industry-leading content on ML systems</li>
+<li>Deep technical dives on MLOps topics</li>
+</ul></li>
+<li><strong>MLOps.community</strong> (https://mlops.community/)
+<ul>
+<li>Community-driven content</li>
+<li>Interviews, case studies, and tutorials</li>
+</ul></li>
+<li><strong>Towards Data Science</strong> (Medium)
+<ul>
+<li>Search for “MLOps” for practical tutorials</li>
+<li>Variable quality, but good for staying current</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="hands-on-practice" class="level2">
+<h2 class="anchored" data-anchor-id="hands-on-practice">Hands-On Practice</h2>
+<section id="projects-to-build" class="level3">
+<h3 class="anchored" data-anchor-id="projects-to-build">Projects to Build</h3>
+<ol type="1">
+<li><strong>End-to-end ML pipeline</strong> with automated retraining
+<ul>
+<li>Use MLflow for tracking</li>
+<li>Deploy with Docker/Kubernetes</li>
+<li>Add basic monitoring</li>
+</ul></li>
+<li><strong>Feature store implementation</strong>
+<ul>
+<li>Use Feast or build a simple version</li>
+<li>Implement online and offline feature serving</li>
+</ul></li>
+<li><strong>Model monitoring dashboard</strong>
+<ul>
+<li>Use Evidently AI or build custom</li>
+<li>Track data drift and model performance</li>
+</ul></li>
+<li><strong>A/B testing framework for ML</strong>
+<ul>
+<li>Implement canary deployments</li>
+<li>Build statistical testing for model comparisons</li>
+</ul></li>
+</ol>
+</section>
+<section id="datasets-for-practice" class="level3">
+<h3 class="anchored" data-anchor-id="datasets-for-practice">Datasets for Practice</h3>
+<ul>
+<li><strong>UCI Machine Learning Repository</strong>
+<ul>
+<li>Standard datasets for building pipelines</li>
+<li>Good for practicing data validation</li>
+</ul></li>
+<li><strong>Kaggle Competitions</strong>
+<ul>
+<li>Real-world problems with production-like constraints</li>
+<li>Practice full lifecycle development</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="communities-networking" class="level2">
+<h2 class="anchored" data-anchor-id="communities-networking">Communities &amp; Networking</h2>
+<section id="online-communities" class="level3">
+<h3 class="anchored" data-anchor-id="online-communities">Online Communities</h3>
+<ul>
+<li><strong>MLOps.community Slack</strong>
+<ul>
+<li>Active community of practitioners</li>
+<li>Job board and knowledge sharing</li>
+</ul></li>
+<li><strong>r/mlops</strong> (Reddit)
+<ul>
+<li>Discussion forum for MLOps topics</li>
+<li>Tool recommendations and troubleshooting</li>
+</ul></li>
+<li><strong>MLOps LinkedIn Groups</strong>
+<ul>
+<li>Professional networking</li>
+<li>Industry updates and discussions</li>
+</ul></li>
+</ul>
+</section>
+<section id="conferences-in-person-virtual" class="level3">
+<h3 class="anchored" data-anchor-id="conferences-in-person-virtual">Conferences (In-Person &amp; Virtual)</h3>
+<ul>
+<li><strong>MLOps World</strong>
+<ul>
+<li>Annual conference focused on ML operations</li>
+<li>Industry talks and workshops</li>
+</ul></li>
+<li><strong>Applied Machine Learning Days (AMLD)</strong>
+<ul>
+<li>Practical ML and MLOps content</li>
+<li>Strong industry focus</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="staying-current" class="level2">
+<h2 class="anchored" data-anchor-id="staying-current">Staying Current</h2>
+<section id="newsletters" class="level3">
+<h3 class="anchored" data-anchor-id="newsletters">Newsletters</h3>
+<ul>
+<li><strong>The Batch</strong> (DeepLearning.AI)
+<ul>
+<li>Weekly ML news including MLOps updates</li>
+<li>Curated by Andrew Ng’s team</li>
+</ul></li>
+<li><strong>MLOps Newsletter</strong> (https://mlops.substack.com/)
+<ul>
+<li>Weekly roundup of MLOps news and resources</li>
+<li>Tool updates and case studies</li>
+</ul></li>
+</ul>
+</section>
+<section id="podcasts" class="level3">
+<h3 class="anchored" data-anchor-id="podcasts">Podcasts</h3>
+<ul>
+<li><strong>“The MLOps Podcast”</strong> by MLOps.community
+<ul>
+<li>Interviews with industry practitioners</li>
+<li>Real-world experiences and lessons learned</li>
+</ul></li>
+<li><strong>“Talking Machines”</strong>
+<ul>
+<li>Broader ML podcast with MLOps episodes</li>
+<li>Academic and industry perspectives</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<ol type="1">
+<li><strong>Start with fundamentals</strong>: Understanding why MLOps matters is as important as knowing the tools</li>
+<li><strong>Learn by doing</strong>: Build projects to internalize concepts</li>
+<li><strong>Follow industry leaders</strong>: Chip Huyen, Google’s ML team, and others share valuable insights</li>
+<li><strong>Join communities</strong>: Learning from others’ experiences accelerates understanding</li>
+<li><strong>Stay current</strong>: The field evolves rapidly—follow newsletters and blogs</li>
+</ol>
+<p>Remember: MLOps is as much about culture and process as it is about technology. The best tools won’t help if your organization isn’t ready to adopt MLOps practices. Focus on building understanding of both the technical and organizational aspects.</p>
 
 
-</header>
-
-
-<p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</p>
-
-
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
