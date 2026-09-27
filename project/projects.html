@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Projects</title>
+<title>Work</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-69332ce0e771f3a3d078173a5fee4cad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-13421fe158a39abf999af719474c0881.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-69332ce0e771f3a3d078173a5fee4cad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-27e23cbe61966629943263635a137330.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9b9d8ebffb21333e6a7bcfed48179c8e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-27e23cbe61966629943263635a137330.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,20 +77,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-work .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-image','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-work'] = new List('listing-work', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -157,7 +157,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed projects quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -349,131 +349,87 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    </div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Q2F1c2FsJTIwUmVhc29uaW5n">Causal Reasoning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xhc3MlMjBJbWJhbGFuY2U=">Class Imbalance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29tcHV0ZXIlMjBWaXNpb24=">Computer Vision <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGVlcCUyMExlYXJuaW5n">Deep Learning <span class="quarto-category-count">(4)</span></div><div class="category" data-category="RGlzdHJpYnV0ZWQlMjBDb21wdXRpbmc=">Distributed Computing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhdGl2ZSUyME1vZGVscw==">Generative Models <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGluZWFyJTIwUmVncmVzc2lvbg==">Linear Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TWFycw==">Mars <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TmF0dXJhbCUyMExhbmd1YWdlJTIwUHJvY2Vzc2luZw==">Natural Language Processing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHlUb3JjaA==">PyTorch <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVncmVzc2lvbg==">Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVzZWFyY2g=">Research <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U3BvcnRzJTIwQW5hbHl0aWNz">Sports Analytics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RhdGlzdGljYWwlMjBJbmZlcmVuY2U=">Statistical Inference <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGVuc29yRmxvdw==">TensorFlow <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhbnNmZXIlMjBMZWFybmluZw==">Transfer Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VW5zdXBlcnZpc2VkJTIwTGVhcm5pbmc=">Unsupervised Learning <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
-<nav class="iconbar" aria-label="Site">
-    <div class="iconbar-top">
-      <a class="iconbar-item" href="../index.html" aria-label="Home">
-        <iconify-icon icon="lucide:home"></iconify-icon>
-        <span class="iconbar-text">Home</span>
-      </a>
-  
-      <a class="iconbar-item" href="../project/projects.html" aria-label="Projects">
-        <iconify-icon icon="lucide:layout-grid"></iconify-icon>
-        <span class="iconbar-text">Projects</span>
-      </a>
-  
-      <a class="iconbar-item" href="../articles/articles.html" aria-label="Articles">
-        <iconify-icon icon="lucide:notebook-text"></iconify-icon>
-        <span class="iconbar-text">Articles</span>
-      </a>
-  
-      <a class="iconbar-item" href="../visuals/visuals.html" aria-label="Visuals">
-        <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
-        <span class="iconbar-text">Visuals</span>
-      </a>
+<header class="sitehead" role="banner">
+  <div class="sitehead-inner">
+    <a class="sitehead-name" href="../index.html">Olivia Jackson Lambert</a>
 
-      <a class="iconbar-item" href="../reflections/reflections.html" aria-label="Reflections">
-        <iconify-icon icon="lucide:brain"></iconify-icon>
-        <span class="iconbar-text">Reflections</span>
-      </a>
+    <nav class="sitehead-sections" aria-label="Sections">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#values">Values</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
 
-      <a class="iconbar-item" href="../about.html" aria-label="About">
-        <iconify-icon icon="lucide:user"></iconify-icon>
-        <span class="iconbar-text">About</span>
-      </a>
-
+    <div class="sitehead-links">
+      <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:github" aria-hidden="true"></iconify-icon></a>
+      <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:linkedin" aria-hidden="true"></iconify-icon></a>
+      <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:book-open" aria-hidden="true"></iconify-icon></a>
+      <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
+        <iconify-icon icon="lucide:graduation-cap" aria-hidden="true"></iconify-icon></a>
+      <a href="../resume.html" aria-label="Résumé" title="Résumé">
+        <iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon></a>
+      <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
+        <iconify-icon id="sitehead-theme-icon" icon="lucide:moon" aria-hidden="true"></iconify-icon></button>
     </div>
-  
-    <div class="iconbar-bottom">
-      <a class="iconbar-item" href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:github"></iconify-icon>
-        <span class="iconbar-text">GitHub</span>
-      </a>
-  
-      <a class="iconbar-item" href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:linkedin"></iconify-icon>
-        <span class="iconbar-text">LinkedIn</span>
-      </a>
-  
-      <a class="iconbar-item" href="https://medium.com/@oliviarosejackson" aria-label="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:book-open"></iconify-icon>
-        <span class="iconbar-text">Medium</span>
-      </a>
-  
-      <a class="iconbar-item" href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:graduation-cap"></iconify-icon>
-        <span class="iconbar-text">Scholar</span>
-      </a>
-  
-      <a class="iconbar-item" href="../assets/Olivia_Jackson_Lambert_Resume.pdf" aria-label="Resume" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:file-text"></iconify-icon>
-        <span class="iconbar-text">Resume</span>
-      </a>
-    </div>
-  </nav>
-
-<!-- Light/Dark mode toggle (fixed top-right) -->
-<button class="theme-toggle" type="button" aria-label="Toggle light/dark mode">
-  <iconify-icon id="theme-toggle-icon" icon="lucide:moon"></iconify-icon>
-</button>
+  </div>
+</header>
 
 <script>
-  (function () {
-    function isDark() {
-      return (
-        document.body.classList.contains("quarto-dark") ||
-        document.documentElement.dataset.bsTheme === "dark"
-      );
-    }
-
-    function setIcon() {
-      var icon = document.getElementById("theme-toggle-icon");
-      if (!icon) return;
-      icon.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
-    }
-
-    window.addEventListener("DOMContentLoaded", function () {
-      var btn = document.querySelector(".theme-toggle");
-      if (!btn) return;
-
-      setIcon();
-
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        // Preferred: Quarto built-in toggle (works when light/dark themes are configured)
-        if (window.quartoToggleColorScheme) {
-          window.quartoToggleColorScheme();
-        } else {
-          // Fallback
-          var dark = isDark();
-          document.body.classList.toggle("quarto-dark", !dark);
-          document.body.classList.toggle("quarto-light", dark);
-          document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
-          try {
-            localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark");
-          } catch (err) {}
-        }
-
-        setTimeout(setIcon, 60);
-      });
+(function () {
+  function isDark() {
+    return document.body.classList.contains("quarto-dark") ||
+           document.documentElement.dataset.bsTheme === "dark";
+  }
+  function setIcon() {
+    var i = document.getElementById("sitehead-theme-icon");
+    if (i) i.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+  }
+  // Quarto places include-before-body inside the article column on article
+  // pages. Lift the header to the top of <body> so it spans the full width.
+  function liftHeader() {
+    var head = document.querySelector(".sitehead");
+    if (head && head.parentElement !== document.body) document.body.prepend(head);
+  }
+  liftHeader();
+  window.addEventListener("DOMContentLoaded", function () {
+    liftHeader();
+    var btn = document.querySelector(".sitehead-theme");
+    if (!btn) return;
+    setIcon();
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.quartoToggleColorScheme) {
+        window.quartoToggleColorScheme();
+      } else {
+        var dark = isDark();
+        document.body.classList.toggle("quarto-dark", !dark);
+        document.body.classList.toggle("quarto-light", dark);
+        document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
+        try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
+      }
+      setTimeout(setIcon, 60);
     });
-  })();
+  });
+})();
 </script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
+<h1 class="title">Work</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -485,47 +441,226 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<p>Case studies, written around the decision each project turned on rather than the model it used.</p>
+<div id="listing-work" class="quarto-listing quarto-listing-container-grid">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDTmF0dXJhbCUyMExhbmd1YWdlJTIwUHJvY2Vzc2luZyUyQ011bHRpLVRhc2slMjBMZWFybmluZyUyQ1B5dGhvbiUyQ1B5VG9yY2glMkNUcmFuc2Zvcm1lcnMlMkNTZW50ZW5jZSUyMEVtYmVkZGluZ3MlMkNOYW1lZCUyMEVudGl0eSUyMFJlY29nbml0aW9uJTJDVHJhbnNmZXIlMjBMZWFybmluZw==" data-listing-date-sort="1769241600000" data-listing-file-modified-sort="1769306911349" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1781">
+<div class="g-col-1" data-index="0" data-categories="RGlzdHJpYnV0ZWQlMjBDb21wdXRpbmclMkNNYWNoaW5lJTIwTGVhcm5pbmc=" data-listing-date-sort="1786258800000" data-listing-file-modified-sort="1790488408930" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1753">
+<a href="../project/projects_files/flight-delay-spark/flight-delay-spark.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../project/cover_assets/thumbs/flight-delay.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Predicting Flight Delay Severity at Scale
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGlzdHJpYnV0ZWQlMjBDb21wdXRpbmc='); return false;">Distributed Computing</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant deliberately giving up overall accuracy.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="RGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNUcmFuc2ZlciUyMExlYXJuaW5nJTJDVGVuc29yRmxvdyUyQ0NsYXNzJTIwSW1iYWxhbmNlJTJDTWFycw==" data-listing-date-sort="1776495600000" data-listing-file-modified-sort="1790488408942" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1505">
+<a href="../project/projects_files/mars-terrain/mars-terrain.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../project/cover_assets/thumbs/mars-terrain.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Classifying Curiosity Rover Images
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">Deep Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29tcHV0ZXIlMjBWaXNpb24='); return false;">Computer Vision</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('VHJhbnNmZXIlMjBMZWFybmluZw=='); return false;">Transfer Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('VGVuc29yRmxvdw=='); return false;">TensorFlow</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3MlMjBJbWJhbGFuY2U='); return false;">Class Imbalance</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFycw=='); return false;">Mars</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>A three-stage ResNet50 pipeline over 25 Martian image classes, where the held-out predictions show the difficulty is visual confusability rather than class imbalance.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="TmF0dXJhbCUyMExhbmd1YWdlJTIwUHJvY2Vzc2luZyUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1769241600000" data-listing-file-modified-sort="1790488408976" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2834">
 <a href="../project/projects_files/sentence-transformer/sentence-transformer.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="../project/cover_assets/particle_types_cropped.gif" class="thumbnail-image card-img" style="height: 300px;">
+<img loading="lazy" src="../project/cover_assets/thumbs/receipt.png" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Multi-Task Sentence Transformer for Receipt Processing
 </h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TmF0dXJhbCUyMExhbmd1YWdlJTIwUHJvY2Vzc2luZw=='); return false;">Natural Language Processing</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">Deep Learning</div>
+
+</div>
 <div class="card-text listing-description delink">
 <p>Building a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.</p>
 </div>
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDRGVlcCUyMExlYXJuaW5nJTJDQ29tcHV0ZXIlMjBWaXNpb24lMkNTdXBlcnZpc2VkJTIwTGVhcm5pbmclMkNQeXRob24lMkNDb252b2x1dGlvbmFsJTIwTmV1cmFsJTIwTmV0d29yayUyQ1BhcnRpY2xlJTIwUGh5c2ljcyUyQ0h5cGVycGFyYW1ldGVyJTIwT3B0aW1pemF0aW9uJTJDS2VyYXMlMkNUZW5zb3JGbG93" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1769045787841" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1386">
+<div class="g-col-1" data-index="3" data-categories="U3RhdGlzdGljYWwlMjBJbmZlcmVuY2UlMkNMaW5lYXIlMjBSZWdyZXNzaW9uJTJDUiUyQ1Nwb3J0cyUyMEFuYWx5dGljcyUyQ0NhdXNhbCUyMFJlYXNvbmluZw==" data-listing-date-sort="1765785600000" data-listing-file-modified-sort="1790488408961" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1170">
+<a href="../project/projects_files/nba-travel/nba-travel.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../project/cover_assets/thumbs/nba-travel.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Does Travel Cost NBA Teams the Game?
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljYWwlMjBJbmZlcmVuY2U='); return false;">Statistical Inference</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwUmVncmVzc2lvbg=='); return false;">Linear Regression</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U3BvcnRzJTIwQW5hbHl0aWNz'); return false;">Sports Analytics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q2F1c2FsJTIwUmVhc29uaW5n'); return false;">Causal Reasoning</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="UmVncmVzc2lvbiUyQ01hY2hpbmUlMjBMZWFybmluZyUyQ1Jlc2VhcmNo" data-listing-date-sort="1737705600000" data-listing-file-modified-sort="1790488408957" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1449">
+<a href="../project/projects_files/muon-momentum-regression/muon-momentum-regression.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../project/cover_assets/thumbs/muon.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Muon Track Momentum Resolution Regression
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UmVncmVzc2lvbg=='); return false;">Regression</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UmVzZWFyY2g='); return false;">Research</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>Predicting muon track momentum resolution from five kinematic inputs, reaching R-squared of 0.854 on a held-out test set of 42,000 tracks.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNEZWVwJTIwTGVhcm5pbmclMkNSZXNlYXJjaA==" data-listing-date-sort="1735804800000" data-listing-file-modified-sort="1790488408962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1386">
 <a href="../project/projects_files/particle-classifier/particle-classifier.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="../project/cover_assets/particle_types_cropped.gif" class="thumbnail-image card-img" style="height: 300px;">
+<img loading="lazy" src="../project/cover_assets/thumbs/particle.png" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 High Energy Particle CNN Classifier
 </h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29tcHV0ZXIlMjBWaXNpb24='); return false;">Computer Vision</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">Deep Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UmVzZWFyY2g='); return false;">Research</div>
+
+</div>
 <div class="card-text listing-description delink">
 <p>Classifying particle types from liquid argon detector images using convolutional neural networks.</p>
 </div>
 </div>
 </div></a>
 </div>
+<div class="g-col-1" data-index="6" data-categories="RGVlcCUyMExlYXJuaW5nJTJDR2VuZXJhdGl2ZSUyME1vZGVscyUyQ1Vuc3VwZXJ2aXNlZCUyMExlYXJuaW5nJTJDUHlUb3JjaA==" data-listing-date-sort="1651388400000" data-listing-file-modified-sort="1790488408920" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1431">
+<a href="../project/projects_files/digit-vae/digit-vae.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="../project/cover_assets/thumbs/digit-vae.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+MNIST Variational Autoencoder
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">Deep Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2VuZXJhdGl2ZSUyME1vZGVscw=='); return false;">Generative Models</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('VW5zdXBlcnZpc2VkJTIwTGVhcm5pbmc='); return false;">Unsupervised Learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHlUb3JjaA=='); return false;">PyTorch</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>Compressing handwritten digits into a two-dimensional latent space, then generating new digits by sampling across it.</p>
+</div>
+</div>
+</div></a>
+</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+
+
+
+
+</main> <!-- /main -->
+<script>
+  // Quarto renders listing categories into the right margin. Move the block above
+  // the grid so it reads as a filter bar. The node is moved, not cloned, so
+  // Quarto's own click handlers survive.
+  (function () {
+    function relocateCategories() {
+      var categories = document.querySelector(".quarto-listing-category");
+      var listing = document.querySelector(".quarto-listing");
+      if (!categories || !listing || !listing.parentNode) return;
+
+      var bar = document.createElement("div");
+      bar.className = "category-filter-bar";
+      bar.appendChild(categories);
+      listing.parentNode.insertBefore(bar, listing);
+
+      var heading = document.querySelector(".quarto-listing-category-title");
+      if (heading) heading.remove();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", relocateCategories);
+    } else {
+      relocateCategories();
+    }
+  })();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

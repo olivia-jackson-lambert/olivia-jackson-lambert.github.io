@@ -1,27 +1,21 @@
 [
   {
-    "listing": "/visuals/visuals.html",
+    "listing": "/writing/writing.html",
     "items": [
-      "/visuals/posts/jan-15-25-daylight.html"
+      "/writing/posts/mlops-future-data-science.html",
+      "/writing/posts/jan-15-25-daylight.html"
     ]
   },
   {
     "listing": "/project/projects.html",
     "items": [
+      "/project/projects_files/flight-delay-spark/flight-delay-spark.html",
+      "/project/projects_files/mars-terrain/mars-terrain.html",
       "/project/projects_files/sentence-transformer/sentence-transformer.html",
-      "/project/projects_files/particle-classifier/particle-classifier.html"
-    ]
-  },
-  {
-    "listing": "/reflections/reflections.html",
-    "items": [
-      "/reflections/posts/jan-2026-reflections.html"
-    ]
-  },
-  {
-    "listing": "/articles/articles.html",
-    "items": [
-      "/articles/articles/mlops-future-data-science.html"
+      "/project/projects_files/nba-travel/nba-travel.html",
+      "/project/projects_files/muon-momentum-regression/muon-momentum-regression.html",
+      "/project/projects_files/particle-classifier/particle-classifier.html",
+      "/project/projects_files/digit-vae/digit-vae.html"
     ]
   }
 ]
