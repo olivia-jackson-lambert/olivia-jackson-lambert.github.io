@@ -13,19 +13,30 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+[In collaboration with Emily Mader, Sarah Son, Peter Le and Will Yang]{.cs-with}
+
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Judge the classifier on macro-F1 across rare classes rather than on headline accuracy.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- Class weighting took the final model to 76.5% accuracy and 0.666 macro-F1 on held-out images.
+- Performance tracks how distinctive a class looks, not how many examples it has.
+- Under simulated dust on the optics, accuracy falls by only 4.2 points.
+:::
+:::
+:::
+
 Autonomous navigation on Mars depends on the rover recognising what it is looking at. This project trains a three-stage transfer learning pipeline on ResNet-50 to classify images from Curiosity's onboard cameras across 25 label classes, covering surface features such as ground and horizon, rover instruments such as the drill and scoop, and the calibration targets each instrument carries.
 
 The project's own headline is that overall accuracy is a misleading metric for planetary data, and that holds up. Working back through the held-out predictions surfaced two further things the report does not claim, and both are in the write-up below.
 
-::: {.callout-note appearance="simple"}
-## Team Project and My Role
-
-A five-person graduate project with Emily Mader, Sarah Son, Peter Le and Will Yang. Per the report's contribution table, mine was the **dust robustness analysis**, the **dataset and pre-processing section**, the **example images of each class**, and the results slides.
-
-Credit for the rest: Sarah built the first Stage 1 and Stage 2 models and the SAM-2 misclassification analysis, Peter wrote the preprocessing code and the Stage 3 image weighting, Will built the Stage 3 model and did the model tuning, and Emily ran the additional training epochs and the model evaluation figures.
-
-The figures on this page are regenerated from the team's real Stage 3 test predictions, not from a retrained model.
-:::
 
 **Source code**: [github.com/olivia-jackson-lambert/mars-project](https://github.com/olivia-jackson-lambert/mars-project)
 
@@ -102,9 +113,9 @@ Class weighting was the right fix for the symptom the project first noticed, whi
 
 # Dust Robustness
 
-Rover optics accumulate dust, and a model that only holds up on clean imagery is not much use across a mission. This section was my contribution to the project.
+Rover optics accumulate dust, and a model that only holds up on clean imagery is not much use across a mission.
 
-I applied simulated dust degradation to the held-out test images and re-scored the Stage 3 model without retraining it.
+Simulated dust degradation was applied to the held-out test images, and the Stage 3 model was re-scored without retraining.
 
 ![](assets/dust_robustness.png){fig-alt="Clean versus dust-degraded accuracy and macro-F1 for the Stage 3 model" fig-align="center" width="86%"}
 
@@ -116,7 +127,7 @@ I applied simulated dust degradation to the held-out test images and re-scored t
 
 Accuracy falls by 4.2 points and macro-F1 by 0.029. The degradation is real, so dust is not something the model is indifferent to, but holding 72.3% accuracy on imagery it was never trained to handle is a reasonable result for a backbone that has only seen clean frames.
 
-Two caveats on my own analysis. The dust is synthetic, applied as a post-hoc filter rather than photographed through a dusty lens, so it captures the loss of contrast but not the scattering or the wavelength dependence of real Martian dust. And macro-F1 falls proportionally less than accuracy, which is worth noting: the rare classes are not disproportionately harmed by dust, so whatever the model has learned about them survives the degradation better than the headline accuracy drop suggests.
+Two caveats on this analysis. The dust is synthetic, applied as a post-hoc filter rather than photographed through a dusty lens, so it captures the loss of contrast but not the scattering or the wavelength dependence of real Martian dust. And macro-F1 falls proportionally less than accuracy, which is worth noting: the rare classes are not disproportionately harmed by dust, so whatever the model has learned about them survives the degradation better than the headline accuracy drop suggests.
 
 # Limitations
 

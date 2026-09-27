@@ -14,6 +14,26 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+[In collaboration with Parul Lakhotia, Ewura Impraim Mensah, Roshni Misra and Sarah Son]{.cs-with}
+
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Select the only model that clears the 50% severe-delay recall floor, even at the cost of overall agreement.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- The severe-weighted random forest recovered 64.4% of 2+ hour delays on the 2019 blind test.
+- Pre-registering the decision rule made that trade defensible rather than convenient.
+- Four model families stall at the same boundary, so the limit is the features, not model capacity.
+:::
+:::
+:::
+
 Flight delays cost the US economy roughly \$33&nbsp;billion a year, more than half of it
 borne directly by passengers. This project predicts *how late* a domestic flight will
 arrive — not just whether it will be late — sorting each flight into four ordered tiers
@@ -40,21 +60,6 @@ selected it anyway, on purpose.
 </div>
 ```
 
-::: {.callout-note appearance="simple"}
-## Team Project and My Role
-
-This was a five-person graduate project (Team 3_1) with Parul Lakhotia, Ewura Impraim
-Mensah, Roshni Misra and Sarah Son. Credit where it belongs: Parul built the MLP and the
-Phase 2 feature engineering pipeline, Roshni owned the Phase 3 feature engineering and
-data preparation, Sarah designed the sliding-window cross-validation strategy and the
-logistic regression baselines, and Ewura led the EDA and graph-based features.
-
-**My contribution**, and the only part I write up in detail below, was the **random
-forest** and the **gradient-boosted trees**, across both project phases — modeling,
-hyperparameter search, evaluation, figures and the corresponding report sections. I was
-also final captain on the Phase 3 submission, responsible for the abstract, best-pipeline
-and conclusion sections.
-:::
 
 ## The Framing Problem
 

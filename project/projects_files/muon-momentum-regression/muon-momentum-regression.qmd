@@ -14,6 +14,24 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Score the model on a held-out test set and against baselines, not on cross-validated fit alone.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- The final network reaches R² of 0.854 on 41,797 unseen tracks, against 0.698 for linear regression.
+- Properly trained, model capacity is worth 0.105 of R², far more than the original notebook suggested.
+- Error peaks at 8 to 18 GeV/c, where a forward, low-momentum population overlaps the main band.
+:::
+:::
+:::
+
 This project predicts the track momentum resolution of muons in a particle detector from five kinematic inputs: total momentum $p$, track slopes $t_x$ and $t_y$, pseudorapidity $\eta$ and azimuthal angle $\phi$. The muons come from simulated $\chi_{c1} \rightarrow J/\psi\,\gamma$ decays, with $J/\psi \rightarrow \mu^+\mu^-$, giving 208,984 reconstructed tracks.
 
 The final model reaches an $R^2$ of **0.854** on a held-out test set of 41,797 tracks that was scored exactly once, against 0.698 for linear regression on the same split.

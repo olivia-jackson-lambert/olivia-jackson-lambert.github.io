@@ -13,19 +13,30 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+[In collaboration with Afrah Boateng, Mackenzie Henderson and Tyler Kero]{.cs-with}
+
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Report effect sizes alongside significance, because at 46,903 games almost everything is significant.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- Travel distance has no detectable effect on point differential.
+- Flying west to east is worth about a point. The reverse trip is worth nothing.
+- The model explains 0.5% of the variance, so every effect is small against game-to-game noise.
+:::
+:::
+:::
+
 Travel is the standard explanation for why away teams underperform. Long flights, lost sleep, crossing time zones. This project tests whether the distance an NBA away team travels actually shows up in the scoreline, using every regular season game from 1947 to 2025.
 
 It does not. The distance coefficient is statistically indistinguishable from zero. What does show up is the *direction* of travel: teams flying west to east gain close to a point, while the same trip in reverse shows nothing. That is a result about time zones rather than about mileage.
 
-::: {.callout-note appearance="simple"}
-## Team Project and My Role
-
-A four-person graduate project with Afrah Boateng, Mackenzie Henderson and Tyler Kero.
-
-I was the final author on the report, with 17 of the repository's 38 commits and 14 of them on the report itself. My own work was the **data cleaning pipeline**, the **exploratory analysis and the first linear models**, the **regression table and figures**, and integrating my teammates' modelling and results text into the submitted document.
-
-The figures on this page are recomputed in Python from the team's own cleaned dataset. They reproduce the coefficients in the original R report exactly.
-:::
 
 # The Question
 

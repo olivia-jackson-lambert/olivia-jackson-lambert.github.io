@@ -14,6 +14,24 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Tune the learning-rate schedule rather than the architecture.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- Plateau learning-rate scheduling lifted validation accuracy from 83.4% to 89.1%.
+- Adding capacity made the model worse; the baseline architecture was already expressive enough.
+- 89.1% is validation accuracy, so a held-out test set is the next step.
+:::
+:::
+:::
+
 This project classifies particle types (electrons, positrons, muons, pions, and protons) from liquid argon time projection chamber detector images using convolutional neural networks. Building on the MicroBooNE Collaboration's approach [1], the model learns visual patterns directly from the data rather than relying on hand-engineered physics rules. Through systematic hyperparameter optimization focused on learning rate scheduling, the final model achieves 89.1% validation accuracy.
 
 **Source code**: [github.com/olivia-jackson-lambert/high-energy-particle-classifier](https://github.com/olivia-jackson-lambert/high-energy-particle-classifier)

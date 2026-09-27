@@ -14,15 +14,28 @@ format:
     code-tools: false
 ---
 
+::: {.cs-top}
+::: {.cs-keys}
+::: {.cs-key}
+[The Decision]{.cs-label}
+
+[Freeze the BGE-M3 backbone and train only the two task heads.]{.cs-decision}
+:::
+
+::: {.cs-key}
+[Takeaways]{.cs-label}
+
+- 97.8% sentence classification accuracy on 414 held-out receipt lines.
+- 0.898 macro-F1 on entity tagging, with labels from the public CORD-v2 receipt corpus.
+- Training both tasks to one stopping point means choosing which one to compromise.
+:::
+:::
+:::
+
 This project implements an end-to-end receipt processing system that combines optical character recognition (OCR) with a multi-task neural network for sentence classification and named entity recognition (NER). The system scans receipt images, extracts text using OCR, and then processes the text with a BGE-M3 transformer backbone to classify sentences and extract entities. By leveraging pre-trained sentence embeddings and joint optimization, the model learns shared representations that benefit both tasks.
 
 **Source code**: [github.com/olivia-jackson-lambert/sentence-project](https://github.com/olivia-jackson-lambert/sentence-project)
 
-::: {.callout-note appearance="simple"}
-## Status
-
-The model is trained and the results below are real. Labelled data comes from CORD-v2, a public corpus of 1,000 annotated Indonesian receipts, since the original project had no labelled corpus of its own. On a held-out test split of 414 receipt lines the model reaches **97.8% sentence classification accuracy** and **0.898 macro-F1 on entity tagging**.
-:::
 
 # System Overview
 
