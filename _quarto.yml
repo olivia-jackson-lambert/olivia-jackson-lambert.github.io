@@ -1,5 +1,10 @@
 project:
   type: website
+  post-render:
+    - scripts/sync-resume-pdf.sh
+
+filters:
+  - filters/page-tags.lua
 
 website:
   navbar:
@@ -14,7 +19,8 @@ format:
     include-in-header: 
       - includes/iconify.html
       - includes/favicon.html
-    include-before-body: includes/icon-sidebar.html
+    include-before-body: includes/site-header.html
+    include-after-body: includes/category-filter.html
     theme:
       light: [default, scss/theme-light.scss]
       dark:  [default, scss/theme-dark.scss]

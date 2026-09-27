@@ -1,8 +1,10 @@
 ---
-title: "Projects"
+title: "Work"
 page-layout: full
-body-class: projects
+body-classes: projects
 comments: false
+aliases:
+  - /project/projects.html
 
 format:
   html:
@@ -11,14 +13,19 @@ format:
       margin-width: 0px
 
 listing:
-  id: listing
-  contents: .
+  id: work
+  contents: projects_files/*/*.qmd
   type: grid
   sort: "date desc"
   page-size: 40
-  fields: [image, title, description]
+  fields: [image, title, description, categories]
   grid-columns: 3
-  image-height: 300px
+  categories: true
   filter-ui: false
   sort-ui: false
 ---
+
+Case studies, written around the decision each project turned on rather than the model it used.
+
+::: {#work}
+:::

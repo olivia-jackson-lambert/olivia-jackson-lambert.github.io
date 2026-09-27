@@ -1,0 +1,7 @@
+format:
+  html:
+    page-layout: article
+    grid:
+      body-width: 680px
+      margin-width: 250px
+      gutter-width: 1.5rem

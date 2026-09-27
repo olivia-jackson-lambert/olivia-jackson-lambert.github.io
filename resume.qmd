@@ -1,0 +1,137 @@
+---
+title: "Olivia Jackson Lambert"
+body-classes: resume
+comments: false
+format-links: false
+format:
+  html:
+    page-layout: article
+    toc: true
+    toc-location: right
+    toc-title: "Sections"
+    grid:
+      body-width: 820px
+      margin-width: 220px
+  typst:
+    output-file: "Olivia_Jackson_Lambert_Resume.pdf"
+    papersize: us-letter
+    fontsize: 9.5pt
+    margin:
+      x: 1.5cm
+      y: 1.4cm
+    section-numbering: ""
+    toc: false
+---
+
+::: {.content-visible when-format="html"}
+::: {.resume-contact}
+San Francisco, CA
+· [oliviarosejackson@outlook.com](mailto:oliviarosejackson@outlook.com)
+· [LinkedIn](https://linkedin.com/in/olivia-rose-jackson)
+· [GitHub](https://github.com/olivia-jackson-lambert)
+· [Google Scholar](https://scholar.google.com/citations?user=X1oWKpQAAAAJ&hl=en)
+
+[Download PDF](Olivia_Jackson_Lambert_Resume.pdf){.resume-download}
+:::
+
+Data and analytics leader working at the point where modeling meets the decision it
+is meant to serve. Currently heading data at Hockeystick, where the work spans team
+building, platform strategy, and shipping products other teams rely on.
+:::
+
+::: {.content-visible when-format="typst"}
+San Francisco, CA | oliviarosejackson@outlook.com | linkedin.com/in/olivia-rose-jackson | github.com/olivia-jackson-lambert
+:::
+
+## Experience
+
+**Head of Data** — Hockeystick Data (part of Liftoff Campaigns)\
+*January 2026 – Present*
+
+- Grew the team from 3 to 7 across data engineering, analytics engineering, and data science, managing 4 direct reports and 3 contractors. Mentored junior engineers in best practices and built a culture of ownership by empowering the team to question assumptions and investigate trade-offs and risks.
+- Reduced platform spend by $60,000 a year and saved 50 hours per month of pipeline maintenance and workarounds by leading the migration from the Civis data platform to Google Cloud and BigQuery, optimizing architecture for scale and 99.9% uptime.
+- Reduced inbound data tickets from roughly 300 to 5 per month by developing self-serve internal tooling and analytics products in Next.js, including an interactive app showing the impact of pull requests on the dbt model and in-app dependencies.
+- Led the donor propensity modeling initiative, overhauling donor segmentation and targeting to increase revenue from data acquisitions by 121%.
+- Tripled the team's monthly output by introducing AI workflows with Claude Code, using Claude Tag, `CLAUDE.md` files, and skills to accelerate repetitive tasks, bug fixes, and small feature requests. Spearheaded an internal chatbot on the ChatGPT API that answers FAQs and gives tutorials on internal tools, drawing from a markdown context repository.
+- Partnered with leaders across the organization to align on strategy and roadmaps, operationalizing their decision making through targeted analysis and dashboarding.
+
+**Senior Analytics Engineer** — Democratic National Committee\
+*August 2024 – December 2024 · Election cycle contract*
+
+- Deployed machine learning models serving 100K+ monthly users by building SQL models in dbt and orchestrating DAGs in Airflow.
+- Trained a gradient-boosted XGBoost model on 160M+ voter records with 500+ engineered features to predict donor propensity scores, optimizing targeted direct mail fundraising campaigns.
+- Refactored the data delivery pipeline by migrating to dbt and GCP, reducing API load by 99.999% and eliminating throttling issues.
+- Built real-time election night dashboards in Looker over live PostgreSQL and BigQuery sources, delivering precinct-level insight to senior stakeholders ahead of major media outlets.
+
+**Data Scientist, Consultant** — Kenvue (Johnson & Johnson)\
+*September 2023 – March 2024*
+
+- Built a global demand forecasting pipeline using Prophet and PySpark on Databricks, generating 10K+ monthly time series forecasts across five continents for SKU planning, inventory optimization, and financial budgeting.
+- Developed a supervised classification module with sktime and scikit-learn to categorize time series, saving hundreds of hours of manual work a year.
+- Productionized an ETL pipeline with Redshift, Snowflake, and Streamlit, creating automated SQL-driven interactive dashboards for executives.
+
+**Data Scientist, Consultant** — Fidera Group\
+*March 2023 – September 2023*
+
+- Architected automated ETL workflows with Python and Airflow to integrate Salesforce CRM and internal databases, processing 100K+ records daily and improving data accessibility for stakeholders.
+- Engineered data validation tests and introduced Git version control and Docker containerization for improved reliability.
+
+## Research Experience
+
+**Research Assistant, Computational Astrophysics** — Institute for Astronomy\
+*May 2020 – September 2020*
+
+- Extracted and analyzed 500+ FITS images from the Sloan Digital Sky Survey using complex SQL queries against a terabyte-scale database, and implemented a C++ pixel-z algorithm for supernova analysis.
+- Built automated data processing pipelines in Python with Astropy, SciPy, pandas, and Matplotlib for feature extraction and visualization, reducing processing time from days to hours.
+
+**Research Assistant, Computer Vision & Machine Learning** — National Physical Laboratory\
+*May 2019 – September 2019*
+
+- Developed autonomous sky imaging software for a distributed network of Raspberry Pi devices in remote locations, implementing adaptive exposure control for months of unattended operation.
+- Applied machine learning with OpenCV and scikit-learn to classify cloud cover patterns using texture feature extraction (GLCM, HOG descriptors), improving satellite re-entry prediction accuracy by 23%.
+
+## Education
+
+**Master of Information & Data Science** — University of California, Berkeley\
+*Expected 2027 · Part-time professional degree*\
+Coursework: Machine Learning, Distributed Computing (PySpark), Deep Learning, Data Engineering, Statistical Modeling
+
+**Master of Physics, Astrophysics — First Class with Honours** — University of Edinburgh\
+*2017 – 2022*\
+President, Physics & Astronomy Society · Carnegie Scholarship recipient · Edinburgh Award for Leadership & Development · UKSEDS Diversity Champion
+
+## Technical Skills
+
+**Languages** — Python, R, SQL, C++, LaTeX
+
+**Data Science & ML** — scikit-learn, TensorFlow, Keras, PyTorch, XGBoost, Prophet, statsmodels, pandas, NumPy, SciPy
+
+**Data Engineering** — Airflow, dbt, Spark, PySpark, ETL pipelines, Docker, Git
+
+**Cloud & Databases** — GCP, BigQuery, AWS, Snowflake, Redshift, PostgreSQL, MongoDB, Neo4j
+
+**Visualization & BI** — Next.js, Streamlit, Looker, Tableau, Matplotlib
+
+**Certifications** — AWS Certified Cloud Practitioner · Certified Associate Python Programmer (PCAP) · dbt Fundamentals
+
+## Selected Projects
+
+::: {.content-visible when-format="html"}
+Full write-ups live under [Work](/project/projects.html).
+
+- **[Multi-Task Sentence Transformer for Receipt Processing](/project/projects_files/sentence-transformer/sentence-transformer.html)** — Multi-task transformer pipeline classifying sentences and extracting entities from retail receipts. Transformers, NER, multi-task learning, PyTorch.
+- **[High Energy Particle CNN Classifier](/project/projects_files/particle-classifier/particle-classifier.html)** — Convolutional network predicting particle types from liquid argon detector tracks, at 93% accuracy. TensorFlow, Keras, hyperparameter optimization.
+- **[Predicting Flight Delay Severity at Scale](/project/projects_files/flight-delay-spark/flight-delay-spark.html)** — Four-tier delay classifier over 31M flights in PySpark, trading overall accuracy to clear an operational safety gate.
+:::
+
+::: {.content-visible when-format="typst"}
+- **Multi-Task Sentence Transformer for Receipt Processing** — Multi-task transformer pipeline classifying sentences and extracting entities from retail receipts. Transformers, NER, multi-task learning, PyTorch.
+- **High Energy Particle CNN Classifier** — Convolutional network predicting particle types from liquid argon detector tracks, at 93% accuracy. TensorFlow, Keras, hyperparameter optimization.
+- **Predicting Flight Delay Severity at Scale** — Four-tier delay classifier over 31M flights in PySpark, trading overall accuracy to clear an operational safety gate.
+:::
+
+## Publication
+
+Inácio de Carvalho, V., **Jackson, O.**, McMahon, S. & Cockell, C. S.
+[The need for large sample numbers to demonstrate that Martian environments are lifeless](https://www.nature.com/articles/s41550-024-02443-0).
+*Nature Astronomy* **8**, 1493–1495 (2024).

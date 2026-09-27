@@ -1,0 +1,33 @@
+---
+title: "Writing"
+page-layout: full
+body-classes: writing
+comments: false
+aliases:
+  - /articles/articles.html
+  - /visuals/visuals.html
+
+format:
+  html:
+    grid:
+      body-width: 1000px
+      margin-width: 0px
+
+listing:
+  id: writing
+  contents: posts
+  type: grid
+  sort: "date desc"
+  page-size: 20
+  fields: [image, title, description, date, reading-time, categories]
+  grid-columns: 2
+  date-format: "MMM D, YYYY"
+  categories: true
+  filter-ui: false
+  sort-ui: false
+---
+
+Essays on how data work gets decided, and short notes on single charts.
+
+::: {#writing}
+:::

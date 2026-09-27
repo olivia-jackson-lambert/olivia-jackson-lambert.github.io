@@ -1,9 +1,10 @@
 ---
 title: "High Energy Particle CNN Classifier"
 description: "Classifying particle types from liquid argon detector images using convolutional neural networks."
-image: /project/cover_assets/particle_types_cropped.gif
+image: /project/cover_assets/thumbs/particle.png
 date: 2025-01-02
-categories: [Machine Learning, Deep Learning, Computer Vision, Supervised Learning, Python, Convolutional Neural Network, Particle Physics, Hyperparameter Optimization, Keras, TensorFlow]
+categories: [Computer Vision, Deep Learning, Research]
+tags: [Machine Learning, Supervised Learning, Convolutional Neural Network, Keras, TensorFlow, Hyperparameter Optimization, Particle Physics, Python]
 format:
   html:
     page-layout: article
