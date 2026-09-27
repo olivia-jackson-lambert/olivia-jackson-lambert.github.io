@@ -356,20 +356,24 @@ window.Quarto = {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:github" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:linkedin" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:book-open" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:graduation-cap" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="lucide:moon" aria-hidden="true"></iconify-icon></button>
+        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
     </div>
   </div>
 </header>
+
+<button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
+  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+</button>
 
 <script>
 (function () {
@@ -379,7 +383,7 @@ window.Quarto = {
   }
   function setIcon() {
     var i = document.getElementById("sitehead-theme-icon");
-    if (i) i.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+    if (i) i.setAttribute("icon", isDark() ? "ph:sun-light" : "ph:moon-light");
   }
   // Quarto places include-before-body inside the article column on article
   // pages. Lift the header to the top of <body> so it spans the full width.
@@ -390,6 +394,19 @@ window.Quarto = {
   liftHeader();
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+
+    var top = document.querySelector(".totop");
+    if (top) {
+      if (top.parentElement !== document.body) document.body.appendChild(top);
+      var onScroll = function () { top.hidden = window.scrollY < 480; };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      top.addEventListener("click", function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
@@ -444,6 +461,23 @@ window.Quarto = {
 </header>
 
 
+<div class="cs-top">
+<p><span class="cs-with">In collaboration with Parul Lakhotia, Ewura Impraim Mensah, Roshni Misra and Sarah Son</span></p>
+<div class="cs-keys">
+<div class="cs-key">
+<p><span class="cs-label">The Decision</span></p>
+<p><span class="cs-decision">Select the only model that clears the 50% severe-delay recall floor, even at the cost of overall agreement.</span></p>
+</div>
+<div class="cs-key">
+<p><span class="cs-label">Takeaways</span></p>
+<ul>
+<li>The severe-weighted random forest recovered 64.4% of 2+ hour delays on the 2019 blind test.</li>
+<li>Pre-registering the decision rule made that trade defensible rather than convenient.</li>
+<li>Four model families stall at the same boundary, so the limit is the features, not model capacity.</li>
+</ul>
+</div>
+</div>
+</div>
 <p>Flight delays cost the US economy roughly $33&nbsp;billion a year, more than half of it borne directly by passengers. This project predicts <em>how late</em> a domestic flight will arrive — not just whether it will be late — sorting each flight into four ordered tiers using only information available about two hours before scheduled departure.</p>
 <p>The headline result is a negative-sounding one that I think is the most interesting part: the model we selected is the <em>worst</em> of our four finalists on overall agreement, and we selected it anyway, on purpose.</p>
 <div class="kpi-grid">
@@ -459,20 +493,6 @@ window.Quarto = {
     <div class="label">Outcome</div>
     <div class="value">64.4% severe recall on blind test</div>
   </div>
-</div>
-<div class="callout callout-style-simple callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Team Project and My Role
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This was a five-person graduate project (Team 3_1) with Parul Lakhotia, Ewura Impraim Mensah, Roshni Misra and Sarah Son. Credit where it belongs: Parul built the MLP and the Phase 2 feature engineering pipeline, Roshni owned the Phase 3 feature engineering and data preparation, Sarah designed the sliding-window cross-validation strategy and the logistic regression baselines, and Ewura led the EDA and graph-based features.</p>
-<p><strong>My contribution</strong>, and the only part I write up in detail below, was the <strong>random forest</strong> and the <strong>gradient-boosted trees</strong>, across both project phases — modeling, hyperparameter search, evaluation, figures and the corresponding report sections. I was also final captain on the Phase 3 submission, responsible for the abstract, best-pipeline and conclusion sections.</p>
-</div>
 </div>
 <section id="the-framing-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-framing-problem">The Framing Problem</h2>

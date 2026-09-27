@@ -416,20 +416,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:github" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:linkedin" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:book-open" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:graduation-cap" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="lucide:moon" aria-hidden="true"></iconify-icon></button>
+        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
     </div>
   </div>
 </header>
+
+<button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
+  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+</button>
 
 <script>
 (function () {
@@ -439,7 +443,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
   function setIcon() {
     var i = document.getElementById("sitehead-theme-icon");
-    if (i) i.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+    if (i) i.setAttribute("icon", isDark() ? "ph:sun-light" : "ph:moon-light");
   }
   // Quarto places include-before-body inside the article column on article
   // pages. Lift the header to the top of <body> so it spans the full width.
@@ -450,6 +454,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   liftHeader();
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+
+    var top = document.querySelector(".totop");
+    if (top) {
+      if (top.parentElement !== document.body) document.body.appendChild(top);
+      var onScroll = function () { top.hidden = window.scrollY < 480; };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      top.addEventListener("click", function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
@@ -504,21 +521,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="cs-top">
+<div class="cs-keys">
+<div class="cs-key">
+<p><span class="cs-label">The Decision</span></p>
+<p><span class="cs-decision">Freeze the BGE-M3 backbone and train only the two task heads.</span></p>
+</div>
+<div class="cs-key">
+<p><span class="cs-label">Takeaways</span></p>
+<ul>
+<li>97.8% sentence classification accuracy on 414 held-out receipt lines.</li>
+<li>0.898 macro-F1 on entity tagging, with labels from the public CORD-v2 receipt corpus.</li>
+<li>Training both tasks to one stopping point means choosing which one to compromise.</li>
+</ul>
+</div>
+</div>
+</div>
 <p>This project implements an end-to-end receipt processing system that combines optical character recognition (OCR) with a multi-task neural network for sentence classification and named entity recognition (NER). The system scans receipt images, extracts text using OCR, and then processes the text with a BGE-M3 transformer backbone to classify sentences and extract entities. By leveraging pre-trained sentence embeddings and joint optimization, the model learns shared representations that benefit both tasks.</p>
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/sentence-project">github.com/olivia-jackson-lambert/sentence-project</a></p>
-<div class="callout callout-style-simple callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Status
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The model is trained and the results below are real. Labelled data comes from CORD-v2, a public corpus of 1,000 annotated Indonesian receipts, since the original project had no labelled corpus of its own. On a held-out test split of 414 receipt lines the model reaches <strong>97.8% sentence classification accuracy</strong> and <strong>0.898 macro-F1 on entity tagging</strong>.</p>
-</div>
-</div>
 <section id="system-overview" class="level1">
 <h1>System Overview</h1>
 <p>The complete receipt processing pipeline consists of three main stages:</p>

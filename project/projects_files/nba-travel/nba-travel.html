@@ -323,20 +323,24 @@ ul.task-list li input[type="checkbox"] {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:github" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:linkedin" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:book-open" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="lucide:graduation-cap" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon></a>
+        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="lucide:moon" aria-hidden="true"></iconify-icon></button>
+        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
     </div>
   </div>
 </header>
+
+<button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
+  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+</button>
 
 <script>
 (function () {
@@ -346,7 +350,7 @@ ul.task-list li input[type="checkbox"] {
   }
   function setIcon() {
     var i = document.getElementById("sitehead-theme-icon");
-    if (i) i.setAttribute("icon", isDark() ? "lucide:sun" : "lucide:moon");
+    if (i) i.setAttribute("icon", isDark() ? "ph:sun-light" : "ph:moon-light");
   }
   // Quarto places include-before-body inside the article column on article
   // pages. Lift the header to the top of <body> so it spans the full width.
@@ -357,6 +361,19 @@ ul.task-list li input[type="checkbox"] {
   liftHeader();
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+
+    var top = document.querySelector(".totop");
+    if (top) {
+      if (top.parentElement !== document.body) document.body.appendChild(top);
+      var onScroll = function () { top.hidden = window.scrollY < 480; };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      top.addEventListener("click", function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
@@ -414,23 +431,25 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="cs-top">
+<p><span class="cs-with">In collaboration with Afrah Boateng, Mackenzie Henderson and Tyler Kero</span></p>
+<div class="cs-keys">
+<div class="cs-key">
+<p><span class="cs-label">The Decision</span></p>
+<p><span class="cs-decision">Report effect sizes alongside significance, because at 46,903 games almost everything is significant.</span></p>
+</div>
+<div class="cs-key">
+<p><span class="cs-label">Takeaways</span></p>
+<ul>
+<li>Travel distance has no detectable effect on point differential.</li>
+<li>Flying west to east is worth about a point. The reverse trip is worth nothing.</li>
+<li>The model explains 0.5% of the variance, so every effect is small against game-to-game noise.</li>
+</ul>
+</div>
+</div>
+</div>
 <p>Travel is the standard explanation for why away teams underperform. Long flights, lost sleep, crossing time zones. This project tests whether the distance an NBA away team travels actually shows up in the scoreline, using every regular season game from 1947 to 2025.</p>
 <p>It does not. The distance coefficient is statistically indistinguishable from zero. What does show up is the <em>direction</em> of travel: teams flying west to east gain close to a point, while the same trip in reverse shows nothing. That is a result about time zones rather than about mileage.</p>
-<div class="callout callout-style-simple callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Team Project and My Role
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A four-person graduate project with Afrah Boateng, Mackenzie Henderson and Tyler Kero.</p>
-<p>I was the final author on the report, with 17 of the repository’s 38 commits and 14 of them on the report itself. My own work was the <strong>data cleaning pipeline</strong>, the <strong>exploratory analysis and the first linear models</strong>, the <strong>regression table and figures</strong>, and integrating my teammates’ modelling and results text into the submitted document.</p>
-<p>The figures on this page are recomputed in Python from the team’s own cleaned dataset. They reproduce the coefficients in the original R report exactly.</p>
-</div>
-</div>
 <section id="the-question" class="level1">
 <h1>The Question</h1>
 <p>Does the distance an away team travels affect point differential, measured as away score minus home score?</p>
