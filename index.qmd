@@ -128,7 +128,6 @@ body-classes: home
       <div class="op-about-bio">
         <p>Hi! I'm Olivia Jackson Lambert, a data leader based in San Francisco. I enjoy building teams and systems that support decision making and strategy.</p>
         <p>For the last few years that has meant political and civic data, first at the Democratic National Committee and now as Head of Data at Hockeystick. Before that I trained as an astrophysicist at the University of Edinburgh.</p>
-        <p>Along the way I've grown a data function from three people to seven, led a move to Google Cloud that saves $60K a year, and built self-serve tools that cut inbound data requests from 300 a month to 5. At the DNC my models reached 100K+ monthly users across 160M+ voter records, and at Kenvue I shipped 10K+ forecasts a month to teams on five continents.</p>
         <p>When I'm not working, I'm usually kayaking, reading, making art, or hanging out with my husband and three cats.</p>
       </div>
       <div class="op-facts">
