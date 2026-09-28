@@ -85,7 +85,7 @@ aliases:
     <h1 class="op-display">I lead data teams for <em>mission&#8209;driven</em> organisations.</h1>
     <p class="op-lede">Building data and product at Hockeystick, a political data start-up. Previously with the Democratic National Committee for the 2024 presidential election.</p>
   </div>
-  <div class="op-photo op-headshot"><img src="/assets/headshot-bw.webp" alt="Portrait of Olivia Jackson Lambert" width="800" height="1000" fetchpriority="high"></div>
+  <div class="op-photo op-headshot"><img src="/assets/headshot-bw.webp" alt="Portrait of Olivia Jackson Lambert" width="900" height="900" fetchpriority="high"></div>
 </section>
 
 <section id="work" class="op-section">
