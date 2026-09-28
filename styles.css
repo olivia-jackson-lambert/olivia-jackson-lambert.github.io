@@ -822,3 +822,6 @@ main.content .quarto-figure img, main.content figure img { cursor: zoom-in; }
   body:not(.home) #title-block-header { grid-column: body-content-start / body-content-end !important; }
   body:not(.home) #quarto-sidebar.toc-left, body:not(.home) .sidebar.toc-left { grid-column: page-start / body-start !important; padding-right: 24px; }
 }
+/* breathing room between the article title and its description */
+body:not(.home) .quarto-title-block .title { margin-bottom: 28px !important; }
+body:not(.home) .quarto-title-block .description { margin-top: 0 !important; }
