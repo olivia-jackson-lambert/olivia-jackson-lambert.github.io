@@ -55,7 +55,7 @@ TARGET = "epz"
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, SLATE, RUST, DIM, INK, LIGHT, MUTED, MONO  # noqa: E402
+from figstyle import apply, tidy, SLATE, RUST, DIM, RUST_TINT, MUTED  # noqa: E402
 
 SCALE = 1e4  # plot errors in units of 1e-4
 
@@ -145,12 +145,12 @@ def error_plot(tab: pd.DataFrame, out: Path) -> None:
     fig, ax = plt.subplots(figsize=(7.0, 4.0))
     peak = tab["rmse"].nlargest(2).index
     lo, hi = tab.loc[peak, "p_low"].min(), tab.loc[peak, "p_high"].max()
-    ax.axvspan(lo, hi, color=LIGHT, alpha=0.35, lw=0, zorder=0)
-    ax.text(np.sqrt(lo * hi), rmse.max() * 1.06, f"peak error\n{lo:.0f} to {hi:.0f} GeV/c",
+    ax.axvspan(lo, hi, color=RUST_TINT, lw=0, zorder=0)
+    ax.text(np.sqrt(lo * hi), rmse.max() * 1.06, f"Peak Error\n{lo:.0f} to {hi:.0f} GeV/c",
             ha="center", va="bottom", fontsize=9, color=RUST)
 
     ax.stairs(rmse, edges, color=SLATE, lw=2.2, label="RMSE", baseline=None)
-    ax.stairs(bias, edges, color=DIM, lw=1.6, ls="--", label="Mean bias (predicted minus true)",
+    ax.stairs(bias, edges, color=DIM, lw=1.6, ls="--", label="Mean Bias (Predicted Minus True)",
               baseline=None)
     ax.axhline(0, color=MUTED, lw=0.8)
 
@@ -161,7 +161,7 @@ def error_plot(tab: pd.DataFrame, out: Path) -> None:
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
     ax.xaxis.set_minor_formatter(NullFormatter())
     ax.set_ylim(-0.6, rmse.max() * 1.32)
-    ax.set_xlabel("Momentum p (GeV/c), eight equal-count bins")
+    ax.set_xlabel("Momentum p (GeV/c), Eight Equal-Count Bins")
     ax.set_ylabel(r"Error in $\Delta p_Z / p_Z$ ($\times 10^{-4}$)")
     ax.legend(loc="upper right")
     tidy(ax)
@@ -177,7 +177,7 @@ def parity_plot(y_true, y_pred, out: Path) -> None:
     ax.scatter(y_true * 1e3, y_pred * 1e3, s=3, alpha=0.18, color=SLATE, linewidths=0,
                rasterized=True)
     ax.plot([lo * 1e3, hi * 1e3], [lo * 1e3, hi * 1e3], color=RUST, lw=1.6,
-            label="Perfect prediction")
+            label="Perfect Prediction")
     ax.set_xlim(lo * 1e3, hi * 1e3)
     ax.set_ylim(lo * 1e3, hi * 1e3)
     ax.set_aspect("equal")
@@ -185,8 +185,8 @@ def parity_plot(y_true, y_pred, out: Path) -> None:
     ax.set_ylabel(r"Predicted $\Delta p_Z / p_Z$ ($\times 10^{-3}$)")
     ax.legend(loc="upper left")
     tidy(ax, grid_axis="both")
-    ax.text(0.98, 0.03, f"n = {len(y_true):,} test tracks", transform=ax.transAxes,
-            ha="right", va="bottom", fontsize=8.5, color=MUTED, fontfamily=MONO)
+    ax.text(0.98, 0.03, f"n = {len(y_true):,} Test Tracks", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=8.5, color=MUTED)
     fig.savefig(out / "test_parity.png", dpi=200, bbox_inches="tight", pad_inches=0.04,
                 facecolor="white")
     plt.close(fig)

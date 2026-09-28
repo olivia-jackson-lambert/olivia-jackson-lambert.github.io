@@ -25,12 +25,15 @@ CACHE = "/Users/oliviajackson/Documents/portfolio/projects/receipt-data"
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "assets"
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, GRID, MUTED, LIGHT  # noqa: E402
+from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM, GRID, MUTED, LIGHT,  # noqa: E402
+                      SLATE_TINT, RUST_TINT, PAPER)
 
 PANEL = dict(loc="left", fontsize=10.5, color=DIM, pad=10)   # small panel label, not a chart title
 CLASS_NAMES = ["ITEM", "ITEM_OPTION", "SUBTOTAL", "TOTAL"]
 NER_NAMES = ["O", "B-NAME", "I-NAME", "B-PRICE", "I-PRICE"]
-TAG_COLOR = {"O": MUTED, "B-NAME": SLATE, "I-NAME": "#5d7390", "B-PRICE": RUST, "I-PRICE": "#b5645a"}
+TAG_COLOR = {"O": MUTED, "B-NAME": SLATE, "I-NAME": SLATE, "B-PRICE": RUST, "I-PRICE": RUST}
+TAG_FILL = {"O": PAPER, "B-NAME": SLATE_TINT, "I-NAME": SLATE_TINT, "B-PRICE": RUST_TINT, "I-PRICE": RUST_TINT}
+TOKENS_PER_ROW = 4
 MAXLEN = 32
 
 
@@ -49,40 +52,45 @@ def save(fig, name):
 
 # ---------------------------------------------------------------- curves
 def curves(hist):
+    """Two panels stacked vertically with a shared epoch axis, for a narrow column."""
     H = {k: np.array([h[k] for h in hist]) for k in hist[0]}
     ep = H["epoch"]
 
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.0), sharey=False)
-    for ax, task, label in ((a1, "cls", "Sentence classification"), (a2, "ner", "Entity tagging")):
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(7.2, 7.4), sharex=True)
+    for ax, task, label in ((a1, "cls", "Sentence Classification"), (a2, "ner", "Entity Tagging")):
         ax.plot(ep, H[f"train_{task}_loss"], color=SLATE, label="Train")
         ax.plot(ep, H[f"val_{task}_loss"], color=RUST, label="Validation")
         ax.set_title(label, **PANEL)
-        ax.set_xlabel("Epoch"); ax.set_ylabel("Cross-entropy loss")
+        ax.set_ylabel("Cross-Entropy Loss")
         ax.set_xlim(1, ep.max()); ax.set_ylim(bottom=0)
         tidy(ax)
+    a2.set_xlabel("Epoch")
     a1.legend(loc="center right")
     best = int(np.argmin(H["val_cls_loss"])) + 1
     a1.axvline(best, color=MUTED, lw=1, ls=":")
-    a1.annotate(f"validation minimum, epoch {best}", xy=(best, H["val_cls_loss"].min()),
-                xytext=(best + 3, H["val_cls_loss"].max() * .55), fontsize=9, color=DIM,
+    a1.annotate(f"Validation Minimum, Epoch {best}", xy=(best, H["val_cls_loss"].min()),
+                xytext=(best + 3, H["val_cls_loss"].max() * .45), fontsize=9.5, color=DIM,
                 arrowprops=dict(arrowstyle="->", color=MUTED, lw=.8))
-    fig.tight_layout(w_pad=3)
+    a1.tick_params(labelbottom=True)
+    fig.tight_layout(h_pad=2.5)
     save(fig, "training_curves.png")
 
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.0))
-    a1.plot(ep, H["train_cls_acc"], color=SLATE, label="Train accuracy")
-    a1.plot(ep, H["val_cls_acc"], color=RUST, label="Validation accuracy")
-    a1.plot(ep, H["val_cls_f1"], color=MUTED, lw=1.4, ls="--", label="Validation F1 (weighted)")
-    a1.set_title("Sentence classification", **PANEL)
-    a2.plot(ep, H["train_ner_acc"], color=SLATE, label="Train token accuracy")
-    a2.plot(ep, H["val_ner_acc"], color=RUST, label="Validation token accuracy")
-    a2.plot(ep, H["val_ner_f1"], color=MUTED, lw=1.4, ls="--", label="Validation F1 (macro)")
-    a2.set_title("Entity tagging", **PANEL)
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(7.2, 7.4), sharex=True)
+    a1.plot(ep, H["train_cls_acc"], color=SLATE, label="Train Accuracy")
+    a1.plot(ep, H["val_cls_acc"], color=RUST, label="Validation Accuracy")
+    a1.plot(ep, H["val_cls_f1"], color=MUTED, lw=1.4, ls="--", label="Validation F1 (Weighted)")
+    a1.set_title("Sentence Classification", **PANEL)
+    a2.plot(ep, H["train_ner_acc"], color=SLATE, label="Train Token Accuracy")
+    a2.plot(ep, H["val_ner_acc"], color=RUST, label="Validation Token Accuracy")
+    a2.plot(ep, H["val_ner_f1"], color=MUTED, lw=1.4, ls="--", label="Validation F1 (Macro)")
+    a2.set_title("Entity Tagging", **PANEL)
     for ax in (a1, a2):
-        ax.set_xlabel("Epoch"); ax.set_ylabel("Score (0 to 1)")
+        ax.set_ylabel("Score (0 to 1)")
         ax.set_xlim(1, ep.max())
         ax.legend(loc="lower right"); tidy(ax)
-    fig.tight_layout(w_pad=3)
+    a2.set_xlabel("Epoch")
+    a1.tick_params(labelbottom=True)
+    fig.tight_layout(h_pad=2.5)
     save(fig, "accuracy_curves.png")
 
 
@@ -104,42 +112,52 @@ def predict(words, tok, backbone, heads, dev):
 
 
 def token_panel(ax, words, tags, gold=None):
+    """Word boxes with their predicted tag beneath, wrapped TOKENS_PER_ROW to a line."""
     ax.axis("off")
     fig = ax.figure
     r = fig.canvas.get_renderer()
     ax_w = ax.get_window_extent(r).width
     pad_px = 12 * fig.dpi / 72 * 0.32 * 2          # bbox pad on both sides, in pixels
-    x = 0.0
+    n_rows = int(np.ceil(len(words) / TOKENS_PER_ROW))
+    row_h = 1.0 / n_rows
     for i, (w, t) in enumerate(zip(words, tags)):
-        col = TAG_COLOR[t]
+        row, col = divmod(i, TOKENS_PER_ROW)
+        if col == 0:
+            x = 0.012
+        y_word = 1 - row_h * (row + 0.30)
+        y_tag = 1 - row_h * (row + 0.72)
         wrong = gold is not None and gold[i] != t
-        t1 = ax.text(x, 0.66, w, fontsize=12, color=INK, transform=ax.transAxes,
+        t1 = ax.text(x, y_word, w, fontsize=12, color=INK, transform=ax.transAxes,
                      ha="left", va="center",
-                     bbox=dict(boxstyle="round,pad=0.32", fc=col + "1f", ec=col,
+                     bbox=dict(boxstyle="round,pad=0.32", fc=TAG_FILL[t], ec=TAG_COLOR[t],
                                lw=1.6 if wrong else 1.0, ls="--" if wrong else "-"))
-        t2 = ax.text(x, 0.22, t, fontsize=9, color=col, transform=ax.transAxes,
-                     ha="left", va="center", fontweight="medium")
-        # advance by the wider of the word (plus its box padding) and its tag, measured in pixels
+        t2 = ax.text(x, y_tag, t, fontsize=9.5, color=TAG_COLOR[t], transform=ax.transAxes,
+                     ha="left", va="center", fontweight="semibold")
         wpx = max(t1.get_window_extent(r).width + pad_px, t2.get_window_extent(r).width)
-        x += wpx / ax_w + 0.018
+        x += wpx / ax_w + 0.035
 
 
 def example(name, words, gold_tags, gold_cls, tok, backbone, heads, dev):
     cls, probs, tags = predict(words, tok, backbone, heads, dev)
-    fig, (a1, a2) = plt.subplots(2, 1, figsize=(11.0, 3.1), height_ratios=[1.6, 1.0])
+    n_rows = int(np.ceil(len(words) / TOKENS_PER_ROW))
+    fig, (a1, a0, a2) = plt.subplots(3, 1, figsize=(6.4, 1.0 * n_rows + 2.3),
+                                     height_ratios=[1.0 * n_rows, 0.7, 1.2])
     token_panel(a1, words, tags, gold_tags)
     n_wrong = sum(g != t for g, t in zip(gold_tags, tags))
-    ok = "correct" if cls == gold_cls else f"wrong, true class {gold_cls}"
-    note_txt = f"Sentence class: {cls} ({ok}).   Tags matching the reference: {len(tags) - n_wrong} of {len(tags)}"
+    ok = "Correct" if cls == gold_cls else f"Wrong, True Class {gold_cls}"
+    notes = [f"Sentence Class: {cls} ({ok})",
+             title_case(f"Tags matching the reference: {len(tags) - n_wrong} of {len(tags)}")]
     if n_wrong:
-        note_txt += "   Dashed outline: tag differs from the reference."
-    a1.text(0.0, -0.12, note_txt, transform=a1.transAxes, fontsize=9, color=DIM)
+        notes.append(title_case("Dashed outline: tag differs from the reference"))
+    a0.axis("off")
+    a0.text(0.012, 0.5, "\n".join(notes), transform=a0.transAxes, fontsize=9.5, color=DIM,
+            va="center", linespacing=1.5)
     order = np.argsort(probs)
     a2.barh([CLASS_NAMES[i] for i in order], probs[order],
             color=[RUST if CLASS_NAMES[i] == cls else LIGHT for i in order], height=.62)
-    a2.set_xlim(0, 1); a2.set_xlabel("Predicted class probability")
+    a2.set_xlim(0, 1); a2.set_xlabel("Predicted Class Probability")
     tidy(a2, grid_axis="x")
-    fig.tight_layout(h_pad=1.6)
+    fig.tight_layout(h_pad=0.8)
     save(fig, name)
     print(f"    {name}: class {cls} (gold {gold_cls}), {len(tags)-n_wrong}/{len(tags)} tags match")
 
@@ -187,40 +205,38 @@ def complete_receipt(tok, backbone, heads, dev):
         rows.append((cls, " ".join(words), name, price, right))
     print(f"    complete receipt: {n_ok} of {len(rows)} rows fully correct")
 
-    fig = plt.figure(figsize=(12.6, 7.0))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 2.2], wspace=0.04)
+    fig = plt.figure(figsize=(8.4, 11.6))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 0.95], hspace=0.12)
     ax = fig.add_subplot(gs[0]); ax.imshow(img); ax.axis("off")
-    ax.set_title("Receipt image (CORD-v2 test set)", **PANEL)
+    ax.set_title("Receipt Image (CORD-v2 Test Set)", **PANEL)
 
     ax2 = fig.add_subplot(gs[1]); ax2.axis("off")
-    fig.canvas.draw()                      # match the table's height to the photo's
-    b, q = ax.get_position(), ax2.get_position()
-    ax2.set_position([q.x0, b.y0, q.width, b.height])
-    ax2.set_title("Model output, line by line", **PANEL)
-    COLS = (0.00, 0.15, 0.55, 0.78)
+    ax2.set_title("Model Output, Line by Line", **PANEL)
+    COLS = (0.00, 0.17, 0.60, 0.82)
     y = 0.98
-    step = min(0.072, 0.86 / max(len(rows), 1))
-    for x, h in zip(COLS, ("CLASS", "LINE", "NAME SPAN", "PRICE SPAN")):
-        ax2.text(x, y, h, fontsize=8.5, color=MUTED, transform=ax2.transAxes, fontweight="medium")
-    ax2.plot([0, 1], [y - step * 0.35] * 2, color=GRID, lw=1, transform=ax2.transAxes, clip_on=False)
-    y -= step * 0.9
+    step = min(0.068, 0.86 / max(len(rows), 1))
+    for x, h in zip(COLS, ("Class", "Line", "Name Span", "Price Span")):
+        ax2.text(x, y, h, fontsize=9.5, color=MUTED, transform=ax2.transAxes, fontweight="semibold")
+    ax2.plot([0, 1], [y - step * 0.4] * 2, color=GRID, lw=1, transform=ax2.transAxes, clip_on=False)
+    y -= step * 0.95
     for cls, line, name, price, right in rows:
-        ax2.text(COLS[0], y, cls, fontsize=8.5, color=DIM, transform=ax2.transAxes, va="center")
-        ax2.text(COLS[1], y, line if len(line) <= 40 else line[:39] + "…", fontsize=9,
-                 color=INK, transform=ax2.transAxes, va="center")
-        ax2.text(COLS[2], y, name if name else "none", fontsize=9,
-                 color=SLATE if name else LIGHT, transform=ax2.transAxes, va="center")
-        pr = price if len(price) <= 24 else price[:23] + "…"
-        ax2.text(COLS[3], y, pr if price else "none", fontsize=9,
-                 color=(RUST if not right else INK) if price else LIGHT,
-                 transform=ax2.transAxes, va="center")
         if not right:
             ax2.add_patch(plt.Rectangle((-0.01, y - step * 0.42), 1.02, step * 0.84, transform=ax2.transAxes,
-                                        fc="none", ec=RUST, lw=1.2, ls="--", clip_on=False))
+                                        fc=RUST_TINT, ec=RUST, lw=1.0, ls="--", clip_on=False, zorder=0))
+        ax2.text(COLS[0], y, cls, fontsize=8.8, color=DIM, transform=ax2.transAxes, va="center")
+        ax2.text(COLS[1], y, line if len(line) <= 34 else line[:33] + "\u2026", fontsize=9,
+                 color=INK, transform=ax2.transAxes, va="center")
+        ax2.text(COLS[2], y, name if name else "None", fontsize=9,
+                 color=SLATE if name else MUTED, transform=ax2.transAxes, va="center")
+        pr = price if len(price) <= 15 else price[:14] + "\u2026"
+        ax2.text(COLS[3], y, pr if price else "None", fontsize=9,
+                 color=(RUST if not right else INK) if price else MUTED,
+                 transform=ax2.transAxes, va="center")
         y -= step
-    ax2.text(0.0, y - step * 0.2,
-             "Spans are what the entity head tagged. Dashed box: row differs from the CORD reference labels.",
-             fontsize=8.5, color=MUTED, transform=ax2.transAxes)
+    ax2.text(0.0, y - step * 0.15,
+             "Spans Are What the Entity Head Tagged\n"
+             "Shaded Rows: Tags Differ from the CORD Reference Labels",
+             fontsize=9, color=MUTED, transform=ax2.transAxes, va="top", linespacing=1.5)
     save(fig, "complete_receipt_example.png")
 
 

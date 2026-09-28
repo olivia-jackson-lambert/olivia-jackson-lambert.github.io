@@ -56,7 +56,7 @@ We built the dataset from Kaggle's NBA box score archive. Each row is one regula
 | Median travel distance | 896 miles |
 | Longest trip | 2,805 miles |
 
-![Distance travelled by away teams (A) and games per season in the modelling dataset (B).](assets/data_overview.png){fig-alt="Two panels. Left, a histogram of away team travel distance, concentrated under 1,250 miles and tailing off to about 2,800. Right, games per season, near zero before 1960, rising to roughly 1,000 per season by the 2000s, with dips in some seasons." width="100%"}
+![Distance travelled by away teams (A) and games per season in the modelling dataset (B).](assets/data_overview.png){fig-alt="Two stacked panels. Top, a histogram of away team travel distance, concentrated under 1,250 miles and tailing off to about 2,800. Bottom, games per season, near zero before 1960, rising to roughly 1,000 per season by the 2000s, with dips in some seasons." width="82%"}
 
 Coverage is uneven. Only 45 games predate 1960, and 95% come from 1970 onward.
 

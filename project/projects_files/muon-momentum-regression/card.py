@@ -22,8 +22,8 @@ from figstyle import apply, INK, SLATE, RUST, GRID, MUTED  # noqa: E402
 apply()
 
 MOMENTA = np.array([5, 11, 25, 60, 150, 340])
-cmap = matplotlib.colors.LinearSegmentedColormap.from_list("pm", [RUST, SLATE])
-norm = matplotlib.colors.LogNorm(vmin=MOMENTA.min(), vmax=MOMENTA.max())
+# Slate for every track; rust for the straightest, where curvature says least.
+COLOURS = [RUST if p == MOMENTA.max() else SLATE for p in MOMENTA]
 
 X_MAX, Y_MAX = 10.0, 4.3
 N_FRAMES, N_PTS = 76, 600
@@ -54,8 +54,7 @@ for x in np.arange(1.6, X_MAX + 0.01, 1.6):
     ax.axvline(x, color=GRID, lw=1.1, zorder=0)
 
 lines, heads, tags = [], [], []
-for p, (tx, ty), dy in zip(MOMENTA, TRACKS, LABEL_DY):
-    c = cmap(norm(p))
+for p, (tx, ty), dy, c in zip(MOMENTA, TRACKS, LABEL_DY, COLOURS):
     ln, = ax.plot([], [], lw=2.1, color=c, solid_capstyle="round", zorder=3)
     hd, = ax.plot([], [], "o", ms=4.2, color=c, zorder=4)
     tg = ax.text(tx[-1] + 0.16, ty[-1] + dy, f"{p} GeV/c", fontsize=8.6, color=c,
@@ -63,7 +62,7 @@ for p, (tx, ty), dy in zip(MOMENTA, TRACKS, LABEL_DY):
     lines.append(ln); heads.append(hd); tags.append(tg)
 
 ax.plot([0], [0], "o", ms=7, color=INK, zorder=6)
-ax.text(0.0, -0.34, "interaction point", fontsize=8.4, color=MUTED, ha="left")
+ax.text(0.0, -0.34, "Interaction Point", fontsize=8.4, color=MUTED, ha="left")
 
 ax.set_xlim(-0.45, X_MAX + 1.55); ax.set_ylim(-0.75, Y_MAX)
 ax.set_xticks([]); ax.set_yticks([])

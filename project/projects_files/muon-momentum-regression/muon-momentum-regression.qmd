@@ -36,7 +36,7 @@ This project predicts the momentum resolution of muon tracks in a particle detec
 
 The final model reaches an $R^2$ of **0.854** on a held-out test set of 41,797 tracks, scored once. Linear regression reaches 0.698 on the same split.
 
-![Track Curvature Falls as Momentum Rises. A schematic, not measured data.](assets/track_curvature.gif){fig-alt="Animated schematic of six muon tracks leaving an interaction point, labelled 5 to 340 GeV/c. The 5 GeV/c track bends sharply upward and the 340 GeV/c track is almost straight." fig-align="center" width="90%"}
+![Track Curvature Falls as Momentum Rises. A schematic, not measured data.](assets/track_curvature.gif){fig-alt="Animated schematic of six muon tracks leaving an interaction point, labelled 5 to 340 GeV/c. The 5 GeV/c track bends sharply upward. The 340 GeV/c track, highlighted, is almost straight." fig-align="center" width="90%"}
 
 A charged track bends in a magnetic field with a radius proportional to its momentum. The highest momentum tracks are nearly straight, so the curvature that momentum is inferred from is weakest where precision matters most.
 

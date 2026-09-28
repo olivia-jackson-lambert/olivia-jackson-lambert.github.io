@@ -26,23 +26,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.sparse as sp
-from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import FancyBboxPatch
 from PIL import Image
 from sklearn.model_selection import train_test_split
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, GRID, MUTED, MONO  # noqa: E402
+from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM, MUTED, LIGHT,  # noqa: E402
+                      CMAP, SLATE_TINT, PAPER)
 
 SRC = Path("/Users/oliviajackson/Documents/portfolio/projects/high-energy-particle-classifier")
 ASSETS = HERE / "assets"
 
 CODES = [11, 13, 22, 211, 2212]
 NAMES = ["Electron", "Muon", "Photon", "Pion", "Proton"]
-PLANES = ["XY plane", "YZ plane", "ZX plane"]
+PLANES = ["XY Plane", "YZ Plane", "ZX Plane"]
 DETECTOR_CMAP = "inferno"
-GROUND = "#0b0b0b"
+GROUND = plt.get_cmap(DETECTOR_CMAP)(0.0)  # the map's own black, so empty cells match
 
 # Per-epoch log of the initial model (notebook cell output, 5 epochs at lr 1e-3).
 INIT_HISTORY = pd.DataFrame({
@@ -93,7 +93,7 @@ def detector_axes(ax):
     ax.set_facecolor(GROUND)
     ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
     for s in ax.spines.values():
-        s.set_visible(True); s.set_color("#d0d3d9"); s.set_linewidth(0.6)
+        s.set_visible(True); s.set_color(LIGHT); s.set_linewidth(0.6)
 
 
 def show_plane(ax, img):
@@ -121,17 +121,18 @@ def particle_types(X, truth, train_idx):
                 if c == 0:
                     ax.set_ylabel(PLANES[r], fontsize=10, color=DIM, labelpad=6)
                 if r == 0:
-                    ax.set_title(f"{truth[i, 1]:,.0f} MeV", fontsize=9.5, color=DIM, pad=5, fontfamily=MONO)
+                    ax.set_title(f"{truth[i, 1]:,.0f} MeV", fontsize=9.5, color=DIM, pad=5)
         fig.text(0.125, 0.955, name, fontsize=15, fontweight="semibold", color=INK, ha="left")
-        fig.text(0.9, 0.955, "Initial momentum increases left to right", fontsize=9.5, color=MUTED, ha="right")
+        fig.text(0.9, 0.955, "Initial Momentum Increases Left to Right", fontsize=9.5, color=MUTED, ha="right")
         frames.append(fig_to_frame(fig))
     save_gif(frames, "particle_types.gif")
 
 
-# 2. Truth feature distributions per class (animated, one frame per class)
+# 2. Truth feature distributions per class (animated, one frame per class).
+#    Momentum on the top row, production point on the bottom row, so the frame is near 2:1.
 def truth_arrays(truth, train_idx):
-    labels = ["Total momentum (MeV)", "$p_x$ (MeV)", "$p_y$ (MeV)", "$p_z$ (MeV)",
-              "Production $x$ (cm)", "Production $y$ (cm)", "Production $z$ (cm)"]
+    rows = [[(1, "Total Momentum (MeV)"), (2, "$p_x$ (MeV)"), (3, "$p_y$ (MeV)"), (4, "$p_z$ (MeV)")],
+            [(5, "Production $x$ (cm)"), (6, "Production $y$ (cm)"), (7, "Production $z$ (cm)")]]
     cols = range(1, 8)
     tr = truth[train_idx]
     lims = {c: np.percentile(tr[:, c], [1, 99]) for c in cols}
@@ -141,17 +142,24 @@ def truth_arrays(truth, train_idx):
     frames = []
     for code, name in zip(CODES, NAMES):
         sub = tr[tr[:, 0].astype(int) == code]
-        fig, axes = plt.subplots(1, 7, figsize=(15, 2.7), sharey=True, gridspec_kw=dict(wspace=0.12))
-        for ax, c, lab in zip(axes, cols, labels):
-            ax.hist(sub[:, c], bins=bins[c], color=SLATE, edgecolor="none")
-            ax.set_xlim(*lims[c]); ax.set_ylim(0, ymax)
-            ax.set_xlabel(lab, fontsize=9.5)
-            ax.tick_params(labelsize=8.5)
-            tidy(ax)
-        axes[0].set_ylabel("Events")
-        fig.text(0.125, 1.0, name, fontsize=14, fontweight="semibold", color=INK, ha="left", va="bottom")
-        fig.text(0.9, 1.0, f"n = {len(sub):,} training events", fontsize=9, color=MUTED,
-                 ha="right", va="bottom", fontfamily=MONO)
+        fig, axes = plt.subplots(2, 4, figsize=(9.2, 4.9), sharey=True,
+                                 gridspec_kw=dict(wspace=0.14, hspace=0.5))
+        for r, row in enumerate(rows):
+            for k in range(4):
+                ax = axes[r, k]
+                if k >= len(row):
+                    ax.axis("off")
+                    continue
+                c, lab = row[k]
+                ax.hist(sub[:, c], bins=bins[c], color=SLATE, edgecolor="none")
+                ax.set_xlim(*lims[c]); ax.set_ylim(0, ymax)
+                ax.set_xlabel(lab, fontsize=9.5)
+                ax.tick_params(labelsize=8.5)
+                tidy(ax)
+            axes[r, 0].set_ylabel("Events")
+        fig.text(0.125, 0.96, name, fontsize=14, fontweight="semibold", color=INK, ha="left", va="bottom")
+        fig.text(0.9, 0.96, f"n = {len(sub):,} Training Events", fontsize=9, color=MUTED,
+                 ha="right", va="bottom")
         frames.append(fig_to_frame(fig))
     save_gif(frames, "truth_arrays.gif")
 
@@ -159,12 +167,12 @@ def truth_arrays(truth, train_idx):
 # 3. Architecture diagram
 def architecture():
     rows = [
-        ("Input", "Flattened image, 196,608 values"),
-        ("Reshape", "256 × 256 × 3 (one channel per projection)"),
-        ("Conv block 1", "16 filters, stride 2  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.10"),
-        ("Conv block 2", "32 filters  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.15"),
-        ("Conv block 3", "64 filters  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.20"),
-        ("Head", "Global average pool  ·  Dense 64  ·  Dropout 0.25  ·  Softmax over 5 classes"),
+        ("Input", "Flattened Image, 196,608 Values"),
+        ("Reshape", "256 × 256 × 3, One Channel per Projection"),
+        ("Conv Block 1", "16 Filters, Stride 2  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.10"),
+        ("Conv Block 2", "32 Filters  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.15"),
+        ("Conv Block 3", "64 Filters  ·  2 × (Conv, BN, ReLU)  ·  MaxPool  ·  Dropout 0.20"),
+        ("Head", "Global Average Pool  ·  Dense 64  ·  Dropout 0.25  ·  Softmax over 5 Classes"),
     ]
     fig, ax = plt.subplots(figsize=(7.2, 5.2))
     ax.set_xlim(0, 1); ax.set_ylim(0, len(rows)); ax.axis("off")
@@ -173,7 +181,7 @@ def architecture():
         y = len(rows) - k - 0.5
         conv = head.startswith("Conv")
         ax.add_patch(FancyBboxPatch((0.03, y - h / 2), 0.94, h, boxstyle="round,pad=0,rounding_size=0.04",
-                                    fc="#eef1f5" if conv else "white", ec=SLATE if conv else "#b9bec6", lw=1.1))
+                                    fc=SLATE_TINT if conv else PAPER, ec=SLATE if conv else LIGHT, lw=1.1))
         ax.text(0.07, y + 0.1, head, fontsize=11, fontweight="semibold", color=INK, va="center")
         ax.text(0.07, y - 0.15, sub, fontsize=9, color=DIM, va="center")
         if k < len(rows) - 1:
@@ -185,7 +193,7 @@ def architecture():
 # 4. Training curves
 def curves(hist, prefix, marks=None):
     e = hist["epoch"].to_numpy()
-    for metric, ylabel, fname in [("loss", "Categorical cross-entropy", "training_loss"),
+    for metric, ylabel, fname in [("loss", "Categorical Cross-Entropy", "training_loss"),
                                   ("cat_acc", "Accuracy", "training_accuracy")]:
         fig, ax = plt.subplots(figsize=(5.2, 3.6))
         ax.plot(e, hist[metric], color=SLATE, marker="o", ms=3.5, label="Training")
@@ -194,7 +202,7 @@ def curves(hist, prefix, marks=None):
             for ep in marks:
                 ax.axvline(ep - 0.5, color=MUTED, lw=0.8, ls=(0, (2, 2)), zorder=0)
             top = metric == "loss"
-            ax.text(marks[0] - 0.35, 0.98 if top else 0.03, "learning rate cut", fontsize=8.5,
+            ax.text(marks[0] - 0.35, 0.98 if top else 0.03, "Learning Rate Cut", fontsize=8.5,
                     color=MUTED, va="top" if top else "bottom", transform=ax.get_xaxis_transform())
         if metric == "cat_acc":
             ax.set_ylim(0, 1)
@@ -210,7 +218,6 @@ def curves(hist, prefix, marks=None):
 
 
 # 5. Confusion matrix (row-normalised, held-out test set)
-CM_CMAP = LinearSegmentedColormap.from_list("cm", ["#ffffff", "#c9d4e2", SLATE, "#2d3e55"])
 
 
 def confusion(y_true, y_pred, fname):
@@ -218,7 +225,7 @@ def confusion(y_true, y_pred, fname):
     np.add.at(cm, (y_true, y_pred), 1)
     cm = cm / cm.sum(1, keepdims=True)
     fig, ax = plt.subplots(figsize=(5.4, 4.8))
-    ax.imshow(cm, cmap=CM_CMAP, vmin=0, vmax=1)
+    ax.imshow(cm, cmap=CMAP, vmin=0, vmax=1)
     for i in range(5):
         for j in range(5):
             v = cm[i, j]
@@ -226,7 +233,7 @@ def confusion(y_true, y_pred, fname):
                     color="white" if v > 0.55 else (INK if v >= 0.005 else MUTED),
                     fontweight="semibold" if i == j else "normal")
     ax.set_xticks(range(5), NAMES); ax.set_yticks(range(5), NAMES)
-    ax.set_xlabel("Predicted class", labelpad=8); ax.set_ylabel("True class", labelpad=8)
+    ax.set_xlabel("Predicted Class", labelpad=8); ax.set_ylabel("True Class", labelpad=8)
     ax.xaxis.set_label_position("top"); ax.xaxis.tick_top()
     ax.grid(False); ax.tick_params(length=0)
     for s in ax.spines.values():
@@ -240,7 +247,7 @@ def example_predictions(X, test_idx, y_true, y_pred):
     for k, ax in enumerate(axes.ravel()):
         show_plane(ax, planes(X, test_idx[k])[0])
         ok = y_true[k] == y_pred[k]
-        t = NAMES[y_true[k]] if ok else f"{NAMES[y_true[k]]}, called {NAMES[y_pred[k]]}"
+        t = NAMES[y_true[k]] if ok else f"{NAMES[y_true[k]]}, Called {NAMES[y_pred[k]]}"
         ax.set_title(t, fontsize=9.5 if ok else 8.8, color=INK if ok else RUST,
                      fontweight="normal" if ok else "semibold", pad=5)
         if not ok:

@@ -39,7 +39,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap, to_rgb
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 # --------------------------------------------------------------------------- #
@@ -47,9 +46,24 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 # --------------------------------------------------------------------------- #
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, GRID, MUTED  # noqa: E402
+from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM, GRID, MUTED,  # noqa: E402
+                      LIGHT, SLATE_TINT, RUST_TINT, PAPER, CMAP, CMAP_DIVERGING, CATEGORICAL)
 
-PALETTE = [DIM, SLATE, MUTED, "#a9b8ca", MUTED]
+PALETTE = [DIM, SLATE, MUTED, LIGHT, MUTED]
+FILL = {SLATE: SLATE_TINT, RUST: RUST_TINT}          # box fill by edge colour; PAPER otherwise
+CODE_CHARS = set("_.=[]:<>")
+
+
+def tc(text: str) -> str:
+    """title_case() for figure text, leaving code-like words (a_b, x.y, --flag) as written."""
+    out = []
+    for line in text.split("\n"):
+        if line.lstrip().startswith("["):          # tensor shapes such as [batch, seq, 1024]
+            out.append(line); continue
+        orig, new = line.split(" "), title_case(line).split(" ")
+        out.append(" ".join(o if (CODE_CHARS & set(o) or o.startswith("--")) else n
+                            for o, n in zip(orig, new)))
+    return "\n".join(out)
 
 SENTENCES = [
     "The golden rays of the setting sun painted the sky in shades of orange and pink.",
@@ -99,21 +113,6 @@ def save(fig, out: Path) -> None:
     print("  wrote", out.name)
 
 
-def tint(color: str, amount: float) -> tuple:
-    """Blend `color` toward white. amount=0 -> white, 1 -> the colour itself."""
-    r, g, b = to_rgb(color)
-    return (1 - amount + amount * r, 1 - amount + amount * g, 1 - amount + amount * b)
-
-
-# Diverging and sequential maps built from the house palette.
-DIVERGING = LinearSegmentedColormap.from_list(
-    "house_div", [RUST, tint(RUST, 0.35), "#ffffff", tint(SLATE, 0.35), SLATE]
-)
-SEQUENTIAL = LinearSegmentedColormap.from_list(
-    "house_seq", ["#ffffff", tint(SLATE, 0.45), SLATE, "#26344a"]
-)
-
-
 # --------------------------------------------------------------------------- #
 # Diagram primitives (schematics)
 # --------------------------------------------------------------------------- #
@@ -155,7 +154,7 @@ def _fits(ax, text: str, size: float, w: float, name: str) -> None:
               f"({need:.3f} > {w:.3f})")
 
 
-def box(ax, cx, cy, w, h, title, detail=None, color=SLATE, fill=0.12,
+def box(ax, cx, cy, w, h, title, detail=None, color=SLATE, fill=None,
         title_size=10.0, detail_size=8.2, lw=1.3, title_weight="semibold",
         name=""):
     """Rounded box centred on (cx, cy) with a title and optional detail lines.
@@ -164,10 +163,13 @@ def box(ax, cx, cy, w, h, title, detail=None, color=SLATE, fill=0.12,
     line heights measured in points so the spacing is correct whatever the
     figure's aspect ratio.
     """
+    title = tc(title)
+    if detail:
+        detail = [tc(d) for d in (detail if isinstance(detail, (list, tuple)) else [detail])]
     patch = FancyBboxPatch(
         (cx - w / 2, cy - h / 2), w, h,
         boxstyle="round,pad=0,rounding_size=0.012",
-        linewidth=lw, edgecolor=color, facecolor=tint(color, fill), zorder=2,
+        linewidth=lw, edgecolor=color, facecolor=FILL.get(color, PAPER), zorder=2,
     )
     ax.add_patch(patch)
     _fits(ax, title, title_size, w, name)
@@ -226,41 +228,36 @@ SUB_TITLE_PAD = 22
 # 1. System pipeline (schematic)
 # --------------------------------------------------------------------------- #
 def fig_system_pipeline(out: Path) -> None:
-    fig, ax = new_canvas(13.0, 3.2)
+    """Top-to-bottom flow, sized for a narrow scrolling column."""
+    fig, ax = new_canvas(6.2, 8.4)
     stages = [
-        ("Receipt Image", ["photo or upload", "JPEG / PNG"], PALETTE[2]),
-        ("OCR", ["Tesseract", "--psm 6"], SLATE),
-        ("Segmentation", ["split lines", "and periods"], SLATE),
-        ("BGE-M3 Encoder", [f"{N_LAYERS} layers, frozen", f"{HIDDEN}-d states"], PALETTE[0]),
-        ("Task Heads", ["classification", "+ NER"], RUST),
-        ("Structured Data", ["line class,", "name and price spans"], PALETTE[4]),
+        ("Receipt Image", ["photo or upload, JPEG / PNG"], PALETTE[2]),
+        ("OCR", ["Tesseract --psm 6"], SLATE),
+        ("Segmentation", ["split lines on newlines and periods"], SLATE),
+        ("BGE-M3 Encoder", [f"{N_LAYERS} layers, frozen, {HIDDEN}-d states"], DIM),
+        ("Task Heads", ["classification + NER"], RUST),
+        ("Structured Data", ["line class, name and price spans"], PALETTE[2]),
     ]
     n = len(stages)
-    w, gap = 0.136, 0.024
-    span = n * w + (n - 1) * gap
-    x0 = (1 - span) / 2 + w / 2
-    cy, h = 0.585, 0.375
-
+    cx, w, h = 0.40, 0.62, 0.105
+    top, bottom = 0.93, 0.07
+    step = (top - bottom) / (n - 1)
+    ys = [top - i * step for i in range(n)]
     for i, (title, detail, color) in enumerate(stages):
-        cx = x0 + i * (w + gap)
-        box(ax, cx, cy, w, h, title, detail, color=color, title_size=10.0,
-            name="system_pipeline")
+        box(ax, cx, ys[i], w, h, title, detail, color=color, title_size=11.0,
+            detail_size=9.0, name="system_pipeline")
         if i:
-            prev = x0 + (i - 1) * (w + gap)
-            arrow(ax, (prev + w / 2 + 0.003, cy), (cx - w / 2 - 0.003, cy),
-                  color="#b9bec6", lw=1.5)
+            arrow(ax, (cx, ys[i - 1] - h / 2 - 0.004), (cx, ys[i] + h / 2 + 0.004),
+                  color=LIGHT, lw=1.6)
 
-    # Stage groupings printed below, aligned to the boxes they cover.
-    groups = [(0, 1, "OCR"), (2, 2, "Preprocessing"),
-              (3, 4, "Multi-task model")]
+    # Stage groupings as brackets on the right, aligned to the boxes they cover.
+    groups = [(0, 1, "OCR"), (2, 2, "Preprocessing"), (3, 4, "Multi-Task Model")]
+    xb = cx + w / 2 + 0.05
     for a, b, label in groups:
-        xa = x0 + a * (w + gap) - w / 2
-        xb = x0 + b * (w + gap) + w / 2
-        ax.plot([xa, xb], [0.285, 0.285], color=GRID, lw=3,
-                solid_capstyle="butt", zorder=0)
-        ax.text((xa + xb) / 2, 0.185, label, ha="center", va="center",
-                fontsize=8.6, color=MUTED)
-
+        ya, yb = ys[a] + h / 2, ys[b] - h / 2
+        ax.plot([xb, xb], [yb, ya], color=LIGHT, lw=3, solid_capstyle="butt", zorder=0)
+        ax.text(xb + 0.03, (ya + yb) / 2, label, ha="left", va="center",
+                fontsize=10, color=MUTED)
     save(fig, out)
 
 
@@ -295,19 +292,19 @@ def fig_ocr_pipeline(out: Path) -> None:
                 title_size=9.8, detail_size=7.9, name="ocr_pipeline")
             if i:
                 arrow(ax, (row_centres[i - 1] + w / 2 + 0.005, ys[r]),
-                      (cx - w / 2 - 0.005, ys[r]), color="#b9bec6", lw=1.5)
+                      (cx - w / 2 - 0.005, ys[r]), color=LIGHT, lw=1.5)
         centres.append(row_centres)
 
     # Wrap arrow from the end of row 1 down to the start of row 2.
     xe = centres[0][-1]
     xs = centres[1][0]
     ymid = (ys[0] + ys[1]) / 2
-    ax.plot([xe, xe], [ys[0] - h / 2 - 0.005, ymid], color="#b9bec6", lw=1.5,
+    ax.plot([xe, xe], [ys[0] - h / 2 - 0.005, ymid], color=LIGHT, lw=1.5,
             zorder=1)
-    ax.plot([xe, xs], [ymid, ymid], color="#b9bec6", lw=1.5, zorder=1)
-    arrow(ax, (xs, ymid), (xs, ys[1] + h / 2 + 0.005), color="#b9bec6", lw=1.5)
+    ax.plot([xe, xs], [ymid, ymid], color=LIGHT, lw=1.5, zorder=1)
+    arrow(ax, (xs, ymid), (xs, ys[1] + h / 2 + 0.005), color=LIGHT, lw=1.5)
 
-    ax.text(0.5, ymid + 0.028, "preprocessed image", ha="center", va="bottom",
+    ax.text(0.5, ymid + 0.028, "Preprocessed Image", ha="center", va="bottom",
             fontsize=8.2, color=MUTED)
 
     save(fig, out)
@@ -335,7 +332,7 @@ def fig_architecture(out: Path) -> None:
     box(ax, xc, y_bb, wide, h_bb, "BGE-M3 Transformer Backbone",
         [f"XLM-RoBERTa, {N_LAYERS} layers, {N_HEADS} heads, "
          f"hidden size {HIDDEN}", "frozen during training"],
-        color=PALETTE[0], fill=0.16, title_size=11.0, detail_size=8.6, name=NAME)
+        color=PALETTE[0], title_size=11.0, detail_size=8.6, name=NAME)
 
     box(ax, xl, y_tok, w, h_tok, "CLS Token", [f"[batch, {HIDDEN}]"],
         color=PALETTE[2], title_size=10.0, name=NAME)
@@ -345,17 +342,17 @@ def fig_architecture(out: Path) -> None:
     box(ax, xl, y_head, w, h_head, "Classification Head",
         [f"Linear {HIDDEN} to {BOTTLENECK}", "ReLU, dropout 0.1",
          f"Linear {BOTTLENECK} to {N_CLASSES}"],
-        color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
+        color=SLATE, title_size=10.0, detail_size=8.4, name=NAME)
     box(ax, xr, y_head, w, h_head, "NER Head",
         [f"Linear {HIDDEN} to {N_NER}", "applied at every token"],
-        color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
+        color=SLATE, title_size=10.0, detail_size=8.4, name=NAME)
 
     box(ax, xl, y_out, w, h_out, "Classification Logits",
         [f"[batch, {N_CLASSES}]"],
-        color=RUST, fill=0.13, title_size=10.0, detail_size=8.2, name=NAME)
+        color=RUST, title_size=10.0, detail_size=8.2, name=NAME)
     box(ax, xr, y_out, w, h_out, "NER Logits",
         [f"[batch, seq, {N_NER}]"],
-        color=RUST, fill=0.13, title_size=10.0, detail_size=8.2, name=NAME)
+        color=RUST, title_size=10.0, detail_size=8.2, name=NAME)
 
     pad = 0.005
     arrow(ax, (xc, y_in - h_in / 2 - pad), (xc, y_bb + h_bb / 2 + pad))
@@ -373,12 +370,12 @@ def fig_architecture(out: Path) -> None:
     # Both heads are the trainable part of the network; the backbone is not.
     # Pinned beside the head boxes so the word labels the layer, not the arrow.
     for x in (xl, xr):
-        ax.text(x + w / 2 + 0.014, y_head, "trainable", ha="left", va="center",
+        ax.text(x + w / 2 + 0.014, y_head, "Trainable", ha="left", va="center",
                 fontsize=8.4, color=RUST)
 
-    ax.text(xl, 0.048, "Sentence class\n(ITEM, ITEM_OPTION, SUBTOTAL, TOTAL)",
+    ax.text(xl, 0.048, "Sentence Class\n(ITEM, ITEM_OPTION, SUBTOTAL, TOTAL)",
             ha="center", va="top", fontsize=8.4, color=MUTED, linespacing=1.5)
-    ax.text(xr, 0.048, "BIO tags\n(O, B/I-NAME, B/I-PRICE)",
+    ax.text(xr, 0.048, "BIO Tags\n(O, B/I-NAME, B/I-PRICE)",
             ha="center", va="top", fontsize=8.4, color=MUTED, linespacing=1.5)
 
     save(fig, out)
@@ -407,7 +404,7 @@ def fig_forward_pass(out: Path) -> None:
     box(ax, xc, y[2], w_wide, hh[2], "self.base_model(input_ids, attention_mask)",
         [f"last_hidden_state  [1, {EXAMPLE_LEN}, {HIDDEN}]",
          "no gradient: backbone frozen"],
-        color=PALETTE[0], fill=0.16, title_size=10.2, detail_size=8.4, name=NAME)
+        color=PALETTE[0], title_size=10.2, detail_size=8.4, name=NAME)
 
     box(ax, xl, y[3], w, hh[3], "cls_embedding",
         ["last_hidden_state[:, 0, :]", f"[1, {HIDDEN}]"],
@@ -418,16 +415,16 @@ def fig_forward_pass(out: Path) -> None:
 
     box(ax, xl, y[4], w, hh[4], "self.classifier",
         ["Linear -> ReLU -> Linear", f"logits [1, {N_CLASSES}]"],
-        color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
+        color=SLATE, title_size=10.0, detail_size=8.4, name=NAME)
     box(ax, xr, y[4], w, hh[4], "self.ner_head",
         [f"Linear {HIDDEN} -> {N_NER}",
          f"logits [1, {EXAMPLE_LEN}, {N_NER}]"],
-        color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
+        color=SLATE, title_size=10.0, detail_size=8.4, name=NAME)
 
     box(ax, xl, y[5], w, hh[5], "CrossEntropyLoss", ["class_loss"],
-        color=RUST, fill=0.13, title_size=9.8, detail_size=8.2, name=NAME)
+        color=RUST, title_size=9.8, detail_size=8.2, name=NAME)
     box(ax, xr, y[5], w, hh[5], "CrossEntropyLoss", ["ner_loss (flattened)"],
-        color=RUST, fill=0.13, title_size=9.8, detail_size=8.2, name=NAME)
+        color=RUST, title_size=9.8, detail_size=8.2, name=NAME)
 
     pad = 0.005
     arrow(ax, (xc, y[0] - hh[0] / 2 - pad), (xc, y[1] + hh[1] / 2 + pad))
@@ -497,16 +494,16 @@ def fig_embedding_heatmap(emb, out: Path) -> None:
     lim = float(np.percentile(np.abs(v), 99))
 
     fig, ax = plt.subplots(figsize=(13.0, 1.85))
-    im = ax.imshow(v.reshape(1, -1), cmap=DIVERGING, aspect="auto",
+    im = ax.imshow(v.reshape(1, -1), cmap=CMAP_DIVERGING, aspect="auto",
                    vmin=-lim, vmax=lim, interpolation="nearest")
     ax.set_yticks([])
-    ax.set_xlabel("Embedding dimension")
+    ax.set_xlabel("Embedding Dimension")
     ax.set_xlim(-0.5, len(v) - 0.5)
     ax.set_xticks([0, 255, 511, 767, 1023])
     ax.set_xticklabels(["1", "256", "512", "768", "1024"])
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
-    ax.spines["bottom"].set_color("#c9c9d2")
+    ax.spines["bottom"].set_color(LIGHT)
     ax.tick_params(colors=INK, labelsize=9)
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.028, pad=0.010)
@@ -523,12 +520,12 @@ def fig_similarity_matrix(emb, out: Path) -> None:
     n = len(sim)
 
     fig, ax = plt.subplots(figsize=(8.4, 7.2))
-    im = ax.imshow(sim, cmap=SEQUENTIAL, vmin=0, vmax=1, interpolation="nearest")
+    im = ax.imshow(sim, cmap=CMAP, vmin=0, vmax=1, interpolation="nearest")
 
     ax.set_xticks(range(n), [str(i + 1) for i in range(n)])
     ax.set_yticks(range(n), [str(i + 1) for i in range(n)])
-    ax.set_xlabel("Sentence index")
-    ax.set_ylabel("Sentence index")
+    ax.set_xlabel("Sentence Index")
+    ax.set_ylabel("Sentence Index")
     ax.set_xticks(np.arange(-0.5, n, 1), minor=True)
     ax.set_yticks(np.arange(-0.5, n, 1), minor=True)
     ax.grid(which="minor", color="white", lw=1.0)
@@ -543,7 +540,7 @@ def fig_similarity_matrix(emb, out: Path) -> None:
                     fontsize=6.1, color="white" if sim[i, j] > 0.62 else INK)
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.040, pad=0.022)
-    cbar.set_label("Cosine similarity", fontsize=9, color=INK)
+    cbar.set_label("Cosine Similarity", fontsize=9, color=INK)
     cbar.ax.tick_params(labelsize=8, colors=INK)
     cbar.outline.set_visible(False)
 
@@ -564,7 +561,7 @@ def fig_tsne(emb, out: Path) -> None:
     # The project palette's first three entries are all dark blue-greys, which
     # is fine for sequential work but unreadable as categories; pick four
     # house colours that separate cleanly instead.
-    cluster_colors = [SLATE, RUST, "#6D597A", "#8D99AE"]
+    cluster_colors = CATEGORICAL[:4]
 
     fig, ax = plt.subplots(figsize=(7.2, 6.4))
     for k in range(n_clusters):
@@ -582,12 +579,12 @@ def fig_tsne(emb, out: Path) -> None:
                     ha="left", va="bottom", zorder=4)
 
     ax.margins(0.12)
-    ax.set_xlabel("t-SNE component 1")
-    ax.set_ylabel("t-SNE component 2")
+    ax.set_xlabel("t-SNE Component 1")
+    ax.set_ylabel("t-SNE Component 2")
     ax.grid(color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     tidy(ax)
-    leg = ax.legend(frameon=False, loc="lower left", fontsize=9, title="k-means")
+    leg = ax.legend(frameon=False, loc="lower left", fontsize=9, title="k-Means")
     leg.get_title().set_fontsize(9)
     save(fig, out)
 

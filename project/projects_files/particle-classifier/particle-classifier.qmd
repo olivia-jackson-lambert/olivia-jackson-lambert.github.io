@@ -65,7 +65,7 @@ Heavier particles leave shorter, denser tracks. Lighter particles travel farther
 
 Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is $p = \sqrt{p_x^2 + p_y^2 + p_z^2}$ and is spread fairly evenly across its range. The production coordinates are bounded by the detector volume.
 
-![Truth Feature Distributions by Particle Type](assets/truth_arrays.gif){fig-alt="Animated row of seven histograms, one frame per particle type, for total momentum, the three momentum components and the three production coordinates. Momentum components peak at zero and are symmetric. Total momentum and production coordinates are broad and bounded." width="100%"}
+![Truth Feature Distributions by Particle Type](assets/truth_arrays.gif){fig-alt="Animated grid of histograms, one frame per particle type. The top row shows total momentum and the three momentum components; the bottom row shows the three production coordinates. Momentum components peak at zero and are symmetric. Total momentum and production coordinates are broad and bounded." width="100%"}
 
 # Initial Model
 

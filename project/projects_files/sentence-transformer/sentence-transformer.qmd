@@ -38,7 +38,7 @@ A receipt is a list of short lines. For each line I want two answers. What kind 
 
 # System Overview
 
-![The receipt processing pipeline, from photograph to structured line data.](assets/system_pipeline.png){fig-alt="Six boxes in a row joined by arrows: Receipt Image, OCR with Tesseract, Segmentation into lines, the BGE-M3 encoder (24 layers, frozen, 1024-dimensional states), the two task heads, and Structured Data holding a line class plus name and price spans." width="100%"}
+![The receipt processing pipeline, from photograph to structured line data.](assets/system_pipeline.png){fig-alt="Six boxes stacked top to bottom and joined by arrows: Receipt Image, OCR with Tesseract, Segmentation into lines, the BGE-M3 encoder (24 layers, frozen, 1024-dimensional states), the two task heads, and Structured Data holding a line class plus name and price spans. Brackets at the side group the boxes into OCR, Preprocessing and Multi-Task Model." width="64%"}
 
 The OCR stage converts the photo to grayscale, denoises it, binarises it with Otsu thresholding and passes it to Tesseract. The text is then split into lines on newlines and periods.
 
@@ -121,13 +121,13 @@ The backbone is frozen. Its token states are computed once, cached, and reused e
 
 The original notebook's `MultiTaskModel` did not freeze anything. It never set `requires_grad = False` and passed `model.parameters()` to the optimiser. The training script behind these results, `train_heads.py`, adds the freeze.
 
-![Training and validation loss for each head over 30 epochs.](assets/training_curves.png){fig-alt="Two line charts of cross-entropy loss by epoch. Left, sentence classification: validation loss reaches its minimum of about 0.068 at epoch 4 and then climbs to about 0.11 by epoch 30, while training loss falls to near zero. Right, entity tagging: training and validation loss both fall steadily from about 0.7 to about 0.25 and are still falling at epoch 30." width="100%"}
+![Training and validation loss for each head over 30 epochs.](assets/training_curves.png){fig-alt="Two line charts of cross-entropy loss by epoch, stacked on a shared epoch axis. Top, sentence classification: validation loss reaches its minimum of about 0.068 at epoch 4 and then climbs to about 0.11 by epoch 30, while training loss falls to near zero. Bottom, entity tagging: training and validation loss both fall steadily from about 0.7 to about 0.25 and are still falling at epoch 30." width="80%"}
 
 The two tasks want different amounts of training. Classification validation loss bottoms out at **epoch 4** and then climbs while training loss goes to zero. The model has already solved that task and is now overfitting it. Entity tagging validation loss is still falling at epoch 30.
 
 So one stopping point means compromising one task. Stopping early protects classification and leaves entity tagging undertrained. Running to 30 epochs does the reverse. Separate learning rates, or a loss weight that decays the classification term, would serve both.
 
-![Accuracy and F1 for each head over 30 epochs.](assets/accuracy_curves.png){fig-alt="Two line charts of score by epoch. Left, sentence classification: validation accuracy and weighted F1 reach about 0.98 by epoch 2 and stay flat, while training accuracy rises to 1.0. Right, entity tagging: validation token accuracy and macro-F1 climb from about 0.79 to about 0.93 and are still rising at epoch 30." width="100%"}
+![Accuracy and F1 for each head over 30 epochs.](assets/accuracy_curves.png){fig-alt="Two line charts of score by epoch, stacked on a shared epoch axis. Top, sentence classification: validation accuracy and weighted F1 reach about 0.98 by epoch 2 and stay flat, while training accuracy rises to 1.0. Bottom, entity tagging: validation token accuracy and macro-F1 climb from about 0.79 to about 0.93 and are still rising at epoch 30." width="80%"}
 
 # Results
 
@@ -146,11 +146,11 @@ Macro-F1 is the entity number I quote. It weights all five tags equally, so the 
 
 The predictions below come from the trained heads running on held-out test lines.
 
-![One item line from the test set, with the entity tag and class probabilities the model predicted.](assets/example_price_extraction.png){fig-alt="Eight words of a receipt line, each in a coloured box with its predicted tag below: 1 is O; 35.000, Rp and 35.000 are each B-PRICE; NASI is B-NAME; GOR, SFD and TLR are I-NAME. The second 35.000 has a dashed outline because the reference tags it I-PRICE. The line reads: Sentence class ITEM (correct), tags matching the reference 7 of 8. A bar chart below puts nearly all class probability on ITEM." width="100%"}
+![One item line from the test set, with the entity tag and class probabilities the model predicted.](assets/example_price_extraction.png){fig-alt="Eight words of a receipt line, wrapped onto two rows of four, each in a coloured box with its predicted tag below: 1 is O; 35.000, Rp and 35.000 are each B-PRICE; NASI is B-NAME; GOR, SFD and TLR are I-NAME. The second 35.000 has a dashed outline because the reference tags it I-PRICE. The line reads: Sentence class ITEM (correct), tags matching the reference 7 of 8. A bar chart below puts nearly all class probability on ITEM." width="100%"}
 
 The name span is right and the sentence class is right. The one miss is the price. The reference treats `Rp 35.000` as one span, but the model starts a new span at `35.000` instead of continuing it.
 
-![A full test receipt run through the model one line at a time.](assets/complete_receipt_example.png){fig-alt="Left, a photograph of an Indonesian restaurant receipt from the CORD-v2 test set. Right, a table of 13 lines with the predicted class, the line text, the name span and the price span. Eleven ITEM rows, one SUBTOTAL and one TOTAL, all classified correctly. Four rows have dashed boxes where the tags differ from the reference: Nasi Tambah, Ikan Bawal Besa, the subtotal row and the total row." width="100%"}
+![A full test receipt run through the model one line at a time.](assets/complete_receipt_example.png){fig-alt="Top, a photograph of an Indonesian restaurant receipt from the CORD-v2 test set. Below it, a table of 13 lines with the predicted class, the line text, the name span and the price span. Eleven ITEM rows, one SUBTOTAL and one TOTAL, all classified correctly. Four rows are shaded and outlined with dashes where the tags differ from the reference: Nasi Tambah, Ikan Bawal Besa, the subtotal row and the total row." width="68%"}
 
 All 13 lines get the right sentence class. The tags match the reference exactly on 9 of them. The four misses are different kinds of error:
 

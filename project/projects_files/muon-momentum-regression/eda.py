@@ -35,7 +35,7 @@ def hist(series, xlabel, xlim, out: Path) -> None:
     ax.set_yscale("log")
     ax.set_xlim(*xlim)
     ax.set_xlabel(xlabel)
-    ax.set_ylabel("Tracks per bin (log scale)")
+    ax.set_ylabel("Tracks per Bin (Log Scale)")
     tidy(ax)
     ax.tick_params(which="both", length=0)
     save(fig, out)
@@ -86,14 +86,14 @@ def main() -> None:
     print(f"Loaded {len(df):,} tracks")
 
     hist(df["p"], "Momentum p (GeV/c)", (0, 600), out / "p_distribution.png")
-    hist(df["pt"], "Transverse momentum p$_T$ (GeV/c)", (0, 35), out / "pt_distrbution.png")
+    hist(df["pt"], "Transverse Momentum p$_T$ (GeV/c)", (0, 35), out / "pt_distrbution.png")
 
     band(df["p"].to_numpy(), df["ep"].to_numpy(),
-         "Momentum p (GeV/c)", r"Momentum resolution $\Delta p / p$",
+         "Momentum p (GeV/c)", r"Momentum Resolution $\Delta p / p$",
          out / "fitted_track_momentum.png")
 
     band(df["pz"].to_numpy(), df["epz"].to_numpy(),
-         "Longitudinal momentum p$_Z$ (GeV/c)", r"Resolution $\Delta p_Z / p_Z$",
+         "Longitudinal Momentum p$_Z$ (GeV/c)", r"Resolution $\Delta p_Z / p_Z$",
          out / "fitted_track_momentum_z.png")
 
 

@@ -22,7 +22,7 @@ from sklearn.metrics import confusion_matrix, f1_score, classification_report
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, MUTED, LIGHT  # noqa: E402
+from figstyle import apply, tidy, title_case, CMAP, INK, SLATE, RUST, DIM, MUTED, LIGHT  # noqa: E402
 
 SRC = Path("/Users/oliviajackson/Downloads/207_SWEOP_Project/Code")
 OUT = HERE / "assets"
@@ -98,23 +98,30 @@ def main():
     is_cal = np.array(["Cal Target" in CLS[c] for c in present])
     rho, pval = spearmanr(sup, f1s)
 
+    # Mastcam Cal Target and Portion Box both have 48 test images and nearly the
+    # same F1, so the markers sat on top of each other. Dodge them sideways by a
+    # few percent on the log axis for plotting only; the statistics use `sup`.
+    xs = sup.copy()
+    for c, k in ((14, 1 / 1.07), (16, 1.07)):
+        xs[present.index(c)] *= k
+
     fig, ax = plt.subplots(figsize=(8.6, 5.4))
-    ax.scatter(sup[~is_cal], f1s[~is_cal], s=60, color=SLATE, zorder=3,
-               edgecolor="white", linewidth=.6, label="Instruments and terrain")
-    ax.scatter(sup[is_cal], f1s[is_cal], s=70, color=RUST, marker="D", zorder=3,
-               edgecolor="white", linewidth=.6, label="Calibration targets")
+    ax.scatter(xs[~is_cal], f1s[~is_cal], s=60, color=SLATE, zorder=3,
+               edgecolor="white", linewidth=.6, label="Instruments and Terrain")
+    ax.scatter(xs[is_cal], f1s[is_cal], s=70, color=RUST, marker="D", zorder=3,
+               edgecolor="white", linewidth=.6, label="Calibration Targets")
     ax.set_xscale("log")
     ticks = [2, 5, 10, 20, 50, 100, 200, 300]
     ax.set_xticks(ticks); ax.set_xticklabels([str(t) for t in ticks])
     ax.minorticks_off()
-    ax.set_xlabel("Test images in the class (log scale)")
-    ax.set_ylabel("F1 score on held-out images")
+    ax.set_xlabel("Test Images in the Class (Log Scale)")
+    ax.set_ylabel(title_case("F1 score on held-out images"))
     ax.set_ylim(0, 1.09)
     ax.set_xlim(sup.min() * 0.62, sup.max() * 2.15)   # room for edge labels
 
     # Greedy label placement: try offsets in order, keep the first that does
     # not overlap an already-placed label or sit outside the axes.
-    to_label = [(x, y, CLS[c]) for x, y, c in zip(sup, f1s, present)
+    to_label = [(x, y, CLS[c]) for x, y, c in zip(xs, f1s, present)
                 if y < .45 or "Cal Target" in CLS[c] or x > 200]
     candidates = [(8, 4, "left"), (8, -12, "left"), (-8, 4, "right"), (-8, -12, "right"),
                   (0, 11, "center"), (0, -16, "center"), (8, 12, "left"), (-8, 12, "right")]
@@ -143,7 +150,7 @@ def main():
             fig.canvas.draw(); placed.append(txt.get_window_extent())
     tidy(ax, grid_axis="both")
     ax.legend(loc="lower right")
-    ax.text(0.02, 0.04, f"Spearman rank correlation {rho:+.2f}, p = {pval:.2f}",
+    ax.text(0.02, 0.04, f"Spearman Rank Correlation {rho:+.2f}, p = {pval:.2f}",
             transform=ax.transAxes, fontsize=9, color=MUTED,
             bbox=dict(facecolor="white", edgecolor="none", pad=1.5))
     fig.tight_layout()
@@ -153,48 +160,48 @@ def main():
     cm = confusion_matrix(df.y_true, df.y_pred, labels=present).astype(float)
     cmn = np.divide(cm, cm.sum(1, keepdims=True), out=np.zeros_like(cm), where=cm.sum(1, keepdims=True) > 0)
     fig, ax = plt.subplots(figsize=(8.8, 7.8))
-    im = ax.imshow(cmn, cmap="Blues", vmin=0, vmax=1)
+    im = ax.imshow(cmn, cmap=CMAP, vmin=0, vmax=1)
     lab = [CLS[c] for c in present]
     ax.set_xticks(range(len(lab))); ax.set_xticklabels(lab, rotation=45, ha="right", fontsize=8.5)
     ax.set_yticks(range(len(lab))); ax.set_yticklabels(lab, fontsize=8.5)
-    ax.set_xlabel("Predicted class"); ax.set_ylabel("True class")
+    ax.set_xlabel("Predicted Class"); ax.set_ylabel("True Class")
     ax.grid(False)
     for sp in ax.spines.values(): sp.set_visible(False)
     cb = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03)
-    cb.set_label("Share of the true class's test images", fontsize=9.5)
+    cb.set_label("Share of the True Class's Test Images", fontsize=9.5)
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=8.5, length=0)
     fig.tight_layout()
     save(fig, "confusion_matrix.png")
 
     # ---------- 4. dust robustness ----------
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.2, 4.0))
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(6.2, 6.8))
     for ax, (ck, dk, drop, ylab) in zip(
             (a1, a2),
-            (("clean_acc", "dust_acc", DROP["acc"], "Test accuracy"),
-             ("clean_f1", "dust_f1", DROP["f1"], "Test macro-F1"))):
+            (("clean_acc", "dust_acc", DROP["acc"], "Test Accuracy"),
+             ("clean_f1", "dust_f1", DROP["f1"], "Test Macro-F1"))):
         vals = [DUST[ck], DUST[dk]]
-        bars = ax.bar(["Clean", "Simulated dust"], vals, color=[SLATE, RUST], width=.55)
+        bars = ax.bar(["Clean", "Simulated Dust"], vals, color=[SLATE, RUST], width=.55)
         bar_labels(ax, bars, vals)
         ax.set_ylim(0, 0.9)
         ax.set_ylabel(ylab)
         ax.text(0.5, 0.97, f"Drop of {drop:.4f}", transform=ax.transAxes,
                 ha="center", va="top", fontsize=9.5, color=MUTED)
         tidy(ax)
-    fig.tight_layout(w_pad=3)
+    fig.tight_layout(h_pad=2.2)
     save(fig, "dust_robustness.png")
 
     # ---------- 5. macro-F1 denominator ----------
     variants = [
-        ("22 classes\npresent in test", f1_score(df.y_true, df.y_pred, labels=present, average="macro", zero_division=0)),
-        ("24 classes\n(as reported)", f1_score(df.y_true, df.y_pred, average="macro", zero_division=0)),
-        ("All 25\nlabel indices", f1_score(df.y_true, df.y_pred, labels=list(range(25)), average="macro", zero_division=0)),
+        ("22 Classes\nPresent in Test", f1_score(df.y_true, df.y_pred, labels=present, average="macro", zero_division=0)),
+        ("24 Classes\n(As Reported)", f1_score(df.y_true, df.y_pred, average="macro", zero_division=0)),
+        ("All 25\nLabel Indices", f1_score(df.y_true, df.y_pred, labels=list(range(25)), average="macro", zero_division=0)),
     ]
     fig, ax = plt.subplots(figsize=(7.0, 4.0))
     vals = [v[1] for v in variants]
     bars = ax.bar([v[0] for v in variants], vals, color=[SLATE, RUST, LIGHT], width=.55)
     bar_labels(ax, bars, vals)
-    ax.set_ylim(0, 0.85); ax.set_ylabel("Test macro-F1")
+    ax.set_ylim(0, 0.85); ax.set_ylabel("Test Macro-F1")
     tidy(ax)
     fig.tight_layout()
     save(fig, "macro_f1_denominator.png")

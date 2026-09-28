@@ -33,24 +33,25 @@ import torch.nn.functional as F
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, MUTED  # noqa: E402
+from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM,  # noqa: E402
+                      CATEGORICAL)
+from matplotlib.colors import LinearSegmentedColormap
 
 LATENT, EPOCHS, BATCH, SEED = 2, 50, 128, 42
 
-# Ten classes: site colours first, then muted tones. Rust marks 4 and dim marks 9,
+# Ten classes, all from figstyle.CATEGORICAL. Rust marks 4 and dim marks 9,
 # the pair the article is about.
-DIGIT_COLOURS = [
-    SLATE,      # 0
-    "#a9b8ca",  # 1 light slate
-    "#6f8f7a",  # 2 sage
-    "#e3a397",  # 3 light rust
-    RUST,       # 4
-    "#8c6d8f",  # 5 plum
-    "#b08b5a",  # 6 ochre
-    MUTED,      # 7
-    "#4f7c82",  # 8 teal
-    DIM,        # 9
-]
+_C = CATEGORICAL
+DIGIT_COLOURS = [_C[0], _C[9], _C[5], _C[4], _C[1], _C[6], _C[7], _C[3], _C[8], _C[2]]
+LIGHT_LABELS = {1, 3, 7}          # pale fills take ink text, the rest white
+# The isolated 1 cluster takes the palest colour; 7 sits beside 4 and 9 so it needs more.
+
+# Digit images stay greyscale, on a white-to-ink ramp from the site palette.
+GREY = LinearSegmentedColormap.from_list("digit_grey", ["white", INK])
+
+# Misread reconstructions among the first ten test digits, checked by eye:
+# test index -> what the rebuilt image looks like.
+MISREAD = {4: 9, 6: 9, 8: 6}
 
 
 class VAE(nn.Module):
@@ -167,7 +168,7 @@ def place_labels(ax, centroids, colours, pts):
             ax.plot([centroids[d, 0], ex], [centroids[d, 1], ey], color=INK, lw=0.7, zorder=4)
             ax.plot(*centroids[d], "o", ms=3.4, color=INK, mec="white", mew=0.6, zorder=5)
         ax.text(lx, ly, str(d), ha="center", va="center", fontsize=10.5, fontweight="semibold",
-                color="white" if d not in (1, 3) else INK, zorder=6,
+                color=INK if d in LIGHT_LABELS else "white", zorder=6,
                 bbox=dict(boxstyle="round,pad=0.3", fc=colours[d], ec="white", lw=0.9))
 
 
@@ -183,18 +184,18 @@ def figures(model, hist, Z, xtr, ytr, xte, yte, Xte, dev, out: Path):
     # 1. example digits
     fig, axes = plt.subplots(3, 6, figsize=(6.4, 3.3))
     for ax, idx in zip(axes.ravel(), range(18)):
-        ax.imshow(xtr[idx], cmap="gray_r"); bare(ax)
+        ax.imshow(xtr[idx], cmap=GREY); bare(ax)
         ax.set_title(str(ytr[idx]), fontsize=9.5, pad=3, color=INK)
     fig.tight_layout()
     fig.savefig(out / "mnist_examples.png", **save); plt.close(fig)
 
     # 2. loss curves
     fig, ax = plt.subplots(figsize=(6.4, 4.0))
-    ax.plot(H["epoch"], H["loss"], color=SLATE, label="Train total")
-    ax.plot(H["epoch"], H["val_loss"], color=RUST, label="Validation total")
-    ax.plot(H["epoch"], H["reco"], color=SLATE, lw=1.2, alpha=.5, label="Train reconstruction")
+    ax.plot(H["epoch"], H["loss"], color=SLATE, label=title_case("Train total"))
+    ax.plot(H["epoch"], H["val_loss"], color=RUST, label=title_case("Validation total"))
+    ax.plot(H["epoch"], H["reco"], color=SLATE, lw=1.2, alpha=.5, label=title_case("Train reconstruction"))
     ax.plot(H["epoch"], H["kl"] * 10, color=DIM, lw=1.2, alpha=.6, label=r"Train KL ($\times$10)")
-    ax.set_xlabel("Epoch"); ax.set_ylabel("Loss per image")
+    ax.set_xlabel("Epoch"); ax.set_ylabel(title_case("Loss per image"))
     ax.set_xlim(1, len(hist))
     ax.legend(loc="upper right"); tidy(ax)
     fig.tight_layout()
@@ -224,7 +225,7 @@ def figures(model, hist, Z, xtr, ytr, xte, yte, Xte, dev, out: Path):
             for c in range(n):
                 grid[r * 28:(r + 1) * 28, c * 28:(c + 1) * 28] = imgs[c]
     fig, ax = plt.subplots(figsize=(6.0, 6.0))
-    ax.imshow(grid, cmap="gray_r"); ax.grid(False)
+    ax.imshow(grid, cmap=GREY); ax.grid(False)
     # ticks at z = -2, 0, 2, mapped to the centre of the cell that value falls in
     vals = np.array([-2, 0, 2])
     px = (vals + span) / (2 * span) * (n - 1) * 28 + 14
@@ -235,18 +236,26 @@ def figures(model, hist, Z, xtr, ytr, xte, yte, Xte, dev, out: Path):
     fig.tight_layout()
     fig.savefig(out / "latent_grid.png", **save); plt.close(fig)
 
-    # 5. reconstructions of the first ten test digits, decoded from the encoder mean
+    # 5. reconstructions of the first ten test digits, decoded from the encoder mean.
+    # Two input/rebuilt pairs per row so the figure reads down a narrow column.
     with torch.no_grad():
         rec = model.decode(model.encode(Xte[:10].to(dev))[0]).cpu().numpy().reshape(-1, 28, 28)
-    fig, axes = plt.subplots(2, 10, figsize=(9.0, 2.1))
+    fig = plt.figure(figsize=(4.6, 6.6))
+    gs = fig.add_gridspec(5, 5, width_ratios=[1, 1, 0.45, 1, 1], hspace=0.42, wspace=0.08)
     for i in range(10):
-        axes[0, i].imshow(xte[i], cmap="gray_r"); bare(axes[0, i])
-        axes[1, i].imshow(rec[i], cmap="gray_r"); bare(axes[1, i])
-    axes[0, 0].set_ylabel("Input", fontsize=9.5, color=INK)
-    axes[1, 0].set_ylabel("Rebuilt", fontsize=9.5, color=INK)
-    fig.tight_layout()
+        row, c0 = i // 2, (0 if i % 2 == 0 else 3)
+        a_in, a_rb = fig.add_subplot(gs[row, c0]), fig.add_subplot(gs[row, c0 + 1])
+        a_in.imshow(xte[i], cmap=GREY); bare(a_in)
+        a_rb.imshow(rec[i], cmap=GREY); bare(a_rb)
+        if row == 0:
+            a_in.set_title("Input", fontsize=9.5, pad=5, color=INK)
+            a_rb.set_title("Rebuilt", fontsize=9.5, pad=5, color=INK)
+        if i in MISREAD:
+            for sp in a_rb.spines.values():
+                sp.set_visible(True); sp.set_color(RUST); sp.set_linewidth(1.6)
+            a_rb.text(0.5, -0.08, title_case(f"reads as {MISREAD[i]}"), transform=a_rb.transAxes,
+                      ha="center", va="top", fontsize=8.5, color=RUST)
     fig.savefig(out / "reconstructions.png", **save); plt.close(fig)
-
 
 def main():
     ap = argparse.ArgumentParser()

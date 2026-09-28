@@ -78,7 +78,7 @@ hyperparameter did.
 
 Writing the rule down in advance is what let us defend the final selection later.
 
-![End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.](assets/workflow_pipeline.png){fig-alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation." width="100%"}
+![End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.](assets/workflow_pipeline.png){fig-alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation." width="84%"}
 
 All of 2019 was held out as a blind test set (7.24M flights). The years 2015 to 2018
 supported three-fold sliding-window cross-validation, with a one-year training window and a
@@ -91,7 +91,7 @@ Phase 3 the data grew from one year to five (5.7M to 23.9M training flights) and
 feature set from 41 to 73 columns. That was not enough on its own, so we added a
 severe-class weight multiplier on top of standard inverse-frequency weighting.
 
-![Random forest pipeline. A shared preprocessing sub-pipeline feeds a 200-tree, depth-12 forest, tuned in two stages.](assets/rf_pipeline_v2.png){fig-alt="Block diagram. A 73-feature checkpoint passes through a median imputer for 66 numeric columns, a string indexer for 7 categoricals and a vector assembler, then into a random forest classifier with 200 trees at depth 12, evaluated on the 2019 blind test. Below, stage 1 is a hyperparameter search in which 6 of 18 configurations completed across 3 folds, and stage 2 compares severe-class weights of 1.0, 1.2 and 1.5 on the full 2015 to 2018 training set of 23.9M flights." fig-align="center" width="85%"}
+![Random forest pipeline. A shared preprocessing sub-pipeline feeds a 200-tree, depth-12 forest, tuned in two cross-validated stages and then retrained on the full window.](assets/rf_pipeline_v2.png){fig-alt="Two-column block diagram. On the left, a 73-feature checkpoint passes down through a median imputer for 66 numeric columns, a string indexer for 7 categoricals and a vector assembler, then into the highlighted random forest classifier with 200 trees at depth 12, evaluated on the 2019 blind test. On the right, stage 1 is a structure search in which 6 of 18 configurations completed across 3 folds at a severe weight of 1.5. The best configuration moves to stage 2, which cross-validates severe weights of 1.0, 1.2 and 1.5. The selected weight of 1.5 goes to final training on the full 2015 to 2018 set of 23.9M flights." fig-align="center" width="85%"}
 
 ### Staged Search
 
@@ -178,7 +178,7 @@ driver out-of-memory failures, and the grid stopped after four of eight planned
 configurations. The XGBoost row above therefore comes from a reduced substitute with no
 severe weight. It is not the model we would want judged.
 
-![XGBoost pipeline. It shares the forest's preprocessing, but the selected configuration never finished, so a reduced model was trained instead.](assets/xgb_pipelinev2.png){fig-alt="Block diagram matching the random forest pipeline, with a SparkXGB classifier on GPU in place of the forest. Stage 1 shows 4 of 8 configurations completed across 3 folds with a severe weight of 1.5. A dashed arrow notes that the selected configuration did not complete and a reduced model with no severe weight was trained on the full 2015 to 2018 data instead." fig-align="center" width="85%"}
+![XGBoost pipeline. It shares the forest's preprocessing, but the selected configuration never finished, so a reduced model was trained instead.](assets/xgb_pipelinev2.png){fig-alt="Two-column block diagram matching the random forest pipeline, with a SparkXGB classifier on GPU in place of the forest. On the right, stage 1 shows 4 of 8 configurations completed across 3 folds with early stopping and a severe weight of 1.5. A dashed rust arrow notes that the selected configuration did not complete, so stage 2 trained a reduced model (max_depth 5, 100 estimators, no severe weight) on the full 2015 to 2018 data instead." fig-align="center" width="85%"}
 
 XGBoost remains the most promising unexplored direction. The validation evidence suggests
 a severe-weighted configuration could hold Gate 2 at higher $\kappa_w$ than the forest,
@@ -189,7 +189,7 @@ each completed configuration and wrapped fits in retry logic. A crash then cost 
 configuration instead of the whole run. That is why the random forest grid produced six
 usable points instead of none.
 
-![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices side by side for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 35% to 45% down to about 30%." width="100%"}
+![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices in a two by two grid for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 35% to 45% down to about 30%." width="100%"}
 
 ## The Ceiling Is in the Features
 
@@ -198,7 +198,7 @@ Feature importance is dominated by delay propagation. `inbound_delay` alone acco
 8.5%, about 72% of the model together. Weather contributes roughly 3%, mostly through
 precipitation.
 
-![Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.](assets/tree_models_feature_importance_4panel.png){fig-alt="Four horizontal bar charts of feature importance in percent, one per tree model. In all three random forests, inbound_delay_imp leads at about 41%, followed by tail_cum_delay_imp at about 22% and origin_cum_delay_rate_imp at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by tail_cum_delay_missing_imp at about 15% and inbound_delay_imp at about 9%." width="100%"}
+![Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.](assets/tree_models_feature_importance_4panel.png){fig-alt="Four horizontal bar charts of feature importance in percent in a two by two grid, one per tree model. In all three random forests, inbound_delay_imp leads at about 41%, followed by tail_cum_delay_imp at about 22% and origin_cum_delay_rate_imp at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by tail_cum_delay_missing_imp at about 15% and inbound_delay_imp at about 9%." width="100%"}
 
 Per-class test recalls for the selected forest are 0.725, 0.315, 0.295 and 0.644 across the
 four tiers. The middle tiers are the weak spot in every configuration. None of the four

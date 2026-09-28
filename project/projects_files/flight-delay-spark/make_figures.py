@@ -19,16 +19,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "scripts"))
-from figstyle import apply, tidy, INK, SLATE, RUST, DIM, MUTED  # noqa: E402
+from figstyle import apply, tidy, INK, SLATE, RUST, DIM, MUTED, CMAP  # noqa: E402
 
 OUT = HERE / "assets"
 apply()
+plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.rm": "Lora",
+                     "mathtext.it": "Lora", "mathtext.bf": "Lora:semibold"})
 
 
 # ---------------------------------------------------------------------------
@@ -53,7 +54,7 @@ for subset, mi, k, r in grid:
                edgecolors="white", linewidths=1.2, zorder=3)
 
 ax.axhline(0.50, color=MUTED, lw=1, ls=(0, (4, 3)), zorder=1)
-ax.text(0.2494, 0.503, "Gate 2 floor: 0.50 severe recall", color=MUTED,
+ax.text(0.2494, 0.503, "Gate 2 Floor: 0.50 Severe Recall", color=MUTED,
         fontsize=9, va="bottom", ha="left")
 
 ax.annotate("Selected: sqrt, minInstances 10", xy=(0.2573, 0.5849),
@@ -63,8 +64,8 @@ ax.annotate("Selected: sqrt, minInstances 10", xy=(0.2573, 0.5849),
 
 ax.set_xlim(0.2490, 0.2582)
 ax.set_ylim(0.49, 0.60)
-ax.set_xlabel("Validation quadratic-weighted kappa ($\\kappa_w$)")
-ax.set_ylabel("Validation severe recall (2+ hr tier)")
+ax.set_xlabel("Validation Quadratic-Weighted Kappa ($\\kappa_w$)")
+ax.set_ylabel("Validation Severe Recall (2+ hr Tier)")
 tidy(ax)
 
 handles = [
@@ -75,7 +76,7 @@ handles = [
     Line2D([0], [0], marker="s", ls="", color=MUTED, markersize=7, label="minInstances 20"),
 ]
 ax.legend(handles=handles, loc="center left", bbox_to_anchor=(1.01, 0.5),
-          title="Feature subset", title_fontsize=9.5, alignment="left")
+          title="Feature Subset", title_fontsize=9.5, alignment="left")
 fig.savefig(OUT / "rf_cv_tradeoff.png", dpi=200, bbox_inches="tight", facecolor="white")
 plt.close(fig)
 
@@ -90,14 +91,14 @@ cm = np.array([
     [36954, 16593, 15783, 125282],      # true 2+ hr
 ])
 share = cm / cm.sum(axis=1, keepdims=True)
-tiers = ["On time", "15–59 min", "1–2 hr", "2+ hr"]
+tiers = ["On Time", "15–59 min", "1–2 hr", "2+ hr"]
 
 
 def fmt_count(v):
     return f"{v / 1e6:.2f}M" if v >= 1e6 else f"{v / 1e3:.0f}K"
 
 
-cmap = LinearSegmentedColormap.from_list("slate", ["#ffffff", "#c9d3e0", SLATE, "#3d5470"])
+cmap = CMAP
 fig, ax = plt.subplots(figsize=(6.4, 5.0))
 im = ax.imshow(share, cmap=cmap, vmin=0, vmax=1)
 ax.grid(False)
@@ -111,7 +112,7 @@ for i in range(4):
         ax.text(j, i - 0.1, f"{share[i, j]:.1%}", ha="center", va="center",
                 fontsize=11, color=c, fontweight="semibold")
         ax.text(j, i + 0.2, fmt_count(cm[i, j]), ha="center", va="center",
-                fontsize=8.5, color="white" if dark else MUTED)
+                fontsize=8.5, color="white" if dark else (DIM if share[i, j] > 0.25 else MUTED))
 
 # The cell the decision rule cares about
 ax.add_patch(Rectangle((2.5, 2.5), 1, 1, fill=False, ec=RUST, lw=2.2))
@@ -119,8 +120,8 @@ ax.add_patch(Rectangle((2.5, 2.5), 1, 1, fill=False, ec=RUST, lw=2.2))
 ax.set_xticks(range(4), tiers)
 ax.set_yticks(range(4), tiers)
 ax.xaxis.set_ticks_position("bottom")
-ax.set_xlabel("Predicted tier")
-ax.set_ylabel("True tier")
+ax.set_xlabel("Predicted Tier")
+ax.set_ylabel("True Tier")
 ax.tick_params(length=0)
 ax.set_xticks(np.arange(-0.5, 4, 1), minor=True)
 ax.set_yticks(np.arange(-0.5, 4, 1), minor=True)
@@ -128,7 +129,7 @@ ax.grid(which="minor", color="white", linewidth=2)
 ax.tick_params(which="minor", length=0)
 
 cb = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.03)
-cb.set_label("Share of flights in the true tier")
+cb.set_label("Share of Flights in the True Tier")
 cb.outline.set_visible(False)
 cb.ax.tick_params(length=0)
 cb.ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
