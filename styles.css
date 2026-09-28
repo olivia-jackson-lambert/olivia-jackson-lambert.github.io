@@ -796,3 +796,7 @@ main.content .quarto-figure img, main.content figure img { cursor: zoom-in; }
       [screen-end] !important;
   }
 }
+/* keep the title block inside the text column so it never runs under the contents list */
+@media (min-width: 992px) {
+  body:not(.home) #title-block-header { grid-column: body-content-start / body-content-end !important; }
+}
