@@ -409,9 +409,9 @@ body {
   text-transform: uppercase; color: var(--op-muted);
 }
 
-/* hero: photo and text share one height */
+/* hero: the photo takes the height of the text; the column width keeps it near 4:5 */
 .op-hero {
-  display: grid; grid-template-columns: clamp(260px, 30vw, 380px) minmax(0, 1fr);
+  display: grid; grid-template-columns: clamp(240px, 22vw, 310px) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px); align-items: stretch;
 }
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
@@ -426,7 +426,6 @@ body {
    rather than setting it from their own proportions. */
 .op-photo { position: relative; overflow: hidden; min-height: 280px; }
 .op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.op-headshot { aspect-ratio: 4 / 5; min-height: 0; }
 .op-headshot img { object-position: 50% 28%; }
 
 /* section heads: more air under the rule */
