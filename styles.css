@@ -398,7 +398,7 @@ body {
     ========================================================================== */
 .op {
   max-width: 1280px; margin: 0 auto;
-  padding: clamp(40px, 6vw, 88px) clamp(16px, 4vw, 48px) 56px;
+  padding: clamp(40px, 6vw, 88px) clamp(16px, 4vw, 48px) 0;
   display: flex; flex-direction: column; gap: clamp(60px, 7vw, 96px);
 }
 /* Quarto sets #quarto-content > * { padding-top: 14px }; an ID selector is needed to outrank it. */
@@ -431,7 +431,7 @@ body {
    rather than setting it from their own proportions. */
 .op-photo { position: relative; overflow: hidden; min-height: 280px; }
 .op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; }
+.op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; border-radius: 50%; }
 .op-headshot img { object-position: 50% 30%; }
 
 /* section heads: more air under the rule */
@@ -441,8 +441,17 @@ body {
   border-top: 1px solid var(--bs-body-color); padding-top: 28px;
 }
 .op-head h2 {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 2.6vw, 36px);
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4vw, 56px); line-height: 1.05;
   margin: 0; padding: 0; border: 0;
+}
+
+/* sub-sections inside About (Values, Experience): a mono label on a hairline */
+#about { gap: clamp(56px, 6vw, 88px); }
+.op-sub { display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 88px; }
+.op-subhead {
+  font-family: var(--font-mono); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--bs-body-color);
+  margin: 0; padding: 14px 0 0; border-top: 1px solid var(--op-hair);
 }
 
 /* work and writing */
@@ -456,19 +465,19 @@ body {
 .op-tile h3 { font-family: var(--font-display); font-weight: 500; font-size: 24px; line-height: 1.2; margin: 0; }
 .op-tile p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--op-soft); }
 
-/* values: a subgrid keeps symbols, titles and sentences on shared rows */
-.op-values { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 28px; row-gap: 40px; }
+/* values: one row each (symbol, title, sentence) */
+.op-values { display: flex; flex-direction: column; }
 .op-value {
-  display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 14px;
-  border-top: 1px solid var(--op-hair); padding-top: 22px;
+  display: grid; grid-template-columns: 56px minmax(0, 360px) minmax(0, 1fr); align-items: center; column-gap: 28px;
+  padding: 22px 0; border-bottom: 1px solid var(--op-hair);
 }
 .op-value svg {
   width: 40px; height: 40px; fill: none; stroke: var(--bs-body-color);
   stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
 }
 .op-value svg .fill { fill: var(--bs-body-color); stroke: none; }
-.op-value h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.2; margin: 0; align-self: end; }
-.op-value p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--op-soft); }
+.op-value h4 { font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 2.2vw, 30px); line-height: 1.2; margin: 0; }
+.op-value p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--op-soft); max-width: 60ch; }
 
 /* about: photo and text share one height */
 .op-about { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: stretch; }
@@ -500,25 +509,29 @@ body {
 .op-org { font-size: 14px; color: var(--op-muted); margin-top: -4px; }
 .op-timeline p { margin: 2px 0 0; font-size: 15px; line-height: 1.55; color: var(--op-soft); max-width: 34ch; }
 
-/* contact: the address once, then one row of equal buttons */
-.op-contact { display: flex; flex-direction: column; gap: 28px; }
-.op-email {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(26px, 3.4vw, 44px); line-height: 1.15;
-  color: var(--bs-body-color); text-decoration: none; overflow-wrap: anywhere; align-self: flex-start;
-  border-bottom: 1px solid var(--op-hair); padding-bottom: 4px;
+/* contact: a dark band that closes the page. The box-shadow and clip-path carry the
+   colour to the viewport edges and down past the page end without horizontal scroll. */
+.op-band {
+  --band-bg: #0f1115; --band-ink: #ece9e4; --band-muted: #8a8f97; --band-hair: #2c3038;
+  background: var(--band-bg); color: var(--band-ink);
+  box-shadow: 0 0 0 100vmax var(--band-bg); clip-path: inset(0 -100vmax -100vmax);
+  display: flex; flex-direction: column; gap: 36px; align-items: flex-start;
+  padding: clamp(56px, 7vw, 96px) 0 28px; scroll-margin-top: 64px;
 }
-.op-email:hover { border-bottom-color: var(--bs-body-color); }
-.op-cbtns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-.op-cbtn {
-  display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px;
-  border: 1px solid var(--op-hair); color: var(--bs-body-color); text-decoration: none;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .09em; text-transform: uppercase;
-  transition: border-color .2s ease, background-color .2s ease, color .2s ease;
+body.quarto-dark .op-band { --band-bg: #17191e; --band-hair: #30343c; }
+.op-band-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(56px, 8vw, 104px); line-height: 1; margin: 0; padding: 0; border: 0; color: var(--band-ink); }
+.op-band-email {
+  font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(22px, 2.6vw, 34px); line-height: 1.2;
+  color: var(--band-ink); text-decoration: none; border-bottom: 1px solid var(--band-muted); padding-bottom: 4px; overflow-wrap: anywhere;
 }
-.op-cbtn iconify-icon { font-size: 20px; width: 20px; height: 20px; }
-.op-cbtn:hover { background: var(--bs-body-color); color: var(--bs-body-bg); border-color: var(--bs-body-color); }
-.op-cbtn:focus-visible, .op-email:focus-visible { outline: 2px solid var(--bs-body-color); outline-offset: 3px; }
-.op-foot { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--op-hair); padding-top: 20px; }
+.op-band-email:hover { border-bottom-color: var(--band-ink); }
+.op-band-icons { display: flex; flex-wrap: wrap; gap: 28px; }
+.op-band-icons a { color: var(--band-ink); display: inline-flex; opacity: .85; transition: opacity .2s ease, transform .2s ease; }
+.op-band-icons a:hover { opacity: 1; transform: translateY(-2px); }
+.op-band-icons iconify-icon { font-size: 30px; width: 30px; height: 30px; }
+.op-band a:focus-visible { outline: 2px solid var(--band-ink); outline-offset: 4px; }
+.op-band-foot { align-self: stretch; display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--band-hair); padding-top: 20px; margin-top: 28px; }
+.op-band-foot .op-label { color: var(--band-muted); }
 
 /* back to top */
 .totop {
@@ -537,7 +550,6 @@ body {
 
 /* responsive */
 @media (max-width: 1100px) {
-  .op-values { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .op-timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
   .op-timeline::before { display: none; }
 }
@@ -546,16 +558,17 @@ body {
   .op-headshot { width: 100%; max-width: calc((100% - 32px) / 2); order: -1; }
   .op-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .op-about { grid-template-columns: 1fr; }
-  .op-cbtns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .op-value { grid-template-columns: 40px minmax(0, 1fr); row-gap: 8px; column-gap: 20px; align-items: start; }
+  .op-value p { grid-column: 2; }
   .op-about-photo { min-height: 0; aspect-ratio: 3 / 4; width: 100%; max-width: 420px; }
 }
 @media (max-width: 600px) {
   .op-hero-text .op-display { font-size: 12.5cqi; }
   .op-headshot { max-width: 100%; }
-  .op-grid, .op-values, .op-facts { grid-template-columns: 1fr; }
+  .op-grid, .op-facts { grid-template-columns: 1fr; }
   .op-head { flex-wrap: wrap; }
   .op-timeline { grid-template-columns: 1fr; }
-  .op-cbtns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .op-band-foot { flex-direction: column; }
 }
 
 
