@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-12-15">
+<meta name="description" content="A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does.">
+
+<title>Does Travel Cost NBA Teams the Game?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-114013297ac08e17f9e2375decb9094d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<!-- Light favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
+<link rel="icon" href="../../../assets/favicon.ico" sizes="any" media="(prefers-color-scheme: light)">
+
+<!-- Dark favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/dark-favicon-32x32.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/dark-favicon-16x16.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../../assets/dark-favicon.ico" sizes="any" media="(prefers-color-scheme: dark)">
+
+<!-- Apple touch icons -->
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/dark-apple-touch-icon.png" media="(prefers-color-scheme: dark)">
+
+<!-- Android / PWA icons -->
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/android-chrome-192x192.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/android-chrome-512x512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/dark-android-chrome-192x192.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/dark-android-chrome-512x512.png" media="(prefers-color-scheme: dark)">
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Olivia Jackson Lambert</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-question" id="toc-the-question" class="nav-link active" data-scroll-target="#the-question">The Question</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a></li>
+  <li><a href="#the-null-result" id="toc-the-null-result" class="nav-link" data-scroll-target="#the-null-result">The Null Result</a></li>
+  <li><a href="#what-does-show-up" id="toc-what-does-show-up" class="nav-link" data-scroll-target="#what-does-show-up">What Does Show Up</a></li>
+  <li><a href="#everything-is-significant-and-almost-nothing-is-large" id="toc-everything-is-significant-and-almost-nothing-is-large" class="nav-link" data-scroll-target="#everything-is-significant-and-almost-nothing-is-large">Everything Is Significant and Almost Nothing Is Large</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header class="sitehead" role="banner">
+  <div class="sitehead-inner">
+    <a class="sitehead-name" href="../../../index.html">Olivia Jackson Lambert</a>
+
+    <nav class="sitehead-sections" aria-label="Sections">
+      <a href="../../../index.html#work">Work</a>
+      <a href="../../../index.html#values">Values</a>
+      <a href="../../../index.html#about">About</a>
+      <a href="../../../index.html#contact">Contact</a>
+    </nav>
+
+    <div class="sitehead-links">
+      <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+      <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
+        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+      <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
+        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+    </div>
+  </div>
+</header>
+
+<button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
+  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+</button>
+
+<script>
+(function () {
+  function isDark() {
+    return document.body.classList.contains("quarto-dark") ||
+           document.documentElement.dataset.bsTheme === "dark";
+  }
+  function setIcon() {
+    var i = document.getElementById("sitehead-theme-icon");
+    if (i) i.setAttribute("icon", isDark() ? "ph:sun-light" : "ph:moon-light");
+  }
+  // Quarto places include-before-body inside the article column on article
+  // pages. Lift the header to the top of <body> so it spans the full width.
+  function liftHeader() {
+    var head = document.querySelector(".sitehead");
+    if (head && head.parentElement !== document.body) document.body.prepend(head);
+  }
+  liftHeader();
+  window.addEventListener("DOMContentLoaded", function () {
+    liftHeader();
+
+    var top = document.querySelector(".totop");
+    if (top) {
+      if (top.parentElement !== document.body) document.body.appendChild(top);
+      var onScroll = function () { top.hidden = window.scrollY < 480; };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      top.addEventListener("click", function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+
+    var btn = document.querySelector(".sitehead-theme");
+    if (!btn) return;
+    setIcon();
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.quartoToggleColorScheme) {
+        window.quartoToggleColorScheme();
+      } else {
+        var dark = isDark();
+        document.body.classList.toggle("quarto-dark", !dark);
+        document.body.classList.toggle("quarto-light", dark);
+        document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
+        try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
+      }
+      setTimeout(setIcon, 60);
+    });
+  });
+})();
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Does Travel Cost NBA Teams the Game?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Statistical Inference</div>
+    <div class="quarto-category">Linear Regression</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Sports Analytics</div>
+    <div class="quarto-category">Causal Reasoning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 15, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cs-top">
+<p><span class="cs-with">In collaboration with Afrah Boateng, Mackenzie Henderson and Tyler Kero</span></p>
+<div class="cs-keys">
+<div class="cs-key">
+<p><span class="cs-label">The Decision</span></p>
+<p><span class="cs-decision">Report effect sizes alongside significance, because at 46,903 games almost everything is significant.</span></p>
+</div>
+<div class="cs-key">
+<p><span class="cs-label">Takeaways</span></p>
+<ul>
+<li>Travel distance has no detectable effect on point differential.</li>
+<li>Flying west to east is worth about a point. The reverse trip is worth nothing.</li>
+<li>The model explains 0.5% of the variance, so every effect is small against game-to-game noise.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Travel is the standard explanation for why away teams underperform. Long flights, lost sleep, crossing time zones. This project tests whether the distance an NBA away team travels actually shows up in the scoreline, using every regular season game from 1947 to 2025.</p>
+<p>It does not. The distance coefficient is statistically indistinguishable from zero. What does show up is the <em>direction</em> of travel: teams flying west to east gain close to a point, while the same trip in reverse shows nothing. That is a result about time zones rather than about mileage.</p>
+<section id="the-question" class="level1">
+<h1>The Question</h1>
+<p>Does the distance an away team travels affect point differential, measured as away score minus home score?</p>
+<p>The reference point is Deddens and Steenland (1997), who found limited effects of travel distance on NBA performance. Their analysis covered a far shorter window. Revisiting the question across seven decades gives enough games to detect an effect that small, if one exists.</p>
+</section>
+<section id="the-data" class="level1">
+<h1>The Data</h1>
+<p>The dataset is built from Kaggle’s NBA box score archive, one row per regular season game, joined to the geodesic distance between the home and away teams’ cities.</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td>Games</td>
+<td>46,903</td>
+</tr>
+<tr class="even">
+<td>Seasons</td>
+<td>1947 to 2025</td>
+</tr>
+<tr class="odd">
+<td>Mean point differential</td>
+<td>-3.45 (home advantage)</td>
+</tr>
+<tr class="even">
+<td>Standard deviation</td>
+<td>13.26</td>
+</tr>
+<tr class="odd">
+<td>Median travel distance</td>
+<td>896 miles</td>
+</tr>
+<tr class="even">
+<td>Longest trip</td>
+<td>2,805 miles</td>
+</tr>
+</tbody>
+</table>
+<p><img src="assets/data_overview.png" class="img-fluid" style="width:100.0%" alt="Distribution of travel distances, and games per season from 1947 to 2025"></p>
+<p>Travel direction is coded into three groups from the time zones of the two cities: West to East, East to West, and Neither, where both teams sit in the same zone. Neither is the reference category and covers 37,509 of the games.</p>
+<p>The standard deviation of 13.26 points is worth holding onto. It is the yardstick every effect below has to be measured against.</p>
+</section>
+<section id="models" class="level1">
+<h1>Models</h1>
+<p>Four nested linear models, each adding one term, fitted with heteroskedasticity-robust standard errors:</p>
+<ol type="1">
+<li>Point differential on travel distance alone</li>
+<li>Adding travel direction</li>
+<li>Adding game attendance</li>
+<li>Adding year</li>
+</ol>
+<p>Robust standard errors matter here because the variance of point differential is not constant across the seven decades the sample covers.</p>
+</section>
+<section id="the-null-result" class="level1">
+<h1>The Null Result</h1>
+<p><img src="assets/distance_null.png" class="img-fluid" style="width:100.0%" alt="Mean point differential binned by travel distance, showing a flat relationship with overlapping confidence intervals"></p>
+<p>Binning the games by travel distance and plotting the mean point differential in each bin gives a flat line. The confidence intervals overlap the overall mean across the entire range.</p>
+<p>The regression agrees. The coefficient on distance is <strong>-0.0002 points per mile with a p-value of 0.13</strong>, which is not distinguishable from zero. Taken at face value, even the longest trip in the dataset, 2,805 miles, would cost the away team six tenths of a point. Against a standard deviation of 13.26 that is nothing.</p>
+<p>This is a null result on a sample of 46,903 games, which makes it a reasonably strong one. With this much data, an effect of any practical size would have been detected.</p>
+</section>
+<section id="what-does-show-up" class="level1">
+<h1>What Does Show Up</h1>
+<p><img src="assets/direction_effect.png" class="img-fluid" style="width:92.0%" alt="Mean point differential by travel direction, with West to East highest"></p>
+<p>Direction separates where distance does not. Teams travelling <strong>west to east gain 0.96 points</strong> relative to teams not changing time zone, and the effect is statistically significant (p = 0.0006). The same journey east to west shows <strong>-0.10 points and a p-value of 0.72</strong>, which is nothing at all.</p>
+<p>The asymmetry is the interesting part. If travel were simply tiring, both directions would hurt, and the longer the flight the worse it would get. Instead one direction helps and the other does nothing, which points at circadian alignment rather than fatigue. A team flying west to east plays an evening game that falls later in their body clock, when they are closer to peak alertness, and this is consistent with the sleep literature the study cites.</p>
+<p>Attendance and year both come out statistically significant as well. An extra 10,000 spectators is associated with 1.7 points against the away team, and point differentials have drifted upward by about 0.7 points per decade.</p>
+</section>
+<section id="everything-is-significant-and-almost-nothing-is-large" class="level1">
+<h1>Everything Is Significant and Almost Nothing Is Large</h1>
+<p><img src="assets/effect_sizes.png" class="img-fluid" style="width:100.0%" alt="All four model effects plotted against a band showing one standard deviation of point differential"></p>
+<p>This is the figure that matters most, and it is the one the original report does not have.</p>
+<p>At 46,903 games, almost any effect reaches statistical significance. Three of the four terms in the final model have p-values below 0.001. But plotted against the actual spread of game outcomes, every one of them disappears into the noise. The largest, a full extra 10,000 fans in the building, moves the expected margin by 1.7 points when game-to-game variation is 13.3.</p>
+<p>The model’s adjusted R-squared is <strong>0.0053</strong>. It explains half a percent of the variance in point differentials. The F-test is overwhelmingly significant and the model is very nearly useless for prediction, and both of those statements are true at once.</p>
+<p>That is the honest summary of the study: the associations are real and they are tiny. Reporting the p-values without the effect sizes would leave a misleading impression, which is why this figure exists.</p>
+</section>
+<section id="limitations" class="level1">
+<h1>Limitations</h1>
+<p><strong>This is descriptive, not causal.</strong> Games are not independent. Team quality persists across a season, injuries cluster, and league dynamics shift. Year as a numeric covariate captures long-run drift but not within-team or within-season correlation, so the coefficients are average associations.</p>
+<p><strong>Distance is not fatigue.</strong> Geodesic distance measures separation between cities. It says nothing about rest days, back-to-back games, charter conditions, or sleep actually lost. The direction result hints that the mechanism is circadian, and none of these variables measure that directly.</p>
+<p><strong>Seven decades is a long time.</strong> Court standardisation, player movement, and the comfort of travel have all changed since 1947. The relationship between travel and outcome is unlikely to have been stable across the whole sample, and the model fits one coefficient to all of it.</p>
+<p><strong>Distance and direction are correlated.</strong> Long trips are disproportionately cross-country ones, so the two variables carry overlapping information and their individual coefficients should be read with that in mind.</p>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p><strong>Model rest directly</strong>: Days since the last game, and whether it was a back-to-back, are the variables most likely to carry the fatigue effect that distance is standing in for.</p>
+<p><strong>Use time zones crossed instead of miles</strong>: The direction result suggests zone changes are the operative quantity. Signed zones crossed would test that against distance head on.</p>
+<p><strong>Allow the relationship to vary by era</strong>: Interacting travel terms with decade would show whether the effect has weakened as travel has become easier.</p>
+<p><strong>Cluster the standard errors</strong>: Robust errors handle non-constant variance but not the dependence between games involving the same team. Clustering by team or season would give more honest intervals.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

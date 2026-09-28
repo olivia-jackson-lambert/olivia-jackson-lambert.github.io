@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-05-01">
+<meta name="description" content="Compressing handwritten digits into a two-dimensional latent space, then generating new digits by sampling across it.">
+
+<title>MNIST Variational Autoencoder</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-114013297ac08e17f9e2375decb9094d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-f0d153dbca0d463a179cc54c4a4dd40a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<!-- Light favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
+<link rel="icon" href="../../../assets/favicon.ico" sizes="any" media="(prefers-color-scheme: light)">
+
+<!-- Dark favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/dark-favicon-32x32.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../assets/dark-favicon-16x16.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../../assets/dark-favicon.ico" sizes="any" media="(prefers-color-scheme: dark)">
+
+<!-- Apple touch icons -->
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/apple-touch-icon.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../assets/dark-apple-touch-icon.png" media="(prefers-color-scheme: dark)">
+
+<!-- Android / PWA icons -->
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/android-chrome-192x192.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/android-chrome-512x512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="192x192" href="../../../assets/dark-android-chrome-192x192.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="512x512" href="../../../assets/dark-android-chrome-512x512.png" media="(prefers-color-scheme: dark)">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Olivia Jackson Lambert</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link active" data-scroll-target="#data-exploration">Data Exploration</a></li>
+  <li><a href="#building-the-variational-autoencoder" id="toc-building-the-variational-autoencoder" class="nav-link" data-scroll-target="#building-the-variational-autoencoder">Building the Variational Autoencoder</a>
+  <ul class="collapse">
+  <li><a href="#encoder" id="toc-encoder" class="nav-link" data-scroll-target="#encoder">Encoder</a></li>
+  <li><a href="#sampling" id="toc-sampling" class="nav-link" data-scroll-target="#sampling">Sampling</a></li>
+  <li><a href="#decoder" id="toc-decoder" class="nav-link" data-scroll-target="#decoder">Decoder</a></li>
+  <li><a href="#loss-function" id="toc-loss-function" class="nav-link" data-scroll-target="#loss-function">Loss Function</a></li>
+  </ul></li>
+  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
+  <li><a href="#the-latent-space" id="toc-the-latent-space" class="nav-link" data-scroll-target="#the-latent-space">The Latent Space</a>
+  <ul class="collapse">
+  <li><a href="#digit-clustering" id="toc-digit-clustering" class="nav-link" data-scroll-target="#digit-clustering">Digit Clustering</a></li>
+  <li><a href="#reconstruction" id="toc-reconstruction" class="nav-link" data-scroll-target="#reconstruction">Reconstruction</a></li>
+  <li><a href="#generating-digits" id="toc-generating-digits" class="nav-link" data-scroll-target="#generating-digits">Generating Digits</a></li>
+  </ul></li>
+  <li><a href="#a-note-on-reproducing-this" id="toc-a-note-on-reproducing-this" class="nav-link" data-scroll-target="#a-note-on-reproducing-this">A Note on Reproducing This</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header class="sitehead" role="banner">
+  <div class="sitehead-inner">
+    <a class="sitehead-name" href="../../../index.html">Olivia Jackson Lambert</a>
+
+    <nav class="sitehead-sections" aria-label="Sections">
+      <a href="../../../index.html#work">Work</a>
+      <a href="../../../index.html#values">Values</a>
+      <a href="../../../index.html#about">About</a>
+      <a href="../../../index.html#contact">Contact</a>
+    </nav>
+
+    <div class="sitehead-links">
+      <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+      <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
+        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+      <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
+        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+      <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
+        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+    </div>
+  </div>
+</header>
+
+<button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
+  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+</button>
+
+<script>
+(function () {
+  function isDark() {
+    return document.body.classList.contains("quarto-dark") ||
+           document.documentElement.dataset.bsTheme === "dark";
+  }
+  function setIcon() {
+    var i = document.getElementById("sitehead-theme-icon");
+    if (i) i.setAttribute("icon", isDark() ? "ph:sun-light" : "ph:moon-light");
+  }
+  // Quarto places include-before-body inside the article column on article
+  // pages. Lift the header to the top of <body> so it spans the full width.
+  function liftHeader() {
+    var head = document.querySelector(".sitehead");
+    if (head && head.parentElement !== document.body) document.body.prepend(head);
+  }
+  liftHeader();
+  window.addEventListener("DOMContentLoaded", function () {
+    liftHeader();
+
+    var top = document.querySelector(".totop");
+    if (top) {
+      if (top.parentElement !== document.body) document.body.appendChild(top);
+      var onScroll = function () { top.hidden = window.scrollY < 480; };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      top.addEventListener("click", function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+
+    var btn = document.querySelector(".sitehead-theme");
+    if (!btn) return;
+    setIcon();
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.quartoToggleColorScheme) {
+        window.quartoToggleColorScheme();
+      } else {
+        var dark = isDark();
+        document.body.classList.toggle("quarto-dark", !dark);
+        document.body.classList.toggle("quarto-light", dark);
+        document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
+        try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
+      }
+      setTimeout(setIcon, 60);
+    });
+  });
+})();
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MNIST Variational Autoencoder</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Deep Learning</div>
+    <div class="quarto-category">Generative Models</div>
+    <div class="quarto-category">Unsupervised Learning</div>
+    <div class="quarto-category">PyTorch</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Compressing handwritten digits into a two-dimensional latent space, then generating new digits by sampling across it.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cs-top">
+<div class="cs-keys">
+<div class="cs-key">
+<p><span class="cs-label">The Decision</span></p>
+<p><span class="cs-decision">Keep the latent space to two dimensions, so what the model learns can be seen directly.</span></p>
+</div>
+<div class="cs-key">
+<p><span class="cs-label">Takeaways</span></p>
+<ul>
+<li>Ten digit clusters form without the model ever seeing a label.</li>
+<li>Fours and nines overlap almost completely, the same pair that fails in reconstruction.</li>
+<li>A nearest-centroid rule in the two-dimensional space recovers the right digit 69.8% of the time.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>This project builds a variational autoencoder (VAE) that compresses 28 x 28 handwritten digit images into a two-dimensional latent space and then reconstructs them from those two values alone. Unlike a standard autoencoder, which learns a fixed encoding, a VAE learns a probability distribution over the latent space. This makes the space continuous, which means new digits can be generated by sampling from regions the model has never seen directly. The latent dimension is set to 2 so that the learned structure can be plotted and inspected rather than inferred.</p>
+<p>This is an early project, and the two-dimensional bottleneck is a deliberate teaching constraint rather than a performance choice. What it buys is that every claim below can be checked by looking at a picture.</p>
+<p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/digit-variational-autoencoder">github.com/olivia-jackson-lambert/digit-variational-autoencoder</a></p>
+<section id="data-exploration" class="level1">
+<h1>Data Exploration</h1>
+<p>The MNIST dataset contains 60,000 training images and 10,000 test images of handwritten digits, each 28 x 28 pixels in greyscale. Images are reshaped to include a single channel dimension, scaled to the range 0 to 1, and shuffled before training.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/mnist_examples.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Eighteen example handwritten digits from the MNIST dataset"></p>
+</figure>
+</div>
+</section>
+<section id="building-the-variational-autoencoder" class="level1">
+<h1>Building the Variational Autoencoder</h1>
+<p>The encoder maps each image into a distribution in the latent space, defined by a mean and a log-variance. The decoder maps a point sampled from that distribution back to an image.</p>
+<section id="encoder" class="level2">
+<h2 class="anchored" data-anchor-id="encoder">Encoder</h2>
+<section id="input-layer" class="level4">
+<h4 class="anchored" data-anchor-id="input-layer">0 - Input Layer</h4>
+<ul>
+<li>Creates a layer of the correct dimensions for the 28 x 28 images.</li>
+</ul>
+</section>
+<section id="convolutional-layers" class="level4">
+<h4 class="anchored" data-anchor-id="convolutional-layers">1 - Convolutional Layers</h4>
+<ul>
+<li>32, 64 and 128 filter sizes chosen to provide sufficient representational power for MNIST while keeping the model lightweight and efficient.</li>
+<li>3 x 3 kernel size chosen to capture local stroke features such as curves and junctions without over-smoothing.</li>
+<li>Strides of 1, 2 and 2 chosen to progressively reduce spatial dimensions while increasing filter depth.</li>
+</ul>
+</section>
+<section id="flatten-and-dense-layer" class="level4">
+<h4 class="anchored" data-anchor-id="flatten-and-dense-layer">2 - Flatten and Dense Layer</h4>
+<ul>
+<li>Feature maps are flattened into a 1D array to simplify the transition into the latent space.</li>
+<li>A 256-unit dense layer is added for further feature extraction before the bottleneck.</li>
+</ul>
+</section>
+<section id="latent-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="latent-distribution">3 - Latent Distribution</h4>
+<ul>
+<li>Two parallel dense layers output <code>z_mean</code> and <code>z_log_var</code>, the parameters of a Gaussian rather than a single fixed encoding.</li>
+</ul>
+</section>
+</section>
+<section id="sampling" class="level2">
+<h2 class="anchored" data-anchor-id="sampling">Sampling</h2>
+<p>The sampling layer draws a point from the distribution the encoder produced, using the reparameterisation trick:</p>
+<p><span class="math display">\[z = \mu + \exp(0.5 \log \sigma^2) \odot \epsilon, \qquad \epsilon \sim \mathcal{N}(0, 1)\]</span></p>
+<p>The randomness is isolated in <span class="math inline">\(\epsilon\)</span>, which is treated as an input rather than a parameter. This keeps the operation differentiable so that gradients can still flow back through the encoder during training.</p>
+</section>
+<section id="decoder" class="level2">
+<h2 class="anchored" data-anchor-id="decoder">Decoder</h2>
+<section id="input-layer-1" class="level4">
+<h4 class="anchored" data-anchor-id="input-layer-1">0 - Input Layer</h4>
+<ul>
+<li>Input layer has the latent space dimension of 2, as this is the output shape from the encoder.</li>
+</ul>
+</section>
+<section id="dense-layers" class="level4">
+<h4 class="anchored" data-anchor-id="dense-layers">1 - Dense Layers</h4>
+<ul>
+<li>Two hidden dense layers are added with 256 units each, matching the encoder.</li>
+<li>Dense layers chosen to capture global relationships between all parts of the latent vector and the reconstructed image.</li>
+<li>ReLU activation to expand the latent representation back towards the original dimensionality.</li>
+</ul>
+</section>
+<section id="output-layer" class="level4">
+<h4 class="anchored" data-anchor-id="output-layer">2 - Output Layer</h4>
+<ul>
+<li>A final dense layer with 784 units and sigmoid activation produces pixel values in the range 0 to 1.</li>
+<li>The output is reshaped back to 28 x 28 x 1 to match the original image shape.</li>
+</ul>
+</section>
+</section>
+<section id="loss-function" class="level2">
+<h2 class="anchored" data-anchor-id="loss-function">Loss Function</h2>
+<p>Training optimises two terms which pull against each other:</p>
+<ol type="1">
+<li><strong>Reconstruction loss</strong> uses binary cross-entropy summed over pixels, and measures how well the VAE reproduces the input image.</li>
+<li><strong>Kullback-Leibler (KL) loss</strong> measures how far the learned latent distribution has drifted from a unit Gaussian, and is what keeps the latent representation continuous.</li>
+</ol>
+<p>Reconstruction loss alone would allow the model to scatter encodings anywhere it liked, leaving gaps between them. The KL term is what makes the space samplable.</p>
+</section>
+</section>
+<section id="training" class="level1">
+<h1>Training</h1>
+<p>The model was trained for 50 epochs with a batch size of 128 using the Adam optimizer, validating against the test set.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Loss component</th>
+<th style="text-align: right;">Epoch 1</th>
+<th style="text-align: right;">Epoch 50</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;">188.0</td>
+<td style="text-align: right;"><strong>136.6</strong></td>
+</tr>
+<tr class="even">
+<td>Reconstruction</td>
+<td style="text-align: right;">183.9</td>
+<td style="text-align: right;">129.6</td>
+</tr>
+<tr class="odd">
+<td>KL</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">7.0</td>
+</tr>
+<tr class="even">
+<td>Validation total</td>
+<td style="text-align: right;">167.6</td>
+<td style="text-align: right;">143.4</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/vae_loss.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Training and validation loss curves across 50 epochs"></p>
+</figure>
+</div>
+<p>Two things are visible in the curves. The KL term rises steadily, from 4.1 to 7.0, while reconstruction falls from 183.9 to 129.6. The model is buying reconstruction quality by letting the latent distribution drift further from the prior, which is exactly the trade the two terms are designed to negotiate.</p>
+<p>Training and validation also separate after about epoch 15, finishing at 136.6 against 143.4. The gap is small but real, and it means the later epochs are improving the fit to the training set slightly faster than they improve the model. Training could reasonably have stopped earlier.</p>
+</section>
+<section id="the-latent-space" class="level1">
+<h1>The Latent Space</h1>
+<section id="digit-clustering" class="level2">
+<h2 class="anchored" data-anchor-id="digit-clustering">Digit Clustering</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/latent_clustering.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%" alt="Test digits plotted in the two-dimensional latent space, coloured by class"></p>
+</figure>
+</div>
+<p>Each digit class occupies its own region of the latent space, despite the model never having seen the labels. The clustering is learned entirely from pixel structure.</p>
+<p>As this is a variational autoencoder it is a given that some digits will overlap. Fitting a Gaussian to each class and measuring the Bhattacharyya coefficient between every pair puts numbers on which ones:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Digit pair</th>
+<th style="text-align: right;">Overlap</th>
+<th></th>
+<th>Digit pair</th>
+<th style="text-align: right;">Overlap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>4 and 9</strong></td>
+<td style="text-align: right;"><strong>0.950</strong></td>
+<td></td>
+<td>7 and 9</td>
+<td style="text-align: right;">0.671</td>
+</tr>
+<tr class="even">
+<td>3 and 5</td>
+<td style="text-align: right;">0.794</td>
+<td></td>
+<td>2 and 3</td>
+<td style="text-align: right;">0.600</td>
+</tr>
+<tr class="odd">
+<td>5 and 8</td>
+<td style="text-align: right;">0.740</td>
+<td></td>
+<td>0 and 1</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="even">
+<td>3 and 8</td>
+<td style="text-align: right;">0.684</td>
+<td></td>
+<td>1 and 6</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+</tbody>
+</table>
+<p>A coefficient of 1.0 would mean two classes are indistinguishable. At 0.950, fours and nines are very nearly on top of one another, which makes sense: both are a closed or near-closed loop above a vertical stroke, and the only reliable difference is whether the loop closes. Zeros and ones, which share no stroke structure at all, sit at 0.002.</p>
+<p>A nearest-centroid rule in this two-dimensional space recovers the correct digit 69.8 percent of the time. That is far above the 10 percent chance rate for a model given no labels, and far below what any supervised classifier would manage, which is a fair summary of what two dimensions can hold.</p>
+</section>
+<section id="reconstruction" class="level2">
+<h2 class="anchored" data-anchor-id="reconstruction">Reconstruction</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/reconstructions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="Ten test digits above their reconstructions through the two-dimensional bottleneck"></p>
+</figure>
+</div>
+<p>Reconstructions are recognisable but soft, and the failures are the informative part. Two fours come back as nines and a five comes back as a six. These are not random errors: they are the same pairs the overlap table identifies, showing up in individual images.</p>
+</section>
+<section id="generating-digits" class="level2">
+<h2 class="anchored" data-anchor-id="generating-digits">Generating Digits</h2>
+<p>Sampling points on a regular grid across the latent space and decoding each one shows what the model has actually learned.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/latent_grid.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="An 18 by 18 grid of digits generated by decoding points spanning the latent space"></p>
+</figure>
+</div>
+<p>In areas where there is overlap, digits can be seen in an intermediate morphing stage. Areas where the probability of a certain digit is high have sharp, clearly defined digits, such as the 8s at the top right and the 0s along the bottom.</p>
+<p>This grid is the clearest evidence that the space is continuous rather than merely clustered. A standard autoencoder would leave unusable gaps between the clusters, whereas here every point decodes to something digit-like.</p>
+</section>
+</section>
+<section id="a-note-on-reproducing-this" class="level1">
+<h1>A Note on Reproducing This</h1>
+<p>The original notebook was written in Keras against <code>tensorflow.python.keras</code>, which no longer exists in current TensorFlow, so it cannot be run today. The figures here come from a PyTorch re-implementation with the architecture, loss function and hyperparameters unchanged.</p>
+<p>The re-implementation lands close to the original: a final training loss of 136.6 against the original’s 138.6, and KL rising from 4.1 to 7.0 against 4.8 to 6.8. The one difference is the train-validation gap, which the original run did not show. The qualitative findings, and specifically which digits overlap, reproduce.</p>
+</section>
+<section id="limitations" class="level1">
+<h1>Limitations</h1>
+<p><strong>Two latent dimensions is a presentation choice.</strong> It is what makes the space directly plottable, but it caps reconstruction quality well below what a larger bottleneck would reach. The softness in the generated grid is a consequence of that constraint rather than of the training.</p>
+<p><strong>Sample quality is assessed by eye.</strong> Loss values and visual inspection are the only measures used. No quantitative sample-quality metric is applied.</p>
+<p><strong>No baseline comparison.</strong> A standard autoencoder trained on the same architecture would isolate how much of the latent-space smoothness the KL term is actually responsible for, rather than assuming it.</p>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next Steps</h1>
+<p><strong>Latent dimensionality</strong>: Train at higher latent dimensions and compare reconstruction loss, using a dimensionality reduction method such as t-SNE to inspect the structure that can no longer be plotted directly.</p>
+<p><strong>Conditional generation</strong>: Extend to a conditional VAE so that a specific digit class can be requested, rather than sampling wherever that class happens to sit.</p>
+<p><strong>Loss weighting</strong>: Vary the weighting on the KL term to trace the trade-off between reconstruction sharpness and latent continuity.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
