@@ -1,6 +1,4 @@
--- 1. Puts the page's cover image (the `image` front-matter field, served as the
---    lighter WebP copy) at the top of the article, under the title block.
--- 2. Renders the `tags` front-matter list as a chip row at the foot of the page.
+-- Renders the `tags` front-matter list as a chip row at the foot of the page.
 
 local function escape(s)
   return s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
@@ -11,14 +9,6 @@ function Pandoc(doc)
     return nil
   end
   local changed = false
-
-  local image = doc.meta.image and pandoc.utils.stringify(doc.meta.image)
-  if image and image:match("/thumbs/[^/]+%.png$") then
-    local webp = image:gsub("/thumbs/([^/]+)%.png$", "/thumbs/web/%1.webp")
-    table.insert(doc.blocks, 1, pandoc.RawBlock("html",
-      '<figure class="cs-cover"><img src="' .. webp .. '" alt="" width="900" height="600" fetchpriority="high"></figure>'))
-    changed = true
-  end
 
   local tags = doc.meta.tags
   if tags and #tags > 0 then
