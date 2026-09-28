@@ -6,6 +6,10 @@ page-layout: custom
 comments: false
 toc: false
 body-classes: home
+aliases:
+  - about.html
+  - project/projects.html
+  - writing/writing.html
 ---
 
 ```{=html}

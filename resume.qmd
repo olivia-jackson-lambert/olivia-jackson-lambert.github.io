@@ -117,16 +117,16 @@ President, Physics & Astronomy Society · Carnegie Scholarship recipient · Edin
 ## Selected Projects
 
 ::: {.content-visible when-format="html"}
-Full write-ups live under [Work](/project/projects.html).
+Full write-ups live under [Work](/index.html#work).
 
 - **[Multi-Task Sentence Transformer for Receipt Processing](/project/projects_files/sentence-transformer/sentence-transformer.html)** — Multi-task transformer pipeline classifying sentences and extracting entities from retail receipts. Transformers, NER, multi-task learning, PyTorch.
-- **[High Energy Particle CNN Classifier](/project/projects_files/particle-classifier/particle-classifier.html)** — Convolutional network predicting particle types from liquid argon detector tracks, at 93% accuracy. TensorFlow, Keras, hyperparameter optimization.
+- **[High Energy Particle CNN Classifier](/project/projects_files/particle-classifier/particle-classifier.html)** — Convolutional network predicting particle types from liquid argon detector tracks, at 89.1% validation accuracy. TensorFlow, Keras, hyperparameter optimization.
 - **[Predicting Flight Delay Severity at Scale](/project/projects_files/flight-delay-spark/flight-delay-spark.html)** — Four-tier delay classifier over 31M flights in PySpark, trading overall accuracy to clear an operational safety gate.
 :::
 
 ::: {.content-visible when-format="typst"}
 - **Multi-Task Sentence Transformer for Receipt Processing** — Multi-task transformer pipeline classifying sentences and extracting entities from retail receipts. Transformers, NER, multi-task learning, PyTorch.
-- **High Energy Particle CNN Classifier** — Convolutional network predicting particle types from liquid argon detector tracks, at 93% accuracy. TensorFlow, Keras, hyperparameter optimization.
+- **High Energy Particle CNN Classifier** — Convolutional network predicting particle types from liquid argon detector tracks, at 89.1% validation accuracy. TensorFlow, Keras, hyperparameter optimization.
 - **Predicting Flight Delay Severity at Scale** — Four-tier delay classifier over 31M flights in PySpark, trading overall accuracy to clear an operational safety gate.
 :::
 

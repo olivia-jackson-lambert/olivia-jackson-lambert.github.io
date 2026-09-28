@@ -3,3 +3,5 @@
 _site/
 .DS_Store
 __pycache__/
+index_files/
+project/projects_files/libs/
