@@ -465,8 +465,14 @@ body {
 .op-thumb { display: block; overflow: hidden; aspect-ratio: 3 / 2; }
 .op-tile img { width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
 .op-tile:hover img { transform: scale(1.025); }
-.op-ul { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .45s cubic-bezier(.2, .7, .2, 1); padding-bottom: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.op-tile:hover .op-ul { background-size: 100% 1px; }
+/* hover: the image zooms and a small arrow slides in after the last word of the title */
+.op-ul::after {
+  content: "\2192"; display: inline-block; margin-left: .3em; font-family: var(--font-sans); font-weight: 300; font-size: .8em;
+  opacity: 0; transform: translateX(-6px); transition: opacity .35s ease, transform .45s cubic-bezier(.2, .7, .2, 1);
+}
+.op-tile:hover .op-ul::after, .op-tile:focus-visible .op-ul::after { opacity: 1; transform: none; }
+.op-tile[target="_blank"] .op-ul::after { content: "\2197"; }  /* the Nature paper opens off-site */
+@media (prefers-reduced-motion: reduce) { .op-ul::after { transition: none; } }
 .op-meta { display: flex; justify-content: space-between; gap: 12px; }
 .op-meta span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--op-muted); }
 .op-tile h3 { font-family: var(--font-display); font-weight: 500; font-size: 24px; line-height: 1.2; margin: 0; }
