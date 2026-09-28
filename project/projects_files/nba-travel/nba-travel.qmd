@@ -8,7 +8,7 @@ format:
   html:
     page-layout: article
     toc: true
-    toc-location: right
+    toc-location: left
     code-fold: true
     code-tools: false
 ---
