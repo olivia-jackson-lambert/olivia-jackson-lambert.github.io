@@ -14,8 +14,14 @@ Rules the style encodes:
   scripts but now also points at Lora, so every chart uses one face).
 - No chart titles inside the figure; the caption in the article carries the title.
 - White background, hairline light grid on the value axis only, no top/right spines.
-- Colours come from the site palette below. Slate is the default series colour,
-  rust is for the one thing the reader should notice, dim/grey for context.
+- Colours come only from this file. Slate is the default series colour, rust is
+  for the one thing the reader should notice, dim/grey for context. Heatmaps use
+  CMAP, signed values CMAP_DIVERGING, many-category charts CATEGORICAL, and box or
+  band fills SLATE_TINT / RUST_TINT / PAPER. No other hex codes or named cmaps.
+- Every piece of text in a figure (axis labels, legends, panel titles, colour-bar
+  labels, annotations) is in Title Case; use title_case() when in doubt.
+- Figures are read in a 620px column on a vertically scrolling page. Prefer layouts
+  no wider than about 2:1: stack panels vertically, run pipelines top to bottom.
 """
 from pathlib import Path
 
@@ -34,6 +40,47 @@ GRID = "#e6e6ec"     # gridlines
 LIGHT = "#c9ced6"    # light context fills
 SEQ = [SLATE, RUST, DIM, "#a9b8ca", "#e3a397", MUTED]  # order for multi-series plots
 
+# Soft fills for boxes, bands and table rows (diagrams, highlighted regions)
+SLATE_TINT = "#e6ecf3"   # light slate fill
+RUST_TINT = "#f6e1dc"    # light rust fill (errors, the thing to notice)
+PAPER = "#f4f5f7"        # neutral panel / box fill
+
+# Ten muted, distinguishable colours for charts with many categories (digit classes,
+# particle types). Slate and rust stay first so emphasis matches every other chart.
+CATEGORICAL = [SLATE, RUST, DIM, "#a9b8ca", "#e3a397", "#8a9a7b",
+               "#8c6d8f", "#b08b5a", "#5f8a8b", "#c9ced6"]
+
+# Heatmaps (confusion matrices, grids): white to slate to near-ink, one ramp everywhere.
+from matplotlib.colors import LinearSegmentedColormap as _LSC
+CMAP = _LSC.from_list("site_slate", ["#ffffff", "#c9d4e2", SLATE, "#3d5470", "#1f2a38"])
+# Signed values (residuals, differences): slate for negative, rust for positive.
+CMAP_DIVERGING = _LSC.from_list("site_div", ["#3d5470", SLATE, "#f4f5f7", "#e3a397", RUST])
+
+_SMALL = {"a", "an", "the", "and", "but", "or", "nor", "for", "so", "yet", "as", "at",
+          "by", "in", "of", "off", "on", "per", "to", "up", "via", "vs", "vs.", "with", "from", "into"}
+
+
+def title_case(text: str) -> str:
+    """Title Case for axis labels, legends, panel titles and annotations.
+
+    Small words stay lowercase unless first or last; single-letter symbols (p, n, x),
+    words that already contain a capital or digit (ResNet, BGE-M3, F1, R², pT) and
+    bracketed units such as (GeV/c) are kept as written.
+    """
+    words = text.split(" ")
+    out = []
+    for i, w in enumerate(words):
+        core = w.strip("()[]{}\"'")
+        if not core or (len(core) == 1 and core != "a") \
+                or any(c.isupper() for c in core[1:]) or any(c.isdigit() for c in core) \
+                or w.startswith(("(", "$")) or "/" in core:
+            out.append(w)
+        elif core.lower() in _SMALL and 0 < i < len(words) - 1:
+            out.append(w.lower())
+        else:
+            out.append("-".join(p[:1].upper() + p[1:] for p in w.split("-")))
+    return " ".join(out)
+
 SANS = "Lora"
 MONO = "Lora"
 
@@ -41,6 +88,11 @@ MONO = "Lora"
 def apply():
     for f in FONT_DIR.glob("*.ttf"):
         fm.fontManager.addfont(str(f))
+    for cm in (CMAP, CMAP_DIVERGING):
+        try:
+            mpl.colormaps.register(cm)
+        except ValueError:
+            pass
     plt.rcParams.update({
         "figure.dpi": 120,
         "savefig.dpi": 200,
@@ -73,7 +125,7 @@ def apply():
         "legend.frameon": False,
         "legend.fontsize": 9.5,
         "lines.linewidth": 2,
-        "image.cmap": "Blues",
+        "image.cmap": "site_slate",
     })
 
 
