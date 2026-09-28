@@ -1,5 +1,6 @@
 ---
 title: "MLOps: The Bridge Between Research and Production"
+image: /project/cover_assets/thumbs/essay.png
 description: "MLOps isn't just DevOps for machine learning, it's the critical infrastructure that will determine which organizations succeed in the age of AI"
 date: 2026-01-15
 categories: [Essay, MLOps]

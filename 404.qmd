@@ -1,0 +1,22 @@
+---
+title: ""
+pagetitle: "Page Not Found · Olivia Jackson Lambert"
+page-layout: custom
+comments: false
+toc: false
+body-classes: home
+---
+
+```{=html}
+<div class="op">
+<section class="op-404">
+  <span class="op-label">Error 404</span>
+  <h1 class="op-display">This page has <em>drifted</em> out of orbit.</h1>
+  <p class="op-lede">The link may be old or mistyped. Everything I have written and built is on the homepage.</p>
+  <div class="op-404-links">
+    <a href="/index.html#work">See the Work</a>
+    <a href="/index.html">Go to the Homepage</a>
+  </div>
+</section>
+</div>
+```

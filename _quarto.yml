@@ -7,6 +7,13 @@ filters:
   - filters/page-tags.lua
 
 website:
+  site-url: https://olivia-jackson-lambert.github.io
+  image: /assets/og-image.jpg
+  open-graph:
+    image: /assets/og-image.jpg
+  twitter-card:
+    card-style: summary_large_image
+    image: /assets/og-image.jpg
   navbar:
     title: "Olivia Jackson Lambert"
     search: false
