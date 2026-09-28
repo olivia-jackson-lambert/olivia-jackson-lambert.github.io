@@ -63,22 +63,25 @@ _SMALL = {"a", "an", "the", "and", "but", "or", "nor", "for", "so", "yet", "as",
 def title_case(text: str) -> str:
     """Title Case for axis labels, legends, panel titles and annotations.
 
-    Small words stay lowercase unless first or last; single-letter symbols (p, n, x),
-    words that already contain a capital or digit (ResNet, BGE-M3, F1, R², pT) and
-    bracketed units such as (GeV/c) are kept as written.
+    Small words stay lowercase unless first, last or opening a bracket; single-letter
+    symbols (p, n, x), words that already contain a capital or digit (ResNet, BGE-M3,
+    F1, R², pT) and units with a slash such as (GeV/c) are kept as written, so
+    "(log scale)" becomes "(Log Scale)".
     """
     words = text.split(" ")
     out = []
     for i, w in enumerate(words):
         core = w.strip("()[]{}\"'")
+        lead = w[: len(w) - len(w.lstrip("([{\"'"))]
         if not core or (len(core) == 1 and core != "a") \
                 or any(c.isupper() for c in core[1:]) or any(c.isdigit() for c in core) \
-                or w.startswith(("(", "$")) or "/" in core:
+                or w.startswith("$") or "/" in core:
             out.append(w)
-        elif core.lower() in _SMALL and 0 < i < len(words) - 1:
+        elif core.lower() in _SMALL and 0 < i < len(words) - 1 and not lead:
             out.append(w.lower())
         else:
-            out.append("-".join(p[:1].upper() + p[1:] for p in w.split("-")))
+            body = w[len(lead):]
+            out.append(lead + "-".join(p[:1].upper() + p[1:] for p in body.split("-")))
     return " ".join(out)
 
 SANS = "Lora"

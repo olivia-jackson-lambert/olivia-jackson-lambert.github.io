@@ -93,7 +93,7 @@ The model is identical in all three rows. The figure of 0.7261 better describes 
 
 We framed the difficulty as class imbalance. The held-out predictions do not support that.
 
-![Per-class F1 against the number of test images in the class.](assets/f1_vs_class_size.png){fig-alt="Scatter of per-class F1 score against test set class size on a log scale. Points show no trend. The four calibration targets, marked as red diamonds, all score above 0.9, while DRT Front, Inlet and Scoop score near 0.2 or below." fig-align="center" width="88%"}
+![Per-class F1 against the number of test images in the class. Mastcam Cal Target and Portion Box both have 48 test images, so their markers are nudged apart slightly.](assets/f1_vs_class_size.png){fig-alt="Scatter of per-class F1 score against test set class size on a log scale. Points show no trend. The four calibration targets, marked as red diamonds, all score above 0.9, while DRT Front, Inlet and Scoop score near 0.2 or below." fig-align="center" width="88%"}
 
 Across the 22 classes with test examples, the rank correlation between class size and F1 is +0.15 (p = 0.50). There is no relationship. DRT Front has 60 test examples, more than all but five other classes, and scores an F1 of 0.125. APXS Cal Target has 14 and scores a perfect 1.000.
 
@@ -116,7 +116,7 @@ Rover optics collect dust. A model that only works on clean images is of limited
 
 We applied simulated dust to the held-out test images and re-scored the Stage 3 model without retraining.
 
-![Stage 3 test accuracy and macro-F1 on clean and dust-degraded images.](assets/dust_robustness.png){fig-alt="Two bar charts. Test accuracy falls from 0.7648 on clean images to 0.7226 with simulated dust, a drop of 0.0421. Test macro-F1 falls from 0.6656 to 0.6371, a drop of 0.0285." fig-align="center" width="86%"}
+![Stage 3 test accuracy and macro-F1 on clean and dust-degraded images.](assets/dust_robustness.png){fig-alt="Two bar charts stacked vertically. Test accuracy falls from 0.7648 on clean images to 0.7226 with simulated dust, a drop of 0.0421. Test macro-F1 falls from 0.6656 to 0.6371, a drop of 0.0285." fig-align="center" width="65%"}
 
 | Condition | Accuracy | Macro-F1 |
 |---|--:|--:|
