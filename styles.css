@@ -409,14 +409,17 @@ body {
   text-transform: uppercase; color: var(--op-muted);
 }
 
-/* hero: a square photo exactly one Work column wide, on the same 32px gutter, so the
-   text starts where the second tile does. The headline size is fitted so the text
-   runs the full height of the photo (3 lines + 3 lines at every desktop width). */
+/* hero: a square photo exactly one Work column wide. The headline is sized from the
+   width of its own column (cqi), so its three lines fill that width, and with the
+   two-line lede the text runs the full height of the photo. */
 .op-hero {
   display: grid; grid-template-columns: calc((100% - 64px) / 3) minmax(0, 1fr);
-  column-gap: 32px; row-gap: 28px; align-items: stretch;
+  column-gap: clamp(40px, 5vw, 72px); row-gap: 28px; align-items: stretch;
 }
-.op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+.op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; container-type: inline-size; }
+.op-hero-text .op-display { font-size: 11.6cqi; }
+.op-hero-text .op-lede { max-width: none; }
+@media (max-width: 1100px) { .op-hero-text .op-display { font-size: 10.5cqi; } }
 .op-display {
   font-family: var(--font-display); font-weight: 500;
   font-size: clamp(44px, calc(10vw - 43px), 81px); line-height: 1.02; letter-spacing: -.012em;
@@ -547,6 +550,7 @@ body {
   .op-about-photo { min-height: 0; aspect-ratio: 3 / 4; width: 100%; max-width: 420px; }
 }
 @media (max-width: 600px) {
+  .op-hero-text .op-display { font-size: 12.5cqi; }
   .op-headshot { max-width: 100%; }
   .op-grid, .op-values, .op-facts { grid-template-columns: 1fr; }
   .op-head { flex-wrap: wrap; }
