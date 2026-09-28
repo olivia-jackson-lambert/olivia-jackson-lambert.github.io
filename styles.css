@@ -411,7 +411,7 @@ body {
 
 /* hero: photo and text share one height */
 .op-hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 400px);
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 26vw, 340px);
   gap: clamp(32px, 5vw, 72px); align-items: stretch;
 }
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
@@ -420,9 +420,13 @@ body {
   font-size: clamp(44px, 6.4vw, 92px); line-height: 1.02; letter-spacing: -.012em;
   margin: 0; text-wrap: balance;
 }
-.op-display em { font-style: italic; font-weight: 400; }
+.op-display em { font-style: italic; font-weight: 700; }
 .op-lede { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.6; color: var(--op-soft); max-width: 44ch; margin: 0; }
-.op-headshot { width: 100%; height: 100%; min-height: 360px; object-fit: cover; object-position: 50% 30%; display: block; }
+/* Photos are absolutely placed so they take the height of the text beside them
+   rather than setting it from their own proportions. */
+.op-photo { position: relative; overflow: hidden; min-height: 280px; }
+.op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.op-headshot img { object-position: 50% 28%; }
 
 /* section heads: more air under the rule */
 .op-section { scroll-margin-top: 88px; display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
@@ -461,8 +465,7 @@ body {
 .op-value p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--op-soft); }
 
 /* about: photo and text share one height */
-.op-about { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: stretch; }
-.op-about-photo { width: 100%; height: 100%; min-height: 380px; object-fit: cover; display: block; }
+.op-about { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: stretch; }
 .op-about-text { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
 .op-about-bio { display: flex; flex-direction: column; gap: 20px; }
 .op-about-bio p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--op-soft); max-width: 60ch; }
@@ -534,11 +537,11 @@ body {
 }
 @media (max-width: 900px) {
   .op-hero { grid-template-columns: 1fr; }
-  .op-headshot { height: auto; min-height: 0; aspect-ratio: 4 / 5; max-width: 360px; order: -1; }
+  .op-headshot { min-height: 0; aspect-ratio: 4 / 5; width: 100%; max-width: 360px; order: -1; }
   .op-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .op-about { grid-template-columns: 1fr; }
   .op-cbtns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .op-about-photo { height: auto; min-height: 0; aspect-ratio: 3 / 4; max-width: 420px; }
+  .op-about-photo { min-height: 0; aspect-ratio: 3 / 4; width: 100%; max-width: 420px; }
 }
 @media (max-width: 600px) {
   .op-grid, .op-values, .op-facts { grid-template-columns: 1fr; }
@@ -547,6 +550,15 @@ body {
   .op-cbtns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+
+/* Quarto's own navbar is replaced by the pinned header */
+.navbar, .quarto-navbar, #quarto-header { display: none !important; }
+
+/* Home: the .op wrapper sets its own gutter, so Quarto's content padding goes on phones */
+@media (max-width: 900px) {
+  body.home #quarto-content .content,
+  body.home #quarto-content main.content { padding-left: 0 !important; padding-right: 0 !important; max-width: 100% !important; }
+}
 
 /* Header on article pages: keep the contents sidebar and anchors clear of it */
 #quarto-margin-sidebar, #quarto-sidebar { top: 80px !important; }
