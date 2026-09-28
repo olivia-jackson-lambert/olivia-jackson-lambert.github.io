@@ -16,11 +16,11 @@ aliases:
 <div class="op">
 
 <section class="op-hero">
-  <div class="op-photo op-headshot"><img src="/assets/headshot-colour.jpg" alt="Portrait of Olivia Jackson Lambert"></div>
   <div class="op-hero-text">
     <h1 class="op-display">I lead data teams for <em>mission&#8209;driven</em> organisations.</h1>
     <p class="op-lede">Building data and product at Hockeystick, a political data start-up. Previously with the Democratic National Committee for the 2024 presidential election.</p>
   </div>
+  <div class="op-photo op-headshot"><img src="/assets/headshot-colour.jpg" alt="Portrait of Olivia Jackson Lambert"></div>
 </section>
 
 <section id="work" class="op-section">
@@ -99,7 +99,7 @@ aliases:
     <div class="op-photo op-about-photo"><img src="/assets/about.jpg" alt="Olivia standing on Arthur's Seat in Edinburgh"></div>
     <div class="op-about-text">
       <div class="op-about-bio">
-        <p>Hi! I'm Olivia Jackson Lambert, a data leader based in San Francisco. I enjoy building teams and systems that support decision making and strategy.</p>
+        <p>Hi! I'm <strong>Olivia Jackson Lambert</strong>, a data leader based in <strong>San Francisco</strong>. I enjoy building teams and systems that support decision making and strategy.</p>
         <p>For the last few years that has meant political and civic data, first at the Democratic National Committee and now as the Data Team Lead at Hockeystick.</p>
         <p>When I'm not working, I'm usually kayaking, reading, making art, or hanging out with my husband and three cats.</p>
       </div>
@@ -181,6 +181,35 @@ aliases:
   </div>
   <footer class="op-band-foot"><span class="op-label">Olivia Jackson Lambert · San Francisco</span><span class="op-label">© 2026</span></footer>
 </section>
+
+<script>
+/* Size the About photo so it is exactly as tall as the text beside it, uncropped.
+   Its width changes the text column, which rewraps the text, so settle in a few passes. */
+(function () {
+  var RATIO = 1815 / 2542;
+  function fit() {
+    var about = document.querySelector(".op-about");
+    var text = about && about.querySelector(".op-about-text");
+    if (!text) return;
+    if (window.matchMedia("(max-width: 900px)").matches) { about.style.removeProperty("--about-photo-w"); return; }
+    for (var i = 0; i < 6; i++) {
+      // the text column stretches to the row, so measure its content, not the column
+      var h = 0, kids = text.children, gap = parseFloat(getComputedStyle(text).rowGap) || 0;
+      for (var k = 0; k < kids.length; k++) h += kids[k].getBoundingClientRect().height;
+      h += gap * Math.max(0, kids.length - 1);
+      var w = Math.max(220, Math.min(460, Math.round(h * RATIO)));
+      var cur = parseFloat(about.style.getPropertyValue("--about-photo-w")) || 0;
+      if (Math.abs(w - cur) < 1) break;
+      about.style.setProperty("--about-photo-w", w + "px");
+    }
+  }
+  var t; function soon() { clearTimeout(t); t = setTimeout(fit, 60); }
+  window.addEventListener("DOMContentLoaded", fit);
+  window.addEventListener("load", fit);
+  window.addEventListener("resize", soon);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+</script>
 
 </div>
 ```

@@ -413,7 +413,7 @@ body {
    width of its own column (cqi), so its three lines fill that width, and with the
    two-line lede the text runs the full height of the photo. */
 .op-hero {
-  display: grid; grid-template-columns: calc((100% - 64px) / 3) minmax(0, 1fr);
+  display: grid; grid-template-columns: minmax(0, 1fr) calc((100% - 64px) / 3);
   column-gap: clamp(40px, 5vw, 72px); row-gap: 28px; align-items: stretch;
 }
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; container-type: inline-size; }
@@ -431,7 +431,9 @@ body {
    rather than setting it from their own proportions. */
 .op-photo { position: relative; overflow: hidden; min-height: 280px; }
 .op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; border-radius: 50%; }
+/* the About photo keeps its own proportions (1815 x 2542), uncropped */
+.op-about-photo { aspect-ratio: 1815 / 2542; min-height: 0; align-self: start; }
+.op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; }
 .op-headshot img { object-position: 50% 30%; }
 
 /* section heads: more air under the rule */
@@ -445,13 +447,14 @@ body {
   margin: 0; padding: 0; border: 0;
 }
 
-/* sub-sections inside About (Values, Experience): a mono label on a hairline */
-#about { gap: clamp(56px, 6vw, 88px); }
-.op-sub { display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 88px; }
+/* sub-sections inside About (Values, Experience): mono like the labels, but larger,
+   full colour and wider tracked so they read as headings, not as the timeline dates */
+#about .op-sub { margin-top: clamp(40px, 5vw, 72px); }
+.op-sub { display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 88px; }
 .op-subhead {
-  font-family: var(--font-mono); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--bs-body-color);
-  margin: 0; padding: 14px 0 0; border-top: 1px solid var(--op-hair);
+  font-family: var(--font-mono); font-weight: 500; font-size: 16px; line-height: 20px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--bs-body-color);
+  margin: 0; padding: 20px 0 0; border-top: 1px solid var(--bs-body-color);
 }
 
 /* work and writing */
@@ -480,11 +483,13 @@ body {
 .op-value p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--op-soft); max-width: 60ch; }
 
 /* about: photo and text share one height */
-.op-about { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: stretch; }
+.op-about { display: grid; grid-template-columns: var(--about-photo-w, 290px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: stretch; }
 .op-about-text { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
-.op-about-bio { display: flex; flex-direction: column; gap: 20px; }
-.op-about-bio p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--op-soft); max-width: 60ch; }
-.op-about-bio p:first-child { font-family: var(--font-display); font-size: clamp(24px, 2.2vw, 30px); line-height: 1.3; color: var(--bs-body-color); max-width: 30ch; }
+.op-about-bio { display: flex; flex-direction: column; gap: 28px; }
+.op-about-bio p:first-child { margin-bottom: 12px; }
+.op-about-bio p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--op-soft); }
+.op-about-bio p:first-child { font-family: var(--font-display); font-size: clamp(24px, 2.2vw, 30px); line-height: 1.3; color: var(--bs-body-color); }
+.op-about-bio p:first-child strong { font-weight: 700; }
 .op-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .op-facts > div { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--op-hair); padding-top: 14px; }
 .op-facts strong { font-family: var(--font-display); font-weight: 500; font-size: 21px; line-height: 1.25; }
@@ -560,7 +565,7 @@ body.quarto-dark .op-band { --band-bg: #17191e; --band-hair: #30343c; }
   .op-about { grid-template-columns: 1fr; }
   .op-value { grid-template-columns: 40px minmax(0, 1fr); row-gap: 8px; column-gap: 20px; align-items: start; }
   .op-value p { grid-column: 2; }
-  .op-about-photo { min-height: 0; aspect-ratio: 3 / 4; width: 100%; max-width: 420px; }
+  .op-about-photo { width: 100%; max-width: 420px; }
 }
 @media (max-width: 600px) {
   .op-hero-text .op-display { font-size: 12.5cqi; }
