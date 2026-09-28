@@ -449,7 +449,7 @@ body {
 
 /* sub-sections inside About (Values, Experience): mono like the labels, but larger,
    full colour and wider tracked so they read as headings, not as the timeline dates */
-#about .op-sub { margin-top: clamp(40px, 5vw, 72px); }
+#about .op-sub { margin-top: clamp(8px, 1.5vw, 24px); }
 .op-sub { display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 88px; }
 .op-subhead {
   font-family: var(--font-mono); font-weight: 500; font-size: 16px; line-height: 20px;
