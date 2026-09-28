@@ -436,7 +436,7 @@ body {
 /* the About photo keeps its own proportions (1815 x 2542), uncropped */
 .op-about-photo { aspect-ratio: 1815 / 2542; min-height: 0; align-self: start; }
 .op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; }
-.op-headshot img { object-position: 50% 30%; }
+.op-headshot img { object-position: 50% 50%; }
 
 /* section heads: more air under the rule */
 .op-section { scroll-margin-top: 88px; display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
