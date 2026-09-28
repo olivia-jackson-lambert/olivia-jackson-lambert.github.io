@@ -1,5 +1,7 @@
 ---
 title: "Olivia Jackson Lambert"
+pagetitle: "Résumé · Olivia Jackson Lambert"
+description-meta: "Résumé of Olivia Jackson Lambert, a data leader in San Francisco: data team leadership at Hockeystick, analytics engineering for the Democratic National Committee, and a Master of Physics in Astrophysics from the University of Edinburgh."
 body-classes: resume
 comments: false
 format-links: false

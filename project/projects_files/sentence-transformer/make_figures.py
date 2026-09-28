@@ -14,24 +14,11 @@ Two kinds of figure are produced, and the distinction is deliberate:
                 0.556, matching the saved cell output in
                 notebooks/sentence_transformer.ipynb).
 
-Figures that the write-up references but that this script deliberately does NOT
-produce, because no genuine artifact exists to back them:
+Result figures (training curves, example predictions, the complete receipt) are
+made by make_result_figures.py from the heads trained by train_heads.py.
 
-  training_curves.png              - the model was never trained. Notebook cells
-                                     37 and 39 both raise NameError ('dataset'
-                                     was never defined), so there is no loss
-                                     history of any kind.
-  accuracy_curves.png              - same reason.
-  example_product_classification.png
-  example_price_extraction.png     - the notebook's "example predictions" are
-  example_store_info.png             hand-written BIO tag lists passed to a
-                                     plotting helper, not model output. Both
-                                     task heads are randomly initialised and
-                                     untrained.
-  complete_receipt_example.png     - needs a real receipt photograph plus a real
-                                     OCR run plus a trained model. The repository
-                                     contains no images and the OCR cell is
-                                     commented out.
+All figures use the site style in scripts/figstyle.py. Titles live in the article
+captions, not inside the figures.
 
 Usage
 -----
@@ -45,11 +32,11 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
@@ -58,16 +45,11 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 # --------------------------------------------------------------------------- #
 # House style
 # --------------------------------------------------------------------------- #
-SLATE, RUST, INK, GRID = "#3A506B", "#9E2A2B", "#1b1b1f", "#e6e6ec"
-MUTED = "#5C6B73"
-PALETTE = ["#313745", "#3A506B", "#5C6B73", "#8D99AE", "#6D597A"]
-TITLE_PAD = 16
-
 HERE = Path(__file__).resolve().parent
-FONT_DIR = Path(
-    "/Users/oliviajackson/Documents/portfolio/projects/"
-    "high-energy-particle-classifier/assets/fonts"
-)
+sys.path.insert(0, str(HERE.parents[2] / "scripts"))
+from figstyle import apply, tidy, INK, SLATE, RUST, DIM, GRID, MUTED  # noqa: E402
+
+PALETTE = [DIM, SLATE, MUTED, "#a9b8ca", MUTED]
 
 SENTENCES = [
     "The golden rays of the setting sun painted the sky in shades of orange and pink.",
@@ -107,32 +89,6 @@ BOTTLENECK = 128
 # including <s> and </s>); used only to make the shape annotations concrete.
 EXAMPLE_TEXT = "500g Organic Canned Tomatoes"
 EXAMPLE_LEN = 10
-
-
-def house_style() -> None:
-    have_lora = (FONT_DIR / "Lora-Regular.ttf").exists()
-    for face in ("Lora-Regular.ttf", "Lora-SemiBold.ttf"):
-        if (FONT_DIR / face).exists():
-            fm.fontManager.addfont(str(FONT_DIR / face))
-    plt.rcParams.update({
-        "figure.dpi": 120,
-        "savefig.dpi": 200,
-        "font.size": 11,
-        "font.family": "Lora" if have_lora else "DejaVu Sans",
-        "axes.titlesize": 12,
-        "axes.titleweight": "semibold",
-        "axes.labelsize": 10,
-        "figure.facecolor": "white",
-        "savefig.facecolor": "white",
-    })
-
-
-def tidy(ax) -> None:
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    for s in ("left", "bottom"):
-        ax.spines[s].set_color("#c9c9d2")
-    ax.tick_params(colors=INK, labelsize=9)
 
 
 def save(fig, out: Path) -> None:
@@ -190,7 +146,7 @@ def _hfrac(ax, points: float) -> float:
 def _fits(ax, text: str, size: float, w: float, name: str) -> None:
     """Warn if a string is wider than the box meant to hold it.
 
-    Lora averages a little over half an em per character; 0.56 em is a safe
+    Inter averages a little over half an em per character; 0.56 em is a safe
     estimate for the mixed-case strings used here.
     """
     need = _hfrac(ax, len(text) * size * 0.56) + _hfrac(ax, 8)
@@ -259,7 +215,7 @@ def subtitle(ax, text, pad_pt: float = 5.0, size: float = 8.4) -> None:
     from matplotlib.transforms import ScaledTranslation
     tr = ax.transAxes + ScaledTranslation(0, pad_pt / 72, ax.figure.dpi_scale_trans)
     ax.text(0.5, 1.0, text, transform=tr, ha="center", va="bottom",
-            fontsize=size, color=MUTED, style="italic")
+            fontsize=size, color=MUTED)
 
 
 # Title pad for axes that also carry a subtitle: clears the note beneath it.
@@ -277,7 +233,7 @@ def fig_system_pipeline(out: Path) -> None:
         ("Segmentation", ["split lines", "and periods"], SLATE),
         ("BGE-M3 Encoder", [f"{N_LAYERS} layers, frozen", f"{HIDDEN}-d states"], PALETTE[0]),
         ("Task Heads", ["classification", "+ NER"], RUST),
-        ("Structured Data", ["product, price,", "store, total"], PALETTE[4]),
+        ("Structured Data", ["line class,", "name and price spans"], PALETTE[4]),
     ]
     n = len(stages)
     w, gap = 0.136, 0.024
@@ -292,11 +248,11 @@ def fig_system_pipeline(out: Path) -> None:
         if i:
             prev = x0 + (i - 1) * (w + gap)
             arrow(ax, (prev + w / 2 + 0.003, cy), (cx - w / 2 - 0.003, cy),
-                  color="#9aa3b0", lw=1.5)
+                  color="#b9bec6", lw=1.5)
 
     # Stage groupings printed below, aligned to the boxes they cover.
-    groups = [(0, 1, "1 - OCR stage"), (2, 2, "2 - Preprocessing"),
-              (3, 4, "3 - Multi-task NLP model")]
+    groups = [(0, 1, "OCR"), (2, 2, "Preprocessing"),
+              (3, 4, "Multi-task model")]
     for a, b, label in groups:
         xa = x0 + a * (w + gap) - w / 2
         xb = x0 + b * (w + gap) + w / 2
@@ -305,9 +261,6 @@ def fig_system_pipeline(out: Path) -> None:
         ax.text((xa + xb) / 2, 0.185, label, ha="center", va="center",
                 fontsize=8.6, color=MUTED)
 
-    ax.set_title("End-to-End Receipt Processing Pipeline", pad=TITLE_PAD, color=INK)
-    ax.text(0.5, 0.925, "schematic of the system described in the repository",
-            ha="center", va="center", fontsize=8.4, color=MUTED, style="italic")
     save(fig, out)
 
 
@@ -342,26 +295,21 @@ def fig_ocr_pipeline(out: Path) -> None:
                 title_size=9.8, detail_size=7.9, name="ocr_pipeline")
             if i:
                 arrow(ax, (row_centres[i - 1] + w / 2 + 0.005, ys[r]),
-                      (cx - w / 2 - 0.005, ys[r]), color="#9aa3b0", lw=1.5)
+                      (cx - w / 2 - 0.005, ys[r]), color="#b9bec6", lw=1.5)
         centres.append(row_centres)
 
     # Wrap arrow from the end of row 1 down to the start of row 2.
     xe = centres[0][-1]
     xs = centres[1][0]
     ymid = (ys[0] + ys[1]) / 2
-    ax.plot([xe, xe], [ys[0] - h / 2 - 0.005, ymid], color="#9aa3b0", lw=1.5,
+    ax.plot([xe, xe], [ys[0] - h / 2 - 0.005, ymid], color="#b9bec6", lw=1.5,
             zorder=1)
-    ax.plot([xe, xs], [ymid, ymid], color="#9aa3b0", lw=1.5, zorder=1)
-    arrow(ax, (xs, ymid), (xs, ys[1] + h / 2 + 0.005), color="#9aa3b0", lw=1.5)
+    ax.plot([xe, xs], [ymid, ymid], color="#b9bec6", lw=1.5, zorder=1)
+    arrow(ax, (xs, ymid), (xs, ys[1] + h / 2 + 0.005), color="#b9bec6", lw=1.5)
 
     ax.text(0.5, ymid + 0.028, "preprocessed image", ha="center", va="bottom",
-            fontsize=8.2, color=MUTED, style="italic")
+            fontsize=8.2, color=MUTED)
 
-    ax.set_title("OCR Pipeline: Image Preprocessing to Segmented Sentences",
-                 pad=TITLE_PAD, color=INK)
-    ax.text(0.5, 0.945, "schematic; step labels are the calls in "
-            "preprocess_receipt_image() and segment_receipt_text()",
-            ha="center", va="center", fontsize=8.2, color=MUTED, style="italic")
     save(fig, out)
 
 
@@ -395,11 +343,11 @@ def fig_architecture(out: Path) -> None:
         color=PALETTE[2], title_size=10.0, name=NAME)
 
     box(ax, xl, y_head, w, h_head, "Classification Head",
-        [f"Linear {HIDDEN} -> {BOTTLENECK}", "ReLU",
-         f"Linear {BOTTLENECK} -> {N_CLASSES}"],
+        [f"Linear {HIDDEN} \u2192 {BOTTLENECK}", "ReLU, dropout 0.1",
+         f"Linear {BOTTLENECK} \u2192 {N_CLASSES}"],
         color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
     box(ax, xr, y_head, w, h_head, "NER Head",
-        [f"Linear {HIDDEN} -> {N_NER}", "applied at every token"],
+        [f"Linear {HIDDEN} \u2192 {N_NER}", "applied at every token"],
         color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
 
     box(ax, xl, y_out, w, h_out, "Classification Logits",
@@ -426,17 +374,13 @@ def fig_architecture(out: Path) -> None:
     # Pinned beside the head boxes so the word labels the layer, not the arrow.
     for x in (xl, xr):
         ax.text(x + w / 2 + 0.014, y_head, "trainable", ha="left", va="center",
-                fontsize=8.4, color=RUST, style="italic")
+                fontsize=8.4, color=RUST)
 
-    ax.text(xl, 0.048, "Sentence category\n(Product / Store / Price / Other)",
+    ax.text(xl, 0.048, "Sentence class\n(ITEM, ITEM_OPTION, SUBTOTAL, TOTAL)",
             ha="center", va="top", fontsize=8.4, color=MUTED, linespacing=1.5)
-    ax.text(xr, 0.048, "BIO tags\n(O, B/I-PRODUCT, B/I-PRICE)",
+    ax.text(xr, 0.048, "BIO tags\n(O, B/I-NAME, B/I-PRICE)",
             ha="center", va="top", fontsize=8.4, color=MUTED, linespacing=1.5)
 
-    ax.set_title("Multi-Task Model Architecture", pad=TITLE_PAD, color=INK)
-    ax.text(0.5, 0.975, "schematic; layer sizes read from MultiTaskModel and "
-            "the BGE-M3 config",
-            ha="center", va="center", fontsize=8.2, color=MUTED, style="italic")
     save(fig, out)
 
 
@@ -505,12 +449,6 @@ def fig_forward_pass(out: Path) -> None:
             "clip_grad_norm_(max_norm = 1.0),  step()",
             ha="center", va="center", fontsize=8.8, color=RUST)
 
-    ax.set_title("Forward Pass Through the Multi-Task Model", pad=TITLE_PAD,
-                 color=INK)
-    ax.text(0.5, 0.975,
-            f"schematic; sequence length {EXAMPLE_LEN} is the real BGE-M3 "
-            "tokenization of the example string",
-            ha="center", va="center", fontsize=8.2, color=MUTED, style="italic")
     save(fig, out)
 
 
@@ -576,11 +514,6 @@ def fig_embedding_heatmap(emb, out: Path) -> None:
     cbar.ax.tick_params(labelsize=8, colors=INK)
     cbar.outline.set_visible(False)
 
-    ax.set_title("A Single Sentence Embedding (1024 dimensions)",
-                 pad=SUB_TITLE_PAD, color=INK)
-    subtitle(ax, 'BGE-M3 encoding of sentence 1, "The golden rays of the '
-             'setting sun painted the sky in shades of orange and pink."   '
-             "(colour scale clipped at the 99th percentile)")
     save(fig, out)
 
 
@@ -614,8 +547,6 @@ def fig_similarity_matrix(emb, out: Path) -> None:
     cbar.ax.tick_params(labelsize=8, colors=INK)
     cbar.outline.set_visible(False)
 
-    ax.set_title("Cosine Similarity Between Sentence Embeddings",
-                 pad=TITLE_PAD, color=INK)
     save(fig, out)
 
 
@@ -658,10 +589,6 @@ def fig_tsne(emb, out: Path) -> None:
     tidy(ax)
     leg = ax.legend(frameon=False, loc="lower left", fontsize=9, title="k-means")
     leg.get_title().set_fontsize(9)
-    ax.set_title("t-SNE Layout of Sentence Embeddings", pad=SUB_TITLE_PAD,
-                 color=INK)
-    subtitle(ax, "k-means (k = 4) on the 1024-d BGE-M3 embeddings of the 15 "
-             "example sentences")
     save(fig, out)
 
 
@@ -675,7 +602,7 @@ def main() -> None:
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    house_style()
+    apply()
 
     print("Schematics:")
     fig_system_pipeline(out / "system_pipeline.png")
@@ -691,17 +618,6 @@ def main() -> None:
         fig_embedding_heatmap(emb, out / "embedding_heatmap.png")
         fig_similarity_matrix(emb, out / "similarity_matrix.png")
         fig_tsne(emb, out / "tsne_clustering.png")
-
-    print("\nNot generated - no genuine artifact exists:")
-    for name, why in [
-        ("training_curves.png", "no training ever ran (notebook cells 37/39 raise NameError)"),
-        ("accuracy_curves.png", "same"),
-        ("example_product_classification.png", "heads are untrained; tags in the notebook are hand-written"),
-        ("example_price_extraction.png", "same"),
-        ("example_store_info.png", "same"),
-        ("complete_receipt_example.png", "no receipt image and no trained model"),
-    ]:
-        print(f"  {name:38s} {why}")
 
 
 if __name__ == "__main__":

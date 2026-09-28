@@ -5,3 +5,4 @@ _site/
 __pycache__/
 index_files/
 project/projects_files/libs/
+*/*_files/libs/

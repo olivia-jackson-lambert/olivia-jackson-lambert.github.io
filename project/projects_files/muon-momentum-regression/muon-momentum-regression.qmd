@@ -1,6 +1,6 @@
 ---
 title: "Muon Track Momentum Resolution Regression"
-description: "Predicting muon track momentum resolution from five kinematic inputs, reaching R-squared of 0.854 on a held-out test set of 42,000 tracks."
+description: "Predicting muon track momentum resolution from five kinematic inputs. The final network scores R-squared of 0.854 on 41,797 held-out tracks, against 0.698 for linear regression."
 image: /project/cover_assets/thumbs/muon.png
 date: 2025-01-24
 categories: [Regression, Machine Learning, Research]
@@ -19,72 +19,72 @@ format:
 ::: {.cs-key}
 [The Decision]{.cs-label}
 
-[Score the model on a held-out test set and against baselines, not on cross-validated fit alone.]{.cs-decision}
+[Judge the model on a test set scored once, and set it against two baselines on the same split.]{.cs-decision}
 :::
 
 ::: {.cs-key}
 [Takeaways]{.cs-label}
 
 - The final network reaches R² of 0.854 on 41,797 unseen tracks, against 0.698 for linear regression.
-- Properly trained, model capacity is worth 0.105 of R², far more than the original notebook suggested.
+- Trained properly, model capacity is worth 0.105 of R². The original notebook put it near 0.015.
 - Error peaks at 8 to 18 GeV/c, where a forward, low-momentum population overlaps the main band.
 :::
 :::
 :::
 
-This project predicts the track momentum resolution of muons in a particle detector from five kinematic inputs: total momentum $p$, track slopes $t_x$ and $t_y$, pseudorapidity $\eta$ and azimuthal angle $\phi$. The muons come from simulated $\chi_{c1} \rightarrow J/\psi\,\gamma$ decays, with $J/\psi \rightarrow \mu^+\mu^-$, giving 208,984 reconstructed tracks.
+This project predicts the momentum resolution of muon tracks in a particle detector from five kinematic inputs: total momentum $p$, track slopes $t_x$ and $t_y$, pseudorapidity $\eta$ and azimuthal angle $\phi$. The muons come from simulated $\chi_{c1} \rightarrow J/\psi\,\gamma$ decays, with $J/\psi \rightarrow \mu^+\mu^-$, giving 208,984 reconstructed tracks.
 
-The final model reaches an $R^2$ of **0.854** on a held-out test set of 41,797 tracks that was scored exactly once, against 0.698 for linear regression on the same split.
+The final model reaches an $R^2$ of **0.854** on a held-out test set of 41,797 tracks, scored once. Linear regression reaches 0.698 on the same split.
 
-![](assets/track_curvature.gif){fig-alt="Animated schematic of muon tracks curving in a magnetic field, with curvature falling as momentum rises" fig-align="center" width="90%"}
+![Track Curvature Falls as Momentum Rises. A schematic, not measured data.](assets/track_curvature.gif){fig-alt="Animated schematic of six muon tracks leaving an interaction point, labelled 5 to 340 GeV/c. The 5 GeV/c track bends sharply upward and the 340 GeV/c track is almost straight." fig-align="center" width="90%"}
 
-The animation above is a schematic rather than measured data. It shows why the measurement is difficult: a charged track bends with a radius proportional to its momentum, so the highest momentum tracks are very nearly straight. The curvature signal that momentum is inferred from is weakest exactly where the resolution matters most.
+A charged track bends in a magnetic field with a radius proportional to its momentum. The highest momentum tracks are nearly straight, so the curvature that momentum is inferred from is weakest where precision matters most.
 
 **Source code**: [github.com/olivia-jackson-lambert/muon-momentum-regression-model](https://github.com/olivia-jackson-lambert/muon-momentum-regression-model)
 
 # Data Exploration
 
-Momentum spans a wide range, with transverse momentum $p_t$ concentrated at low values.
+Momentum spans a wide range. Transverse momentum $p_t$ is concentrated at low values.
 
 ::: {.columns}
 ::: {.column width="48%"}
-![](assets/p_distribution.png){fig-alt="Distribution of total momentum on a log frequency scale"}
+![Total Momentum](assets/p_distribution.png){fig-alt="Histogram of total momentum from 0 to 600 GeV/c on a log count scale. Counts fall steadily as momentum rises."}
 :::
 ::: {.column width="4%"}
 :::
 ::: {.column width="48%"}
-![](assets/pt_distrbution.png){fig-alt="Distribution of transverse momentum on a log frequency scale"}
+![Transverse Momentum](assets/pt_distrbution.png){fig-alt="Histogram of transverse momentum from 0 to 35 GeV/c on a log count scale. Counts peak below 1 GeV/c and fall steeply beyond 5 GeV/c."}
 :::
 :::
 
-The longitudinal component follows from the momentum relation $p_z = \sqrt{p^2 - p_t^2}$, which gives the target resolution ratio $\Delta p_z / p_z$.
+The longitudinal component follows from $p_z = \sqrt{p^2 - p_t^2}$, which gives the target resolution ratio $\Delta p_z / p_z$.
 
-![](assets/fitted_track_momentum.png){fig-alt="Fitted momentum resolution against momentum, showing the main band and a secondary cluster" fig-align="center" width="88%"}
+![Momentum Resolution Against Momentum](assets/fitted_track_momentum.png){fig-alt="Scatter of momentum resolution against momentum from 0 to 400 GeV/c with a rising median line. A narrow spike of tracks below 25 GeV/c climbs to about 0.0095, well above the main band. At higher momentum the main band splits into two branches." fig-align="center" width="88%"}
 
-Resolution degrades steadily with momentum, which is the expected behaviour: faster tracks bend less, so their curvature is harder to measure. The median line makes that trend clear through the dense region.
+Resolution degrades steadily with momentum, as expected. Faster tracks bend less, so their curvature is harder to measure. The median line shows the trend through the dense region.
 
-The more interesting feature is the **secondary cluster** sitting well above the main band between roughly 10 and 25 GeV/c, reaching resolutions near 0.0095 where the main band is around 0.0045. A third, lower branch also separates from the main band above about 120 GeV/c. The population is not unimodal, and that matters for what the model can be expected to do.
+The more interesting feature is a **secondary cluster** well above the main band between roughly 10 and 25 GeV/c. It reaches resolutions near 0.0095 where the main band sits around 0.0045. At higher momentum the main band also splits into two branches. The population is not unimodal, and that limits what the model can be expected to do.
 
-![](assets/fitted_track_momentum_z.png){fig-alt="Fitted resolution against longitudinal momentum, showing the same multi-modal structure" fig-align="center" width="88%"}
+![Resolution Against Longitudinal Momentum](assets/fitted_track_momentum_z.png){fig-alt="Scatter of longitudinal momentum resolution against longitudinal momentum, showing the same spike below 25 GeV/c and the same split into two branches at higher momentum." fig-align="center" width="88%"}
 
-Taking the tracks between 8 and 25 GeV/c and splitting them at a resolution of 0.0070 isolates that upper cluster. It is 1,410 tracks, or 2.1 percent of the band, and two variables separate it almost completely:
+Taking the tracks between 8 and 25 GeV/c and splitting them at a resolution of 0.0070 isolates the upper cluster. It holds 1,410 tracks, 2.1 percent of the band, and two variables separate it almost completely:
 
 | Variable | Upper cluster | Main band | Cohen's $d$ |
 |---|--:|--:|--:|
 | $\eta$ | 4.48 | 3.54 | **+2.21** |
 | $p_t$ | 0.288 | 1.002 | **-1.31** |
-| $t_x$, $t_y$, $z_V$, pol, $\phi$ | | | below 0.06 |
+| $t_x$, $t_y$, $z_V$, pol, $\phi$ | | | 0.06 or less |
 
-These are very forward tracks, with $\eta$ in the 4.3 to 4.6 range against a dataset median nearer 3.5, carrying very little transverse momentum. A track travelling almost along the beam axis crosses less of the magnetic field, so its bending lever arm is short and its momentum is measured poorly despite a perfectly ordinary total momentum. Nothing else in the feature set distinguishes them.
+These are very forward tracks, with a mean $\eta$ of 4.48 against a dataset median of 3.53, and they carry very little transverse momentum. A track travelling almost along the beam axis crosses less of the magnetic field. Its bending lever arm is short, so its momentum is measured poorly even when its total momentum is ordinary. Nothing else in the feature set sets these tracks apart.
 
 # Method
 
-The evaluation is built to answer one question honestly: how well would this model do on tracks it has never seen?
+The evaluation is built to estimate how well the model does on tracks it has never seen.
 
-- **Three-way split** of 60 / 20 / 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.
-- **Scaling fit on the training split only**, so validation and test scores are not inflated by statistics leaked from data the model has not seen.
-- **Two reference points** are scored on the same split: predicting the training mean, and linear regression. Without them an $R^2$ of 0.85 has no context.
-- **The target is standardised as well as the features.** $\Delta p_z / p_z$ is of order $10^{-3}$, and left in raw units the squared-error gradients are so small that the networks never converge.
+- **Three-way split** of 60, 20 and 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.
+- **Scaling is fit on the training split only**, so no statistics leak from the validation or test data into the scores.
+- **Two reference points** are scored on the same split: predicting the training mean, and linear regression. They give an $R^2$ of 0.85 its context.
+- **The target is standardised as well as the features.** $\Delta p_z / p_z$ is of order $10^{-3}$. In raw units the squared-error gradients are so small that the networks never converge.
 
 # Results
 
@@ -97,19 +97,19 @@ The evaluation is built to answer one question honestly: how well would this mod
 | MLP, 10 units | 0.797 | 4.713e-4 | 2.281e-4 |
 | **MLP, 40 and 5 units** | **0.858** | **3.947e-4** | **1.805e-4** |
 
-On the held-out test set the selected model scores $R^2$ **0.854**, RMSE **3.938e-4** and MAE **1.783e-4**. Validation and test agree to within 0.003 of $R^2$, so the selection did not overfit the validation split.
+On the held-out test set the selected model scores $R^2$ of 0.854, RMSE of 3.938e-4 and MAE of 1.783e-4. Validation and test $R^2$ differ by 0.003, so model selection did not overfit the validation split.
 
-Linear regression already captures most of the signal at 0.698. The network adds a further 0.156, which is worth having but is a refinement of a largely linear relationship rather than the discovery of a hidden one.
+Linear regression already captures most of the signal at 0.698. The network adds 0.160 on validation. That gain is worth having, and it refines a relationship that is largely linear to begin with.
 
-![](assets/test_parity.png){fig-alt="Predicted versus true momentum resolution on the held-out test set" fig-align="center" width="72%"}
+![Predicted Against True Resolution on the Test Set](assets/test_parity.png){fig-alt="Scatter of predicted against true longitudinal momentum resolution for 41,797 test tracks, with a diagonal line for perfect prediction. Points hug the line below 7 times 10 to the minus 3 and spread out above it, with a small group near 9 times 10 to the minus 3 predicted well below the line." fig-align="center" width="72%"}
 
-Predictions track the diagonal closely through the dense region below 0.007. Above that the scatter widens, and a visible tail of points sits well below the line, where the model under-predicts resolution for tracks that are genuinely poorly measured.
+Predictions follow the diagonal closely through the dense region below 0.007. Above that the scatter widens. A visible tail of points sits well below the line, where the model under-predicts resolution for tracks that are genuinely poorly measured.
 
 # Where the Model Fails
 
-Binning the test error by momentum shows the failure is not where the schematic would suggest.
+I binned the test error by momentum to see where the model struggles. The answer does not match the curvature argument.
 
-![](assets/test_error_by_momentum.png){fig-alt="Test RMSE and mean bias across eight momentum bins" fig-align="center" width="85%"}
+![Test Error by Momentum](assets/test_error_by_momentum.png){fig-alt="Step chart of test RMSE and mean bias across eight equal-count momentum bins from 3 to 739 GeV/c. RMSE peaks at about 5.6 times 10 to the minus 4 between 8 and 18 GeV/c and is lowest at 2.0 times 10 to the minus 4 between 31 and 51 GeV/c. Bias stays close to zero throughout." fig-align="center" width="85%"}
 
 | p range (GeV/c) | n | RMSE | Mean bias |
 |---|--:|--:|--:|
@@ -122,34 +122,34 @@ Binning the test error by momentum shows the failure is not where the schematic 
 | 51.1 to 85.0 | 5,225 | 2.58e-4 | +1.3e-5 |
 | 85.0 to 739 | 5,225 | 3.49e-4 | -8.1e-6 |
 
-Error peaks in the **8 to 18 GeV/c** band at roughly 5.6e-4, and is lowest at **31 to 51 GeV/c** at 2.0e-4, almost a factor of three better. The high momentum tail is not the worst region, which is the opposite of what the curvature argument alone would suggest.
+Error peaks at 8 to 18 GeV/c at roughly 5.6e-4. It is lowest at 31 to 51 GeV/c at 2.0e-4, almost three times better. The high momentum tail is not the worst region, which the curvature argument alone would predict it to be.
 
-That peak lands on the same momentum range as the secondary high-$\eta$ cluster identified above. Two populations with very different resolutions overlap there, and although $\eta$ and $p_t$ are both model inputs, the minority population is only about 2 percent of the band, so the network averages across the boundary rather than switching cleanly between the two regimes. This is a strong candidate explanation rather than a demonstrated one, and it is directly testable by scoring the two clusters separately.
+The peak falls in the same momentum range as the high-$\eta$ cluster found above. Two populations with very different resolutions overlap there. The model does receive $\eta$ and $p_t$, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.
 
-Bias stays small and positive across almost the whole range, turning slightly negative only in the highest bin. The model is therefore mildly conservative at low and middle momenta, over-estimating resolution by a small margin, and slightly optimistic for the straightest tracks.
+Bias stays small and positive across almost the whole range and turns slightly negative only in the highest bin. The model mildly over-estimates resolution at low and middle momenta, and is slightly optimistic for the straightest tracks.
 
 # What Changed From the Original Notebook
 
-The original analysis reported a cross-validated $R^2$ of 0.734 and concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis properly changes that conclusion.
+The original analysis reported a cross-validated $R^2$ of 0.734. It concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis changes that conclusion.
 
-With target standardisation and early stopping in place, the architectures separate clearly, from 0.753 at five units to 0.858 at forty. Capacity is worth roughly 0.105 of $R^2$, not 0.015. The original comparison was measuring undertrained models rather than saturated ones: it ran a fixed 50 epochs with no early stopping and no target scaling, so the larger networks never reached convergence and looked no better than the small ones.
+With target standardisation and early stopping in place, the architectures separate clearly, from 0.753 at five units to 0.858 at forty. Capacity is worth roughly 0.105 of $R^2$. The original ran a fixed 50 epochs with no early stopping and no target scaling, so the larger networks never converged and looked no better than the small ones.
 
-Scaling the inputs is still the single most important preprocessing step. It is simply no longer true that the architecture does not matter.
+Scaling the inputs is still the most important preprocessing step. Architecture matters too.
 
-One practical note: the original notebook imports `tensorflow.keras.wrappers.scikit_learn.KerasRegressor`, which was deprecated in TensorFlow 2.6 and removed in 2.13, so it no longer runs on current TensorFlow. The pipeline here is rebuilt on scikit-learn, which expresses the same dense architectures without that dependency.
+The original notebook also imports `tensorflow.keras.wrappers.scikit_learn.KerasRegressor`, which was deprecated in TensorFlow 2.6 and removed in 2.13, so it no longer runs on current TensorFlow. I rebuilt the pipeline on scikit-learn, which expresses the same dense architectures without that dependency.
 
 # Limitations
 
-**The architecture search is shallow.** Four hand-chosen configurations, not a systematic sweep. The trend suggests wider networks would keep improving, and that boundary is untested.
+**The architecture search is shallow.** I tried four hand-chosen configurations. The trend suggests wider networks would keep improving, and I have not tested where that stops.
 
-**Only kinematic inputs are used.** Detector geometry, hit multiplicity and track fit quality are all absent. The exploratory analysis suggests the mid-momentum error peak is at least partly a forward-track effect that $\eta$ and $p_t$ already encode, but a genuine acceptance or reconstruction variable would likely separate the populations more cleanly than the model can.
+**Only kinematic inputs are used.** Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that $\eta$ and $p_t$ already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.
 
-**The data is simulation.** These are Monte Carlo tracks, so the model has learned the resolution behaviour of a detector simulation rather than of a real one.
+**The data is simulation.** These are Monte Carlo tracks, so the model has learned how a detector simulation behaves. Real detector data may differ.
 
 # Next Steps
 
-**Test the high-$\eta$ hypothesis directly**: Score the forward, low-$p_t$ cluster separately from the main band. If it carries most of the error in the 8 to 18 GeV/c region, the fix is a sample weight or a dedicated model for forward tracks rather than more capacity everywhere.
+**Test the high-$\eta$ explanation.** Score the forward, low-$p_t$ cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.
 
-**Extend the architecture sweep**: Continue past forty units to find where the gains actually flatten.
+**Extend the architecture sweep.** Continue past forty units to find where the gains flatten.
 
-**Predict the full distribution**: Quantile regression would give an uncertainty band per track instead of a single point estimate, which matters more than a mean prediction for a quantity that is itself a measure of uncertainty.
+**Predict the full distribution.** Quantile regression would give each track an uncertainty band instead of a single point estimate. For a quantity that is itself a measure of uncertainty, that is more useful than a mean.

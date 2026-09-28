@@ -1,6 +1,6 @@
 ---
 title: "Does Travel Cost NBA Teams the Game?"
-description: "A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does."
+description: "A descriptive regression over 46,903 NBA games from 1947 to 2025. How far the away team flies makes no measurable difference. Which way it flies does."
 image: /project/cover_assets/thumbs/nba-travel.png
 date: 2025-12-15
 categories: [Statistical Inference, Linear Regression, R, Sports Analytics, Causal Reasoning]
@@ -33,20 +33,19 @@ format:
 :::
 :::
 
-Travel is the standard explanation for why away teams underperform. Long flights, lost sleep, crossing time zones. This project tests whether the distance an NBA away team travels actually shows up in the scoreline, using every regular season game from 1947 to 2025.
+Travel is the usual explanation for why away teams underperform. Long flights, lost sleep, time zones. We tested whether the distance an NBA away team travels shows up in the final score, using 46,903 regular season games from 1947 to 2025.
 
-It does not. The distance coefficient is statistically indistinguishable from zero. What does show up is the *direction* of travel: teams flying west to east gain close to a point, while the same trip in reverse shows nothing. That is a result about time zones rather than about mileage.
-
+It does not. The distance coefficient is indistinguishable from zero. The direction of travel does show up. Teams flying west to east gain close to a point, and the same trip in reverse gains nothing. Time zones matter here and mileage does not.
 
 # The Question
 
 Does the distance an away team travels affect point differential, measured as away score minus home score?
 
-The reference point is Deddens and Steenland (1997), who found limited effects of travel distance on NBA performance. Their analysis covered a far shorter window. Revisiting the question across seven decades gives enough games to detect an effect that small, if one exists.
+Our starting point was Deddens and Steenland (1997), who found limited effects of travel distance on NBA performance. We revisited the question with a much larger dataset, large enough to detect a small effect if one exists.
 
 # The Data
 
-The dataset is built from Kaggle's NBA box score archive, one row per regular season game, joined to the geodesic distance between the home and away teams' cities.
+We built the dataset from Kaggle's NBA box score archive. Each row is one regular season game, joined to the geodesic distance between the two teams' cities.
 
 | | |
 |---|---|
@@ -57,71 +56,73 @@ The dataset is built from Kaggle's NBA box score archive, one row per regular se
 | Median travel distance | 896 miles |
 | Longest trip | 2,805 miles |
 
-![](assets/data_overview.png){fig-alt="Distribution of travel distances, and games per season from 1947 to 2025" width="100%"}
+![Distance travelled by away teams (A) and games per season in the modelling dataset (B).](assets/data_overview.png){fig-alt="Two panels. Left, a histogram of away team travel distance, concentrated under 1,250 miles and tailing off to about 2,800. Right, games per season, near zero before 1960, rising to roughly 1,000 per season by the 2000s, with dips in some seasons." width="100%"}
 
-Travel direction is coded into three groups from the time zones of the two cities: West to East, East to West, and Neither, where both teams sit in the same zone. Neither is the reference category and covers 37,509 of the games.
+Coverage is uneven. Only 45 games predate 1960, and 95% come from 1970 onward.
 
-The standard deviation of 13.26 points is worth holding onto. It is the yardstick every effect below has to be measured against.
+We coded travel direction into three groups from the time zones of the two cities: West to East, East to West, and Neither, where both teams sit in the same zone. Neither is the reference category and covers 37,509 games.
+
+Keep the standard deviation of 13.26 points in mind. Every effect below should be measured against it.
 
 # Models
 
-Four nested linear models, each adding one term, fitted with heteroskedasticity-robust standard errors:
+We fitted four nested linear models, each adding one term, with heteroskedasticity-robust standard errors:
 
 1. Point differential on travel distance alone
 2. Adding travel direction
 3. Adding game attendance
 4. Adding year
 
-Robust standard errors matter here because the variance of point differential is not constant across the seven decades the sample covers.
+Robust standard errors matter because the variance of point differential is not constant across the decades the sample covers.
 
 # The Null Result
 
-![](assets/distance_null.png){fig-alt="Mean point differential binned by travel distance, showing a flat relationship with overlapping confidence intervals" width="100%"}
+![Mean point differential by travel distance. The line stays flat across the full range.](assets/distance_null.png){fig-alt="Mean point differential in twenty distance bins from about 100 to 2,500 miles. The line moves between about -4.0 and -3.1 with no trend, and the 95% confidence band covers the overall mean of -3.45 almost everywhere." width="100%"}
 
-Binning the games by travel distance and plotting the mean point differential in each bin gives a flat line. The confidence intervals overlap the overall mean across the entire range.
+Binning games by travel distance and plotting the mean point differential in each bin gives a flat line. The confidence band covers the overall mean almost everywhere.
 
-The regression agrees. The coefficient on distance is **-0.0002 points per mile with a p-value of 0.13**, which is not distinguishable from zero. Taken at face value, even the longest trip in the dataset, 2,805 miles, would cost the away team six tenths of a point. Against a standard deviation of 13.26 that is nothing.
+The regression agrees. The distance coefficient is -0.0002 points per mile with a p-value of 0.13. Taken at face value, the longest trip in the dataset, 2,805 miles, would cost the away team 0.6 points. Against a standard deviation of 13.26, that is nothing.
 
-This is a null result on a sample of 46,903 games, which makes it a reasonably strong one. With this much data, an effect of any practical size would have been detected.
+A null result on 46,903 games is a strong one. An effect of practical size would have shown up.
 
 # What Does Show Up
 
-![](assets/direction_effect.png){fig-alt="Mean point differential by travel direction, with West to East highest" width="92%"}
+![Mean point differential by direction of travel. Bars show raw means; the coefficients in the text come from the full model.](assets/direction_effect.png){fig-alt="Bar chart of mean point differential by travel direction with 95% confidence intervals. East to West -4.02 (4,729 games), Neither -3.44 (37,509 games), West to East -2.93 (4,665 games)." width="92%"}
 
-Direction separates where distance does not. Teams travelling **west to east gain 0.96 points** relative to teams not changing time zone, and the effect is statistically significant (p = 0.0006). The same journey east to west shows **-0.10 points and a p-value of 0.72**, which is nothing at all.
+Direction separates games where distance does not. In the full model, teams travelling west to east gain 0.96 points relative to teams that stay in their time zone (p = 0.0006). Teams travelling east to west show -0.10 points (p = 0.72), which is no effect.
 
-The asymmetry is the interesting part. If travel were simply tiring, both directions would hurt, and the longer the flight the worse it would get. Instead one direction helps and the other does nothing, which points at circadian alignment rather than fatigue. A team flying west to east plays an evening game that falls later in their body clock, when they are closer to peak alertness, and this is consistent with the sleep literature the study cites.
+The asymmetry is the interesting part. If travel simply tired teams out, both directions would hurt, and longer flights would hurt more. Instead one direction helps and the other does nothing. That pattern fits circadian timing. For a team flying west to east, an evening tip-off falls earlier on its body clock, closer to the late afternoon peak that the sleep research we cite links to athletic performance.
 
-Attendance and year both come out statistically significant as well. An extra 10,000 spectators is associated with 1.7 points against the away team, and point differentials have drifted upward by about 0.7 points per decade.
+Attendance and year are also significant. An extra 10,000 spectators is associated with 1.7 points against the away team. Point differential has moved about 0.7 points per decade in the away team's favour.
 
 # Everything Is Significant and Almost Nothing Is Large
 
-![](assets/effect_sizes.png){fig-alt="All four model effects plotted against a band showing one standard deviation of point differential" width="100%"}
+![Each model effect against one standard deviation of point differential.](assets/effect_sizes.png){fig-alt="Bar chart of four effects in points: longest trip -0.60, West to East travel +0.96, 10,000 more spectators -1.68, ten years of drift +0.69. All bars sit close to zero inside a shaded band spanning plus and minus 13.3 points." width="100%"}
 
-This is the figure that matters most, and it is the one the original report does not have.
+This is the most important figure here. The original course report did not include it.
 
-At 46,903 games, almost any effect reaches statistical significance. Three of the four terms in the final model have p-values below 0.001. But plotted against the actual spread of game outcomes, every one of them disappears into the noise. The largest, a full extra 10,000 fans in the building, moves the expected margin by 1.7 points when game-to-game variation is 13.3.
+At 46,903 games, almost any effect reaches significance. Three of the four terms in the final model have p-values below 0.001. Plotted against the real spread of game outcomes, every one of them is small. The largest, 10,000 extra fans in the building, moves the expected margin by 1.7 points. Game-to-game variation is 13.3.
 
-The model's adjusted R-squared is **0.0053**. It explains half a percent of the variance in point differentials. The F-test is overwhelmingly significant and the model is very nearly useless for prediction, and both of those statements are true at once.
+The model's adjusted R-squared is 0.0053. It explains half a percent of the variance in point differential. The F-test is overwhelmingly significant, and the model is close to useless for prediction. Both are true.
 
-That is the honest summary of the study: the associations are real and they are tiny. Reporting the p-values without the effect sizes would leave a misleading impression, which is why this figure exists.
+So the associations are real and they are tiny. Reporting p-values without effect sizes would mislead, which is why we made this figure.
 
 # Limitations
 
-**This is descriptive, not causal.** Games are not independent. Team quality persists across a season, injuries cluster, and league dynamics shift. Year as a numeric covariate captures long-run drift but not within-team or within-season correlation, so the coefficients are average associations.
+**The analysis is descriptive.** It supports no causal claims. Games are not independent. Team quality persists across a season, injuries cluster, and league dynamics shift. Year as a numeric covariate captures long-run drift but not correlation within a team or season. The coefficients are average associations.
 
-**Distance is not fatigue.** Geodesic distance measures separation between cities. It says nothing about rest days, back-to-back games, charter conditions, or sleep actually lost. The direction result hints that the mechanism is circadian, and none of these variables measure that directly.
+**Distance is not fatigue.** Geodesic distance measures how far apart two cities are. It says nothing about rest days, back-to-back games, travel conditions or sleep lost. The direction result hints at a circadian mechanism, and none of our variables measure that directly.
 
-**Seven decades is a long time.** Court standardisation, player movement, and the comfort of travel have all changed since 1947. The relationship between travel and outcome is unlikely to have been stable across the whole sample, and the model fits one coefficient to all of it.
+**The sample spans a long, changing era.** Court standards, player movement and the comfort of travel have all changed since 1947. The link between travel and outcome is unlikely to have held steady, yet the model fits one coefficient to all of it.
 
-**Distance and direction are correlated.** Long trips are disproportionately cross-country ones, so the two variables carry overlapping information and their individual coefficients should be read with that in mind.
+**Distance and direction overlap.** Long trips are mostly cross-country trips, so the two variables carry shared information. Read their separate coefficients with that in mind.
 
 # Next Steps
 
-**Model rest directly**: Days since the last game, and whether it was a back-to-back, are the variables most likely to carry the fatigue effect that distance is standing in for.
+**Model rest directly.** Days since the last game, and whether it was a back-to-back, are the variables most likely to carry the fatigue effect that distance stands in for.
 
-**Use time zones crossed instead of miles**: The direction result suggests zone changes are the operative quantity. Signed zones crossed would test that against distance head on.
+**Count time zones crossed.** The direction result suggests zone changes are what matters. A signed count of zones crossed would test that against distance head on.
 
-**Allow the relationship to vary by era**: Interacting travel terms with decade would show whether the effect has weakened as travel has become easier.
+**Let the effect vary by era.** Interacting the travel terms with decade would show whether the effect has weakened as travel has become easier.
 
-**Cluster the standard errors**: Robust errors handle non-constant variance but not the dependence between games involving the same team. Clustering by team or season would give more honest intervals.
+**Cluster the standard errors.** Robust errors handle non-constant variance but not dependence between games involving the same team. Clustering by team or season would give more honest intervals.

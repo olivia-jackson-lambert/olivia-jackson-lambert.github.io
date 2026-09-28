@@ -1,7 +1,10 @@
 project:
   type: website
+  resources:
+    - robots.txt
   post-render:
     - scripts/sync-resume-pdf.sh
+    - scripts/optimize-images.sh
 
 filters:
   - filters/page-tags.lua
@@ -24,13 +27,13 @@ website:
 format:
   html:
     include-in-header: 
-      - includes/iconify.html
       - includes/favicon.html
     include-before-body: includes/site-header.html
     theme:
       light: [default, scss/theme-light.scss]
       dark:  [default, scss/theme-dark.scss]
     highlight-style: github
+    lightbox: auto
     css: styles.css
     toc: true
     code-link: true
@@ -38,3 +41,30 @@ format:
     fig-cap-location: margin
     reference-location: margin
     footnotes-hover: true
+# Order of the case studies (matches the homepage, newest first). The page-tags filter
+# uses it to add a "Next" link to the end of each one; the last wraps to the first.
+case-studies:
+  - title: "Predicting Flight Delay Severity at Scale"
+    href: /project/projects_files/flight-delay-spark/flight-delay-spark.html
+    image: /project/cover_assets/thumbs/web/flight-delay.webp
+  - title: "Classifying Curiosity Rover Images"
+    href: /project/projects_files/mars-terrain/mars-terrain.html
+    image: /project/cover_assets/thumbs/web/mars-terrain.webp
+  - title: "Multi-Task Sentence Transformer for Receipt Processing"
+    href: /project/projects_files/sentence-transformer/sentence-transformer.html
+    image: /project/cover_assets/thumbs/web/receipt.webp
+  - title: "MLOps: The Bridge Between Research and Production"
+    href: /writing/posts/mlops-future-data-science.html
+    image: /project/cover_assets/thumbs/web/essay.webp
+  - title: "Does Travel Cost NBA Teams the Game?"
+    href: /project/projects_files/nba-travel/nba-travel.html
+    image: /project/cover_assets/thumbs/web/nba-travel.webp
+  - title: "Muon Track Momentum Resolution Regression"
+    href: /project/projects_files/muon-momentum-regression/muon-momentum-regression.html
+    image: /project/cover_assets/thumbs/web/muon.webp
+  - title: "High Energy Particle CNN Classifier"
+    href: /project/projects_files/particle-classifier/particle-classifier.html
+    image: /project/cover_assets/thumbs/web/particle.webp
+  - title: "MNIST Variational Autoencoder"
+    href: /project/projects_files/digit-vae/digit-vae.html
+    image: /project/cover_assets/thumbs/web/digit-vae.webp

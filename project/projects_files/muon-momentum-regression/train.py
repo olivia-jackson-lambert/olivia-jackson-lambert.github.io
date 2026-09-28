@@ -14,7 +14,7 @@ Changes from the original notebook
 4. Residuals are analysed in momentum bins, which is the question the physics
    actually cares about: resolution is hardest to measure where tracks are
    straightest.
-5. Figures use the project's house style (Lora, slate/rust palette).
+5. Figures use the site's shared style (scripts/figstyle.py).
 
 Note on the framework: the original used
 `tensorflow.keras.wrappers.scikit_learn.KerasRegressor`, which was deprecated in
@@ -22,17 +22,22 @@ TF 2.6 and removed in TF 2.13, so the notebook no longer runs on current
 TensorFlow. This pipeline uses scikit-learn's MLPRegressor, which expresses the
 same dense architectures without the dead dependency.
 
-Usage:  python train.py --data muon_data.csv
+Usage:  python train.py --data /path/to/mc-chic1.csv
+        python train.py --data /path/to/mc-chic1.csv --replot
+            Redraw the figures without the full model comparison: the error
+            chart comes from the saved CSV, and only the selected model is
+            refit (same seed and split) for the parity plot.
 """
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter, NullFormatter
 import numpy as np
 import pandas as pd
 from sklearn.dummy import DummyRegressor
@@ -48,24 +53,11 @@ SEED = 42
 FEATURES = ["p", "tx", "ty", "eta", "phi"]
 TARGET = "epz"
 
-SLATE, RUST, INK, GRID = "#3A506B", "#9E2A2B", "#1b1b1f", "#e6e6ec"
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parents[2] / "scripts"))
+from figstyle import apply, tidy, SLATE, RUST, DIM, INK, LIGHT, MUTED, MONO  # noqa: E402
 
-
-def house_style(font_dir: Path) -> None:
-    """Match the figure styling used across the rest of the portfolio."""
-    for face in ("Lora-Regular.ttf", "Lora-SemiBold.ttf"):
-        path = font_dir / face
-        if path.exists():
-            fm.fontManager.addfont(str(path))
-    plt.rcParams.update({
-        "figure.dpi": 120,
-        "savefig.dpi": 200,
-        "font.size": 11,
-        "font.family": "Lora" if (font_dir / "Lora-Regular.ttf").exists() else "DejaVu Sans",
-        "axes.titlesize": 12,
-        "axes.titleweight": "semibold",
-        "axes.labelsize": 10,
-    })
+SCALE = 1e4  # plot errors in units of 1e-4
 
 
 def load(path: Path) -> pd.DataFrame:
@@ -125,8 +117,8 @@ def scores(y_true, y_pred) -> dict:
     }
 
 
-def residuals_by_momentum(p, y_true, y_pred, out: Path) -> pd.DataFrame:
-    """Where in momentum does the model actually fail?"""
+def error_table(p, y_true, y_pred) -> pd.DataFrame:
+    """Where in momentum does the model actually fail? Eight equal-count bins."""
     edges = np.quantile(p, np.linspace(0, 1, 9))
     edges = np.unique(edges)
     idx = np.digitize(p, edges[1:-1])
@@ -141,59 +133,90 @@ def residuals_by_momentum(p, y_true, y_pred, out: Path) -> pd.DataFrame:
             "bias": float(np.mean(y_pred[m] - y_true[m])),
             "rmse": float(np.sqrt(mean_squared_error(y_true[m], y_pred[m]))),
         })
-    tab = pd.DataFrame(rows)
+    return pd.DataFrame(rows)
 
-    fig, ax = plt.subplots(figsize=(7.0, 4.2))
-    centres = (tab["p_low"] + tab["p_high"]) / 2
-    ax.plot(centres, tab["rmse"], "o-", color=SLATE, lw=2, ms=5, label="RMSE")
-    ax.axhline(0, color=GRID, lw=1)
-    ax.plot(centres, tab["bias"], "s--", color=RUST, lw=1.8, ms=4.5, label="Mean bias")
-    ax.set_title("Test Error by Momentum Bin", pad=16, color=INK)
-    ax.set_xlabel("p (GeV/c)")
-    ax.set_ylabel(r"Error in $\Delta p_Z / p_Z$")
+
+def error_plot(tab: pd.DataFrame, out: Path) -> None:
+    """RMSE and mean bias per momentum bin, drawn as steps spanning each bin."""
+    edges = np.r_[tab["p_low"].to_numpy(), tab["p_high"].iloc[-1]]
+    rmse = tab["rmse"].to_numpy() * SCALE
+    bias = tab["bias"].to_numpy() * SCALE
+
+    fig, ax = plt.subplots(figsize=(7.0, 4.0))
+    peak = tab["rmse"].nlargest(2).index
+    lo, hi = tab.loc[peak, "p_low"].min(), tab.loc[peak, "p_high"].max()
+    ax.axvspan(lo, hi, color=LIGHT, alpha=0.35, lw=0, zorder=0)
+    ax.text(np.sqrt(lo * hi), rmse.max() * 1.06, f"peak error\n{lo:.0f} to {hi:.0f} GeV/c",
+            ha="center", va="bottom", fontsize=9, color=RUST)
+
+    ax.stairs(rmse, edges, color=SLATE, lw=2.2, label="RMSE", baseline=None)
+    ax.stairs(bias, edges, color=DIM, lw=1.6, ls="--", label="Mean bias (predicted minus true)",
+              baseline=None)
+    ax.axhline(0, color=MUTED, lw=0.8)
+
     ax.set_xscale("log")
-    ax.legend(frameon=False)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    fig.tight_layout()
-    fig.savefig(out / "test_error_by_momentum.png", dpi=220, bbox_inches="tight", pad_inches=0.02)
+    ax.set_xlim(edges[0], edges[-1])
+    ticks = [3, 5, 8, 12, 18, 31, 51, 85, 200, 739]
+    ax.set_xticks(ticks)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.set_ylim(-0.6, rmse.max() * 1.32)
+    ax.set_xlabel("Momentum p (GeV/c), eight equal-count bins")
+    ax.set_ylabel(r"Error in $\Delta p_Z / p_Z$ ($\times 10^{-4}$)")
+    ax.legend(loc="upper right")
+    tidy(ax)
+    ax.tick_params(which="both", length=0)
+    fig.savefig(out / "test_error_by_momentum.png", dpi=200, bbox_inches="tight",
+                pad_inches=0.04, facecolor="white")
     plt.close(fig)
-    return tab
 
 
 def parity_plot(y_true, y_pred, out: Path) -> None:
-    fig, ax = plt.subplots(figsize=(5.4, 5.2))
-    ax.scatter(y_true, y_pred, s=3, alpha=0.18, color=SLATE, linewidths=0, rasterized=True)
+    fig, ax = plt.subplots(figsize=(5.2, 5.0))
     lo, hi = np.quantile(y_true, [0.001, 0.999])
-    ax.plot([lo, hi], [lo, hi], color=RUST, lw=1.6, label="Perfect prediction")
-    ax.set_xlim(lo, hi)
-    ax.set_ylim(lo, hi)
-    ax.set_title("Predicted vs. True Resolution (Held-Out Test Set)", pad=16, color=INK)
-    ax.set_xlabel(r"True $\Delta p_Z / p_Z$")
-    ax.set_ylabel(r"Predicted $\Delta p_Z / p_Z$")
-    ax.legend(frameon=False, loc="upper left")
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    fig.tight_layout()
-    fig.savefig(out / "test_parity.png", dpi=220, bbox_inches="tight", pad_inches=0.02)
+    ax.scatter(y_true * 1e3, y_pred * 1e3, s=3, alpha=0.18, color=SLATE, linewidths=0,
+               rasterized=True)
+    ax.plot([lo * 1e3, hi * 1e3], [lo * 1e3, hi * 1e3], color=RUST, lw=1.6,
+            label="Perfect prediction")
+    ax.set_xlim(lo * 1e3, hi * 1e3)
+    ax.set_ylim(lo * 1e3, hi * 1e3)
+    ax.set_aspect("equal")
+    ax.set_xlabel(r"True $\Delta p_Z / p_Z$ ($\times 10^{-3}$)")
+    ax.set_ylabel(r"Predicted $\Delta p_Z / p_Z$ ($\times 10^{-3}$)")
+    ax.legend(loc="upper left")
+    tidy(ax, grid_axis="both")
+    ax.text(0.98, 0.03, f"n = {len(y_true):,} test tracks", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=8.5, color=MUTED, fontfamily=MONO)
+    fig.savefig(out / "test_parity.png", dpi=200, bbox_inches="tight", pad_inches=0.04,
+                facecolor="white")
     plt.close(fig)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default="muon_data.csv")
-    ap.add_argument("--out", default="assets")
-    ap.add_argument("--fonts", default="../../../../projects/high-energy-particle-classifier/assets/fonts")
+    ap.add_argument("--out", default=str(HERE / "assets"))
+    ap.add_argument("--replot", action="store_true",
+                    help="redraw figures only; refit just the selected model")
     args = ap.parse_args()
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    house_style(Path(args.fonts))
+    apply()
 
     print("Loading", args.data)
     df = load(Path(args.data))
     (X_tr, y_tr), (X_va, y_va), (X_te, y_te) = split(df)
     print(f"  train {len(y_tr):,} | val {len(y_va):,} | test {len(y_te):,}")
+
+    if args.replot:
+        error_plot(pd.read_csv(out / "test_error_by_momentum.csv"), out)
+        model = mlp((40, 5)).fit(X_tr, y_tr)
+        y_hat = model.predict(X_te)
+        saved = pd.read_csv(out / "test_metrics.csv").iloc[0]
+        print(f"  refit test R2 = {r2_score(y_te, y_hat):.4f} (saved {saved['R2']:.4f})")
+        parity_plot(y_te, y_hat, out)
+        return
 
     candidates = {
         "Mean baseline":    DummyRegressor(strategy="mean"),
@@ -230,8 +253,9 @@ def main() -> None:
 
     parity_plot(y_te, y_hat, out)
     p_te = X_te[:, FEATURES.index("p")]
-    bins = residuals_by_momentum(p_te, y_te, y_hat, out)
+    bins = error_table(p_te, y_te, y_hat)
     bins.to_csv(out / "test_error_by_momentum.csv", index=False)
+    error_plot(bins, out)
     print(f"\nWrote figures and CSVs to {out.resolve()}")
 
 

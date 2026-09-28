@@ -10,8 +10,8 @@ Usage (from any figure script):
     fig.savefig(path, dpi=200, bbox_inches="tight", facecolor="white")
 
 Rules the style encodes:
-- Inter for all text (the site's body face); JetBrains Mono only for small labels
-  such as n = 1,234 annotations, via fontfamily=MONO.
+- Lora for all text, including small labels (MONO is kept as a name for older
+  scripts but now also points at Lora, so every chart uses one face).
 - No chart titles inside the figure; the caption in the article carries the title.
 - White background, hairline light grid on the value axis only, no top/right spines.
 - Colours come from the site palette below. Slate is the default series colour,
@@ -34,8 +34,8 @@ GRID = "#e6e6ec"     # gridlines
 LIGHT = "#c9ced6"    # light context fills
 SEQ = [SLATE, RUST, DIM, "#a9b8ca", "#e3a397", MUTED]  # order for multi-series plots
 
-SANS = "Inter"
-MONO = "JetBrains Mono"
+SANS = "Lora"
+MONO = "Lora"
 
 
 def apply():
@@ -53,7 +53,7 @@ def apply():
         "axes.labelcolor": INK,
         "axes.labelsize": 10.5,
         "axes.titlesize": 11,
-        "axes.titleweight": "medium",
+        "axes.titleweight": "semibold",
         "axes.edgecolor": "#b9bec6",
         "axes.linewidth": 0.8,
         "axes.spines.top": False,

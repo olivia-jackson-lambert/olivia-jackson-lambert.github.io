@@ -1,6 +1,6 @@
 ---
 title: "Predicting Flight Delay Severity at Scale"
-description: "A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant deliberately giving up overall accuracy."
+description: "A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant giving up overall agreement on purpose."
 image: /project/cover_assets/thumbs/flight-delay.png
 date: 2026-08-09
 categories: [Distributed Computing, Machine Learning]
@@ -28,20 +28,19 @@ format:
 [Takeaways]{.cs-label}
 
 - The severe-weighted random forest recovered 64.4% of 2+ hour delays on the 2019 blind test.
-- Pre-registering the decision rule made that trade defensible rather than convenient.
-- Four model families stall at the same boundary, so the limit is the features, not model capacity.
+- Writing the decision rule down in advance is what made that trade defensible.
+- Four model families stall at the same boundary, which points to the features as the limit.
 :::
 :::
 :::
 
-Flight delays cost the US economy roughly \$33&nbsp;billion a year, more than half of it
-borne directly by passengers. This project predicts *how late* a domestic flight will
-arrive — not just whether it will be late — sorting each flight into four ordered tiers
-using only information available about two hours before scheduled departure.
+Flight delays cost the US economy roughly \$33&nbsp;billion a year, and passengers bear
+more than half of it. This project predicts *how late* a domestic flight will arrive. Each
+flight goes into one of four ordered tiers, using only information available about two
+hours before scheduled departure.
 
-The headline result is a negative-sounding one that I think is the most interesting part:
-the model we selected is the *worst* of our four finalists on overall agreement, and we
-selected it anyway, on purpose.
+The model we selected has the *worst* overall agreement of our four finalists. We chose it
+anyway, on purpose, and that choice is the most interesting part of the project.
 
 ```{=html}
 <div class="kpi-grid">
@@ -50,7 +49,7 @@ selected it anyway, on purpose.
     <div class="value">31.1M flights, 2015&ndash;2019</div>
   </div>
   <div class="kpi">
-    <div class="label">My Models</div>
+    <div class="label">Tree Models</div>
     <div class="value">Random forest &amp; XGBoost</div>
   </div>
   <div class="kpi">
@@ -64,41 +63,40 @@ selected it anyway, on purpose.
 ## The Framing Problem
 
 About 82% of flights arrive on time and only 2.2% are severely delayed. A model that
-predicts "on time" for everything scores 82% accuracy and is completely useless to an
-FAA operator, so accuracy was rejected as a success measure before any modeling started.
+predicts "on time" for every flight scores 82% accuracy and is useless to an FAA operator.
+We rejected accuracy as a success measure before any modeling started.
 
-Instead the team pre-registered a decision rule, which mattered more to the final outcome
-than any hyperparameter:
+Instead we pre-registered a decision rule. It shaped the final outcome more than any
+hyperparameter did.
 
-- **Gate 1** — macro F1 above the 0.224 four-class majority floor.
-- **Gate 2** — recall of at least **0.50 on the 2+ hour tier**.
-- Survivors rank on **quadratic-weighted Cohen's kappa** ($\kappa_w$), which penalizes
-  being wrong by three tiers far more than being wrong by one.
-- An asymmetric **expected cost per flight** (ECPF) breaks ties, charging double for
+- **Gate 1.** Macro F1 above the 0.224 four-class majority floor.
+- **Gate 2.** Recall of at least 0.50 on the 2+ hour tier.
+- Models that pass both gates rank on quadratic-weighted Cohen's kappa ($\kappa_w$), which
+  penalizes a three-tier miss far more than a one-tier miss.
+- An asymmetric expected cost per flight (ECPF) breaks ties. It charges double for
   under-prediction, because missing a severe delay costs more than over-preparing for one.
 
-Writing that rule down in advance is what made the final selection defensible rather than
-a post-hoc rationalization.
+Writing the rule down in advance is what let us defend the final selection later.
 
-![](assets/workflow_pipeline.png){fig-alt="End-to-end project workflow from raw OTPW data through feature engineering to modeling and evaluation" width="100%"}
+![End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.](assets/workflow_pipeline.png){fig-alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation." width="100%"}
 
-All of 2019 was held out as a blind test set (7.24M flights); 2015–2018 supported
-three-fold sliding-window cross-validation with a one-year train and three-month
-validation window per fold.
+All of 2019 was held out as a blind test set (7.24M flights). The years 2015 to 2018
+supported three-fold sliding-window cross-validation, with a one-year training window and a
+three-month validation window per fold.
 
 ## Random Forest: Buying Severe Recall
 
-My Phase 2 forest failed Gate 2 badly — 0.351 severe recall against the 0.50 floor. For
+The Phase 2 forest failed Gate 2 badly, at 0.351 severe recall against the 0.50 floor. For
 Phase 3 the data grew from one year to five (5.7M to 23.9M training flights) and the
-feature set from 41 to 73 columns. That alone wasn't enough, so I added a **severe-class
-weight multiplier** on top of standard inverse-frequency weighting.
+feature set from 41 to 73 columns. That was not enough on its own, so we added a
+severe-class weight multiplier on top of standard inverse-frequency weighting.
 
-![](assets/rf_pipeline_v2.png){fig-alt="Random forest pipeline block diagram" fig-align="center" width="85%"}
+![Random forest pipeline. A shared preprocessing sub-pipeline feeds a 200-tree, depth-12 forest, tuned in two stages.](assets/rf_pipeline_v2.png){fig-alt="Block diagram. A 73-feature checkpoint passes through a median imputer for 66 numeric columns, a string indexer for 7 categoricals and a vector assembler, then into a random forest classifier with 200 trees at depth 12, evaluated on the 2019 blind test. Below, stage 1 is a hyperparameter search in which 6 of 18 configurations completed across 3 folds, and stage 2 compares severe-class weights of 1.0, 1.2 and 1.5 on the full 2015 to 2018 training set of 23.9M flights." fig-align="center" width="85%"}
 
 ### Staged Search
 
-I ran selection in two stages rather than one large grid, because the weight axis and the
-structural axis interact and a single grid would have been both slower and harder to read.
+We ran selection in two stages instead of one large grid. The weight and the tree structure
+interact, and a single grid would have been slower and harder to read.
 
 **Stage 1** fixed the multiplier at 1.5 and varied tree structure. Six of eighteen planned
 configurations completed before an executor crash halted the deeper trees, so `maxDepth`
@@ -113,16 +111,17 @@ configurations completed before an executor crash halted the deeper trees, so `m
 | 5 | 0.5 | 10 | 0.251 | 0.428 | 0.565 |
 | 6 | 0.5 | 20 | 0.250 | 0.427 | 0.568 |
 
-`sqrt` feature subsetting won on both $\kappa_w$ and severe recall, and was also the
-fastest to train. Restricting per-split feature exposure seems to force trees onto the
-small number of high-signal propagation features that actually distinguish severe delays,
-instead of diluting splits across weak weather and calendar columns. Leaf size barely
-mattered: varying `minInstancesPerNode` between 10 and 20 moved every metric by less
-than 0.001, so the effective regularization was coming from bagging and feature
-subsampling, not from leaf constraints.
+`sqrt` feature subsetting won on both $\kappa_w$ and severe recall, and it trained fastest.
+Our reading is that limiting the features each split can see pushes the trees onto the few
+high-signal propagation features that separate severe delays. With more features per split,
+the splits spread across weak weather and calendar columns. Leaf size barely mattered.
+Moving `minInstancesPerNode` between 10 and 20 changed every metric by 0.003 or less, so
+the regularization came from bagging and feature subsampling rather than leaf constraints.
 
-**Stage 2** re-cross-validated the winning structure across severe-class multipliers. The
-result is cleanly monotonic — and it is the whole story of the project:
+![Stage 1 grid on validation folds. Every completed configuration clears Gate 2, and `sqrt` subsetting sits clearly ahead on both axes.](assets/rf_cv_tradeoff.png){fig-alt="Scatter plot of validation severe recall against validation quadratic-weighted kappa for the six completed random forest configurations. The two sqrt points sit at the top right, near kappa 0.257 and recall 0.585 to 0.588, with the selected sqrt, minInstances 10 configuration labeled. The onethird and 0.5 points cluster at the left, near kappa 0.250 and recall 0.565 to 0.571. A dashed line marks the Gate 2 floor at 0.50 recall, below every point." fig-align="center" width="85%"}
+
+**Stage 2** re-ran cross-validation on the winning structure across severe-class
+multipliers. The result is cleanly monotonic, and it tells the story of the whole project.
 
 | $m_3$ | Val $\kappa_w$ | Val macro F1 | Val severe recall | Gate 2 |
 |:--:|--:|--:|--:|:--:|
@@ -130,117 +129,113 @@ result is cleanly monotonic — and it is the whole story of the project:
 | 1.2 | 0.341 | 0.434 | 0.485 | ✗ |
 | **1.5** ★ | 0.257 | 0.416 | **0.585** | **✓** |
 
-![](assets/rf_cv_tradeoff.png){fig-alt="Cross-validated trade-off between ordinal agreement and severe recall across severe-class multipliers" width="100%"}
-
 ### Why Cross-Validating the Weight Mattered
 
-This is the part I'd defend hardest. On blind-test numbers alone, $m_3$=1.2 *looks* like
-it passes Gate 2 — severe recall 0.529 — at much better ordinal agreement than 1.5
-($\kappa_w$ 0.336 against 0.241). It would have been the obvious pick.
+On blind-test numbers alone, $m_3$=1.2 *looks* like it passes Gate 2. Its test severe
+recall is 0.529, with much better ordinal agreement than 1.5 ($\kappa_w$ 0.336 against
+0.241). It would have been the obvious pick.
 
-Cross-validation says otherwise: at $m_3$=1.2 the validation severe recall is 0.485, below
-the floor. Validation runs consistently harder than the blind test across all three
-multipliers, by 0.03 to 0.06 on severe recall, because each fold validates on a
-first-quarter window where delays are heavier and more weather-driven than a full year.
+Cross-validation disagrees. At $m_3$=1.2 the validation severe recall is 0.485, below the
+floor. Validation runs harder than the blind test at all three multipliers, by 0.03 to 0.06
+on severe recall. Each fold validates on a first-quarter window, where delays are heavier
+and more weather-driven than across a full year.
 
-Selecting 1.2 on test evidence would have shipped a configuration that doesn't reliably
-meet the operational floor on held-out data — exactly the failure a blind test exists to
-prevent.
+Choosing 1.2 on test evidence would have shipped a configuration that does not reliably
+meet the operational floor on held-out data. A blind test exists to prevent exactly that.
 
 ## The Frontier
 
 The selected forest (200 trees, depth 12, `sqrt` subsetting, 1.5× severe weight) was the
-only model in the entire project to clear Gate 2 on the blind test, at **64.4% severe
-recall**. It also has the worst $\kappa_w$ and the highest expected cost of any finalist.
+only model in the project to clear Gate 2 on the blind test, at **64.4% severe recall**. It
+also has the worst $\kappa_w$ and the highest expected cost of any finalist.
 
 | Blind test (2019) | $\kappa_w$ | Macro F1 | Severe recall | ECPF | Gate 2 |
 |---|--:|--:|--:|--:|:--:|
 | Multinomial LR (hybrid down/up) | 0.438 | 0.394 | 0.418 | 0.848 | Fail |
 | MLP (oversample to 25%) | **0.490** | **0.493** | 0.399 | **0.715** | Fail |
-| XGBoost (unboosted) | 0.406 | 0.455 | 0.464 | 0.877 | Fail |
-| **Random forest (1.5× severe boost)** ★ | 0.241 | 0.402 | **0.644** | 1.743 | **Pass** |
+| XGBoost (no severe weight) | 0.406 | 0.455 | 0.464 | 0.877 | Fail |
+| **Random forest (1.5× severe weight)** ★ | 0.241 | 0.402 | **0.644** | 1.743 | **Pass** |
 
-The severe boost is not free under our own cost function. It recovers two-thirds of the
-2+ hour tier by over-predicting severity across a large volume of on-time flights, and the
-asymmetric cost matrix charges for every one of those. The multiplier is best understood
-as an **operating-point control**, not an improvement in predictive quality.
+The severe weight has a price under our own cost function. The forest recovers nearly
+two-thirds of the 2+ hour tier by predicting severe delays for a large number of on-time
+flights, and the asymmetric cost matrix charges for each one. The multiplier works as an
+operating-point control. It does not make the model better at prediction overall.
 
-What makes this a genuine frontier rather than a tuning failure is that it reproduces
-across model families. The MLP's full-rebalance point reaches 0.489 severe recall but
-collapses to $\kappa_w$ 0.339; the forest traces the same curve across its three
-multipliers. Four different model families all plateau at the same boundary.
+The same trade-off shows up across model families, which is why we read it as a frontier
+and not a tuning failure. The MLP's full-rebalance setting reaches 0.489 severe recall, but
+its $\kappa_w$ drops to 0.339. The forest traces the same curve across its three
+multipliers. Four model families plateau at the same boundary.
 
-![](assets/rf_confusion_matrix.png){fig-alt="Confusion matrix for the selected severe-boosted random forest on the 2019 blind test" fig-align="center" width="80%"}
+![Selected random forest on the 2019 blind test. Each cell shows the share of flights in the true tier (row) that landed in the predicted tier (column), with the flight count below. The outlined cell is severe recall.](assets/rf_confusion_matrix.png){fig-alt="Four by four confusion matrix with true tiers as rows and predicted tiers as columns: on time, 15 to 59 minutes, 1 to 2 hours, 2+ hours. The diagonal reads 72.5%, 31.5%, 29.5% and 64.4%. The outlined 2+ hour cell holds 125K flights. The top-right cell shows 16.6% of on-time flights, about 972K, predicted as severe. The two middle tiers spread mostly into the on-time and 2+ hour columns." fig-align="center" width="80%"}
 
 ## Gradient-Boosted Trees, and What Went Wrong
 
-I ran XGBoost expecting it to beat the forest. It didn't get a fair trial.
+We expected XGBoost to beat the forest. It never got a fair trial.
 
-The boosted configuration — the one that actually cleared Gate 2 on validation, at 0.534
-severe recall — could never be trained to completion on the full five-year window. Runs
-died to driver out-of-memory failures, and only four of eight planned configurations
-finished. The XGBoost numbers reported above therefore come from a **reduced, unboosted
-substitute**, which is not the model I'd want judged.
+The severe-weighted XGBoost configuration cleared Gate 2 on validation, at 0.534 severe
+recall. It could never be trained to completion on the full training window. Runs died on
+driver out-of-memory failures, and the grid stopped after four of eight planned
+configurations. The XGBoost row above therefore comes from a reduced substitute with no
+severe weight. It is not the model we would want judged.
 
-![](assets/xgb_pipelinev2.png){fig-alt="Gradient-boosted trees pipeline block diagram" fig-align="center" width="85%"}
+![XGBoost pipeline. It shares the forest's preprocessing, but the selected configuration never finished, so a reduced model was trained instead.](assets/xgb_pipelinev2.png){fig-alt="Block diagram matching the random forest pipeline, with a SparkXGB classifier on GPU in place of the forest. Stage 1 shows 4 of 8 configurations completed across 3 folds with a severe weight of 1.5. A dashed arrow notes that the selected configuration did not complete and a reduced model with no severe weight was trained on the full 2015 to 2018 data instead." fig-align="center" width="85%"}
 
-The honest read is that XGBoost remains the most promising unexplored direction in the
-project: the validation evidence suggests a boosted configuration could hold Gate 2 at
-higher $\kappa_w$ than the forest, which would dominate our selected model outright. It
-just needs more resilient compute than we had.
+XGBoost remains the most promising unexplored direction. The validation evidence suggests
+a severe-weighted configuration could hold Gate 2 at higher $\kappa_w$ than the forest,
+which would beat our selected model outright. It needs more resilient compute than we had.
 
-Dealing with that fragility shaped how I ran the searches. Because executors died
-mid-grid, I built checkpointing and failure retries into the search loop so that a crash
-cost one configuration rather than the entire run. That's what let the random forest grid
-produce six usable points instead of zero.
+That fragility shaped how we ran every search. Executors died mid-grid, so we checkpointed
+each completed configuration and wrapped fits in retry logic. A crash then cost one
+configuration instead of the whole run. That is why the random forest grid produced six
+usable points instead of none.
 
-![](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Confusion matrices across the four tree model configurations" width="100%"}
+![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices side by side for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 35% to 45% down to about 30%." width="100%"}
 
 ## The Ceiling Is in the Features
 
-Feature importance is overwhelmingly delay propagation. `inbound_delay` alone accounts for
-41.3% of total Gini importance, `tail_cum_delay` 22.4%, and `origin_cum_delay_rate` 8.5%
-— together about 72% of the model. Weather contributes roughly 3%, entering mostly through
+Feature importance is dominated by delay propagation. `inbound_delay` alone accounts for
+41.3% of total Gini importance, `tail_cum_delay` for 22.4% and `origin_cum_delay_rate` for
+8.5%, about 72% of the model together. Weather contributes roughly 3%, mostly through
 precipitation.
 
-![](assets/tree_models_feature_importance_4panel.png){fig-alt="Feature importance across tree model configurations, dominated by delay propagation features" width="100%"}
+![Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.](assets/tree_models_feature_importance_4panel.png){fig-alt="Four horizontal bar charts of feature importance in percent, one per tree model. In all three random forests, inbound_delay_imp leads at about 41%, followed by tail_cum_delay_imp at about 22% and origin_cum_delay_rate_imp at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by tail_cum_delay_missing_imp at about 15% and inbound_delay_imp at about 9%." width="100%"}
 
-Per-class test recalls are 0.725 / 0.315 / 0.295 / 0.644 across the four tiers. The middle
-tiers sit near 30% in *every* configuration tested, and the confusion matrix shows those
-flights being absorbed into the adjacent on-time and severe tiers rather than confused
-with each other. No increase in trees, depth or weighting moved them.
+Per-class test recalls for the selected forest are 0.725, 0.315, 0.295 and 0.644 across the
+four tiers. The middle tiers are the weak spot in every configuration. None of the four
+tree models gets them above 46% recall, and they fall to about 30% as the severe weight
+rises. The confusion matrix shows those flights spreading into the on-time and severe tiers
+more than into each other. Extra severe weight only pulls more of them into the severe
+tier.
 
-The most plausible explanation is that a 20-minute delay and a 90-minute delay present
-near-identical signatures two hours before departure. If that's right, the binding
-constraint is the feature set — specifically the thin weather and network signal available
-at that horizon — and not model capacity. That's a useful thing to learn, because it
-redirects the next round of effort away from bigger models.
+The most plausible explanation is that a 20-minute delay and a 90-minute delay look almost
+identical two hours before departure. If so, the binding constraint is the feature set, in
+particular the thin weather and network signal available at that horizon. Model capacity is
+not the limit. That is useful to know, because it points the next round of work away from
+bigger models.
 
 ## Limitations
 
 **The search is incomplete.** Six of eighteen random forest grid points and four of eight
 XGBoost configurations finished. All six surviving forest points sit at `maxDepth` 12, so
-the selected model may be a local rather than global optimum.
+the selected model may be a local optimum.
 
-**Generalization is strong, which is itself a signal.** Train-to-test $\kappa_w$ gaps are
-0.005, 0.001 and 0.001 across the three multipliers; for the selected model train and test
-agree to three decimal places (0.242 vs 0.241). The model is underfitting, not overfitting
-— more evidence that the constraint is signal rather than variance.
+**The model underfits.** Train-to-test $\kappa_w$ gaps are 0.005, 0.001 and 0.001 across
+the three multipliers. For the selected model, train and test agree to three decimal places
+(0.242 and 0.241). That is further evidence that the constraint is signal, not variance.
 
-**Phase 3 is not uniformly better than Phase 2.** Severe recall nearly doubled (0.351 to
-0.644) while $\kappa_w$ fell from 0.426 to 0.241. It is better on the criterion the
-stakeholder called non-negotiable and worse on overall agreement. Both halves of that
-sentence need saying.
+**Phase 3 is not better than Phase 2 on every measure.** Severe recall nearly doubled
+(0.351 to 0.644) while $\kappa_w$ fell from 0.426 to 0.241. The model is better on the
+criterion the stakeholder called non-negotiable and worse on overall agreement.
 
-## What I'd Do Next
+## Next Steps
 
-The immediate lever is a **cost-sensitive ensemble** — a cost-weighted blend of the
-forest's severe sensitivity with the MLP's tier ranking — to recover $\kappa_w$ without
-giving up the Gate 2 pass. Completing the forest depth grid and training the boosted
-XGBoost configuration on more resilient compute would settle whether a boosted model can
-hold the gate at higher agreement. Longer term, the feature ceiling is best attacked with
-richer weather signal — destination-airport conditions and multi-hour trajectories rather
-than a point-in-time snapshot — instead of additional model capacity.
+The immediate lever is a cost-sensitive ensemble. A cost-weighted blend of the forest's
+severe sensitivity and the MLP's tier ranking could recover $\kappa_w$ without giving up
+the Gate 2 pass. Finishing the forest depth grid and training the severe-weighted XGBoost
+configuration on more resilient compute would settle whether a boosted model can hold the
+gate at higher agreement. Longer term, the feature ceiling calls for richer weather signal,
+such as destination-airport conditions and multi-hour trajectories in place of a single
+snapshot, more than for extra model capacity.
 
 ## References
 

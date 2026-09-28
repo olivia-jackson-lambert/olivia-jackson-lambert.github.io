@@ -5,6 +5,9 @@ page-layout: custom
 comments: false
 toc: false
 body-classes: home
+description-meta: "Page not found."
+include-in-header:
+  text: '<meta name="robots" content="noindex">'
 ---
 
 ```{=html}
