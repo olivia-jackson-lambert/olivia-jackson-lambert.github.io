@@ -2,6 +2,7 @@ project:
   type: website
   resources:
     - robots.txt
+    - assets/headshot-bw.jpg
   post-render:
     - scripts/sync-resume-pdf.sh
     - scripts/optimize-images.sh
