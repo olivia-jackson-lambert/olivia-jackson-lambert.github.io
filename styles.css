@@ -800,3 +800,19 @@ main.content .quarto-figure img, main.content figure img { cursor: zoom-in; }
 @media (min-width: 992px) {
   body:not(.home) #title-block-header { grid-column: body-content-start / body-content-end !important; }
 }
+/* the old "centred reading column" rules (max-width + auto margins + padding on .content)
+   fought the frame above: the article spanned the whole screen and was centred in it */
+@media (min-width: 992px) {
+  body:not(.home) #quarto-content.page-layout-article > main.content {
+    grid-column: body-content-start / page-end !important;
+    max-width: none; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;
+  }
+  /* main is itself a grid (it carries the margin captions); give it the same columns */
+  body:not(.home) #quarto-content.page-layout-article > main.content.page-columns {
+    grid-template-columns:
+      [screen-start screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 740px)
+      [body-content-end] 64px
+      [body-end body-end-outset] 260px
+      [page-end-inset page-end screen-end-inset screen-end] !important;
+  }
+}
