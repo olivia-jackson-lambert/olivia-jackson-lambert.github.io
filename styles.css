@@ -420,7 +420,7 @@ body {
   font-size: clamp(44px, 6.4vw, 92px); line-height: 1.02; letter-spacing: -.012em;
   margin: 0; text-wrap: balance;
 }
-.op-display em { font-style: italic; font-weight: 700; }
+.op-display em { font-style: italic; font-weight: 400; }
 .op-lede { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.6; color: var(--op-soft); max-width: 44ch; margin: 0; }
 /* Photos are absolutely placed so they take the height of the text beside them
    rather than setting it from their own proportions. */
