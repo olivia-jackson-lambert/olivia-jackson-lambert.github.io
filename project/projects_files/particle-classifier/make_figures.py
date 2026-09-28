@@ -204,7 +204,7 @@ def curves(hist, prefix, marks=None):
         if marks:
             ax.legend(loc="lower left" if metric == "cat_acc" else "center right")
         else:
-            ax.legend(loc="lower right" if metric == "cat_acc" else "upper right")
+            ax.legend(loc="lower right" if metric == "cat_acc" else "upper left")
         tidy(ax)
         save(fig, f"{prefix}_{fname}.png")
 
@@ -241,7 +241,7 @@ def example_predictions(X, test_idx, y_true, y_pred):
         show_plane(ax, planes(X, test_idx[k])[0])
         ok = y_true[k] == y_pred[k]
         t = NAMES[y_true[k]] if ok else f"{NAMES[y_true[k]]}, called {NAMES[y_pred[k]]}"
-        ax.set_title(t, fontsize=9.5, color=INK if ok else RUST,
+        ax.set_title(t, fontsize=9.5 if ok else 8.8, color=INK if ok else RUST,
                      fontweight="normal" if ok else "semibold", pad=5)
         if not ok:
             for s in ax.spines.values():

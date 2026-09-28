@@ -343,11 +343,11 @@ def fig_architecture(out: Path) -> None:
         color=PALETTE[2], title_size=10.0, name=NAME)
 
     box(ax, xl, y_head, w, h_head, "Classification Head",
-        [f"Linear {HIDDEN} \u2192 {BOTTLENECK}", "ReLU, dropout 0.1",
-         f"Linear {BOTTLENECK} \u2192 {N_CLASSES}"],
+        [f"Linear {HIDDEN} to {BOTTLENECK}", "ReLU, dropout 0.1",
+         f"Linear {BOTTLENECK} to {N_CLASSES}"],
         color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
     box(ax, xr, y_head, w, h_head, "NER Head",
-        [f"Linear {HIDDEN} \u2192 {N_NER}", "applied at every token"],
+        [f"Linear {HIDDEN} to {N_NER}", "applied at every token"],
         color=SLATE, fill=0.16, title_size=10.0, detail_size=8.4, name=NAME)
 
     box(ax, xl, y_out, w, h_out, "Classification Logits",

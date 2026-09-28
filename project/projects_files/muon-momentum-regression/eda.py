@@ -74,6 +74,9 @@ def main() -> None:
 
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     apply()
+    # Math labels in the same serif face as the rest of the figure.
+    plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.rm": "Lora",
+                         "mathtext.it": "Lora", "mathtext.bf": "Lora:semibold"})
 
     cols = ["Index", "ep", "eta", "p", "phi", "pol", "pt", "qp", "tx", "ty", "zV"]
     df = pd.read_csv(args.data, comment="#", names=cols, skiprows=1)

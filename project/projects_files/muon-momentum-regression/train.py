@@ -203,6 +203,9 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     apply()
+    # Math labels in the same serif face as the rest of the figure.
+    plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.rm": "Lora",
+                         "mathtext.it": "Lora", "mathtext.bf": "Lora:semibold"})
 
     print("Loading", args.data)
     df = load(Path(args.data))

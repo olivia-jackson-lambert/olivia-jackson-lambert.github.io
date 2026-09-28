@@ -144,7 +144,8 @@ def main():
     tidy(ax, grid_axis="both")
     ax.legend(loc="lower right")
     ax.text(0.02, 0.04, f"Spearman rank correlation {rho:+.2f}, p = {pval:.2f}",
-            transform=ax.transAxes, fontsize=9, color=MUTED)
+            transform=ax.transAxes, fontsize=9, color=MUTED,
+            bbox=dict(facecolor="white", edgecolor="none", pad=1.5))
     fig.tight_layout()
     save(fig, "f1_vs_class_size.png")
 
