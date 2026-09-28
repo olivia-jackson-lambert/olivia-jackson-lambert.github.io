@@ -409,15 +409,17 @@ body {
   text-transform: uppercase; color: var(--op-muted);
 }
 
-/* hero: the photo takes the height of the text; the column width keeps it near 4:5 */
+/* hero: a square photo exactly one Work column wide, on the same 32px gutter, so the
+   text starts where the second tile does. The headline size is fitted so the text
+   runs the full height of the photo (3 lines + 3 lines at every desktop width). */
 .op-hero {
-  display: grid; grid-template-columns: clamp(240px, 22vw, 310px) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 72px); align-items: stretch;
+  display: grid; grid-template-columns: calc((100% - 64px) / 3) minmax(0, 1fr);
+  column-gap: 32px; row-gap: 28px; align-items: stretch;
 }
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
 .op-display {
   font-family: var(--font-display); font-weight: 500;
-  font-size: clamp(44px, 6vw, 84px); line-height: 1.02; letter-spacing: -.012em;
+  font-size: clamp(44px, calc(10vw - 43px), 81px); line-height: 1.02; letter-spacing: -.012em;
   margin: 0; text-wrap: balance;
 }
 .op-display em { font-style: italic; font-weight: 400; }
@@ -426,7 +428,8 @@ body {
    rather than setting it from their own proportions. */
 .op-photo { position: relative; overflow: hidden; min-height: 280px; }
 .op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.op-headshot img { object-position: 50% 28%; }
+.op-headshot { aspect-ratio: 1 / 1; min-height: 0; align-self: start; }
+.op-headshot img { object-position: 50% 30%; }
 
 /* section heads: more air under the rule */
 .op-section { scroll-margin-top: 88px; display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
@@ -537,13 +540,14 @@ body {
 }
 @media (max-width: 900px) {
   .op-hero { grid-template-columns: 1fr; }
-  .op-headshot { min-height: 0; aspect-ratio: 4 / 5; width: 100%; max-width: 360px; order: -1; }
+  .op-headshot { width: 100%; max-width: calc((100% - 32px) / 2); order: -1; }
   .op-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .op-about { grid-template-columns: 1fr; }
   .op-cbtns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .op-about-photo { min-height: 0; aspect-ratio: 3 / 4; width: 100%; max-width: 420px; }
 }
 @media (max-width: 600px) {
+  .op-headshot { max-width: 100%; }
   .op-grid, .op-values, .op-facts { grid-template-columns: 1fr; }
   .op-head { flex-wrap: wrap; }
   .op-timeline { grid-template-columns: 1fr; }
