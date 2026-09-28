@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-04-18">
-<meta name="description" content="A three-stage ResNet50 pipeline over 25 Martian image classes, where the held-out predictions show the difficulty is visual confusability rather than class imbalance.">
+<meta name="description" content="A three-stage ResNet-50 pipeline over 25 Martian image classes. The held-out predictions show the hard part is classes that look alike, and class imbalance matters far less.">
 
-<title>Classifying Curiosity Rover Images</title>
+<title>Classifying Curiosity Rover Images · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -97,9 +99,20 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Classifying Curiosity Rover Images">
+<meta property="og:description" content="A three-stage ResNet-50 pipeline over 25 Martian image classes. The held-out predictions show the hard part is classes that look alike, and class imbalance matters far less.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/mars-terrain.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="Classifying Curiosity Rover Images">
+<meta name="twitter:description" content="A three-stage ResNet-50 pipeline over 25 Martian image classes. The held-out predictions show the hard part is classes that look alike, and class imbalance matters far less.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/mars-terrain.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -290,9 +303,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -306,9 +318,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -322,23 +338,34 @@ ul.task-list li input[type="checkbox"] {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -358,8 +385,31 @@ ul.task-list li input[type="checkbox"] {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -373,11 +423,54 @@ ul.task-list li input[type="checkbox"] {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -387,6 +480,13 @@ ul.task-list li input[type="checkbox"] {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -408,7 +508,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    A three-stage ResNet50 pipeline over 25 Martian image classes, where the held-out predictions show the difficulty is visual confusability rather than class imbalance.
+    A three-stage ResNet-50 pipeline over 25 Martian image classes. The held-out predictions show the hard part is classes that look alike, and class imbalance matters far less.
   </div>
 </div>
 
@@ -436,40 +536,45 @@ ul.task-list li input[type="checkbox"] {
 <div class="cs-keys">
 <div class="cs-key">
 <p><span class="cs-label">The Decision</span></p>
-<p><span class="cs-decision">Judge the classifier on macro-F1 across rare classes rather than on headline accuracy.</span></p>
+<p><span class="cs-decision">Judge the classifier on macro-F1 across rare classes instead of headline accuracy.</span></p>
 </div>
 <div class="cs-key">
 <p><span class="cs-label">Takeaways</span></p>
 <ul>
 <li>Class weighting took the final model to 76.5% accuracy and 0.666 macro-F1 on held-out images.</li>
-<li>Performance tracks how distinctive a class looks, not how many examples it has.</li>
-<li>Under simulated dust on the optics, accuracy falls by only 4.2 points.</li>
+<li>Performance tracks how distinctive a class looks. Class size has no measurable effect.</li>
+<li>Under simulated dust on the optics, accuracy falls by 4.2 points.</li>
 </ul>
 </div>
 </div>
 </div>
-<p>Autonomous navigation on Mars depends on the rover recognising what it is looking at. This project trains a three-stage transfer learning pipeline on ResNet-50 to classify images from Curiosity’s onboard cameras across 25 label classes, covering surface features such as ground and horizon, rover instruments such as the drill and scoop, and the calibration targets each instrument carries.</p>
-<p>The project’s own headline is that overall accuracy is a misleading metric for planetary data, and that holds up. Working back through the held-out predictions surfaced two further things the report does not claim, and both are in the write-up below.</p>
+<p>Autonomous navigation on Mars depends on the rover recognising what it sees. We trained a three-stage transfer learning pipeline on ResNet-50 to classify images from Curiosity’s onboard cameras across 25 label classes. They cover surface features such as ground and horizon, instruments such as the drill and scoop, and the calibration targets each instrument carries.</p>
+<p>Our central claim was that overall accuracy is a misleading metric for planetary data. That holds up. Going back through the held-out predictions turned up two more findings the original report does not make, and both are below.</p>
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/mars-project">github.com/olivia-jackson-lambert/mars-project</a></p>
-<section id="the-data" class="level1">
+<section id="the-data" class="level1 page-columns page-full">
 <h1>The Data</h1>
-<p>The dataset was collected by Stanboli and Wagstaff at NASA in 2017 from three of Curiosity’s onboard cameras. It contains 6,691 labelled images. Aspect ratios are not standardised, running as wide as 3.0, so images are padded by reflection to a square 256 by 256 rather than stretched, which would distort the instrument geometry the model needs to read.</p>
+<p>Stanboli and Wagstaff at NASA collected the dataset in 2017 from three of Curiosity’s cameras. It has 6,691 labelled images. Aspect ratios vary, up to 3.0, so we padded each image by reflection to a 256 by 256 square. Stretching would have distorted the instrument shapes the model needs to read.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/class_examples.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:92.0%" alt="A grid of real Curiosity camera images, one per class, labelled with the class name"></p>
+<p><a href="assets/class_examples.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="One example image per class from the held-out test set."><img loading="lazy" decoding="async" width="1860" height="1643" src="assets/class_examples.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:92.0%" alt="A grid of 19 real Curiosity camera images, one per class, each labelled with its class name. Calibration targets show clean circles and checkerboards; instruments such as the drill, DRT, inlet and scoop are grey metal against orange sand."></a></p>
 </figure>
 </div>
-<p>Three classes have no examples at all in the held-out test split: Drill Holes, Sun and Turret. That detail turns out to matter for how the headline score is computed, and it is picked up further down. Three more, APXS, Portion Box and Portion Tube Opening, have no image file in the archive, so the grid above shows 19 of the 22 classes the test set measures.</p>
-<p>The grid is worth looking at before reading the results, because the difficulty of the task is visible in it. The calibration targets, with their circles, checkerboards and machined geometry, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at similar scale.</p>
+<figcaption class="margin-caption">One example image per class from the held-out test set.</figcaption>
+</figure>
+</div>
+<p>Three classes have no examples in the held-out test split: Drill Holes, Sun and Turret. This affects how the headline score is computed, covered further down. Three more (APXS, Portion Box and Portion Tube Opening) have no image file in the archive, so the grid shows 19 of the 22 classes the test set measures.</p>
+<p>The grid shows why the task is hard. The calibration targets, with their circles, checkerboards and machined edges, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at a similar scale.</p>
 </section>
 <section id="the-pipeline" class="level1">
 <h1>The Pipeline</h1>
-<p>Three stages, each one loosening the previous:</p>
-<p><strong>Stage 1, frozen backbone.</strong> ResNet-50 pretrained on ImageNet with all convolutional weights held fixed and only a fresh classifier head trained. This establishes how far generic visual features get on Martian imagery with no adaptation at all.</p>
-<p><strong>Stage 2, partial unfreezing.</strong> The final convolutional block, <code>conv5</code>, is unfrozen so the network can adapt its highest-level features to Martian textures. Validation accuracy climbs sharply, to 0.968.</p>
-<p><strong>Stage 3, class weighting.</strong> The same architecture as Stage 2, but the loss is weighted by inverse class frequency and the selection metric switches from accuracy to macro-F1. This is the stage that stops the model quietly ignoring the rare classes.</p>
+<p>Each stage loosens the one before.</p>
+<p><strong>Stage 1, frozen backbone.</strong> ResNet-50, pretrained on ImageNet, with every convolutional weight fixed and only a new classifier head trained. This shows how far generic visual features get on Martian imagery with no adaptation.</p>
+<p><strong>Stage 2, partial unfreezing.</strong> We unfroze the final convolutional block, <code>conv5</code>, so the network could adapt its highest-level features to Martian textures. Validation accuracy rose sharply, to 0.968.</p>
+<p><strong>Stage 3, class weighting.</strong> The same architecture as Stage 2, with the loss weighted by inverse class frequency and model selection switched from accuracy to macro-F1. This stage stops the model from quietly ignoring rare classes.</p>
 </section>
-<section id="results" class="level1">
+<section id="results" class="level1 page-columns page-full">
 <h1>Results</h1>
 <table class="caption-top table">
 <thead>
@@ -481,8 +586,8 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>Majority-class reference</td>
-<td style="text-align: right;">0.6255</td>
+<td>Majority-class reference (always predict Wheel)</td>
+<td style="text-align: right;">0.2299</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
@@ -497,27 +602,37 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Stage 2’s test figures were never printed in the notebooks, only its validation accuracy of 0.968, so it is absent from the table rather than estimated.</p>
+<p>The notebooks never printed Stage 2’s test figures, only its 0.968 validation accuracy, so we left it out of the table instead of estimating it.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Normalized confusion matrix for the Stage 3 model across the 22 classes present in the test set"></p>
+<p><a href="assets/confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Stage 3 confusion matrix on held-out images, normalised by true class."><img loading="lazy" decoding="async" width="1756" height="1519" src="assets/confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Confusion matrix for the Stage 3 model across the 22 classes present in the test set, each row normalised to sum to one. Most weight sits on the diagonal. DRT Side is often predicted as Scoop, and DRT Front and Inlet spread across several instrument classes."></a></p>
 </figure>
 </div>
-<p>The gap between Stage 2’s 0.968 validation accuracy and Stage 3’s 0.765 on test is the whole argument of the project in two numbers. Stage 2 looked excellent because it had memorised the classes with very few examples. Measuring with macro-F1 instead of accuracy is what exposed that.</p>
+<figcaption class="margin-caption">Stage 3 confusion matrix on held-out images, normalised by true class.</figcaption>
+</figure>
+</div>
+<p>Stage 2’s 0.968 was measured on validation data and chosen on accuracy. A model selected that way can look excellent while doing badly on the rarest classes. Stage 3 selects on macro-F1, which weights every class equally, and its 0.765 test accuracy is the more honest number.</p>
 </section>
-<section id="where-the-headline-number-comes-from" class="level1">
+<section id="where-the-headline-number-comes-from" class="level1 page-columns page-full">
 <h1>Where the Headline Number Comes From</h1>
-<p>Macro-F1 averages the per-class F1 scores, which means the set of classes it averages over is a choice, and here that choice moves the number substantially.</p>
+<p>Macro-F1 is the average of per-class F1 scores. Which classes go into that average is a choice, and here it moves the result a lot.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/macro_f1_denominator.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Bar chart comparing macro-F1 computed over 22, 24 and 25 classes"></p>
+<p><a href="assets/macro_f1_denominator.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="The same Stage 3 predictions scored with three different sets of classes."><img loading="lazy" decoding="async" width="1361" height="764" src="assets/macro_f1_denominator.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Bar chart of Stage 3 test macro-F1 under three class sets: 0.7261 over the 22 classes present in test, 0.6656 over 24 classes as reported, and 0.6389 over all 25 label indices."></a></p>
 </figure>
 </div>
-<p>Drill Holes, Sun and Turret have zero test examples. Two of the three are nonetheless predicted occasionally, which pulls them into scikit-learn’s default label set, where each scores an F1 of exactly zero and drags the mean down.</p>
+<figcaption class="margin-caption">The same Stage 3 predictions scored with three different sets of classes.</figcaption>
+</figure>
+</div>
+<p>Drill Holes, Sun and Turret have no test examples. The model still predicts two of them occasionally, which pulls them into scikit-learn’s default label set. Each then scores an F1 of exactly zero and drags the mean down.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Denominator</th>
+<th>Classes averaged</th>
 <th style="text-align: right;">Macro-F1</th>
 </tr>
 </thead>
@@ -536,18 +651,23 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>The model is identical in all three rows. Reporting 0.7261 would be the more accurate description of performance on classes the test set can actually measure, and the reported 0.6656 understates it by close to 0.09. Neither is wrong, but the denominator should be stated alongside the number, and in the report it is not.</p>
+<p>The model is identical in all three rows. The figure of 0.7261 better describes performance on the classes the test set can measure, and the reported 0.6656 understates it by about 0.06. Either number is defensible if the class set is stated next to it. The original report did not state it.</p>
 </section>
-<section id="class-size-is-not-the-problem" class="level1">
+<section id="class-size-is-not-the-problem" class="level1 page-columns page-full">
 <h1>Class Size Is Not the Problem</h1>
-<p>The project frames the difficulty as class imbalance. The held-out predictions do not support that.</p>
+<p>We framed the difficulty as class imbalance. The held-out predictions do not support that.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/f1_vs_class_size.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Scatter of per-class F1 against test set class size on a log scale, showing no relationship"></p>
+<p><a href="assets/f1_vs_class_size.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Per-class F1 against the number of test images in the class."><img loading="lazy" decoding="async" width="1681" height="1043" src="assets/f1_vs_class_size.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Scatter of per-class F1 score against test set class size on a log scale. Points show no trend. The four calibration targets, marked as red diamonds, all score above 0.9, while DRT Front, Inlet and Scoop score near 0.2 or below."></a></p>
 </figure>
 </div>
-<p>Across the 22 classes with test examples, the rank correlation between class size and F1 is <strong>+0.15 with a p-value of 0.50</strong>, which is no relationship at all. DRT Front has 60 test examples, more than all but five other classes, and scores an F1 of 0.125. APXS Cal Target has 14 and scores a perfect 1.000.</p>
-<p>The split that does predict performance is what the object looks like:</p>
+<figcaption class="margin-caption">Per-class F1 against the number of test images in the class.</figcaption>
+</figure>
+</div>
+<p>Across the 22 classes with test examples, the rank correlation between class size and F1 is +0.15 (p = 0.50). There is no relationship. DRT Front has 60 test examples, more than all but five other classes, and scores an F1 of 0.125. APXS Cal Target has 14 and scores a perfect 1.000.</p>
+<p>What the object looks like predicts performance much better.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -569,17 +689,22 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Calibration targets score far better while being <em>rarer</em> on average. This is not mysterious. A calibration target is manufactured to be visually unambiguous, because its whole purpose is to be recognised under varying light. The drill, the scoop, the DRT and the inlet are metal instruments photographed against the same sand at the same scale, and they genuinely resemble one another.</p>
-<p>The team’s own SAM-2 analysis reached the same conclusion from the other direction. Masking individual image regions on DRT Side images misclassified as Scoop never shifted the prediction by more than 0.002, which means no single region carried the error. The confusion is holistic. The two instruments simply look alike.</p>
-<p>Class weighting was the right fix for the symptom the project first noticed, which was rare classes going undetected. It cannot fix confusability between classes that look the same.</p>
+<p>Calibration targets score far higher while being <em>rarer</em> on average. That makes sense. A calibration target is built to be visually unambiguous, because its job is to be recognised under changing light. The drill, scoop, DRT and inlet are metal instruments shot against the same sand at the same scale, and they really do resemble each other.</p>
+<p>Our SAM-2 analysis reached the same conclusion from another direction. On DRT Side images misclassified as Scoop, masking individual regions never shifted the prediction by more than 0.002. No single region carried the error. The two instruments simply look alike as a whole.</p>
+<p>Class weighting fixed the first problem we saw, which was rare classes going undetected. It cannot fix confusion between classes that look the same.</p>
 </section>
-<section id="dust-robustness" class="level1">
+<section id="dust-robustness" class="level1 page-columns page-full">
 <h1>Dust Robustness</h1>
-<p>Rover optics accumulate dust, and a model that only holds up on clean imagery is not much use across a mission.</p>
-<p>Simulated dust degradation was applied to the held-out test images, and the Stage 3 model was re-scored without retraining.</p>
+<p>Rover optics collect dust. A model that only works on clean images is of limited use over a mission.</p>
+<p>We applied simulated dust to the held-out test images and re-scored the Stage 3 model without retraining.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/dust_robustness.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:86.0%" alt="Clean versus dust-degraded accuracy and macro-F1 for the Stage 3 model"></p>
+<p><a href="assets/dust_robustness.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Stage 3 test accuracy and macro-F1 on clean and dust-degraded images."><img loading="lazy" decoding="async" width="1801" height="763" src="assets/dust_robustness.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:86.0%" alt="Two bar charts. Test accuracy falls from 0.7648 on clean images to 0.7226 with simulated dust, a drop of 0.0421. Test macro-F1 falls from 0.6656 to 0.6371, a drop of 0.0285."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Stage 3 test accuracy and macro-F1 on clean and dust-degraded images.</figcaption>
 </figure>
 </div>
 <table class="caption-top table">
@@ -608,24 +733,25 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Accuracy falls by 4.2 points and macro-F1 by 0.029. The degradation is real, so dust is not something the model is indifferent to, but holding 72.3% accuracy on imagery it was never trained to handle is a reasonable result for a backbone that has only seen clean frames.</p>
-<p>Two caveats on this analysis. The dust is synthetic, applied as a post-hoc filter rather than photographed through a dusty lens, so it captures the loss of contrast but not the scattering or the wavelength dependence of real Martian dust. And macro-F1 falls proportionally less than accuracy, which is worth noting: the rare classes are not disproportionately harmed by dust, so whatever the model has learned about them survives the degradation better than the headline accuracy drop suggests.</p>
+<p>Accuracy falls by 4.2 points and macro-F1 by 0.029. Dust does hurt. Still, 72.3% accuracy on degraded images, from a model trained only on clean frames, is a reasonable result.</p>
+<p>Two caveats. The dust is synthetic, a filter applied after capture, so it models the loss of contrast but not the scattering or wavelength effects of real Martian dust. Macro-F1 also falls proportionally less than accuracy. The rare classes are not hit harder by dust, so what the model learned about them holds up at least as well as the rest.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
-<p><strong>No test metrics for Stage 2.</strong> The middle stage of a three-stage argument is missing its held-out numbers, so the progression can only be shown from Stage 1 to Stage 3.</p>
-<p><strong>Three classes are unmeasurable.</strong> Drill Holes, Sun and Turret have no test examples, so nothing can be said about whether the pipeline helped them, which is awkward given that rare-class detection is the project’s stated goal.</p>
-<p><strong>The label space is ambiguous.</strong> The source dataset is documented as having 24 classes, the model’s output layer covers 25 indices, and 22 appear in test. The three counts should reconcile and I could not make them do so from the notebooks.</p>
-<p><strong>Dust is simulated, not observed.</strong> As above.</p>
+<p><strong>No test metrics for Stage 2.</strong> The middle stage is missing its held-out numbers, so we can only show the progression from Stage 1 to Stage 3.</p>
+<p><strong>Three classes cannot be measured.</strong> Drill Holes, Sun and Turret have no test examples. We cannot say whether the pipeline helped them, which is a real gap when rare-class detection is the stated goal.</p>
+<p><strong>The label space does not reconcile.</strong> The source dataset is documented as having 24 classes, the model’s output layer has 25 indices, and 22 appear in test. The notebooks do not explain the difference.</p>
+<p><strong>Dust is simulated.</strong> Real dusty-lens images would be a stronger test.</p>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Attack confusability directly</strong>: The evidence points at visually similar instrument pairs rather than rare classes. Metric learning, or a hierarchical classifier that first separates terrain from hardware and only then distinguishes instruments, targets the actual failure.</p>
-<p><strong>Report macro-F1 with its denominator</strong>: Or restrict evaluation to classes the test split can measure, and say so.</p>
-<p><strong>Train on degraded imagery</strong>: The dust analysis measures robustness but nothing in the pipeline builds it. Dust augmentation during training would test whether the 4.2 point drop can be closed.</p>
-<p><strong>Rebalance the test split</strong>: Rare classes with two test examples cannot support a stable F1 estimate. A stratified split would make the rare-class claims checkable.</p>
+<p><strong>Target confusable classes directly.</strong> The evidence points to similar-looking instrument pairs. Metric learning, or a hierarchical classifier that first separates terrain from hardware and then tells instruments apart, would address the actual failure.</p>
+<p><strong>Report macro-F1 with its class set.</strong> Or restrict evaluation to classes the test split can measure, and say so.</p>
+<p><strong>Train on degraded images.</strong> The dust analysis measures robustness but nothing in the pipeline builds it. Dust augmentation during training would show whether the 4.2 point drop can be closed.</p>
+<p><strong>Rebalance the test split.</strong> A class with two test examples cannot support a stable F1 estimate. A stratified split would make rare-class claims checkable.</p>
 
 
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/sentence-transformer/sentence-transformer.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">Multi-Task Sentence Transformer for Receipt Processing</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/receipt.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -715,7 +841,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1043,6 +1169,38 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

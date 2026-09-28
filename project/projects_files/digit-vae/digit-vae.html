@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2022-05-01">
-<meta name="description" content="Compressing handwritten digits into a two-dimensional latent space, then generating new digits by sampling across it.">
+<meta name="description" content="A variational autoencoder that squeezes handwritten digits into two numbers and still sorts them into digit clusters without seeing a label.">
 
-<title>MNIST Variational Autoencoder</title>
+<title>MNIST Variational Autoencoder · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -126,9 +128,20 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="MNIST Variational Autoencoder">
+<meta property="og:description" content="A variational autoencoder that squeezes handwritten digits into two numbers and still sorts them into digit clusters without seeing a label.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/digit-vae.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="MNIST Variational Autoencoder">
+<meta name="twitter:description" content="A variational autoencoder that squeezes handwritten digits into two numbers and still sorts them into digit clusters without seeing a label.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/digit-vae.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -319,9 +332,8 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -345,9 +357,13 @@ window.Quarto = {
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -361,23 +377,34 @@ window.Quarto = {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -397,8 +424,31 @@ window.Quarto = {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -412,11 +462,54 @@ window.Quarto = {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -426,6 +519,13 @@ window.Quarto = {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -445,7 +545,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Compressing handwritten digits into a two-dimensional latent space, then generating new digits by sampling across it.
+    A variational autoencoder that squeezes handwritten digits into two numbers and still sorts them into digit clusters without seeing a label.
   </div>
 </div>
 
@@ -472,106 +572,111 @@ window.Quarto = {
 <div class="cs-keys">
 <div class="cs-key">
 <p><span class="cs-label">The Decision</span></p>
-<p><span class="cs-decision">Keep the latent space to two dimensions, so what the model learns can be seen directly.</span></p>
+<p><span class="cs-decision">Keep the latent space to two dimensions so that what the model learns can be seen directly.</span></p>
 </div>
 <div class="cs-key">
 <p><span class="cs-label">Takeaways</span></p>
 <ul>
 <li>Ten digit clusters form without the model ever seeing a label.</li>
-<li>Fours and nines overlap almost completely, the same pair that fails in reconstruction.</li>
+<li>Fours and nines overlap almost completely, and the same pair fails in reconstruction.</li>
 <li>A nearest-centroid rule in the two-dimensional space recovers the right digit 69.8% of the time.</li>
 </ul>
 </div>
 </div>
 </div>
-<p>This project builds a variational autoencoder (VAE) that compresses 28 x 28 handwritten digit images into a two-dimensional latent space and then reconstructs them from those two values alone. Unlike a standard autoencoder, which learns a fixed encoding, a VAE learns a probability distribution over the latent space. This makes the space continuous, which means new digits can be generated by sampling from regions the model has never seen directly. The latent dimension is set to 2 so that the learned structure can be plotted and inspected rather than inferred.</p>
-<p>This is an early project, and the two-dimensional bottleneck is a deliberate teaching constraint rather than a performance choice. What it buys is that every claim below can be checked by looking at a picture.</p>
+<p>I built a variational autoencoder (VAE) that compresses 28 x 28 handwritten digit images into two numbers and rebuilds each image from those two values alone. A standard autoencoder learns a fixed encoding for each image. A VAE learns a probability distribution over the latent space instead, which keeps the space continuous. New digits can then be generated by sampling points the model never saw.</p>
+<p>I set the latent dimension to 2 so the learned structure can be plotted and inspected directly. This is an early project, and two dimensions is a teaching constraint. It caps performance, and in exchange every claim below can be checked against a picture.</p>
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/digit-variational-autoencoder">github.com/olivia-jackson-lambert/digit-variational-autoencoder</a></p>
-<section id="data-exploration" class="level1">
+<section id="data-exploration" class="level1 page-columns page-full">
 <h1>Data Exploration</h1>
-<p>The MNIST dataset contains 60,000 training images and 10,000 test images of handwritten digits, each 28 x 28 pixels in greyscale. Images are reshaped to include a single channel dimension, scaled to the range 0 to 1, and shuffled before training.</p>
+<p>MNIST has 60,000 training images and 10,000 test images of handwritten digits, each 28 x 28 pixels in greyscale. I added a single channel dimension, scaled pixels to the range 0 to 1 and shuffled the training set.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/mnist_examples.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Eighteen example handwritten digits from the MNIST dataset"></p>
+<p><a href="assets/mnist_examples.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Eighteen training examples with their labels."><img loading="lazy" decoding="async" width="1329" height="674" src="assets/mnist_examples.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="A grid of eighteen handwritten digits from the MNIST training set, each shown in black on white with its label above it."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Eighteen training examples with their labels.</figcaption>
 </figure>
 </div>
 </section>
 <section id="building-the-variational-autoencoder" class="level1">
 <h1>Building the Variational Autoencoder</h1>
-<p>The encoder maps each image into a distribution in the latent space, defined by a mean and a log-variance. The decoder maps a point sampled from that distribution back to an image.</p>
+<p>The encoder maps each image to a distribution in the latent space, described by a mean and a log-variance. The decoder maps a point sampled from that distribution back to an image.</p>
 <section id="encoder" class="level2">
 <h2 class="anchored" data-anchor-id="encoder">Encoder</h2>
 <section id="input-layer" class="level4">
-<h4 class="anchored" data-anchor-id="input-layer">0 - Input Layer</h4>
+<h4 class="anchored" data-anchor-id="input-layer">Input Layer</h4>
 <ul>
-<li>Creates a layer of the correct dimensions for the 28 x 28 images.</li>
+<li>Matches the 28 x 28 x 1 image shape.</li>
 </ul>
 </section>
 <section id="convolutional-layers" class="level4">
-<h4 class="anchored" data-anchor-id="convolutional-layers">1 - Convolutional Layers</h4>
+<h4 class="anchored" data-anchor-id="convolutional-layers">Convolutional Layers</h4>
 <ul>
-<li>32, 64 and 128 filter sizes chosen to provide sufficient representational power for MNIST while keeping the model lightweight and efficient.</li>
-<li>3 x 3 kernel size chosen to capture local stroke features such as curves and junctions without over-smoothing.</li>
-<li>Strides of 1, 2 and 2 chosen to progressively reduce spatial dimensions while increasing filter depth.</li>
+<li>32, 64 and 128 filters give enough capacity for MNIST while keeping the model small.</li>
+<li>A 3 x 3 kernel picks up local stroke features such as curves and junctions without over-smoothing.</li>
+<li>Strides of 1, 2 and 2 shrink the spatial size as the filter depth grows.</li>
 </ul>
 </section>
 <section id="flatten-and-dense-layer" class="level4">
-<h4 class="anchored" data-anchor-id="flatten-and-dense-layer">2 - Flatten and Dense Layer</h4>
+<h4 class="anchored" data-anchor-id="flatten-and-dense-layer">Flatten and Dense Layer</h4>
 <ul>
-<li>Feature maps are flattened into a 1D array to simplify the transition into the latent space.</li>
-<li>A 256-unit dense layer is added for further feature extraction before the bottleneck.</li>
+<li>The feature maps are flattened into a single vector.</li>
+<li>A 256-unit dense layer extracts further features before the bottleneck.</li>
 </ul>
 </section>
 <section id="latent-distribution" class="level4">
-<h4 class="anchored" data-anchor-id="latent-distribution">3 - Latent Distribution</h4>
+<h4 class="anchored" data-anchor-id="latent-distribution">Latent Distribution</h4>
 <ul>
-<li>Two parallel dense layers output <code>z_mean</code> and <code>z_log_var</code>, the parameters of a Gaussian rather than a single fixed encoding.</li>
+<li>Two parallel dense layers output <code>z_mean</code> and <code>z_log_var</code>, the parameters of a Gaussian.</li>
 </ul>
 </section>
 </section>
 <section id="sampling" class="level2">
 <h2 class="anchored" data-anchor-id="sampling">Sampling</h2>
-<p>The sampling layer draws a point from the distribution the encoder produced, using the reparameterisation trick:</p>
+<p>The sampling layer draws a point from the encoder’s distribution using the reparameterisation trick:</p>
 <p><span class="math display">\[z = \mu + \exp(0.5 \log \sigma^2) \odot \epsilon, \qquad \epsilon \sim \mathcal{N}(0, 1)\]</span></p>
-<p>The randomness is isolated in <span class="math inline">\(\epsilon\)</span>, which is treated as an input rather than a parameter. This keeps the operation differentiable so that gradients can still flow back through the encoder during training.</p>
+<p>All the randomness sits in <span class="math inline">\(\epsilon\)</span>, which is treated as an input. The operation stays differentiable, so gradients can flow back through the encoder during training.</p>
 </section>
 <section id="decoder" class="level2">
 <h2 class="anchored" data-anchor-id="decoder">Decoder</h2>
 <section id="input-layer-1" class="level4">
-<h4 class="anchored" data-anchor-id="input-layer-1">0 - Input Layer</h4>
+<h4 class="anchored" data-anchor-id="input-layer-1">Input Layer</h4>
 <ul>
-<li>Input layer has the latent space dimension of 2, as this is the output shape from the encoder.</li>
+<li>Takes the two latent values produced by the encoder.</li>
 </ul>
 </section>
 <section id="dense-layers" class="level4">
-<h4 class="anchored" data-anchor-id="dense-layers">1 - Dense Layers</h4>
+<h4 class="anchored" data-anchor-id="dense-layers">Dense Layers</h4>
 <ul>
-<li>Two hidden dense layers are added with 256 units each, matching the encoder.</li>
-<li>Dense layers chosen to capture global relationships between all parts of the latent vector and the reconstructed image.</li>
-<li>ReLU activation to expand the latent representation back towards the original dimensionality.</li>
+<li>Two hidden dense layers of 256 units each, matching the encoder.</li>
+<li>Dense layers connect every latent value to every part of the rebuilt image.</li>
+<li>ReLU activations expand the representation back towards the original size.</li>
 </ul>
 </section>
 <section id="output-layer" class="level4">
-<h4 class="anchored" data-anchor-id="output-layer">2 - Output Layer</h4>
+<h4 class="anchored" data-anchor-id="output-layer">Output Layer</h4>
 <ul>
-<li>A final dense layer with 784 units and sigmoid activation produces pixel values in the range 0 to 1.</li>
-<li>The output is reshaped back to 28 x 28 x 1 to match the original image shape.</li>
+<li>A 784-unit dense layer with sigmoid activation gives pixel values between 0 and 1.</li>
+<li>The output is reshaped to 28 x 28 x 1 to match the input.</li>
 </ul>
 </section>
 </section>
 <section id="loss-function" class="level2">
 <h2 class="anchored" data-anchor-id="loss-function">Loss Function</h2>
-<p>Training optimises two terms which pull against each other:</p>
+<p>Training balances two terms that pull against each other.</p>
 <ol type="1">
-<li><strong>Reconstruction loss</strong> uses binary cross-entropy summed over pixels, and measures how well the VAE reproduces the input image.</li>
-<li><strong>Kullback-Leibler (KL) loss</strong> measures how far the learned latent distribution has drifted from a unit Gaussian, and is what keeps the latent representation continuous.</li>
+<li><strong>Reconstruction loss</strong> is binary cross-entropy summed over pixels. It measures how closely the output matches the input.</li>
+<li><strong>Kullback-Leibler (KL) loss</strong> measures how far each encoded distribution sits from a unit Gaussian. It keeps the latent space continuous.</li>
 </ol>
-<p>Reconstruction loss alone would allow the model to scatter encodings anywhere it liked, leaving gaps between them. The KL term is what makes the space samplable.</p>
+<p>With reconstruction loss alone, the model could place encodings anywhere and leave gaps between them. The KL term closes those gaps, which is what makes the space safe to sample from.</p>
 </section>
 </section>
-<section id="training" class="level1">
+<section id="training" class="level1 page-columns page-full">
 <h1>Training</h1>
-<p>The model was trained for 50 epochs with a batch size of 128 using the Adam optimizer, validating against the test set.</p>
+<p>I trained for 50 epochs with a batch size of 128 and the Adam optimiser, validating against the test set.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -603,25 +708,35 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/vae_loss.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Training and validation loss curves across 50 epochs"></p>
+<p><a href="assets/vae_loss.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Loss per image over 50 epochs. The KL term is scaled by ten so it shares the axis."><img loading="lazy" decoding="async" width="1352" height="826" src="assets/vae_loss.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Line chart of loss per image against epoch. Training and validation totals fall steeply over the first few epochs, cross near epoch 9 and then separate, with validation flattening near 143 while training keeps falling to about 137. Reconstruction loss tracks just below the training total. KL loss, scaled by ten, rises steadily from about 41 to 70."></a></p>
 </figure>
 </div>
-<p>Two things are visible in the curves. The KL term rises steadily, from 4.1 to 7.0, while reconstruction falls from 183.9 to 129.6. The model is buying reconstruction quality by letting the latent distribution drift further from the prior, which is exactly the trade the two terms are designed to negotiate.</p>
-<p>Training and validation also separate after about epoch 15, finishing at 136.6 against 143.4. The gap is small but real, and it means the later epochs are improving the fit to the training set slightly faster than they improve the model. Training could reasonably have stopped earlier.</p>
+<figcaption class="margin-caption">Loss per image over 50 epochs. The KL term is scaled by ten so it shares the axis.</figcaption>
+</figure>
+</div>
+<p>The KL term rises from 4.1 to 7.0 while reconstruction falls from 183.9 to 129.6. The model buys better reconstructions by letting the latent distribution drift further from the prior. That is the trade the two terms exist to negotiate.</p>
+<p>Training and validation separate after about epoch 15 and finish at 136.6 and 143.4. Validation barely moves after epoch 25, going from 143.5 to 143.4, so the later epochs mostly improve the fit to the training set. Training could have stopped earlier.</p>
 </section>
-<section id="the-latent-space" class="level1">
+<section id="the-latent-space" class="level1 page-columns page-full">
 <h1>The Latent Space</h1>
-<section id="digit-clustering" class="level2">
+<section id="digit-clustering" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="digit-clustering">Digit Clustering</h2>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/latent_clustering.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%" alt="Test digits plotted in the two-dimensional latent space, coloured by class"></p>
+<p><a href="assets/latent_clustering.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Test digits encoded into the latent space, one colour per digit. Each label marks its class centroid."><img loading="lazy" decoding="async" width="1266" height="1267" src="assets/latent_clustering.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%" alt="Scatter plot of 10,000 test digits in the two-dimensional latent space, coloured by digit with a label at each class centroid. Ones form a separate cloud at the top and zeros a wide cloud at the bottom. The other digits crowd the centre. The fours, in rust, and the nines, in dark grey, sit almost on top of each other on the left."></a></p>
 </figure>
 </div>
-<p>Each digit class occupies its own region of the latent space, despite the model never having seen the labels. The clustering is learned entirely from pixel structure.</p>
-<p>As this is a variational autoencoder it is a given that some digits will overlap. Fitting a Gaussian to each class and measuring the Bhattacharyya coefficient between every pair puts numbers on which ones:</p>
+<figcaption class="margin-caption">Test digits encoded into the latent space, one colour per digit. Each label marks its class centroid.</figcaption>
+</figure>
+</div>
+<p>Each digit class occupies its own region of the latent space, and the model never saw a label. The clustering comes entirely from pixel structure.</p>
+<p>Some overlap is expected in a VAE. To measure it, I fitted a Gaussian to each class and computed the Bhattacharyya coefficient for every pair.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -663,48 +778,59 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>A coefficient of 1.0 would mean two classes are indistinguishable. At 0.950, fours and nines are very nearly on top of one another, which makes sense: both are a closed or near-closed loop above a vertical stroke, and the only reliable difference is whether the loop closes. Zeros and ones, which share no stroke structure at all, sit at 0.002.</p>
-<p>A nearest-centroid rule in this two-dimensional space recovers the correct digit 69.8 percent of the time. That is far above the 10 percent chance rate for a model given no labels, and far below what any supervised classifier would manage, which is a fair summary of what two dimensions can hold.</p>
+<p>A coefficient of 1.0 would mean two classes are indistinguishable. Fours and nines reach 0.950. Both are a closed or nearly closed loop above a vertical stroke, and the main difference is whether the loop closes. Zeros and ones share no stroke structure and sit at 0.002.</p>
+<p>A nearest-centroid rule in this space recovers the correct digit 69.8% of the time. Chance is 10%, and any supervised classifier would do far better. That gap is a fair measure of what two dimensions can hold.</p>
 </section>
-<section id="reconstruction" class="level2">
+<section id="reconstruction" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="reconstruction">Reconstruction</h2>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/reconstructions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="Ten test digits above their reconstructions through the two-dimensional bottleneck"></p>
+<p><a href="assets/reconstructions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="The first ten test digits (top) and their reconstructions from the two latent values (bottom)."><img loading="lazy" decoding="async" width="1925" height="366" src="assets/reconstructions.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="Two rows of ten handwritten digits. The top row shows test inputs 7, 2, 1, 0, 4, 1, 4, 9, 5 and 9. The bottom row shows blurrier reconstructions, where both fours come back looking like nines and the five comes back looking like a six."></a></p>
 </figure>
 </div>
-<p>Reconstructions are recognisable but soft, and the failures are the informative part. Two fours come back as nines and a five comes back as a six. These are not random errors: they are the same pairs the overlap table identifies, showing up in individual images.</p>
+<figcaption class="margin-caption">The first ten test digits (top) and their reconstructions from the two latent values (bottom).</figcaption>
+</figure>
+</div>
+<p>Reconstructions are recognisable but soft, and the failures are the useful part. Both fours come back as nines and the five comes back as a six. Those are pairs the overlap table already flags, now visible in single images.</p>
 </section>
-<section id="generating-digits" class="level2">
+<section id="generating-digits" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="generating-digits">Generating Digits</h2>
-<p>Sampling points on a regular grid across the latent space and decoding each one shows what the model has actually learned.</p>
+<p>Decoding points on a regular grid across the latent space shows what the model has learned.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/latent_grid.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="An 18 by 18 grid of digits generated by decoding points spanning the latent space"></p>
+<p><a href="assets/latent_grid.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Digits decoded from an 18 by 18 grid of points spanning −2.6 to 2.6 on each latent axis."><img loading="lazy" decoding="async" width="1267" height="1266" src="assets/latent_grid.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="An 18 by 18 grid of generated handwritten digits. Ones run across the top, sevens down the upper left, eights and threes on the right, nines on the left and zeros across the bottom. Neighbouring digits blend smoothly, with fours appearing between the nines and sixes near the centre."></a></p>
 </figure>
 </div>
-<p>In areas where there is overlap, digits can be seen in an intermediate morphing stage. Areas where the probability of a certain digit is high have sharp, clearly defined digits, such as the 8s at the top right and the 0s along the bottom.</p>
-<p>This grid is the clearest evidence that the space is continuous rather than merely clustered. A standard autoencoder would leave unusable gaps between the clusters, whereas here every point decodes to something digit-like.</p>
+<figcaption class="margin-caption">Digits decoded from an 18 by 18 grid of points spanning −2.6 to 2.6 on each latent axis.</figcaption>
+</figure>
+</div>
+<p>Where classes overlap, the decoded digits sit partway between shapes. Where one class dominates, the digits are sharp, such as the 8s in the upper right and the 0s along the bottom.</p>
+<p>Every point on the grid decodes to something digit-like. A standard autoencoder would leave unusable gaps between clusters, so this grid is the clearest evidence that the space is continuous.</p>
 </section>
 </section>
 <section id="a-note-on-reproducing-this" class="level1">
 <h1>A Note on Reproducing This</h1>
-<p>The original notebook was written in Keras against <code>tensorflow.python.keras</code>, which no longer exists in current TensorFlow, so it cannot be run today. The figures here come from a PyTorch re-implementation with the architecture, loss function and hyperparameters unchanged.</p>
-<p>The re-implementation lands close to the original: a final training loss of 136.6 against the original’s 138.6, and KL rising from 4.1 to 7.0 against 4.8 to 6.8. The one difference is the train-validation gap, which the original run did not show. The qualitative findings, and specifically which digits overlap, reproduce.</p>
+<p>The original notebook was written in Keras against <code>tensorflow.python.keras</code>, which no longer exists in current TensorFlow, so it cannot run today. The figures here come from a PyTorch re-implementation with the same architecture, loss function and hyperparameters.</p>
+<p>The re-implementation lands close to the original. Final training loss is 136.6 against the original’s 138.6, and KL rises from 4.1 to 7.0 against 4.8 to 6.8. The one difference is the gap between training and validation, which the original run did not show. The qualitative findings reproduce, including which digits overlap.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
-<p><strong>Two latent dimensions is a presentation choice.</strong> It is what makes the space directly plottable, but it caps reconstruction quality well below what a larger bottleneck would reach. The softness in the generated grid is a consequence of that constraint rather than of the training.</p>
-<p><strong>Sample quality is assessed by eye.</strong> Loss values and visual inspection are the only measures used. No quantitative sample-quality metric is applied.</p>
-<p><strong>No baseline comparison.</strong> A standard autoencoder trained on the same architecture would isolate how much of the latent-space smoothness the KL term is actually responsible for, rather than assuming it.</p>
+<p><strong>Two latent dimensions is a presentation choice.</strong> It makes the space directly plottable but caps reconstruction quality well below what a larger bottleneck would reach. The softness in the generated grid comes from that constraint.</p>
+<p><strong>Sample quality is judged by eye.</strong> Loss values and visual inspection are the only measures. I did not apply a quantitative sample-quality metric.</p>
+<p><strong>No baseline comparison.</strong> A standard autoencoder with the same architecture would show how much of the smoothness the KL term is responsible for.</p>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Latent dimensionality</strong>: Train at higher latent dimensions and compare reconstruction loss, using a dimensionality reduction method such as t-SNE to inspect the structure that can no longer be plotted directly.</p>
-<p><strong>Conditional generation</strong>: Extend to a conditional VAE so that a specific digit class can be requested, rather than sampling wherever that class happens to sit.</p>
-<p><strong>Loss weighting</strong>: Vary the weighting on the KL term to trace the trade-off between reconstruction sharpness and latent continuity.</p>
+<p><strong>Latent dimensionality</strong>: Train with more latent dimensions, compare reconstruction loss and use a method such as t-SNE to inspect structure that can no longer be plotted directly.</p>
+<p><strong>Conditional generation</strong>: Extend to a conditional VAE so a specific digit can be requested directly.</p>
+<p><strong>Loss weighting</strong>: Vary the weight on the KL term to trace the trade-off between sharp reconstructions and a continuous latent space.</p>
 
 
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/flight-delay-spark/flight-delay-spark.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">Predicting Flight Delay Severity at Scale</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/flight-delay.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -794,7 +920,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1122,6 +1248,38 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

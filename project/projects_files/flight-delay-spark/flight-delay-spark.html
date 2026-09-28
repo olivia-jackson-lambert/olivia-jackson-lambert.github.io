@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-08-09">
-<meta name="description" content="A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant deliberately giving up overall accuracy.">
+<meta name="description" content="A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant giving up overall agreement on purpose.">
 
-<title>Predicting Flight Delay Severity at Scale</title>
+<title>Predicting Flight Delay Severity at Scale · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -126,9 +128,20 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Predicting Flight Delay Severity at Scale">
+<meta property="og:description" content="A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant giving up overall agreement on purpose.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/flight-delay.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="Predicting Flight Delay Severity at Scale">
+<meta name="twitter:description" content="A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant giving up overall agreement on purpose.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/flight-delay.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -319,9 +332,8 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -335,13 +347,17 @@ window.Quarto = {
   <li><a href="#gradient-boosted-trees-and-what-went-wrong" id="toc-gradient-boosted-trees-and-what-went-wrong" class="nav-link" data-scroll-target="#gradient-boosted-trees-and-what-went-wrong">Gradient-Boosted Trees, and What Went Wrong</a></li>
   <li><a href="#the-ceiling-is-in-the-features" id="toc-the-ceiling-is-in-the-features" class="nav-link" data-scroll-target="#the-ceiling-is-in-the-features">The Ceiling Is in the Features</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
-  <li><a href="#what-id-do-next" id="toc-what-id-do-next" class="nav-link" data-scroll-target="#what-id-do-next">What I’d Do Next</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -355,23 +371,34 @@ window.Quarto = {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -391,8 +418,31 @@ window.Quarto = {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -406,11 +456,54 @@ window.Quarto = {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -420,6 +513,13 @@ window.Quarto = {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -437,7 +537,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant deliberately giving up overall accuracy.
+    A four-tier delay classifier over 31M flights in PySpark, where clearing the operational safety gate meant giving up overall agreement on purpose.
   </div>
 </div>
 
@@ -471,21 +571,21 @@ window.Quarto = {
 <p><span class="cs-label">Takeaways</span></p>
 <ul>
 <li>The severe-weighted random forest recovered 64.4% of 2+ hour delays on the 2019 blind test.</li>
-<li>Pre-registering the decision rule made that trade defensible rather than convenient.</li>
-<li>Four model families stall at the same boundary, so the limit is the features, not model capacity.</li>
+<li>Writing the decision rule down in advance is what made that trade defensible.</li>
+<li>Four model families stall at the same boundary, which points to the features as the limit.</li>
 </ul>
 </div>
 </div>
 </div>
-<p>Flight delays cost the US economy roughly $33&nbsp;billion a year, more than half of it borne directly by passengers. This project predicts <em>how late</em> a domestic flight will arrive — not just whether it will be late — sorting each flight into four ordered tiers using only information available about two hours before scheduled departure.</p>
-<p>The headline result is a negative-sounding one that I think is the most interesting part: the model we selected is the <em>worst</em> of our four finalists on overall agreement, and we selected it anyway, on purpose.</p>
+<p>Flight delays cost the US economy roughly $33&nbsp;billion a year, and passengers bear more than half of it. This project predicts <em>how late</em> a domestic flight will arrive. Each flight goes into one of four ordered tiers, using only information available about two hours before scheduled departure.</p>
+<p>The model we selected has the <em>worst</em> overall agreement of our four finalists. We chose it anyway, on purpose, and that choice is the most interesting part of the project.</p>
 <div class="kpi-grid">
   <div class="kpi">
     <div class="label">Scale</div>
     <div class="value">31.1M flights, 2015–2019</div>
   </div>
   <div class="kpi">
-    <div class="label">My Models</div>
+    <div class="label">Tree Models</div>
     <div class="value">Random forest &amp; XGBoost</div>
   </div>
   <div class="kpi">
@@ -493,31 +593,41 @@ window.Quarto = {
     <div class="value">64.4% severe recall on blind test</div>
   </div>
 </div>
-<section id="the-framing-problem" class="level2">
+<section id="the-framing-problem" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-framing-problem">The Framing Problem</h2>
-<p>About 82% of flights arrive on time and only 2.2% are severely delayed. A model that predicts “on time” for everything scores 82% accuracy and is completely useless to an FAA operator, so accuracy was rejected as a success measure before any modeling started.</p>
-<p>Instead the team pre-registered a decision rule, which mattered more to the final outcome than any hyperparameter:</p>
+<p>About 82% of flights arrive on time and only 2.2% are severely delayed. A model that predicts “on time” for every flight scores 82% accuracy and is useless to an FAA operator. We rejected accuracy as a success measure before any modeling started.</p>
+<p>Instead we pre-registered a decision rule. It shaped the final outcome more than any hyperparameter did.</p>
 <ul>
-<li><strong>Gate 1</strong> — macro F1 above the 0.224 four-class majority floor.</li>
-<li><strong>Gate 2</strong> — recall of at least <strong>0.50 on the 2+ hour tier</strong>.</li>
-<li>Survivors rank on <strong>quadratic-weighted Cohen’s kappa</strong> (<span class="math inline">\(\kappa_w\)</span>), which penalizes being wrong by three tiers far more than being wrong by one.</li>
-<li>An asymmetric <strong>expected cost per flight</strong> (ECPF) breaks ties, charging double for under-prediction, because missing a severe delay costs more than over-preparing for one.</li>
+<li><strong>Gate 1.</strong> Macro F1 above the 0.224 four-class majority floor.</li>
+<li><strong>Gate 2.</strong> Recall of at least 0.50 on the 2+ hour tier.</li>
+<li>Models that pass both gates rank on quadratic-weighted Cohen’s kappa (<span class="math inline">\(\kappa_w\)</span>), which penalizes a three-tier miss far more than a one-tier miss.</li>
+<li>An asymmetric expected cost per flight (ECPF) breaks ties. It charges double for under-prediction, because missing a severe delay costs more than over-preparing for one.</li>
 </ul>
-<p>Writing that rule down in advance is what made the final selection defensible rather than a post-hoc rationalization.</p>
-<p><img src="assets/workflow_pipeline.png" class="img-fluid" style="width:100.0%" alt="End-to-end project workflow from raw OTPW data through feature engineering to modeling and evaluation"></p>
-<p>All of 2019 was held out as a blind test set (7.24M flights); 2015–2018 supported three-fold sliding-window cross-validation with a one-year train and three-month validation window per fold.</p>
-</section>
-<section id="random-forest-buying-severe-recall" class="level2">
-<h2 class="anchored" data-anchor-id="random-forest-buying-severe-recall">Random Forest: Buying Severe Recall</h2>
-<p>My Phase 2 forest failed Gate 2 badly — 0.351 severe recall against the 0.50 floor. For Phase 3 the data grew from one year to five (5.7M to 23.9M training flights) and the feature set from 41 to 73 columns. That alone wasn’t enough, so I added a <strong>severe-class weight multiplier</strong> on top of standard inverse-frequency weighting.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/rf_pipeline_v2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Random forest pipeline block diagram"></p>
+<p>Writing the rule down in advance is what let us defend the final selection later.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/workflow_pipeline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation."><img loading="lazy" decoding="async" width="2988" height="1488" src="assets/workflow_pipeline.webp" class="img-fluid figure-img" style="width:100.0%" alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation."></a></p>
+<figcaption class="margin-caption">End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.</figcaption>
 </figure>
 </div>
-<section id="staged-search" class="level3">
+<p>All of 2019 was held out as a blind test set (7.24M flights). The years 2015 to 2018 supported three-fold sliding-window cross-validation, with a one-year training window and a three-month validation window per fold.</p>
+</section>
+<section id="random-forest-buying-severe-recall" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="random-forest-buying-severe-recall">Random Forest: Buying Severe Recall</h2>
+<p>The Phase 2 forest failed Gate 2 badly, at 0.351 severe recall against the 0.50 floor. For Phase 3 the data grew from one year to five (5.7M to 23.9M training flights) and the feature set from 41 to 73 columns. That was not enough on its own, so we added a severe-class weight multiplier on top of standard inverse-frequency weighting.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/rf_pipeline_v2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Random forest pipeline. A shared preprocessing sub-pipeline feeds a 200-tree, depth-12 forest, tuned in two stages."><img loading="lazy" decoding="async" width="2800" height="910" src="assets/rf_pipeline_v2.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Block diagram. A 73-feature checkpoint passes through a median imputer for 66 numeric columns, a string indexer for 7 categoricals and a vector assembler, then into a random forest classifier with 200 trees at depth 12, evaluated on the 2019 blind test. Below, stage 1 is a hyperparameter search in which 6 of 18 configurations completed across 3 folds, and stage 2 compares severe-class weights of 1.0, 1.2 and 1.5 on the full 2015 to 2018 training set of 23.9M flights."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Random forest pipeline. A shared preprocessing sub-pipeline feeds a 200-tree, depth-12 forest, tuned in two stages.</figcaption>
+</figure>
+</div>
+<section id="staged-search" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="staged-search">Staged Search</h3>
-<p>I ran selection in two stages rather than one large grid, because the weight axis and the structural axis interact and a single grid would have been both slower and harder to read.</p>
+<p>We ran selection in two stages instead of one large grid. The weight and the tree structure interact, and a single grid would have been slower and harder to read.</p>
 <p><strong>Stage 1</strong> fixed the multiplier at 1.5 and varied tree structure. Six of eighteen planned configurations completed before an executor crash halted the deeper trees, so <code>maxDepth</code> 15 and 18 remain untested.</p>
 <table class="caption-top table">
 <colgroup>
@@ -589,8 +699,18 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><code>sqrt</code> feature subsetting won on both <span class="math inline">\(\kappa_w\)</span> and severe recall, and was also the fastest to train. Restricting per-split feature exposure seems to force trees onto the small number of high-signal propagation features that actually distinguish severe delays, instead of diluting splits across weak weather and calendar columns. Leaf size barely mattered: varying <code>minInstancesPerNode</code> between 10 and 20 moved every metric by less than 0.001, so the effective regularization was coming from bagging and feature subsampling, not from leaf constraints.</p>
-<p><strong>Stage 2</strong> re-cross-validated the winning structure across severe-class multipliers. The result is cleanly monotonic — and it is the whole story of the project:</p>
+<p><code>sqrt</code> feature subsetting won on both <span class="math inline">\(\kappa_w\)</span> and severe recall, and it trained fastest. Our reading is that limiting the features each split can see pushes the trees onto the few high-signal propagation features that separate severe delays. With more features per split, the splits spread across weak weather and calendar columns. Leaf size barely mattered. Moving <code>minInstancesPerNode</code> between 10 and 20 changed every metric by 0.003 or less, so the regularization came from bagging and feature subsampling rather than leaf constraints.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/rf_cv_tradeoff.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Stage 1 grid on validation folds. Every completed configuration clears Gate 2, and sqrt subsetting sits clearly ahead on both axes."><img loading="lazy" decoding="async" width="1583" height="810" src="assets/rf_cv_tradeoff.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Scatter plot of validation severe recall against validation quadratic-weighted kappa for the six completed random forest configurations. The two sqrt points sit at the top right, near kappa 0.257 and recall 0.585 to 0.588, with the selected sqrt, minInstances 10 configuration labeled. The onethird and 0.5 points cluster at the left, near kappa 0.250 and recall 0.565 to 0.571. A dashed line marks the Gate 2 floor at 0.50 recall, below every point."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Stage 1 grid on validation folds. Every completed configuration clears Gate 2, and <code>sqrt</code> subsetting sits clearly ahead on both axes.</figcaption>
+</figure>
+</div>
+<p><strong>Stage 2</strong> re-ran cross-validation on the winning structure across severe-class multipliers. The result is cleanly monotonic, and it tells the story of the whole project.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -625,18 +745,17 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><img src="assets/rf_cv_tradeoff.png" class="img-fluid" style="width:100.0%" alt="Cross-validated trade-off between ordinal agreement and severe recall across severe-class multipliers"></p>
 </section>
 <section id="why-cross-validating-the-weight-mattered" class="level3">
 <h3 class="anchored" data-anchor-id="why-cross-validating-the-weight-mattered">Why Cross-Validating the Weight Mattered</h3>
-<p>This is the part I’d defend hardest. On blind-test numbers alone, <span class="math inline">\(m_3\)</span>=1.2 <em>looks</em> like it passes Gate 2 — severe recall 0.529 — at much better ordinal agreement than 1.5 (<span class="math inline">\(\kappa_w\)</span> 0.336 against 0.241). It would have been the obvious pick.</p>
-<p>Cross-validation says otherwise: at <span class="math inline">\(m_3\)</span>=1.2 the validation severe recall is 0.485, below the floor. Validation runs consistently harder than the blind test across all three multipliers, by 0.03 to 0.06 on severe recall, because each fold validates on a first-quarter window where delays are heavier and more weather-driven than a full year.</p>
-<p>Selecting 1.2 on test evidence would have shipped a configuration that doesn’t reliably meet the operational floor on held-out data — exactly the failure a blind test exists to prevent.</p>
+<p>On blind-test numbers alone, <span class="math inline">\(m_3\)</span>=1.2 <em>looks</em> like it passes Gate 2. Its test severe recall is 0.529, with much better ordinal agreement than 1.5 (<span class="math inline">\(\kappa_w\)</span> 0.336 against 0.241). It would have been the obvious pick.</p>
+<p>Cross-validation disagrees. At <span class="math inline">\(m_3\)</span>=1.2 the validation severe recall is 0.485, below the floor. Validation runs harder than the blind test at all three multipliers, by 0.03 to 0.06 on severe recall. Each fold validates on a first-quarter window, where delays are heavier and more weather-driven than across a full year.</p>
+<p>Choosing 1.2 on test evidence would have shipped a configuration that does not reliably meet the operational floor on held-out data. A blind test exists to prevent exactly that.</p>
 </section>
 </section>
-<section id="the-frontier" class="level2">
+<section id="the-frontier" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-frontier">The Frontier</h2>
-<p>The selected forest (200 trees, depth 12, <code>sqrt</code> subsetting, 1.5× severe weight) was the only model in the entire project to clear Gate 2 on the blind test, at <strong>64.4% severe recall</strong>. It also has the worst <span class="math inline">\(\kappa_w\)</span> and the highest expected cost of any finalist.</p>
+<p>The selected forest (200 trees, depth 12, <code>sqrt</code> subsetting, 1.5× severe weight) was the only model in the project to clear Gate 2 on the blind test, at <strong>64.4% severe recall</strong>. It also has the worst <span class="math inline">\(\kappa_w\)</span> and the highest expected cost of any finalist.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 15%">
@@ -674,7 +793,7 @@ window.Quarto = {
 <td style="text-align: center;">Fail</td>
 </tr>
 <tr class="odd">
-<td>XGBoost (unboosted)</td>
+<td>XGBoost (no severe weight)</td>
 <td style="text-align: right;">0.406</td>
 <td style="text-align: right;">0.455</td>
 <td style="text-align: right;">0.464</td>
@@ -682,7 +801,7 @@ window.Quarto = {
 <td style="text-align: center;">Fail</td>
 </tr>
 <tr class="even">
-<td><strong>Random forest (1.5× severe boost)</strong> ★</td>
+<td><strong>Random forest (1.5× severe weight)</strong> ★</td>
 <td style="text-align: right;">0.241</td>
 <td style="text-align: right;">0.402</td>
 <td style="text-align: right;"><strong>0.644</strong></td>
@@ -691,43 +810,63 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>The severe boost is not free under our own cost function. It recovers two-thirds of the 2+ hour tier by over-predicting severity across a large volume of on-time flights, and the asymmetric cost matrix charges for every one of those. The multiplier is best understood as an <strong>operating-point control</strong>, not an improvement in predictive quality.</p>
-<p>What makes this a genuine frontier rather than a tuning failure is that it reproduces across model families. The MLP’s full-rebalance point reaches 0.489 severe recall but collapses to <span class="math inline">\(\kappa_w\)</span> 0.339; the forest traces the same curve across its three multipliers. Four different model families all plateau at the same boundary.</p>
+<p>The severe weight has a price under our own cost function. The forest recovers nearly two-thirds of the 2+ hour tier by predicting severe delays for a large number of on-time flights, and the asymmetric cost matrix charges for each one. The multiplier works as an operating-point control. It does not make the model better at prediction overall.</p>
+<p>The same trade-off shows up across model families, which is why we read it as a frontier and not a tuning failure. The MLP’s full-rebalance setting reaches 0.489 severe recall, but its <span class="math inline">\(\kappa_w\)</span> drops to 0.339. The forest traces the same curve across its three multipliers. Four model families plateau at the same boundary.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/rf_confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Confusion matrix for the selected severe-boosted random forest on the 2019 blind test"></p>
+<p><a href="assets/rf_confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Selected random forest on the 2019 blind test. Each cell shows the share of flights in the true tier (row) that landed in the predicted tier (column), with the flight count below. The outlined cell is severe recall."><img loading="lazy" decoding="async" width="1166" height="896" src="assets/rf_confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Four by four confusion matrix with true tiers as rows and predicted tiers as columns: on time, 15 to 59 minutes, 1 to 2 hours, 2+ hours. The diagonal reads 72.5%, 31.5%, 29.5% and 64.4%. The outlined 2+ hour cell holds 125K flights. The top-right cell shows 16.6% of on-time flights, about 972K, predicted as severe. The two middle tiers spread mostly into the on-time and 2+ hour columns."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Selected random forest on the 2019 blind test. Each cell shows the share of flights in the true tier (row) that landed in the predicted tier (column), with the flight count below. The outlined cell is severe recall.</figcaption>
 </figure>
 </div>
 </section>
-<section id="gradient-boosted-trees-and-what-went-wrong" class="level2">
+<section id="gradient-boosted-trees-and-what-went-wrong" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="gradient-boosted-trees-and-what-went-wrong">Gradient-Boosted Trees, and What Went Wrong</h2>
-<p>I ran XGBoost expecting it to beat the forest. It didn’t get a fair trial.</p>
-<p>The boosted configuration — the one that actually cleared Gate 2 on validation, at 0.534 severe recall — could never be trained to completion on the full five-year window. Runs died to driver out-of-memory failures, and only four of eight planned configurations finished. The XGBoost numbers reported above therefore come from a <strong>reduced, unboosted substitute</strong>, which is not the model I’d want judged.</p>
+<p>We expected XGBoost to beat the forest. It never got a fair trial.</p>
+<p>The severe-weighted XGBoost configuration cleared Gate 2 on validation, at 0.534 severe recall. It could never be trained to completion on the full training window. Runs died on driver out-of-memory failures, and the grid stopped after four of eight planned configurations. The XGBoost row above therefore comes from a reduced substitute with no severe weight. It is not the model we would want judged.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/xgb_pipelinev2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Gradient-boosted trees pipeline block diagram"></p>
+<p><a href="assets/xgb_pipelinev2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="XGBoost pipeline. It shares the forest’s preprocessing, but the selected configuration never finished, so a reduced model was trained instead."><img loading="lazy" decoding="async" width="2800" height="1000" src="assets/xgb_pipelinev2.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Block diagram matching the random forest pipeline, with a SparkXGB classifier on GPU in place of the forest. Stage 1 shows 4 of 8 configurations completed across 3 folds with a severe weight of 1.5. A dashed arrow notes that the selected configuration did not complete and a reduced model with no severe weight was trained on the full 2015 to 2018 data instead."></a></p>
 </figure>
 </div>
-<p>The honest read is that XGBoost remains the most promising unexplored direction in the project: the validation evidence suggests a boosted configuration could hold Gate 2 at higher <span class="math inline">\(\kappa_w\)</span> than the forest, which would dominate our selected model outright. It just needs more resilient compute than we had.</p>
-<p>Dealing with that fragility shaped how I ran the searches. Because executors died mid-grid, I built checkpointing and failure retries into the search loop so that a crash cost one configuration rather than the entire run. That’s what let the random forest grid produce six usable points instead of zero.</p>
-<p><img src="assets/tree_models_confusion_matrices_4panel.png" class="img-fluid" style="width:100.0%" alt="Confusion matrices across the four tree model configurations"></p>
+<figcaption class="margin-caption">XGBoost pipeline. It shares the forest’s preprocessing, but the selected configuration never finished, so a reduced model was trained instead.</figcaption>
+</figure>
+</div>
+<p>XGBoost remains the most promising unexplored direction. The validation evidence suggests a severe-weighted configuration could hold Gate 2 at higher <span class="math inline">\(\kappa_w\)</span> than the forest, which would beat our selected model outright. It needs more resilient compute than we had.</p>
+<p>That fragility shaped how we ran every search. Executors died mid-grid, so we checkpointed each completed configuration and wrapped fits in retry logic. A crash then cost one configuration instead of the whole run. That is why the random forest grid produced six usable points instead of none.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/tree_models_confusion_matrices_4panel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column."><img loading="lazy" decoding="async" width="3283" height="740" src="assets/tree_models_confusion_matrices_4panel.webp" class="img-fluid figure-img" style="width:100.0%" alt="Four confusion matrices side by side for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 35% to 45% down to about 30%."></a></p>
+<figcaption class="margin-caption">Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.</figcaption>
+</figure>
+</div>
 </section>
-<section id="the-ceiling-is-in-the-features" class="level2">
+<section id="the-ceiling-is-in-the-features" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-ceiling-is-in-the-features">The Ceiling Is in the Features</h2>
-<p>Feature importance is overwhelmingly delay propagation. <code>inbound_delay</code> alone accounts for 41.3% of total Gini importance, <code>tail_cum_delay</code> 22.4%, and <code>origin_cum_delay_rate</code> 8.5% — together about 72% of the model. Weather contributes roughly 3%, entering mostly through precipitation.</p>
-<p><img src="assets/tree_models_feature_importance_4panel.png" class="img-fluid" style="width:100.0%" alt="Feature importance across tree model configurations, dominated by delay propagation features"></p>
-<p>Per-class test recalls are 0.725 / 0.315 / 0.295 / 0.644 across the four tiers. The middle tiers sit near 30% in <em>every</em> configuration tested, and the confusion matrix shows those flights being absorbed into the adjacent on-time and severe tiers rather than confused with each other. No increase in trees, depth or weighting moved them.</p>
-<p>The most plausible explanation is that a 20-minute delay and a 90-minute delay present near-identical signatures two hours before departure. If that’s right, the binding constraint is the feature set — specifically the thin weather and network signal available at that horizon — and not model capacity. That’s a useful thing to learn, because it redirects the next round of effort away from bigger models.</p>
+<p>Feature importance is dominated by delay propagation. <code>inbound_delay</code> alone accounts for 41.3% of total Gini importance, <code>tail_cum_delay</code> for 22.4% and <code>origin_cum_delay_rate</code> for 8.5%, about 72% of the model together. Weather contributes roughly 3%, mostly through precipitation.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/tree_models_feature_importance_4panel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features."><img loading="lazy" decoding="async" width="3583" height="888" src="assets/tree_models_feature_importance_4panel.webp" class="img-fluid figure-img" style="width:100.0%" alt="Four horizontal bar charts of feature importance in percent, one per tree model. In all three random forests, inbound_delay_imp leads at about 41%, followed by tail_cum_delay_imp at about 22% and origin_cum_delay_rate_imp at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by tail_cum_delay_missing_imp at about 15% and inbound_delay_imp at about 9%."></a></p>
+<figcaption class="margin-caption">Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.</figcaption>
+</figure>
+</div>
+<p>Per-class test recalls for the selected forest are 0.725, 0.315, 0.295 and 0.644 across the four tiers. The middle tiers are the weak spot in every configuration. None of the four tree models gets them above 46% recall, and they fall to about 30% as the severe weight rises. The confusion matrix shows those flights spreading into the on-time and severe tiers more than into each other. Extra severe weight only pulls more of them into the severe tier.</p>
+<p>The most plausible explanation is that a 20-minute delay and a 90-minute delay look almost identical two hours before departure. If so, the binding constraint is the feature set, in particular the thin weather and network signal available at that horizon. Model capacity is not the limit. That is useful to know, because it points the next round of work away from bigger models.</p>
 </section>
 <section id="limitations" class="level2">
 <h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
-<p><strong>The search is incomplete.</strong> Six of eighteen random forest grid points and four of eight XGBoost configurations finished. All six surviving forest points sit at <code>maxDepth</code> 12, so the selected model may be a local rather than global optimum.</p>
-<p><strong>Generalization is strong, which is itself a signal.</strong> Train-to-test <span class="math inline">\(\kappa_w\)</span> gaps are 0.005, 0.001 and 0.001 across the three multipliers; for the selected model train and test agree to three decimal places (0.242 vs 0.241). The model is underfitting, not overfitting — more evidence that the constraint is signal rather than variance.</p>
-<p><strong>Phase 3 is not uniformly better than Phase 2.</strong> Severe recall nearly doubled (0.351 to 0.644) while <span class="math inline">\(\kappa_w\)</span> fell from 0.426 to 0.241. It is better on the criterion the stakeholder called non-negotiable and worse on overall agreement. Both halves of that sentence need saying.</p>
+<p><strong>The search is incomplete.</strong> Six of eighteen random forest grid points and four of eight XGBoost configurations finished. All six surviving forest points sit at <code>maxDepth</code> 12, so the selected model may be a local optimum.</p>
+<p><strong>The model underfits.</strong> Train-to-test <span class="math inline">\(\kappa_w\)</span> gaps are 0.005, 0.001 and 0.001 across the three multipliers. For the selected model, train and test agree to three decimal places (0.242 and 0.241). That is further evidence that the constraint is signal, not variance.</p>
+<p><strong>Phase 3 is not better than Phase 2 on every measure.</strong> Severe recall nearly doubled (0.351 to 0.644) while <span class="math inline">\(\kappa_w\)</span> fell from 0.426 to 0.241. The model is better on the criterion the stakeholder called non-negotiable and worse on overall agreement.</p>
 </section>
-<section id="what-id-do-next" class="level2">
-<h2 class="anchored" data-anchor-id="what-id-do-next">What I’d Do Next</h2>
-<p>The immediate lever is a <strong>cost-sensitive ensemble</strong> — a cost-weighted blend of the forest’s severe sensitivity with the MLP’s tier ranking — to recover <span class="math inline">\(\kappa_w\)</span> without giving up the Gate 2 pass. Completing the forest depth grid and training the boosted XGBoost configuration on more resilient compute would settle whether a boosted model can hold the gate at higher agreement. Longer term, the feature ceiling is best attacked with richer weather signal — destination-airport conditions and multi-hour trajectories rather than a point-in-time snapshot — instead of additional model capacity.</p>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<p>The immediate lever is a cost-sensitive ensemble. A cost-weighted blend of the forest’s severe sensitivity and the MLP’s tier ranking could recover <span class="math inline">\(\kappa_w\)</span> without giving up the Gate 2 pass. Finishing the forest depth grid and training the severe-weighted XGBoost configuration on more resilient compute would settle whether a boosted model can hold the gate at higher agreement. Longer term, the feature ceiling calls for richer weather signal, such as destination-airport conditions and multi-hour trajectories in place of a single snapshot, more than for extra model capacity.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
@@ -736,6 +875,7 @@ window.Quarto = {
 
 
 <div class="page-tags"><div class="page-tags-label">Also covered</div><div class="chips"><span class="chip">PySpark</span><span class="chip">Databricks</span><span class="chip">Random Forest</span><span class="chip">XGBoost</span><span class="chip">Imbalanced Classification</span><span class="chip">Feature Engineering</span><span class="chip">Model Selection</span></div></div>
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/mars-terrain/mars-terrain.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">Classifying Curiosity Rover Images</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/mars-terrain.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -825,7 +965,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1153,6 +1293,38 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

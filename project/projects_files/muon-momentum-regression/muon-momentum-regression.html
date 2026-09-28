@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2025-01-24">
-<meta name="description" content="Predicting muon track momentum resolution from five kinematic inputs, reaching R-squared of 0.854 on a held-out test set of 42,000 tracks.">
+<meta name="description" content="Predicting muon track momentum resolution from five kinematic inputs. The final network scores R-squared of 0.854 on 41,797 held-out tracks, against 0.698 for linear regression.">
 
-<title>Muon Track Momentum Resolution Regression</title>
+<title>Muon Track Momentum Resolution Regression · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -126,9 +128,20 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Muon Track Momentum Resolution Regression">
+<meta property="og:description" content="Predicting muon track momentum resolution from five kinematic inputs. The final network scores R-squared of 0.854 on 41,797 held-out tracks, against 0.698 for linear regression.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/muon.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="Muon Track Momentum Resolution Regression">
+<meta name="twitter:description" content="Predicting muon track momentum resolution from five kinematic inputs. The final network scores R-squared of 0.854 on 41,797 held-out tracks, against 0.698 for linear regression.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/muon.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -319,9 +332,8 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -334,9 +346,13 @@ window.Quarto = {
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -350,23 +366,34 @@ window.Quarto = {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -386,8 +413,31 @@ window.Quarto = {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -401,11 +451,54 @@ window.Quarto = {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -415,6 +508,13 @@ window.Quarto = {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -433,7 +533,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Predicting muon track momentum resolution from five kinematic inputs, reaching R-squared of 0.854 on a held-out test set of 42,000 tracks.
+    Predicting muon track momentum resolution from five kinematic inputs. The final network scores R-squared of 0.854 on 41,797 held-out tracks, against 0.698 for linear regression.
   </div>
 </div>
 
@@ -460,53 +560,78 @@ window.Quarto = {
 <div class="cs-keys">
 <div class="cs-key">
 <p><span class="cs-label">The Decision</span></p>
-<p><span class="cs-decision">Score the model on a held-out test set and against baselines, not on cross-validated fit alone.</span></p>
+<p><span class="cs-decision">Judge the model on a test set scored once, and set it against two baselines on the same split.</span></p>
 </div>
 <div class="cs-key">
 <p><span class="cs-label">Takeaways</span></p>
 <ul>
 <li>The final network reaches R² of 0.854 on 41,797 unseen tracks, against 0.698 for linear regression.</li>
-<li>Properly trained, model capacity is worth 0.105 of R², far more than the original notebook suggested.</li>
+<li>Trained properly, model capacity is worth 0.105 of R². The original notebook put it near 0.015.</li>
 <li>Error peaks at 8 to 18 GeV/c, where a forward, low-momentum population overlaps the main band.</li>
 </ul>
 </div>
 </div>
 </div>
-<p>This project predicts the track momentum resolution of muons in a particle detector from five kinematic inputs: total momentum <span class="math inline">\(p\)</span>, track slopes <span class="math inline">\(t_x\)</span> and <span class="math inline">\(t_y\)</span>, pseudorapidity <span class="math inline">\(\eta\)</span> and azimuthal angle <span class="math inline">\(\phi\)</span>. The muons come from simulated <span class="math inline">\(\chi_{c1} \rightarrow J/\psi\,\gamma\)</span> decays, with <span class="math inline">\(J/\psi \rightarrow \mu^+\mu^-\)</span>, giving 208,984 reconstructed tracks.</p>
-<p>The final model reaches an <span class="math inline">\(R^2\)</span> of <strong>0.854</strong> on a held-out test set of 41,797 tracks that was scored exactly once, against 0.698 for linear regression on the same split.</p>
+<p>This project predicts the momentum resolution of muon tracks in a particle detector from five kinematic inputs: total momentum <span class="math inline">\(p\)</span>, track slopes <span class="math inline">\(t_x\)</span> and <span class="math inline">\(t_y\)</span>, pseudorapidity <span class="math inline">\(\eta\)</span> and azimuthal angle <span class="math inline">\(\phi\)</span>. The muons come from simulated <span class="math inline">\(\chi_{c1} \rightarrow J/\psi\,\gamma\)</span> decays, with <span class="math inline">\(J/\psi \rightarrow \mu^+\mu^-\)</span>, giving 208,984 reconstructed tracks.</p>
+<p>The final model reaches an <span class="math inline">\(R^2\)</span> of <strong>0.854</strong> on a held-out test set of 41,797 tracks, scored once. Linear regression reaches 0.698 on the same split.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/track_curvature.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="Animated schematic of muon tracks curving in a magnetic field, with curvature falling as momentum rises"></p>
+<p><a href="assets/track_curvature.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Track Curvature Falls as Momentum Rises. A schematic, not measured data."><img loading="lazy" decoding="async" width="1280" height="740" src="assets/track_curvature.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="Animated schematic of six muon tracks leaving an interaction point, labelled 5 to 340 GeV/c. The 5 GeV/c track bends sharply upward and the 340 GeV/c track is almost straight."></a></p>
 </figure>
 </div>
-<p>The animation above is a schematic rather than measured data. It shows why the measurement is difficult: a charged track bends with a radius proportional to its momentum, so the highest momentum tracks are very nearly straight. The curvature signal that momentum is inferred from is weakest exactly where the resolution matters most.</p>
+<figcaption class="margin-caption">Track Curvature Falls as Momentum Rises. A schematic, not measured data.</figcaption>
+</figure>
+</div>
+<p>A charged track bends in a magnetic field with a radius proportional to its momentum. The highest momentum tracks are nearly straight, so the curvature that momentum is inferred from is weakest where precision matters most.</p>
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/muon-momentum-regression-model">github.com/olivia-jackson-lambert/muon-momentum-regression-model</a></p>
-<section id="data-exploration" class="level1">
+<section id="data-exploration" class="level1 page-columns page-full">
 <h1>Data Exploration</h1>
-<p>Momentum spans a wide range, with transverse momentum <span class="math inline">\(p_t\)</span> concentrated at low values.</p>
-<div class="columns">
-<div class="column" style="width:48%;">
-<p><img src="assets/p_distribution.png" class="img-fluid" alt="Distribution of total momentum on a log frequency scale"></p>
+<p>Momentum spans a wide range. Transverse momentum <span class="math inline">\(p_t\)</span> is concentrated at low values.</p>
+<div class="columns page-columns page-full">
+<div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/p_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Total Momentum"><img loading="lazy" decoding="async" width="966" height="679" src="assets/p_distribution.webp" class="img-fluid figure-img" alt="Histogram of total momentum from 0 to 600 GeV/c on a log count scale. Counts fall steadily as momentum rises."></a></p>
+<figcaption class="margin-caption">Total Momentum</figcaption>
+</figure>
+</div>
 </div><div class="column" style="width:4%;">
 
-</div><div class="column" style="width:48%;">
-<p><img src="assets/pt_distrbution.png" class="img-fluid" alt="Distribution of transverse momentum on a log frequency scale"></p>
-</div>
-</div>
-<p>The longitudinal component follows from the momentum relation <span class="math inline">\(p_z = \sqrt{p^2 - p_t^2}\)</span>, which gives the target resolution ratio <span class="math inline">\(\Delta p_z / p_z\)</span>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/fitted_track_momentum.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Fitted momentum resolution against momentum, showing the main band and a secondary cluster"></p>
+</div><div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/pt_distrbution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Transverse Momentum"><img loading="lazy" decoding="async" width="956" height="683" src="assets/pt_distrbution.webp" class="img-fluid figure-img" alt="Histogram of transverse momentum from 0 to 35 GeV/c on a log count scale. Counts peak below 1 GeV/c and fall steeply beyond 5 GeV/c."></a></p>
+<figcaption class="margin-caption">Transverse Momentum</figcaption>
 </figure>
 </div>
-<p>Resolution degrades steadily with momentum, which is the expected behaviour: faster tracks bend less, so their curvature is harder to measure. The median line makes that trend clear through the dense region.</p>
-<p>The more interesting feature is the <strong>secondary cluster</strong> sitting well above the main band between roughly 10 and 25 GeV/c, reaching resolutions near 0.0095 where the main band is around 0.0045. A third, lower branch also separates from the main band above about 120 GeV/c.&nbsp;The population is not unimodal, and that matters for what the model can be expected to do.</p>
+</div>
+</div>
+<p>The longitudinal component follows from <span class="math inline">\(p_z = \sqrt{p^2 - p_t^2}\)</span>, which gives the target resolution ratio <span class="math inline">\(\Delta p_z / p_z\)</span>.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/fitted_track_momentum_z.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Fitted resolution against longitudinal momentum, showing the same multi-modal structure"></p>
+<p><a href="assets/fitted_track_momentum.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Momentum Resolution Against Momentum"><img loading="lazy" decoding="async" width="1189" height="750" src="assets/fitted_track_momentum.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Scatter of momentum resolution against momentum from 0 to 400 GeV/c with a rising median line. A narrow spike of tracks below 25 GeV/c climbs to about 0.0095, well above the main band. At higher momentum the main band splits into two branches."></a></p>
 </figure>
 </div>
-<p>Taking the tracks between 8 and 25 GeV/c and splitting them at a resolution of 0.0070 isolates that upper cluster. It is 1,410 tracks, or 2.1 percent of the band, and two variables separate it almost completely:</p>
+<figcaption class="margin-caption">Momentum Resolution Against Momentum</figcaption>
+</figure>
+</div>
+<p>Resolution degrades steadily with momentum, as expected. Faster tracks bend less, so their curvature is harder to measure. The median line shows the trend through the dense region.</p>
+<p>The more interesting feature is a <strong>secondary cluster</strong> well above the main band between roughly 10 and 25 GeV/c.&nbsp;It reaches resolutions near 0.0095 where the main band sits around 0.0045. At higher momentum the main band also splits into two branches. The population is not unimodal, and that limits what the model can be expected to do.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/fitted_track_momentum_z.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Resolution Against Longitudinal Momentum"><img loading="lazy" decoding="async" width="1189" height="755" src="assets/fitted_track_momentum_z.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:88.0%" alt="Scatter of longitudinal momentum resolution against longitudinal momentum, showing the same spike below 25 GeV/c and the same split into two branches at higher momentum."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Resolution Against Longitudinal Momentum</figcaption>
+</figure>
+</div>
+<p>Taking the tracks between 8 and 25 GeV/c and splitting them at a resolution of 0.0070 isolates the upper cluster. It holds 1,410 tracks, 2.1 percent of the band, and two variables separate it almost completely:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -533,23 +658,23 @@ window.Quarto = {
 <td><span class="math inline">\(t_x\)</span>, <span class="math inline">\(t_y\)</span>, <span class="math inline">\(z_V\)</span>, pol, <span class="math inline">\(\phi\)</span></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">below 0.06</td>
+<td style="text-align: right;">0.06 or less</td>
 </tr>
 </tbody>
 </table>
-<p>These are very forward tracks, with <span class="math inline">\(\eta\)</span> in the 4.3 to 4.6 range against a dataset median nearer 3.5, carrying very little transverse momentum. A track travelling almost along the beam axis crosses less of the magnetic field, so its bending lever arm is short and its momentum is measured poorly despite a perfectly ordinary total momentum. Nothing else in the feature set distinguishes them.</p>
+<p>These are very forward tracks, with a mean <span class="math inline">\(\eta\)</span> of 4.48 against a dataset median of 3.53, and they carry very little transverse momentum. A track travelling almost along the beam axis crosses less of the magnetic field. Its bending lever arm is short, so its momentum is measured poorly even when its total momentum is ordinary. Nothing else in the feature set sets these tracks apart.</p>
 </section>
 <section id="method" class="level1">
 <h1>Method</h1>
-<p>The evaluation is built to answer one question honestly: how well would this model do on tracks it has never seen?</p>
+<p>The evaluation is built to estimate how well the model does on tracks it has never seen.</p>
 <ul>
-<li><strong>Three-way split</strong> of 60 / 20 / 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.</li>
-<li><strong>Scaling fit on the training split only</strong>, so validation and test scores are not inflated by statistics leaked from data the model has not seen.</li>
-<li><strong>Two reference points</strong> are scored on the same split: predicting the training mean, and linear regression. Without them an <span class="math inline">\(R^2\)</span> of 0.85 has no context.</li>
-<li><strong>The target is standardised as well as the features.</strong> <span class="math inline">\(\Delta p_z / p_z\)</span> is of order <span class="math inline">\(10^{-3}\)</span>, and left in raw units the squared-error gradients are so small that the networks never converge.</li>
+<li><strong>Three-way split</strong> of 60, 20 and 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.</li>
+<li><strong>Scaling is fit on the training split only</strong>, so no statistics leak from the validation or test data into the scores.</li>
+<li><strong>Two reference points</strong> are scored on the same split: predicting the training mean, and linear regression. They give an <span class="math inline">\(R^2\)</span> of 0.85 its context.</li>
+<li><strong>The target is standardised as well as the features.</strong> <span class="math inline">\(\Delta p_z / p_z\)</span> is of order <span class="math inline">\(10^{-3}\)</span>. In raw units the squared-error gradients are so small that the networks never converge.</li>
 </ul>
 </section>
-<section id="results" class="level1">
+<section id="results" class="level1 page-columns page-full">
 <h1>Results</h1>
 <table class="caption-top table">
 <thead>
@@ -599,21 +724,31 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>On the held-out test set the selected model scores <span class="math inline">\(R^2\)</span> <strong>0.854</strong>, RMSE <strong>3.938e-4</strong> and MAE <strong>1.783e-4</strong>. Validation and test agree to within 0.003 of <span class="math inline">\(R^2\)</span>, so the selection did not overfit the validation split.</p>
-<p>Linear regression already captures most of the signal at 0.698. The network adds a further 0.156, which is worth having but is a refinement of a largely linear relationship rather than the discovery of a hidden one.</p>
+<p>On the held-out test set the selected model scores <span class="math inline">\(R^2\)</span> of 0.854, RMSE of 3.938e-4 and MAE of 1.783e-4. Validation and test <span class="math inline">\(R^2\)</span> differ by 0.003, so model selection did not overfit the validation split.</p>
+<p>Linear regression already captures most of the signal at 0.698. The network adds 0.160 on validation. That gain is worth having, and it refines a relationship that is largely linear to begin with.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/test_parity.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Predicted versus true momentum resolution on the held-out test set"></p>
+<p><a href="assets/test_parity.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Predicted Against True Resolution on the Test Set"><img loading="lazy" decoding="async" width="871" height="872" src="assets/test_parity.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%" alt="Scatter of predicted against true longitudinal momentum resolution for 41,797 test tracks, with a diagonal line for perfect prediction. Points hug the line below 7 times 10 to the minus 3 and spread out above it, with a small group near 9 times 10 to the minus 3 predicted well below the line."></a></p>
 </figure>
 </div>
-<p>Predictions track the diagonal closely through the dense region below 0.007. Above that the scatter widens, and a visible tail of points sits well below the line, where the model under-predicts resolution for tracks that are genuinely poorly measured.</p>
+<figcaption class="margin-caption">Predicted Against True Resolution on the Test Set</figcaption>
+</figure>
+</div>
+<p>Predictions follow the diagonal closely through the dense region below 0.007. Above that the scatter widens. A visible tail of points sits well below the line, where the model under-predicts resolution for tracks that are genuinely poorly measured.</p>
 </section>
-<section id="where-the-model-fails" class="level1">
+<section id="where-the-model-fails" class="level1 page-columns page-full">
 <h1>Where the Model Fails</h1>
-<p>Binning the test error by momentum shows the failure is not where the schematic would suggest.</p>
+<p>I binned the test error by momentum to see where the model struggles. The answer does not match the curvature argument.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/test_error_by_momentum.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Test RMSE and mean bias across eight momentum bins"></p>
+<p><a href="assets/test_error_by_momentum.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Test Error by Momentum"><img loading="lazy" decoding="async" width="1197" height="709" src="assets/test_error_by_momentum.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Step chart of test RMSE and mean bias across eight equal-count momentum bins from 3 to 739 GeV/c. RMSE peaks at about 5.6 times 10 to the minus 4 between 8 and 18 GeV/c and is lowest at 2.0 times 10 to the minus 4 between 31 and 51 GeV/c. Bias stays close to zero throughout."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Test Error by Momentum</figcaption>
 </figure>
 </div>
 <table class="caption-top table">
@@ -676,31 +811,32 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Error peaks in the <strong>8 to 18 GeV/c</strong> band at roughly 5.6e-4, and is lowest at <strong>31 to 51 GeV/c</strong> at 2.0e-4, almost a factor of three better. The high momentum tail is not the worst region, which is the opposite of what the curvature argument alone would suggest.</p>
-<p>That peak lands on the same momentum range as the secondary high-<span class="math inline">\(\eta\)</span> cluster identified above. Two populations with very different resolutions overlap there, and although <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span> are both model inputs, the minority population is only about 2 percent of the band, so the network averages across the boundary rather than switching cleanly between the two regimes. This is a strong candidate explanation rather than a demonstrated one, and it is directly testable by scoring the two clusters separately.</p>
-<p>Bias stays small and positive across almost the whole range, turning slightly negative only in the highest bin. The model is therefore mildly conservative at low and middle momenta, over-estimating resolution by a small margin, and slightly optimistic for the straightest tracks.</p>
+<p>Error peaks at 8 to 18 GeV/c at roughly 5.6e-4. It is lowest at 31 to 51 GeV/c at 2.0e-4, almost three times better. The high momentum tail is not the worst region, which the curvature argument alone would predict it to be.</p>
+<p>The peak falls in the same momentum range as the high-<span class="math inline">\(\eta\)</span> cluster found above. Two populations with very different resolutions overlap there. The model does receive <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span>, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.</p>
+<p>Bias stays small and positive across almost the whole range and turns slightly negative only in the highest bin. The model mildly over-estimates resolution at low and middle momenta, and is slightly optimistic for the straightest tracks.</p>
 </section>
 <section id="what-changed-from-the-original-notebook" class="level1">
 <h1>What Changed From the Original Notebook</h1>
-<p>The original analysis reported a cross-validated <span class="math inline">\(R^2\)</span> of 0.734 and concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis properly changes that conclusion.</p>
-<p>With target standardisation and early stopping in place, the architectures separate clearly, from 0.753 at five units to 0.858 at forty. Capacity is worth roughly 0.105 of <span class="math inline">\(R^2\)</span>, not 0.015. The original comparison was measuring undertrained models rather than saturated ones: it ran a fixed 50 epochs with no early stopping and no target scaling, so the larger networks never reached convergence and looked no better than the small ones.</p>
-<p>Scaling the inputs is still the single most important preprocessing step. It is simply no longer true that the architecture does not matter.</p>
-<p>One practical note: the original notebook imports <code>tensorflow.keras.wrappers.scikit_learn.KerasRegressor</code>, which was deprecated in TensorFlow 2.6 and removed in 2.13, so it no longer runs on current TensorFlow. The pipeline here is rebuilt on scikit-learn, which expresses the same dense architectures without that dependency.</p>
+<p>The original analysis reported a cross-validated <span class="math inline">\(R^2\)</span> of 0.734. It concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis changes that conclusion.</p>
+<p>With target standardisation and early stopping in place, the architectures separate clearly, from 0.753 at five units to 0.858 at forty. Capacity is worth roughly 0.105 of <span class="math inline">\(R^2\)</span>. The original ran a fixed 50 epochs with no early stopping and no target scaling, so the larger networks never converged and looked no better than the small ones.</p>
+<p>Scaling the inputs is still the most important preprocessing step. Architecture matters too.</p>
+<p>The original notebook also imports <code>tensorflow.keras.wrappers.scikit_learn.KerasRegressor</code>, which was deprecated in TensorFlow 2.6 and removed in 2.13, so it no longer runs on current TensorFlow. I rebuilt the pipeline on scikit-learn, which expresses the same dense architectures without that dependency.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
-<p><strong>The architecture search is shallow.</strong> Four hand-chosen configurations, not a systematic sweep. The trend suggests wider networks would keep improving, and that boundary is untested.</p>
-<p><strong>Only kinematic inputs are used.</strong> Detector geometry, hit multiplicity and track fit quality are all absent. The exploratory analysis suggests the mid-momentum error peak is at least partly a forward-track effect that <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span> already encode, but a genuine acceptance or reconstruction variable would likely separate the populations more cleanly than the model can.</p>
-<p><strong>The data is simulation.</strong> These are Monte Carlo tracks, so the model has learned the resolution behaviour of a detector simulation rather than of a real one.</p>
+<p><strong>The architecture search is shallow.</strong> I tried four hand-chosen configurations. The trend suggests wider networks would keep improving, and I have not tested where that stops.</p>
+<p><strong>Only kinematic inputs are used.</strong> Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span> already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.</p>
+<p><strong>The data is simulation.</strong> These are Monte Carlo tracks, so the model has learned how a detector simulation behaves. Real detector data may differ.</p>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Test the high-<span class="math inline">\(\eta\)</span> hypothesis directly</strong>: Score the forward, low-<span class="math inline">\(p_t\)</span> cluster separately from the main band. If it carries most of the error in the 8 to 18 GeV/c region, the fix is a sample weight or a dedicated model for forward tracks rather than more capacity everywhere.</p>
-<p><strong>Extend the architecture sweep</strong>: Continue past forty units to find where the gains actually flatten.</p>
-<p><strong>Predict the full distribution</strong>: Quantile regression would give an uncertainty band per track instead of a single point estimate, which matters more than a mean prediction for a quantity that is itself a measure of uncertainty.</p>
+<p><strong>Test the high-<span class="math inline">\(\eta\)</span> explanation.</strong> Score the forward, low-<span class="math inline">\(p_t\)</span> cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.</p>
+<p><strong>Extend the architecture sweep.</strong> Continue past forty units to find where the gains flatten.</p>
+<p><strong>Predict the full distribution.</strong> Quantile regression would give each track an uncertainty band instead of a single point estimate. For a quantity that is itself a measure of uncertainty, that is more useful than a mean.</p>
 
 
 <div class="page-tags"><div class="page-tags-label">Also covered</div><div class="chips"><span class="chip">scikit-learn</span><span class="chip">Particle Physics</span><span class="chip">Model Evaluation</span><span class="chip">Feature Scaling</span><span class="chip">Cross-Validation</span><span class="chip">Python</span></div></div>
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/particle-classifier/particle-classifier.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">High Energy Particle CNN Classifier</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/particle.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -790,7 +926,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1118,6 +1254,38 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

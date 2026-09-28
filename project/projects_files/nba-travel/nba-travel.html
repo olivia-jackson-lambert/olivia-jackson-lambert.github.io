@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2025-12-15">
-<meta name="description" content="A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does.">
+<meta name="description" content="A descriptive regression over 46,903 NBA games from 1947 to 2025. How far the away team flies makes no measurable difference. Which way it flies does.">
 
-<title>Does Travel Cost NBA Teams the Game?</title>
+<title>Does Travel Cost NBA Teams the Game? · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -97,9 +99,20 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Does Travel Cost NBA Teams the Game?">
+<meta property="og:description" content="A descriptive regression over 46,903 NBA games from 1947 to 2025. How far the away team flies makes no measurable difference. Which way it flies does.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/nba-travel.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="Does Travel Cost NBA Teams the Game?">
+<meta name="twitter:description" content="A descriptive regression over 46,903 NBA games from 1947 to 2025. How far the away team flies makes no measurable difference. Which way it flies does.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/nba-travel.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -290,9 +303,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -306,9 +318,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -322,23 +338,34 @@ ul.task-list li input[type="checkbox"] {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -358,8 +385,31 @@ ul.task-list li input[type="checkbox"] {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -373,11 +423,54 @@ ul.task-list li input[type="checkbox"] {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -387,6 +480,13 @@ ul.task-list li input[type="checkbox"] {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -407,7 +507,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    A descriptive regression over 46,903 games from 1947 to 2025, where the distance a team flies turns out not to matter and the direction does.
+    A descriptive regression over 46,903 NBA games from 1947 to 2025. How far the away team flies makes no measurable difference. Which way it flies does.
   </div>
 </div>
 
@@ -447,16 +547,16 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>Travel is the standard explanation for why away teams underperform. Long flights, lost sleep, crossing time zones. This project tests whether the distance an NBA away team travels actually shows up in the scoreline, using every regular season game from 1947 to 2025.</p>
-<p>It does not. The distance coefficient is statistically indistinguishable from zero. What does show up is the <em>direction</em> of travel: teams flying west to east gain close to a point, while the same trip in reverse shows nothing. That is a result about time zones rather than about mileage.</p>
+<p>Travel is the usual explanation for why away teams underperform. Long flights, lost sleep, time zones. We tested whether the distance an NBA away team travels shows up in the final score, using 46,903 regular season games from 1947 to 2025.</p>
+<p>It does not. The distance coefficient is indistinguishable from zero. The direction of travel does show up. Teams flying west to east gain close to a point, and the same trip in reverse gains nothing. Time zones matter here and mileage does not.</p>
 <section id="the-question" class="level1">
 <h1>The Question</h1>
 <p>Does the distance an away team travels affect point differential, measured as away score minus home score?</p>
-<p>The reference point is Deddens and Steenland (1997), who found limited effects of travel distance on NBA performance. Their analysis covered a far shorter window. Revisiting the question across seven decades gives enough games to detect an effect that small, if one exists.</p>
+<p>Our starting point was Deddens and Steenland (1997), who found limited effects of travel distance on NBA performance. We revisited the question with a much larger dataset, large enough to detect a small effect if one exists.</p>
 </section>
-<section id="the-data" class="level1">
+<section id="the-data" class="level1 page-columns page-full">
 <h1>The Data</h1>
-<p>The dataset is built from Kaggle’s NBA box score archive, one row per regular season game, joined to the geodesic distance between the home and away teams’ cities.</p>
+<p>We built the dataset from Kaggle’s NBA box score archive. Each row is one regular season game, joined to the geodesic distance between the two teams’ cities.</p>
 <table class="caption-top table">
 <tbody>
 <tr class="odd">
@@ -485,58 +585,80 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p><img src="assets/data_overview.png" class="img-fluid" style="width:100.0%" alt="Distribution of travel distances, and games per season from 1947 to 2025"></p>
-<p>Travel direction is coded into three groups from the time zones of the two cities: West to East, East to West, and Neither, where both teams sit in the same zone. Neither is the reference category and covers 37,509 of the games.</p>
-<p>The standard deviation of 13.26 points is worth holding onto. It is the yardstick every effect below has to be measured against.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/data_overview.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Distance travelled by away teams (A) and games per season in the modelling dataset (B)."><img loading="lazy" decoding="async" width="2201" height="760" src="assets/data_overview.webp" class="img-fluid figure-img" style="width:100.0%" alt="Two panels. Left, a histogram of away team travel distance, concentrated under 1,250 miles and tailing off to about 2,800. Right, games per season, near zero before 1960, rising to roughly 1,000 per season by the 2000s, with dips in some seasons."></a></p>
+<figcaption class="margin-caption">Distance travelled by away teams (A) and games per season in the modelling dataset (B).</figcaption>
+</figure>
+</div>
+<p>Coverage is uneven. Only 45 games predate 1960, and 95% come from 1970 onward.</p>
+<p>We coded travel direction into three groups from the time zones of the two cities: West to East, East to West, and Neither, where both teams sit in the same zone. Neither is the reference category and covers 37,509 games.</p>
+<p>Keep the standard deviation of 13.26 points in mind. Every effect below should be measured against it.</p>
 </section>
 <section id="models" class="level1">
 <h1>Models</h1>
-<p>Four nested linear models, each adding one term, fitted with heteroskedasticity-robust standard errors:</p>
+<p>We fitted four nested linear models, each adding one term, with heteroskedasticity-robust standard errors:</p>
 <ol type="1">
 <li>Point differential on travel distance alone</li>
 <li>Adding travel direction</li>
 <li>Adding game attendance</li>
 <li>Adding year</li>
 </ol>
-<p>Robust standard errors matter here because the variance of point differential is not constant across the seven decades the sample covers.</p>
+<p>Robust standard errors matter because the variance of point differential is not constant across the decades the sample covers.</p>
 </section>
-<section id="the-null-result" class="level1">
+<section id="the-null-result" class="level1 page-columns page-full">
 <h1>The Null Result</h1>
-<p><img src="assets/distance_null.png" class="img-fluid" style="width:100.0%" alt="Mean point differential binned by travel distance, showing a flat relationship with overlapping confidence intervals"></p>
-<p>Binning the games by travel distance and plotting the mean point differential in each bin gives a flat line. The confidence intervals overlap the overall mean across the entire range.</p>
-<p>The regression agrees. The coefficient on distance is <strong>-0.0002 points per mile with a p-value of 0.13</strong>, which is not distinguishable from zero. Taken at face value, even the longest trip in the dataset, 2,805 miles, would cost the away team six tenths of a point. Against a standard deviation of 13.26 that is nothing.</p>
-<p>This is a null result on a sample of 46,903 games, which makes it a reasonably strong one. With this much data, an effect of any practical size would have been detected.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/distance_null.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Mean point differential by travel distance. The line stays flat across the full range."><img loading="lazy" decoding="async" width="1459" height="861" src="assets/distance_null.webp" class="img-fluid figure-img" style="width:100.0%" alt="Mean point differential in twenty distance bins from about 100 to 2,500 miles. The line moves between about -4.0 and -3.1 with no trend, and the 95% confidence band covers the overall mean of -3.45 almost everywhere."></a></p>
+<figcaption class="margin-caption">Mean point differential by travel distance. The line stays flat across the full range.</figcaption>
+</figure>
+</div>
+<p>Binning games by travel distance and plotting the mean point differential in each bin gives a flat line. The confidence band covers the overall mean almost everywhere.</p>
+<p>The regression agrees. The distance coefficient is -0.0002 points per mile with a p-value of 0.13. Taken at face value, the longest trip in the dataset, 2,805 miles, would cost the away team 0.6 points. Against a standard deviation of 13.26, that is nothing.</p>
+<p>A null result on 46,903 games is a strong one. An effect of practical size would have shown up.</p>
 </section>
-<section id="what-does-show-up" class="level1">
+<section id="what-does-show-up" class="level1 page-columns page-full">
 <h1>What Does Show Up</h1>
-<p><img src="assets/direction_effect.png" class="img-fluid" style="width:92.0%" alt="Mean point differential by travel direction, with West to East highest"></p>
-<p>Direction separates where distance does not. Teams travelling <strong>west to east gain 0.96 points</strong> relative to teams not changing time zone, and the effect is statistically significant (p = 0.0006). The same journey east to west shows <strong>-0.10 points and a p-value of 0.72</strong>, which is nothing at all.</p>
-<p>The asymmetry is the interesting part. If travel were simply tiring, both directions would hurt, and the longer the flight the worse it would get. Instead one direction helps and the other does nothing, which points at circadian alignment rather than fatigue. A team flying west to east plays an evening game that falls later in their body clock, when they are closer to peak alertness, and this is consistent with the sleep literature the study cites.</p>
-<p>Attendance and year both come out statistically significant as well. An extra 10,000 spectators is associated with 1.7 points against the away team, and point differentials have drifted upward by about 0.7 points per decade.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/direction_effect.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Mean point differential by direction of travel. Bars show raw means; the coefficients in the text come from the full model."><img loading="lazy" decoding="async" width="1250" height="876" src="assets/direction_effect.webp" class="img-fluid figure-img" style="width:92.0%" alt="Bar chart of mean point differential by travel direction with 95% confidence intervals. East to West -4.02 (4,729 games), Neither -3.44 (37,509 games), West to East -2.93 (4,665 games)."></a></p>
+<figcaption class="margin-caption">Mean point differential by direction of travel. Bars show raw means; the coefficients in the text come from the full model.</figcaption>
+</figure>
+</div>
+<p>Direction separates games where distance does not. In the full model, teams travelling west to east gain 0.96 points relative to teams that stay in their time zone (p = 0.0006). Teams travelling east to west show -0.10 points (p = 0.72), which is no effect.</p>
+<p>The asymmetry is the interesting part. If travel simply tired teams out, both directions would hurt, and longer flights would hurt more. Instead one direction helps and the other does nothing. That pattern fits circadian timing. For a team flying west to east, an evening tip-off falls earlier on its body clock, closer to the late afternoon peak that the sleep research we cite links to athletic performance.</p>
+<p>Attendance and year are also significant. An extra 10,000 spectators is associated with 1.7 points against the away team. Point differential has moved about 0.7 points per decade in the away team’s favour.</p>
 </section>
-<section id="everything-is-significant-and-almost-nothing-is-large" class="level1">
+<section id="everything-is-significant-and-almost-nothing-is-large" class="level1 page-columns page-full">
 <h1>Everything Is Significant and Almost Nothing Is Large</h1>
-<p><img src="assets/effect_sizes.png" class="img-fluid" style="width:100.0%" alt="All four model effects plotted against a band showing one standard deviation of point differential"></p>
-<p>This is the figure that matters most, and it is the one the original report does not have.</p>
-<p>At 46,903 games, almost any effect reaches statistical significance. Three of the four terms in the final model have p-values below 0.001. But plotted against the actual spread of game outcomes, every one of them disappears into the noise. The largest, a full extra 10,000 fans in the building, moves the expected margin by 1.7 points when game-to-game variation is 13.3.</p>
-<p>The model’s adjusted R-squared is <strong>0.0053</strong>. It explains half a percent of the variance in point differentials. The F-test is overwhelmingly significant and the model is very nearly useless for prediction, and both of those statements are true at once.</p>
-<p>That is the honest summary of the study: the associations are real and they are tiny. Reporting the p-values without the effect sizes would leave a misleading impression, which is why this figure exists.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/effect_sizes.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Each model effect against one standard deviation of point differential."><img loading="lazy" decoding="async" width="1447" height="832" src="assets/effect_sizes.webp" class="img-fluid figure-img" style="width:100.0%" alt="Bar chart of four effects in points: longest trip -0.60, West to East travel +0.96, 10,000 more spectators -1.68, ten years of drift +0.69. All bars sit close to zero inside a shaded band spanning plus and minus 13.3 points."></a></p>
+<figcaption class="margin-caption">Each model effect against one standard deviation of point differential.</figcaption>
+</figure>
+</div>
+<p>This is the most important figure here. The original course report did not include it.</p>
+<p>At 46,903 games, almost any effect reaches significance. Three of the four terms in the final model have p-values below 0.001. Plotted against the real spread of game outcomes, every one of them is small. The largest, 10,000 extra fans in the building, moves the expected margin by 1.7 points. Game-to-game variation is 13.3.</p>
+<p>The model’s adjusted R-squared is 0.0053. It explains half a percent of the variance in point differential. The F-test is overwhelmingly significant, and the model is close to useless for prediction. Both are true.</p>
+<p>So the associations are real and they are tiny. Reporting p-values without effect sizes would mislead, which is why we made this figure.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
-<p><strong>This is descriptive, not causal.</strong> Games are not independent. Team quality persists across a season, injuries cluster, and league dynamics shift. Year as a numeric covariate captures long-run drift but not within-team or within-season correlation, so the coefficients are average associations.</p>
-<p><strong>Distance is not fatigue.</strong> Geodesic distance measures separation between cities. It says nothing about rest days, back-to-back games, charter conditions, or sleep actually lost. The direction result hints that the mechanism is circadian, and none of these variables measure that directly.</p>
-<p><strong>Seven decades is a long time.</strong> Court standardisation, player movement, and the comfort of travel have all changed since 1947. The relationship between travel and outcome is unlikely to have been stable across the whole sample, and the model fits one coefficient to all of it.</p>
-<p><strong>Distance and direction are correlated.</strong> Long trips are disproportionately cross-country ones, so the two variables carry overlapping information and their individual coefficients should be read with that in mind.</p>
+<p><strong>The analysis is descriptive.</strong> It supports no causal claims. Games are not independent. Team quality persists across a season, injuries cluster, and league dynamics shift. Year as a numeric covariate captures long-run drift but not correlation within a team or season. The coefficients are average associations.</p>
+<p><strong>Distance is not fatigue.</strong> Geodesic distance measures how far apart two cities are. It says nothing about rest days, back-to-back games, travel conditions or sleep lost. The direction result hints at a circadian mechanism, and none of our variables measure that directly.</p>
+<p><strong>The sample spans a long, changing era.</strong> Court standards, player movement and the comfort of travel have all changed since 1947. The link between travel and outcome is unlikely to have held steady, yet the model fits one coefficient to all of it.</p>
+<p><strong>Distance and direction overlap.</strong> Long trips are mostly cross-country trips, so the two variables carry shared information. Read their separate coefficients with that in mind.</p>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Model rest directly</strong>: Days since the last game, and whether it was a back-to-back, are the variables most likely to carry the fatigue effect that distance is standing in for.</p>
-<p><strong>Use time zones crossed instead of miles</strong>: The direction result suggests zone changes are the operative quantity. Signed zones crossed would test that against distance head on.</p>
-<p><strong>Allow the relationship to vary by era</strong>: Interacting travel terms with decade would show whether the effect has weakened as travel has become easier.</p>
-<p><strong>Cluster the standard errors</strong>: Robust errors handle non-constant variance but not the dependence between games involving the same team. Clustering by team or season would give more honest intervals.</p>
+<p><strong>Model rest directly.</strong> Days since the last game, and whether it was a back-to-back, are the variables most likely to carry the fatigue effect that distance stands in for.</p>
+<p><strong>Count time zones crossed.</strong> The direction result suggests zone changes are what matters. A signed count of zones crossed would test that against distance head on.</p>
+<p><strong>Let the effect vary by era.</strong> Interacting the travel terms with decade would show whether the effect has weakened as travel has become easier.</p>
+<p><strong>Cluster the standard errors.</strong> Robust errors handle non-constant variance but not dependence between games involving the same team. Clustering by team or season would give more honest intervals.</p>
 
 
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/muon-momentum-regression/muon-momentum-regression.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">Muon Track Momentum Resolution Regression</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/muon.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -626,7 +748,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -954,6 +1076,38 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

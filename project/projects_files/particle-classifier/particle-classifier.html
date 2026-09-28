@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2025-01-02">
-<meta name="description" content="Classifying particle types from liquid argon detector images using convolutional neural networks.">
+<meta name="description" content="A convolutional neural network that identifies five particle types from liquid argon detector images, reaching 88.2% accuracy on a held-out test set.">
 
-<title>High Energy Particle CNN Classifier</title>
+<title>High Energy Particle CNN Classifier · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,6 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +77,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -126,9 +128,20 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="High Energy Particle CNN Classifier">
+<meta property="og:description" content="A convolutional neural network that identifies five particle types from liquid argon detector images, reaching 88.2% accuracy on a held-out test set.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/particle.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="High Energy Particle CNN Classifier">
+<meta name="twitter:description" content="A convolutional neural network that identifies five particle types from liquid argon detector images, reaching 88.2% accuracy on a held-out test set.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/particle.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -319,9 +332,8 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -358,9 +370,13 @@ window.Quarto = {
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -374,23 +390,34 @@ window.Quarto = {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -410,8 +437,31 @@ window.Quarto = {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -425,11 +475,54 @@ window.Quarto = {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -439,6 +532,13 @@ window.Quarto = {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -457,7 +557,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Classifying particle types from liquid argon detector images using convolutional neural networks.
+    A convolutional neural network that identifies five particle types from liquid argon detector images, reaching 88.2% accuracy on a held-out test set.
   </div>
 </div>
 
@@ -489,31 +589,34 @@ window.Quarto = {
 <div class="cs-key">
 <p><span class="cs-label">Takeaways</span></p>
 <ul>
-<li>Plateau learning-rate scheduling lifted validation accuracy from 83.4% to 89.1%.</li>
-<li>Adding capacity made the model worse; the baseline architecture was already expressive enough.</li>
-<li>89.1% is validation accuracy, so a held-out test set is the next step.</li>
+<li>Plateau learning-rate scheduling lifted best validation accuracy from 83.4% to 89.1%.</li>
+<li>On 40,000 held-out test events, accuracy rose from 82.9% to 88.2%.</li>
+<li>Adding capacity made the model worse. The baseline architecture was already expressive enough.</li>
+<li>Pions remain the weak class. About one in five is called a muon.</li>
 </ul>
 </div>
 </div>
 </div>
-<p>This project classifies particle types (electrons, positrons, muons, pions, and protons) from liquid argon time projection chamber detector images using convolutional neural networks. Building on the MicroBooNE Collaboration’s approach [1], the model learns visual patterns directly from the data rather than relying on hand-engineered physics rules. Through systematic hyperparameter optimization focused on learning rate scheduling, the final model achieves 89.1% validation accuracy.</p>
-<p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/high-energy-particle-classifier">github.com/olivia-jackson-lambert/high-energy-particle-classifier</a></p>
-<section id="data-exploration" class="level1">
+<p>This project identifies particles from liquid argon time projection chamber images. The dataset holds five classes: electrons, muons, photons, pions and protons. Following the MicroBooNE Collaboration’s approach [1], a convolutional neural network learns track patterns directly from the images, with no hand-built physics rules. Most of the gain came from the learning-rate schedule. The final model reaches 89.1% validation accuracy and 88.2% on a held-out test set.</p>
+<p>Source code: <a href="https://github.com/olivia-jackson-lambert/high-energy-particle-classifier">github.com/olivia-jackson-lambert/high-energy-particle-classifier</a></p>
+<section id="data-exploration" class="level1 page-columns page-full">
 <h1>Data Exploration</h1>
 <section id="particle-types-in-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="particle-types-in-the-dataset">Particle Types in the Dataset</h2>
-<p>This dataset contains five charged particle types commonly observed in liquid argon time projection chambers. Each particle differs in mass and electric charge, which strongly influences its track morphology in the detector.</p>
+<p>The dataset has 90,000 simulated events, 18,000 for each class. Four classes are charged particles. The photon is neutral. Mass and charge shape how each particle looks in the detector.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 10%">
-<col style="width: 16%">
-<col style="width: 20%">
-<col style="width: 38%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Particle</th>
+<th>PDG code</th>
 <th>Symbol</th>
 <th>Charge (e)</th>
 <th>Mass (MeV/c²)</th>
@@ -523,89 +626,123 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td>Electron</td>
+<td>11</td>
 <td>e⁻</td>
 <td>−1</td>
 <td>0.511</td>
-<td>Light, long, branching tracks</td>
+<td>Branching electromagnetic shower</td>
 </tr>
 <tr class="even">
-<td>Positron</td>
-<td>e⁺</td>
-<td>+1</td>
-<td>0.511</td>
-<td>Similar topology to electrons</td>
-</tr>
-<tr class="odd">
 <td>Muon</td>
+<td>13</td>
 <td>μ⁻</td>
 <td>−1</td>
 <td>105.7</td>
-<td>Long, straight, penetrating tracks</td>
+<td>Long, straight, penetrating track</td>
+</tr>
+<tr class="odd">
+<td>Photon</td>
+<td>22</td>
+<td>γ</td>
+<td>0</td>
+<td>0</td>
+<td>Electromagnetic shower, similar to an electron</td>
 </tr>
 <tr class="even">
 <td>Pion</td>
+<td>211</td>
 <td>π⁺</td>
 <td>+1</td>
 <td>139.6</td>
-<td>Moderately long, hadronic tracks</td>
+<td>Moderately long hadronic track</td>
 </tr>
 <tr class="odd">
 <td>Proton</td>
+<td>2212</td>
 <td>p</td>
 <td>+1</td>
 <td>938.3</td>
-<td>Short tracks with dense energy deposition</td>
+<td>Short track with dense energy deposition</td>
 </tr>
 </tbody>
 </table>
+<p>I split the data into 50,000 training events and 40,000 test events. Of the training events, 5,000 are held back for validation.</p>
 </section>
-<section id="example-particle-tracks-across-the-momentum-range" class="level2">
+<section id="example-particle-tracks-across-the-momentum-range" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="example-particle-tracks-across-the-momentum-range">Example Particle Tracks Across the Momentum Range</h2>
-<p>The figure below shows example detector images for each particle type, ordered by increasing initial momentum from left to right. Each row shows one of three detector projections (X–Y, Y–Z, Z–X).</p>
-<p>Higher-mass particles produce shorter, denser tracks, while lighter particles travel farther and scatter more. These subtle visual differences are what the CNN learns to distinguish.</p>
-<p><img src="assets/particle_types.gif" class="img-fluid" style="width:100.0%" alt="Example particle tracks at different initial momentums by type"></p>
-</section>
-<section id="truth-level-feature-distributions" class="level2">
-<h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
-<p>Each detector image comes with kinematic and spatial features that provide physical context for the particle trajectories.</p>
-<p>The momentum components <span class="math inline">\(p_x\)</span>, <span class="math inline">\(p_y\)</span>, and <span class="math inline">\(p_z\)</span> are symmetric around zero since particles are equally likely to move in any direction. Total momentum is defined as <span class="math inline">\(p = \sqrt{p_x^2 + p_y^2 + p_z^2}\)</span>.</p>
-<p>The production coordinates <span class="math inline">\((x, y, z)\)</span> are bounded and approximately uniform, reflecting the detector geometry.</p>
-<p><img src="assets/truth_arrays.gif" class="img-fluid" style="width:100.0%" alt="Truth arrays by particle type"></p>
-</section>
-</section>
-<section id="initial-model" class="level1">
-<h1>Initial Model</h1>
-<section id="architecture" class="level2">
-<h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
-<p>The model uses a convolutional neural network with three conv blocks, each containing two convolutional layers with batch normalization and ReLU activation. After each block, max pooling reduces spatial dimensions while dropout provides regularization. The feature maps start at 16 filters and double with each block (16 → 32 → 64), allowing the network to learn increasingly abstract representations of particle tracks.</p>
-<p>Global average pooling compresses the final feature maps into a fixed-length vector, which feeds into a small dense layer before the 5-way softmax classifier. This architecture balances expressiveness with efficiency. It is simple enough to train quickly, but with enough capacity to capture the visual patterns that distinguish particle types.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/init_cnn_architecture_blocks.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="CNN architecture diagram showing three convolutional blocks"></p>
+<p>Each event has three detector projections: the XY, YZ and ZX planes. The animation cycles through the five classes. Each frame shows five training events chosen to span the momentum range from lowest to highest.</p>
+<p>Heavier particles leave shorter, denser tracks. Lighter particles travel farther and scatter more. Electrons and photons both shower, which makes them hard to tell apart by eye.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/particle_types.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Example Tracks by Particle Type"><img loading="lazy" decoding="async" width="1289" height="918" src="assets/particle_types.gif" class="img-fluid figure-img" style="width:100.0%" alt="Animated grid cycling through electron, muon, photon, pion and proton. Each frame shows five events of one class at increasing momentum, with the XY, YZ and ZX projections as rows. Muons and pions leave thin lines, protons short bright stubs, and electrons and photons branching showers."></a></p>
+<figcaption class="margin-caption">Example Tracks by Particle Type</figcaption>
 </figure>
 </div>
 </section>
-<section id="initial-model-performance" class="level2">
+<section id="truth-level-feature-distributions" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
+<p>Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is <span class="math inline">\(p = \sqrt{p_x^2 + p_y^2 + p_z^2}\)</span> and is spread fairly evenly across its range. The production coordinates are bounded by the detector volume.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/truth_arrays.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Truth Feature Distributions by Particle Type"><img loading="lazy" decoding="async" width="1946" height="491" src="assets/truth_arrays.gif" class="img-fluid figure-img" style="width:100.0%" alt="Animated row of seven histograms, one frame per particle type, for total momentum, the three momentum components and the three production coordinates. Momentum components peak at zero and are symmetric. Total momentum and production coordinates are broad and bounded."></a></p>
+<figcaption class="margin-caption">Truth Feature Distributions by Particle Type</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="initial-model" class="level1 page-columns page-full">
+<h1>Initial Model</h1>
+<section id="architecture" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
+<p>The network has three convolutional blocks. Each block runs two convolutions with batch normalization and ReLU, then max pooling and dropout. The filter count doubles from block to block, from 16 to 32 to 64.</p>
+<p>Global average pooling reduces the final feature maps to a single vector. A small dense layer feeds a five-way softmax. The model has about 77,000 parameters, so it trains quickly while still having room to learn the track shapes.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/init_cnn_architecture_blocks.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="CNN Architecture"><img loading="lazy" decoding="async" width="1132" height="816" src="assets/init_cnn_architecture_blocks.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Stacked diagram of the network: flattened input of 196,608 values, reshape to 256 by 256 by 3, three convolutional blocks with 16, 32 and 64 filters, then a head of global average pooling, a 64-unit dense layer, dropout and a five-class softmax."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">CNN Architecture</figcaption>
+</figure>
+</div>
+</section>
+<section id="initial-model-performance" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="initial-model-performance">Initial Model Performance</h2>
-<section id="training-dynamics" class="level3">
+<section id="training-dynamics" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="training-dynamics">Training Dynamics</h3>
-<p>The model learns quickly, with training and validation accuracy tracking closely. The final training accuracy is 82.9% and validation accuracy is 82.4%, suggesting minimal overfitting.</p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img src="assets/init_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
-</div><div class="column" style="width:5%;">
+<p>I trained the baseline for five epochs at a learning rate of 1e-3. A plateau scheduler was attached but never fired in that time. Training accuracy climbed steadily to 82.7%. Validation accuracy peaked at 83.4% in epoch 4, then fell to 53.6% in epoch 5. The saved checkpoint is the epoch 4 model, which scores 82.9% on the test set. That swing suggested the learning rate was too high for the model to settle.</p>
+<div class="columns page-columns page-full">
+<div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/init_cnn_training_loss.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Initial Model Loss"><img loading="lazy" decoding="async" width="910" height="647" src="assets/init_cnn_training_loss.webp" class="img-fluid figure-img" alt="Line chart of training and validation loss over five epochs. Training loss falls steadily. Validation loss falls to 0.42 at epoch 4, then jumps to 1.1 at epoch 5."></a></p>
+<figcaption class="margin-caption">Initial Model Loss</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
 
-</div><div class="column" style="width:45%;">
-<p><img src="assets/init_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
+</div><div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/init_cnn_training_accuracy.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Initial Model Accuracy"><img loading="lazy" decoding="async" width="937" height="657" src="assets/init_cnn_training_accuracy.webp" class="img-fluid figure-img" alt="Line chart of training and validation accuracy over five epochs. Training accuracy rises to 83%. Validation accuracy peaks at 83% at epoch 4 and drops to 54% at epoch 5."></a></p>
+<figcaption class="margin-caption">Initial Model Accuracy</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="classification-performance" class="level3">
+<section id="classification-performance" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="classification-performance">Classification Performance</h3>
-<p>Electrons, positrons, and protons are classified with high accuracy, while muons and pions show more confusion with other particle types. This may be due to particle tracks with similar energies looking visually alike.</p>
+<p>Protons and electrons are the easiest classes, at 97% and 90% recall on the test set. The errors follow the physics. A quarter of photons are called electrons, since both produce showers. Muons and pions leave similar thin tracks, and the model mixes them up in both directions.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/init_cnn_confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%" alt="Normalized confusion matrix for particle classifier"></p>
+<p><a href="assets/init_cnn_confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Initial Model Confusion Matrix, Test Set. Each row is normalized by true class, and dots mark values under 0.5%."><img loading="lazy" decoding="async" width="921" height="836" src="assets/init_cnn_confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Row-normalized confusion matrix for the initial model on the test set. Diagonal: electron 90%, muon 77%, photon 73%, pion 78%, proton 97%. Largest errors: photon called electron 25%, muon called pion 21%, pion called muon 15%."></a></p>
+</figure>
+</div>
+<figcaption class="margin-caption">Initial Model Confusion Matrix, Test Set. Each row is normalized by true class, and dots mark values under 0.5%.</figcaption>
 </figure>
 </div>
 </section>
@@ -615,15 +752,14 @@ window.Quarto = {
 <h1>Hyperparameter Optimization</h1>
 <section id="first-round-results" class="level3">
 <h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
-<p>The first hyperparameter sweep tested architectural and optimization choices. Learning rate had the strongest impact on performance, with an increase to 2e-3 raising the validation accuracy to 83.2%.</p>
-<p>Wider filters and larger dense layers didn’t help, suggesting the baseline architecture was already expressive enough. Removing batch normalization significantly hurt performance, while dropout adjustments had minimal effect.</p>
-<p>Most models converged within 4-5 epochs, indicating the architecture is well-suited to the data and that the main gains would come from optimization rather than model capacity.</p>
+<p>The first sweep varied one choice at a time against the baseline. Learning rate had the largest effect. Raising it to 2e-3 gave the best validation accuracy of the round, 83.2%.</p>
+<p>Wider filters and a larger dense head both made the model worse. Removing batch normalization cost five points. Changing dropout moved accuracy only slightly. Optimization looked like the better lever.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
-<col style="width: 36%">
+<col style="width: 37%">
 <col style="width: 22%">
-<col style="width: 20%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -636,13 +772,13 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td><strong>Higher learning rate</strong></td>
-<td>Increased learning rate (2e-3)</td>
+<td>Learning rate raised to 2e-3</td>
 <td><strong>0.832</strong></td>
 <td><strong>0.410</strong></td>
 </tr>
 <tr class="even">
 <td>Less dropout</td>
-<td>Reduced dropout regularization</td>
+<td>Reduced dropout</td>
 <td>0.814</td>
 <td>0.462</td>
 </tr>
@@ -654,37 +790,37 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td>Average pooling</td>
-<td>Replaced max pooling with average pooling</td>
+<td>Average pooling in place of max pooling</td>
 <td>0.806</td>
 <td>0.458</td>
 </tr>
 <tr class="odd">
 <td>More dropout</td>
-<td>Increased dropout regularization</td>
+<td>Increased dropout</td>
 <td>0.790</td>
 <td>0.501</td>
 </tr>
 <tr class="even">
 <td>Wider filters</td>
-<td>Increased convolutional filters</td>
+<td>More convolutional filters</td>
 <td>0.782</td>
 <td>0.481</td>
 </tr>
 <tr class="odd">
 <td>No batch normalization</td>
-<td>Removed batch normalization</td>
+<td>Batch normalization removed</td>
 <td>0.763</td>
 <td>0.525</td>
 </tr>
 <tr class="even">
 <td>Larger dense head</td>
-<td>Increased dense layer width</td>
+<td>Wider dense layer</td>
 <td>0.759</td>
 <td>0.515</td>
 </tr>
 <tr class="odd">
 <td>Lower learning rate</td>
-<td>Reduced learning rate (3e-4)</td>
+<td>Learning rate lowered to 3e-4</td>
 <td>0.721</td>
 <td>0.607</td>
 </tr>
@@ -693,53 +829,53 @@ window.Quarto = {
 </section>
 <section id="second-round-results" class="level3">
 <h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
-<p>The second round tested learning rates more systematically. The first sweep used adaptive learning-rate scheduling for stability, but this round disabled it to isolate the effect of different initial learning rates.</p>
+<p>The second round tested initial learning rates between 1e-3 and 3e-3. The first sweep had used plateau scheduling, which cuts the learning rate when validation loss stops improving. I switched it off here to isolate the effect of the starting rate, then ran each rate again with it switched back on.</p>
 </section>
 <section id="impact-of-learning-rate-scheduling" class="level3">
 <h3 class="anchored" data-anchor-id="impact-of-learning-rate-scheduling">Impact of Learning Rate Scheduling</h3>
-<p>Adding learning rate plateau scheduling dramatically improved performance across all initial learning rates. The best configuration (1.0e-3 with plateau) reached 89.1% validation accuracy—a 5.7 percentage point improvement over the fixed rate.</p>
+<p>Plateau scheduling improved every starting rate. The best configuration, 1e-3 with plateau scheduling, reached 89.1% validation accuracy. That is 5.7 points above the same rate without it.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 30%">
-<col style="width: 32%">
-<col style="width: 13%">
+<col style="width: 25%">
+<col style="width: 29%">
+<col style="width: 31%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Initial learning rate</th>
-<th>Best val acc (no LR plateau)</th>
-<th>Best val acc (with LR plateau)</th>
+<th>Best val acc (no plateau)</th>
+<th>Best val acc (with plateau)</th>
 <th>Improvement</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1.0e−3</td>
+<td>1.0e-3</td>
 <td>0.834</td>
 <td><strong>0.891</strong></td>
 <td>+5.7pp</td>
 </tr>
 <tr class="even">
-<td>1.2e−3</td>
+<td>1.2e-3</td>
 <td>0.679</td>
 <td>0.735</td>
 <td>+5.6pp</td>
 </tr>
 <tr class="odd">
-<td>1.5e−3</td>
+<td>1.5e-3</td>
 <td>0.633</td>
 <td>0.820</td>
 <td>+18.7pp</td>
 </tr>
 <tr class="even">
-<td>2.0e−3</td>
+<td>2.0e-3</td>
 <td>0.654</td>
 <td>0.832</td>
 <td>+17.8pp</td>
 </tr>
 <tr class="odd">
-<td>3.0e−3</td>
+<td>3.0e-3</td>
 <td>0.641</td>
 <td>0.844</td>
 <td>+20.3pp</td>
@@ -748,41 +884,61 @@ window.Quarto = {
 </table>
 </section>
 </section>
-<section id="final-model" class="level1">
+<section id="final-model" class="level1 page-columns page-full">
 <h1>Final Model</h1>
-<section id="performance-evaluation" class="level2">
+<section id="performance-evaluation" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h2>
-<section id="training-dynamics-1" class="level3">
+<section id="training-dynamics-1" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="training-dynamics-1">Training Dynamics</h3>
-<p>The final model trained for 14 epochs with learning rate plateau scheduling. Training was stable throughout, with the learning rate reducing from 1e-3 to 2e-4 at epoch 9, and again to 4e-5 at epoch 12 as validation loss plateaued. The model achieved peak validation accuracy of 89.1% at epoch 10, with training and validation curves remaining close, indicating good generalization without overfitting.</p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img src="assets/final_cnn_training_loss.png" class="img-fluid" alt="Training and validation loss over epochs"></p>
-</div><div class="column" style="width:5%;">
+<p>The final model trained for 14 epochs. Through epoch 8 the validation accuracy swung between 54% and 85%. The scheduler then cut the learning rate from 1e-3 to 2e-4 from epoch 9, and to 4e-5 from epoch 13. After the first cut, validation tracked training closely. Validation accuracy peaked at 89.1% in epoch 10, and that checkpoint is the final model.</p>
+<div class="columns page-columns page-full">
+<div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/final_cnn_training_loss.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Final Model Loss"><img loading="lazy" decoding="async" width="910" height="647" src="assets/final_cnn_training_loss.webp" class="img-fluid figure-img" alt="Line chart of training and validation loss over 14 epochs, with dotted lines marking learning-rate cuts before epochs 9 and 13. Validation loss spikes above 1.0 at epochs 5 and 8, then settles near 0.30 alongside training loss after the first cut."></a></p>
+<figcaption class="margin-caption">Final Model Loss</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
 
-</div><div class="column" style="width:45%;">
-<p><img src="assets/final_cnn_training_accuracy.png" class="img-fluid" alt="Training and validation accuracy over epochs"></p>
+</div><div class="column page-columns page-full" style="width:48%;">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/final_cnn_training_accuracy.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Final Model Accuracy"><img loading="lazy" decoding="async" width="937" height="657" src="assets/final_cnn_training_accuracy.webp" class="img-fluid figure-img" alt="Line chart of training and validation accuracy over 14 epochs, with dotted lines marking learning-rate cuts before epochs 9 and 13. Validation accuracy drops to 54% and 65% early on, then holds near 89% with training accuracy after the first cut."></a></p>
+<figcaption class="margin-caption">Final Model Accuracy</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="classification-performance-1" class="level3">
+<section id="classification-performance-1" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="classification-performance-1">Classification Performance</h3>
-<p>The final model achieves <strong>89.1% validation accuracy</strong> - a 6.7 percentage point improvement over the baseline. The confusion matrix shows much better distinction between muons and pions, which were the most challenging classes initially.</p>
+<p>On the 40,000 test events the final model scores 88.2%, up 5.3 points from the initial model. Muon recall rose from 77% to 91% and photon recall from 73% to 87%. Pions did not improve. About 18% are still called muons, and that pair is the main remaining weakness.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/final_cnn_confusion_matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%" alt="Normalized confusion matrix for particle classifier"></p>
+<p><a href="assets/final_cnn_confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Final Model Confusion Matrix, Test Set. Each row is normalized by true class, and dots mark values under 0.5%."><img loading="lazy" decoding="async" width="921" height="836" src="assets/final_cnn_confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Row-normalized confusion matrix for the final model on the test set. Diagonal: electron 92%, muon 91%, photon 87%, pion 74%, proton 98%. Largest errors: pion called muon 18%, photon called electron 13%, electron called photon 8%, muon called pion 8%."></a></p>
 </figure>
 </div>
-<p>Example predictions show the model correctly classifying particles across different momentum ranges and track morphologies.</p>
-<p><img src="assets/cnn_example_predictions.png" class="img-fluid" style="width:100.0%" alt="Example predictions from the final CNN model showing correctly classified particle tracks"></p>
+<figcaption class="margin-caption">Final Model Confusion Matrix, Test Set. Each row is normalized by true class, and dots mark values under 0.5%.</figcaption>
+</figure>
+</div>
+<p>The grid below shows the first 20 test events in the XY plane, unselected. Seventeen are correct. Two of the three errors are photons called electrons.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/cnn_example_predictions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="First 20 Test Events With Final Model Predictions"><img loading="lazy" decoding="async" width="1560" height="1466" src="assets/cnn_example_predictions.webp" class="img-fluid figure-img" style="width:100.0%" alt="Four by five grid of detector images in the XY plane, each titled with its true class. Seventeen are correct. Three misclassified panels are outlined in red: two photons called electrons and one pion called a proton."></a></p>
+<figcaption class="margin-caption">First 20 Test Events With Final Model Predictions</figcaption>
+</figure>
+</div>
 </section>
 </section>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Architecture</strong>: Test modern architectures like ResNets or attention mechanisms to better distinguish similar particle types.</p>
-<p><strong>Evaluation</strong>: Evaluate on a held-out test set and add uncertainty quantification to identify low-confidence predictions.</p>
-<p><strong>Explainability</strong>: Use Grad-CAM to visualize which parts of detector images drive predictions, improving model interpretability.</p>
+<p><strong>Architecture.</strong> Try residual networks or attention to separate pions from muons.</p>
+<p><strong>Evaluation.</strong> Add uncertainty estimates so low-confidence predictions can be flagged.</p>
+<p><strong>Explainability.</strong> Use Grad-CAM to show which parts of each image drive a prediction.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
@@ -790,6 +946,7 @@ window.Quarto = {
 
 
 <div class="page-tags"><div class="page-tags-label">Also covered</div><div class="chips"><span class="chip">Machine Learning</span><span class="chip">Supervised Learning</span><span class="chip">Convolutional Neural Network</span><span class="chip">Keras</span><span class="chip">TensorFlow</span><span class="chip">Hyperparameter Optimization</span><span class="chip">Particle Physics</span><span class="chip">Python</span></div></div>
+<nav class="cs-next" aria-label="Next case study"><a href="../../../project/projects_files/digit-vae/digit-vae.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">MNIST Variational Autoencoder</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/digit-vae.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -879,7 +1036,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1207,6 +1364,38 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

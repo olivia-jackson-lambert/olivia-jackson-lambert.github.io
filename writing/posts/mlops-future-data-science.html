@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-01-15">
-<meta name="description" content="MLOps isn’t just DevOps for machine learning, it’s the critical infrastructure that will determine which organizations succeed in the age of AI">
+<meta name="description" content="MLOps is the operational discipline that decides whether an organization’s machine learning ever leaves the notebook and delivers value.">
 
-<title>MLOps: The Bridge Between Research and Production</title>
+<title>MLOps: The Bridge Between Research and Production · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -97,9 +96,20 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="MLOps: The Bridge Between Research and Production">
+<meta property="og:description" content="MLOps is the operational discipline that decides whether an organization’s machine learning ever leaves the notebook and delivers value.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/essay.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="MLOps: The Bridge Between Research and Production">
+<meta name="twitter:description" content="MLOps is the operational discipline that decides whether an organization’s machine learning ever leaves the notebook and delivers value.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/essay.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -290,9 +300,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -309,6 +318,10 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -325,23 +338,34 @@ ul.task-list li input[type="checkbox"] {
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../index.html#work">Work</a>
+    <a href="../../index.html#about">About</a>
+    <a href="../../index.html#contact">Contact</a>
+    <a href="../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -361,8 +385,31 @@ ul.task-list li input[type="checkbox"] {
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -376,11 +423,54 @@ ul.task-list li input[type="checkbox"] {
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -390,6 +480,13 @@ ul.task-list li input[type="checkbox"] {
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -407,7 +504,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    MLOps isn’t just DevOps for machine learning, it’s the critical infrastructure that will determine which organizations succeed in the age of AI
+    MLOps is the operational discipline that decides whether an organization’s machine learning ever leaves the notebook and delivers value.
   </div>
 </div>
 
@@ -432,52 +529,52 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="the-85-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-85-problem">The 85% Problem</h2>
-<p>Most machine learning projects fail. Not because the algorithms don’t work, but because organizations can’t operationalize them. A 2024 analysis found that 85% of ML initiatives never deliver business value in production (<a href="https://galileo.ai/blog/ml-observability-framework">Galileo</a>), a staggering figure for technology that many companies are betting their futures and resources on.</p>
-<p>The pattern is familiar to anyone who’s worked in data science. A team spends months developing a model. The metrics look perfect, the stakeholders are excited, and six months from now everyone will have quietly moved on, the model still trapped in a Jupyter notebook. The graveyard of promising models is vast.</p>
-<p>This isn’t a talent problem or a tools problem. It’s an infrastructure problem. The discipline that addresses it, MLOps, has become the difference between organizations that extract value from ML and those that don’t.</p>
+<p>Most machine learning projects fail. The algorithms usually work. What fails is the organization’s ability to run them in production. One 2024 industry analysis found that 85% of ML initiatives never deliver business value in production, often because of silent failures, data drift, and broken pipelines that nobody catches in time (<a href="https://galileo.ai/blog/ml-observability-framework">Galileo</a>). That is a hard number for a technology so many companies are betting on.</p>
+<p>The pattern is familiar to anyone who has worked in data science. A team spends months developing a model. The metrics look great and the stakeholders are excited. Six months later everyone has quietly moved on, and the model is still sitting in a Jupyter notebook.</p>
+<p>The missing piece is usually infrastructure. The discipline that supplies it, MLOps, now separates organizations that get value from ML from those that don’t.</p>
 </section>
 <section id="what-makes-ml-different" class="level2">
 <h2 class="anchored" data-anchor-id="what-makes-ml-different">What Makes ML Different</h2>
-<p>You could describe MLOps as DevOps for machine learning, but that undersells the unique challenges of what we’re dealing with. Traditional software is, in a sense, honest. You write code, you test it, you deploy it, and it does what you told it to do. Machine learning systems are different. They are shaped by data in ways that make them unpredictable, even to the people who built them.</p>
-<p>The same code can produce wildly different outputs as data distributions shift. A model that worked brilliantly yesterday might fail tomorrow, and nothing in the codebase will have changed. Performance degrades as the real world drifts away from the world captured in training data. Random seeds, hardware quirks, and dependency versions conspire to make reproducibility a constant struggle. And in regulated industries, you need explainability and audit trails that traditional software never demanded.</p>
-<p>The seminal paper on this subject, “Hidden Technical Debt in Machine Learning Systems,” put it starkly: the ML code itself represents only a tiny fraction of a production system’s complexity. The rest is data collection, feature extraction, configuration, serving infrastructure, and monitoring. The model is the easy part (<a href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Sculley et al., 2015</a>).</p>
-<p>Uber learned this the hard way with their ETA predictions. Models trained on San Francisco traffic failed catastrophically in Mumbai. Models that worked in January degraded by March as patterns shifted. Their solution was to build automated pipelines that monitor accuracy and trigger retraining without human intervention, a system that required feature stores, model registries, and testing infrastructure that rivals anything in traditional software engineering (<a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Uber Michelangelo</a>, <a href="https://www.uber.com/blog/deepeta-how-uber-predicts-arrival-times/">DeepETA</a>).</p>
+<p>You could call MLOps DevOps for machine learning, but that undersells the problem. Traditional software is, in a sense, honest. You write code, test it, deploy it, and it does what you told it to do. Machine learning systems are shaped by data in ways that make them unpredictable, even to the people who built them.</p>
+<p>The same code can produce very different outputs as data distributions shift. A model that worked yesterday can fail tomorrow with no change to the codebase. Performance degrades as the real world drifts away from the world in the training data. Random seeds, hardware, and dependency versions make reproducibility a constant struggle. In regulated industries you also need explainability and audit trails that traditional software never demanded.</p>
+<p>The best known paper on this subject, “Hidden Technical Debt in Machine Learning Systems,” showed that the ML code is only a small fraction of a production system. The rest is data collection, feature extraction, configuration, serving infrastructure, and monitoring. The model is the easy part (<a href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Sculley et al., 2015</a>).</p>
+<p>Uber ran into this with its arrival time predictions. Traffic behaves differently from city to city and changes over the year, so a model that works in one place and season will drift in another. Uber’s answer was automated pipelines that monitor accuracy and trigger retraining without human intervention. Making that work took feature stores, model registries, and testing infrastructure on the scale of any serious software platform (<a href="https://eng.uber.com/michelangelo-machine-learning-platform/">Uber Michelangelo</a>, <a href="https://www.uber.com/blog/deepeta-how-uber-predicts-arrival-times/">DeepETA</a>).</p>
 </section>
 <section id="why-it-matters-now" class="level2">
 <h2 class="anchored" data-anchor-id="why-it-matters-now">Why It Matters Now</h2>
-<p>For years, machine learning lived in the back office. It powered internal analytics, batch processing, things that happened overnight while everyone slept. That era is over. ChatGPT handles hundreds of millions of conversations every week. Voice assistants respond in real time. Recommendation algorithms shape what billions of people see, read, and buy. Search engines have started generating answers instead of just pointing to them.</p>
-<p>When machine learning moves from analytics to product, everything changes. A notebook model can take hours to run. A consumer product must respond in milliseconds. A consumer product, on the other hand, must adapt continuously without going dark.</p>
-<p>Netflix processes billions of interactions daily while simultaneously retraining the models that power recommendations. This requires coordinating hundreds of models across multiple services, a feat of orchestration that would have seemed absurd a decade ago (<a href="https://netflixtechblog.com/maestro-netflixs-workflow-orchestrator-ee13a06f9c78">Netflix Maestro</a>, <a href="https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39">Netflix foundation model</a>).</p>
-<p>Large language models have made all of this more urgent. They power chatbots and coding assistants and creative tools, but they also introduce failure modes we’re only beginning to understand: hallucinations, prompt injection attacks, outputs that seem confident but are completely wrong. LLMOps, as practitioners have started calling it, focuses less on training from scratch and more on prompt engineering, fine-tuning, and figuring out how to deploy responsibly (<a href="https://openai.com/index/introducing-gpt-realtime/">OpenAI Realtime API</a>).</p>
-<p>Regulators have noticed. The EU AI Act now requires organizations to demonstrate model governance, explainability, and auditability. Research suggests that 85% of ML projects fail to deliver business value in production, often because of silent failures, distribution drift, and pipeline breaks that nobody catches until real damage is done (<a href="https://galileo.ai/blog/ml-observability-framework">ML Observability Framework</a>). In consumer-facing applications, these failures aren’t silent at all. Users notice. Revenue suffers.</p>
+<p>For years, machine learning lived in the back office. It powered internal analytics and batch jobs that ran overnight. That era is over. Millions of people now talk to chatbots every day. Voice assistants respond in real time (<a href="https://openai.com/index/introducing-gpt-realtime/">OpenAI Realtime API</a>). Recommendation systems shape what people watch and buy. Search engines have started generating answers instead of pointing to them.</p>
+<p>Moving machine learning from analytics into the product changes the requirements. A notebook model can take hours to run. A consumer product has to respond in milliseconds, and it has to keep adapting without going dark.</p>
+<p>Netflix processes billions of interactions while retraining the models behind its recommendations. That means coordinating hundreds of models across many services, a level of orchestration that would have seemed absurd a decade ago (<a href="https://netflixtechblog.com/maestro-netflixs-workflow-orchestrator-ee13a06f9c78">Netflix Maestro</a>, <a href="https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39">Netflix foundation model</a>).</p>
+<p>Large language models make all of this more urgent. They power chatbots, coding assistants, and creative tools. They also bring failure modes we are only beginning to understand, such as hallucinations, prompt injection, and answers that sound confident and are wrong. LLMOps, as practitioners now call it, is less about training from scratch and more about prompting, fine tuning, and deploying responsibly.</p>
+<p>Regulators have noticed. The EU AI Act brings governance and audit requirements for high risk AI systems. Meanwhile the silent failures behind that 85% figure are not silent in consumer products. Users notice, and revenue suffers.</p>
 </section>
 <section id="what-you-actually-need" class="level2">
 <h2 class="anchored" data-anchor-id="what-you-actually-need">What You Actually Need</h2>
 <p>A startup with one model has different needs than a bank running hundreds of risk models. Still, certain components show up everywhere.</p>
-<p>Version control needs to extend beyond code. Models, data, configurations, and experiments all need versioning because the relationships between them determine how models behave. Tools like <a href="https://dvc.org/doc">DVC</a>, <a href="https://mlflow.org/docs/latest/tracking.html">MLflow</a>, and <a href="https://wandb.ai/site/guides">Weights &amp; Biases</a> can track the full lineage from raw data to deployment. This becomes critical when you need to understand, months later, why a model made a particular decision.</p>
-<p>Reproducible environments matter more than people expect. A model trained with TensorFlow 2.8 might produce different outputs when deployed with TensorFlow 2.9, even with identical weights. Changes in numerical precision and optimization algorithms can shift results in subtle ways. Strict containerization and pinned dependencies are the only reliable defense.</p>
-<p>Testing has to happen at multiple levels because ML systems fail in ways traditional software doesn’t. You need unit tests for data processing, integration tests for pipelines, validation tests for data quality and schema drift, performance tests against accuracy thresholds, and infrastructure tests for deployment configurations.</p>
-<p>Monitoring splits into three domains. System monitoring tracks the usual suspects: CPU, memory, latency. Data monitoring watches feature distributions, missing values, schema changes. Model monitoring tracks prediction distributions, accuracy over time, and drift. Tools like <a href="https://www.evidentlyai.com/blog">Evidently AI</a> and <a href="https://whylabs.ai/blog">WhyLabs</a> can help, though custom dashboards on Prometheus and Grafana remain common.</p>
-<p>Airbnb discovered something subtle about their pricing models: individual predictions looked reasonable, but in aggregate, the system was pricing every property in certain neighborhoods too high during peak periods. Catching this required monitoring not just individual outputs but aggregate patterns and business metrics (<a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Airbnb pricing</a>).</p>
-<p>A model registry centralizes metadata, performance metrics, and approval workflows, making it possible to roll back when something goes wrong. Feature stores solve the problem of teams reimplementing the same feature engineering logic across projects, introducing inconsistencies that are maddening to debug. Uber’s Palette system serves features for both real-time inference and training, ensuring that what the model learned matches what it sees in production (<a href="https://www.uber.com/blog/palette-meta-store-journey/">Uber Palette</a>).</p>
+<p>Version control has to extend beyond code. Models, data, configurations, and experiments all need versioning, because the relationships between them determine how a model behaves. Tools like <a href="https://dvc.org/doc">DVC</a>, <a href="https://mlflow.org/docs/latest/tracking.html">MLflow</a>, and <a href="https://wandb.ai/site/guides">Weights &amp; Biases</a> track the lineage from raw data to deployment. You need that lineage when someone asks, months later, why a model made a particular decision.</p>
+<p>Reproducible environments matter more than people expect. A model can produce different outputs after a framework upgrade, even with identical weights. Containers and pinned dependencies are the only reliable defense.</p>
+<p>Testing has to happen at several levels because ML systems fail in ways traditional software doesn’t. You need unit tests for data processing, integration tests for pipelines, validation tests for data quality and schema drift, performance tests against accuracy thresholds, and infrastructure tests for deployment configuration.</p>
+<p>Monitoring covers three areas. System monitoring tracks CPU, memory, and latency. Data monitoring watches feature distributions, missing values, and schema changes. Model monitoring tracks prediction distributions, accuracy over time, and drift. Tools like <a href="https://www.evidentlyai.com/blog">Evidently AI</a> and <a href="https://whylabs.ai/blog">WhyLabs</a> help, though custom dashboards on Prometheus and Grafana remain common.</p>
+<p>Airbnb’s pricing work shows why individual predictions are not enough. A price suggestion can look reasonable on its own and still be wrong in aggregate. Judging those models meant watching aggregate patterns and business metrics as well as individual outputs (<a href="https://blog.acolyer.org/2018/10/03/customized-regression-model-for-airbnb-dynamic-pricing/">Airbnb pricing</a>).</p>
+<p>A model registry holds metadata, performance metrics, and approval workflows in one place, so you can roll back when something goes wrong. Feature stores stop teams from reimplementing the same feature logic across projects and introducing inconsistencies that are maddening to debug. Uber’s Palette serves features for both training and real time inference, so what the model learned matches what it sees in production (<a href="https://www.uber.com/blog/palette-meta-store-journey/">Uber Palette</a>).</p>
 </section>
 <section id="the-hard-part" class="level2">
 <h2 class="anchored" data-anchor-id="the-hard-part">The Hard Part</h2>
-<p>None of this is primarily a technology problem. The hardest part is organizational.</p>
-<p>Data scientists, ML engineers, DevOps engineers, and product managers need to work together in ways that traditional corporate structures actively discourage. Silos that took years to build have to come down. The culture has to shift from “move fast and break things” toward something more like “move deliberately and watch everything.”</p>
-<p>MLOps demands a blend of data science, software engineering, and infrastructure expertise that few individuals possess. Some organizations have responded by creating dedicated ML platform teams that build tooling and infrastructure, freeing data scientists to focus on modeling while platform engineers handle operational complexity.</p>
-<p>Perhaps the deepest challenge is defining what success actually means. Traditional software metrics like uptime and latency don’t capture what matters for ML systems. A recommendation engine might boost click-through rates while trapping users in filter bubbles. A fraud detection system might achieve high accuracy while flagging so many legitimate transactions that customers abandon ship. These tradeoffs require judgment that spans both technical and business domains, and organizations that can’t make those judgments well tend to build systems that optimize for the wrong things.</p>
+<p>The hardest part of MLOps is organizational.</p>
+<p>Data scientists, ML engineers, DevOps engineers, and product managers have to work together in ways that traditional structures discourage. Silos that took years to build have to come down. The culture has to move away from “move fast and break things” toward something closer to moving deliberately and watching everything.</p>
+<p>MLOps needs a blend of data science, software engineering, and infrastructure skills that few individuals have. Some organizations respond by creating dedicated ML platform teams. Platform engineers own the tooling and operational complexity, and data scientists get to focus on modeling.</p>
+<p>The deepest challenge may be defining success. Uptime and latency don’t capture what matters for ML systems. A recommendation engine can raise click through rates while trapping users in filter bubbles. A fraud detection system can score high on accuracy while flagging so many legitimate transactions that customers leave. These tradeoffs need judgment that spans technology and the business. Organizations that can’t make those calls well build systems that optimize for the wrong things.</p>
 </section>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
-<p>If you’re starting from scratch, resist the urge to build everything at once. Version your models and data first. Even basic versioning provides enormous value and creates the foundation for everything else. Add monitoring next, starting simple: prediction distributions, latency, error rates. Pick one manual process and automate it, whether that’s deployment or retraining or testing. Learn from that before expanding.</p>
-<p>The organizations that succeed tend to start with their biggest pain points rather than with some idealized architecture. MLOps is iterative. You build what you need, discover new problems, and build again.</p>
+<p>If you are starting from scratch, don’t try to build everything at once. Version your models and data first. Even basic versioning pays off and lays the foundation for everything else. Add simple monitoring next, covering prediction distributions, latency, and error rates. Then pick one manual process, such as deployment, retraining, or testing, and automate it. Learn from that before expanding.</p>
+<p>The organizations that succeed start with their biggest pain points rather than an idealized architecture. MLOps is iterative. You build what you need, find new problems, and build again.</p>
 </section>
 <section id="takeaways" class="level2">
 <h2 class="anchored" data-anchor-id="takeaways">Takeaways</h2>
-<p>MLOps is no longer optional. As machine learning moves from research curiosity to production infrastructure, organizations that invest in operational excellence will pull ahead. More importantly, robust operations are becoming a prerequisite for responsible deployment.</p>
-<p>The models we build now influence loan approvals, medical diagnoses, hiring decisions, and resource allocation at a scale that would have been unimaginable a decade ago. Deploying these systems without proper monitoring, governance, and operational discipline isn’t just bad engineering. It is, in a meaningful sense, reckless.</p>
-<p>The future of this field isn’t just about building better models. It’s about building models that work reliably, transparently, and ethically once they leave the notebook. MLOps is the bridge that makes that possible.</p>
+<p>MLOps is no longer optional. As machine learning moves from research curiosity to production infrastructure, organizations that invest in operations will pull ahead. Sound operations are also becoming a prerequisite for responsible deployment.</p>
+<p>The models we build now influence loan approvals, medical diagnoses, hiring decisions, and resource allocation at a scale that would have been unimaginable a decade ago. Deploying them without proper monitoring and governance is reckless.</p>
+<p>Better models matter. What matters more is whether they keep working, openly and fairly, once they leave the notebook. MLOps is the bridge that gets them there.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
@@ -500,17 +597,18 @@ ul.task-list li input[type="checkbox"] {
 <section id="tools-and-documentation" class="level3">
 <h3 class="anchored" data-anchor-id="tools-and-documentation">Tools and Documentation</h3>
 <ul>
-<li><a href="https://mlflow.org/docs/latest/index.html">MLflow Documentation</a> - Experiment tracking and model registry</li>
-<li><a href="https://dvc.org/doc">DVC Documentation</a> - Data version control</li>
-<li><a href="https://wandb.ai/site/guides">Weights &amp; Biases Guides</a> - Experiment tracking</li>
-<li><a href="https://docs.feast.dev/">Feast Documentation</a> - Feature store framework</li>
-<li><a href="https://www.tecton.ai/blog/">Tecton Blog</a> - Feature store architecture</li>
-<li><a href="https://www.evidentlyai.com/blog">Evidently AI Blog</a> - ML monitoring and observability</li>
-<li><a href="https://whylabs.ai/blog">WhyLabs Blog</a> - Data quality monitoring</li>
+<li><a href="https://mlflow.org/docs/latest/index.html">MLflow Documentation</a> for experiment tracking and model registry</li>
+<li><a href="https://dvc.org/doc">DVC Documentation</a> for data version control</li>
+<li><a href="https://wandb.ai/site/guides">Weights &amp; Biases Guides</a> for experiment tracking</li>
+<li><a href="https://docs.feast.dev/">Feast Documentation</a> for the Feast feature store</li>
+<li><a href="https://www.tecton.ai/blog/">Tecton Blog</a> on feature store architecture</li>
+<li><a href="https://www.evidentlyai.com/blog">Evidently AI Blog</a> on ML monitoring and observability</li>
+<li><a href="https://whylabs.ai/blog">WhyLabs Blog</a> on data quality monitoring</li>
 </ul>
 
 
 <div class="page-tags"><div class="page-tags-label">Also covered</div><div class="chips"><span class="chip">Machine Learning Engineering</span><span class="chip">Data Science</span><span class="chip">Model Monitoring</span><span class="chip">Feature Stores</span></div></div>
+<nav class="cs-next" aria-label="Next case study"><a href="../../project/projects_files/nba-travel/nba-travel.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">Does Travel Cost NBA Teams the Game?</span></span><span class="cs-next-img"><img src="../../project/cover_assets/thumbs/web/nba-travel.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 </section>
 
@@ -601,7 +699,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-01-24">
-<meta name="description" content="Building a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.">
+<meta name="description" content="One frozen BGE-M3 encoder, two small heads. Each receipt line gets a sentence class and token-level name and price tags, trained and tested on the public CORD-v2 corpus.">
 
-<title>Multi-Task Sentence Transformer for Receipt Processing</title>
+<title>Multi-Task Sentence Transformer for Receipt Processing · Olivia Jackson Lambert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -82,6 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/bootstrap/bootstrap-dark-911a2a84d5a470b41aad9aaa27560c10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../../site_libs/bootstrap/bootstrap-acdcdff43511fad373d2ff4821af6b01.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -109,7 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 <!-- Light favicons -->
 <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32x32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../assets/favicon-16x16.png" media="(prefers-color-scheme: light)">
@@ -132,9 +134,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../../styles.css">
+<meta property="og:title" content="Multi-Task Sentence Transformer for Receipt Processing">
+<meta property="og:description" content="One frozen BGE-M3 encoder, two small heads. Each receipt line gets a sentence class and token-level name and price tags, trained and tested on the public CORD-v2 corpus.">
+<meta property="og:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/receipt.png">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:width" content="1500">
+<meta name="twitter:title" content="Multi-Task Sentence Transformer for Receipt Processing">
+<meta name="twitter:description" content="One frozen BGE-M3 encoder, two small heads. Each receipt line gets a sentence class and token-level name and price tags, trained and tested on the public CORD-v2 corpus.">
+<meta name="twitter:image" content="https://olivia-jackson-lambert.github.io/project/cover_assets/thumbs/receipt.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1000">
+<meta name="twitter:image-width" content="1500">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -325,83 +338,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
   <li><a href="#system-overview" id="toc-system-overview" class="nav-link active" data-scroll-target="#system-overview">System Overview</a></li>
-  <li><a href="#ocr-integration" id="toc-ocr-integration" class="nav-link" data-scroll-target="#ocr-integration">OCR Integration</a>
+  <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The Model</a>
   <ul class="collapse">
-  <li><a href="#receipt-image-processing" id="toc-receipt-image-processing" class="nav-link" data-scroll-target="#receipt-image-processing">Receipt Image Processing</a></li>
-  <li><a href="#ocr-implementation" id="toc-ocr-implementation" class="nav-link" data-scroll-target="#ocr-implementation">OCR Implementation</a></li>
-  <li><a href="#text-segmentation" id="toc-text-segmentation" class="nav-link" data-scroll-target="#text-segmentation">Text Segmentation</a></li>
+  <li><a href="#backbone" id="toc-backbone" class="nav-link" data-scroll-target="#backbone">Backbone</a></li>
+  <li><a href="#two-heads" id="toc-two-heads" class="nav-link" data-scroll-target="#two-heads">Two Heads</a></li>
   </ul></li>
-  <li><a href="#sentence-transformer-foundation" id="toc-sentence-transformer-foundation" class="nav-link" data-scroll-target="#sentence-transformer-foundation">Sentence Transformer Foundation</a>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a></li>
+  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
-  <li><a href="#model-choice-bge-m3" id="toc-model-choice-bge-m3" class="nav-link" data-scroll-target="#model-choice-bge-m3">Model Choice: BGE-M3</a></li>
-  <li><a href="#sentence-embeddings" id="toc-sentence-embeddings" class="nav-link" data-scroll-target="#sentence-embeddings">Sentence Embeddings</a></li>
-  <li><a href="#sentence-similarity" id="toc-sentence-similarity" class="nav-link" data-scroll-target="#sentence-similarity">Sentence Similarity</a></li>
-  <li><a href="#clustering-and-visualization" id="toc-clustering-and-visualization" class="nav-link" data-scroll-target="#clustering-and-visualization">Clustering and Visualization</a></li>
+  <li><a href="#example-predictions" id="toc-example-predictions" class="nav-link" data-scroll-target="#example-predictions">Example Predictions</a></li>
   </ul></li>
-  <li><a href="#multi-task-learning-architecture" id="toc-multi-task-learning-architecture" class="nav-link" data-scroll-target="#multi-task-learning-architecture">Multi-Task Learning Architecture</a>
-  <ul class="collapse">
-  <li><a href="#shared-transformer-backbone" id="toc-shared-transformer-backbone" class="nav-link" data-scroll-target="#shared-transformer-backbone">Shared Transformer Backbone</a></li>
-  <li><a href="#sentence-classification-head" id="toc-sentence-classification-head" class="nav-link" data-scroll-target="#sentence-classification-head">Sentence Classification Head</a></li>
-  <li><a href="#named-entity-recognition-head" id="toc-named-entity-recognition-head" class="nav-link" data-scroll-target="#named-entity-recognition-head">Named Entity Recognition Head</a></li>
-  <li><a href="#architecture-visualization" id="toc-architecture-visualization" class="nav-link" data-scroll-target="#architecture-visualization">Architecture Visualization</a></li>
-  </ul></li>
-  <li><a href="#training-considerations" id="toc-training-considerations" class="nav-link" data-scroll-target="#training-considerations">Training Considerations</a>
-  <ul class="collapse">
-  <li><a href="#freezing-strategy" id="toc-freezing-strategy" class="nav-link" data-scroll-target="#freezing-strategy">Freezing Strategy</a>
-  <ul class="collapse">
-  <li><a href="#freezing-the-transformer-backbone" id="toc-freezing-the-transformer-backbone" class="nav-link" data-scroll-target="#freezing-the-transformer-backbone">Freezing the Transformer Backbone</a></li>
-  <li><a href="#alternative-freezing-strategies" id="toc-alternative-freezing-strategies" class="nav-link" data-scroll-target="#alternative-freezing-strategies">Alternative Freezing Strategies</a></li>
-  </ul></li>
-  <li><a href="#transfer-learning" id="toc-transfer-learning" class="nav-link" data-scroll-target="#transfer-learning">Transfer Learning</a>
-  <ul class="collapse">
-  <li><a href="#pre-trained-model-selection" id="toc-pre-trained-model-selection" class="nav-link" data-scroll-target="#pre-trained-model-selection">Pre-Trained Model Selection</a></li>
-  <li><a href="#layer-freezing-rationale" id="toc-layer-freezing-rationale" class="nav-link" data-scroll-target="#layer-freezing-rationale">Layer Freezing Rationale</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#training-loop-implementation" id="toc-training-loop-implementation" class="nav-link" data-scroll-target="#training-loop-implementation">Training Loop Implementation</a>
-  <ul class="collapse">
-  <li><a href="#dataset-structure" id="toc-dataset-structure" class="nav-link" data-scroll-target="#dataset-structure">Dataset Structure</a></li>
-  <li><a href="#forward-pass-design" id="toc-forward-pass-design" class="nav-link" data-scroll-target="#forward-pass-design">Forward Pass Design</a>
-  <ul class="collapse">
-  <li><a href="#gpu-acceleration" id="toc-gpu-acceleration" class="nav-link" data-scroll-target="#gpu-acceleration">GPU Acceleration</a></li>
-  <li><a href="#mini-batch-processing" id="toc-mini-batch-processing" class="nav-link" data-scroll-target="#mini-batch-processing">Mini-Batch Processing</a></li>
-  <li><a href="#task-specific-outputs" id="toc-task-specific-outputs" class="nav-link" data-scroll-target="#task-specific-outputs">Task-Specific Outputs</a></li>
-  <li><a href="#joint-optimization" id="toc-joint-optimization" class="nav-link" data-scroll-target="#joint-optimization">Joint Optimization</a></li>
-  <li><a href="#gradient-clipping" id="toc-gradient-clipping" class="nav-link" data-scroll-target="#gradient-clipping">Gradient Clipping</a></li>
-  </ul></li>
-  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics">Evaluation Metrics</a></li>
-  <li><a href="#training-results" id="toc-training-results" class="nav-link" data-scroll-target="#training-results">Training Results</a>
-  <ul class="collapse">
-  <li><a href="#held-out-test-results" id="toc-held-out-test-results" class="nav-link" data-scroll-target="#held-out-test-results">Held-Out Test Results</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#example-predictions" id="toc-example-predictions" class="nav-link" data-scroll-target="#example-predictions">Example Predictions</a>
-  <ul class="collapse">
-  <li><a href="#product-line" id="toc-product-line" class="nav-link" data-scroll-target="#product-line">Product Line</a></li>
-  <li><a href="#price-extraction" id="toc-price-extraction" class="nav-link" data-scroll-target="#price-extraction">Price Extraction</a></li>
-  <li><a href="#total-line" id="toc-total-line" class="nav-link" data-scroll-target="#total-line">Total Line</a></li>
-  <li><a href="#complete-receipt" id="toc-complete-receipt" class="nav-link" data-scroll-target="#complete-receipt">Complete Receipt</a></li>
-  </ul></li>
-  <li><a href="#implementation-highlights" id="toc-implementation-highlights" class="nav-link" data-scroll-target="#implementation-highlights">Implementation Highlights</a>
-  <ul class="collapse">
-  <li><a href="#multi-task-model-class" id="toc-multi-task-model-class" class="nav-link" data-scroll-target="#multi-task-model-class">Multi-Task Model Class</a></li>
-  <li><a href="#training-function" id="toc-training-function" class="nav-link" data-scroll-target="#training-function">Training Function</a></li>
-  </ul></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
-  <li><a href="#next-steps-1" id="toc-next-steps-1" class="nav-link" data-scroll-target="#next-steps-1">Next Steps</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header class="sitehead" role="banner">
   <div class="sitehead-inner">
@@ -415,23 +379,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
     <div class="sitehead-links">
       <a href="https://github.com/olivia-jackson-lambert" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:github-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M206.13 75.92A57.8 57.8 0 0 0 201.2 29a6 6 0 0 0-5.2-3a57.77 57.77 0 0 0-47 24h-26a57.77 57.77 0 0 0-47-24a6 6 0 0 0-5.2 3a57.8 57.8 0 0 0-4.93 46.92A55.9 55.9 0 0 0 58 104v8a54.06 54.06 0 0 0 50.45 53.87A37.85 37.85 0 0 0 98 192v10H72a26 26 0 0 1-26-26a38 38 0 0 0-38-38a6 6 0 0 0 0 12a26 26 0 0 1 26 26a38 38 0 0 0 38 38h26v18a6 6 0 0 0 12 0v-40a26 26 0 0 1 52 0v40a6 6 0 0 0 12 0v-40a37.85 37.85 0 0 0-10.45-26.13A54.06 54.06 0 0 0 214 112v-8a55.9 55.9 0 0 0-7.87-28.08M202 112a42 42 0 0 1-42 42h-48a42 42 0 0 1-42-42v-8a43.86 43.86 0 0 1 7.3-23.69a6 6 0 0 0 .81-5.76a45.85 45.85 0 0 1 1.43-36.42a45.85 45.85 0 0 1 35.23 21.1a6 6 0 0 0 5.06 2.77h32.34a6 6 0 0 0 5.06-2.76a45.83 45.83 0 0 1 35.23-21.11a45.85 45.85 0 0 1 1.43 36.42a6 6 0 0 0 .79 5.74A43.8 43.8 0 0 1 202 104Z"></path></svg></a>
       <a href="https://linkedin.com/in/olivia-rose-jackson" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:linkedin-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M216 26H40a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h176a14 14 0 0 0 14-14V40a14 14 0 0 0-14-14m2 190a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h176a2 2 0 0 1 2 2ZM94 112v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m88 28v36a6 6 0 0 1-12 0v-36a22 22 0 0 0-44 0v36a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0v2.11A34 34 0 0 1 182 140M98 84a10 10 0 1 1-10-10a10 10 0 0 1 10 10"></path></svg></a>
       <a href="https://medium.com/@oliviarosejackson" aria-label="Medium" title="Medium" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:medium-logo-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M72 66a62 62 0 1 0 62 62a62.07 62.07 0 0 0-62-62m0 112a50 50 0 1 1 50-50a50.06 50.06 0 0 1-50 50M184 66c-17.1 0-30 26.65-30 62s12.9 62 30 62s30-26.65 30-62s-12.9-62-30-62m0 112c-7.34 0-18-19.48-18-50s10.66-50 18-50s18 19.48 18 50s-10.66 50-18 50m62-106v112a6 6 0 0 1-12 0V72a6 6 0 0 1 12 0"></path></svg></a>
       <a href="https://scholar.google.com/citations?user=X1oWKpQAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
-        <iconify-icon icon="ph:graduation-cap-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m250.82 90.71l-120-64a5.94 5.94 0 0 0-5.64 0l-120 64a6 6 0 0 0 0 10.58L34 116.67v49.62a14 14 0 0 0 3.55 9.32C50.42 189.94 79.29 214 128 214a127.2 127.2 0 0 0 50-9.73V240a6 6 0 0 0 12 0v-41.65a113.2 113.2 0 0 0 28.45-22.75a13.9 13.9 0 0 0 3.55-9.31v-49.62l28.82-15.38a6 6 0 0 0 0-10.58M128 202c-44 0-70-21.56-81.52-34.41a2 2 0 0 1-.48-1.3v-43.22l79.18 42.22a6 6 0 0 0 5.64 0L178 140.13v51c-13 6.22-29.55 10.87-50 10.87m82-35.71a2 2 0 0 1-.48 1.3A100.3 100.3 0 0 1 190 184.3v-50.57l20-10.66Zm-22.15-45a6.3 6.3 0 0 0-1-.71l-56-29.86a6 6 0 0 0-5.64 10.58l50.04 26.7L128 153.2L20.75 96L128 38.8L235.25 96Z"></path></svg></a>
       <a href="../../../resume.html" aria-label="Résumé" title="Résumé">
-        <iconify-icon icon="ph:file-text-light" aria-hidden="true"></iconify-icon></a>
+        <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="m212.24 83.76l-56-56A6 6 0 0 0 152 26H56a14 14 0 0 0-14 14v176a14 14 0 0 0 14 14h144a14 14 0 0 0 14-14V88a6 6 0 0 0-1.76-4.24M158 46.48L193.52 82H158ZM200 218H56a2 2 0 0 1-2-2V40a2 2 0 0 1 2-2h90v50a6 6 0 0 0 6 6h50v122a2 2 0 0 1-2 2m-34-82a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6m0 32a6 6 0 0 1-6 6H96a6 6 0 0 1 0-12h64a6 6 0 0 1 6 6"></path></svg></a>
+      <button class="sitehead-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitemenu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M222 128a6 6 0 0 1-6 6H40a6 6 0 0 1 0-12h176a6 6 0 0 1 6 6M40 70h176a6 6 0 0 0 0-12H40a6 6 0 0 0 0 12m176 116H40a6 6 0 0 0 0 12h176a6 6 0 0 0 0-12"></path></svg></button>
       <button class="sitehead-theme" type="button" aria-label="Toggle light and dark mode" title="Light / dark">
-        <iconify-icon id="sitehead-theme-icon" icon="ph:moon-light" aria-hidden="true"></iconify-icon></button>
+        <svg class="ph i-moon" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"></path></svg><svg class="ph i-sun" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M122 40V16a6 6 0 0 1 12 0v24a6 6 0 0 1-12 0m68 88a62 62 0 1 1-62-62a62.07 62.07 0 0 1 62 62m-12 0a50 50 0 1 0-50 50a50.06 50.06 0 0 0 50-50M59.76 68.24a6 6 0 1 0 8.48-8.48l-16-16a6 6 0 0 0-8.48 8.48Zm0 119.52l-16 16a6 6 0 1 0 8.48 8.48l16-16a6 6 0 1 0-8.48-8.48M192 70a6 6 0 0 0 4.24-1.76l16-16a6 6 0 0 0-8.48-8.48l-16 16A6 6 0 0 0 192 70m4.24 117.76a6 6 0 0 0-8.48 8.48l16 16a6 6 0 0 0 8.48-8.48ZM46 128a6 6 0 0 0-6-6H16a6 6 0 0 0 0 12h24a6 6 0 0 0 6-6m82 82a6 6 0 0 0-6 6v24a6 6 0 0 0 12 0v-24a6 6 0 0 0-6-6m112-88h-24a6 6 0 0 0 0 12h24a6 6 0 0 0 0-12"></path></svg></button>
     </div>
   </div>
 </header>
 
+<div class="sitemenu" id="sitemenu" hidden="">
+  <button class="sitemenu-close" type="button" aria-label="Close menu"><svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 195.76a6 6 0 1 1-8.48 8.48L128 136.49l-67.76 67.75a6 6 0 0 1-8.48-8.48L119.51 128L51.76 60.24a6 6 0 0 1 8.48-8.48L128 119.51l67.76-67.75a6 6 0 0 1 8.48 8.48L136.49 128Z"></path></svg></button>
+  <nav aria-label="Sections">
+    <a href="../../../index.html#work">Work</a>
+    <a href="../../../index.html#about">About</a>
+    <a href="../../../index.html#contact">Contact</a>
+    <a href="../../../resume.html">Résumé</a>
+  </nav>
+</div>
+
 <button class="totop" type="button" aria-label="Back to top" title="Back to top" hidden="">
-  <iconify-icon icon="ph:arrow-up-light" aria-hidden="true"></iconify-icon>
+  <svg class="ph" viewbox="0 0 256 256" aria-hidden="true" focusable="false"><path fill="currentColor" d="M204.24 116.24a6 6 0 0 1-8.48 0L134 54.49V216a6 6 0 0 1-12 0V54.49l-61.76 61.75a6 6 0 0 1-8.48-8.48l72-72a6 6 0 0 1 8.48 0l72 72a6 6 0 0 1 0 8.48"></path></svg>
 </button>
 
 <script>
@@ -451,8 +426,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     if (head && head.parentElement !== document.body) document.body.prepend(head);
   }
   liftHeader();
+
+  // Sections fade up once as they enter the viewport. The class on <html> is what
+  // hides them, so without this script (or with reduced motion) nothing is hidden.
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduce) document.documentElement.classList.add("js-reveal");
+  function reveal() {
+    if (!document.documentElement.classList.contains("js-reveal")) return;
+    var sel = ".op-section > .op-head, .op-tile, .op-about, .op-subhead, .op-value, .op-timeline li, .op-band > *, .cs-cover";
+    var els = document.querySelectorAll(sel);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      el.classList.add("reveal");
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.matches(".op-tile, .op-timeline li")) el.style.transitionDelay = (sib % 3) * 80 + "ms";
+      io.observe(el);
+    });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     liftHeader();
+    reveal();
 
     var top = document.querySelector(".totop");
     if (top) {
@@ -466,11 +464,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       });
     }
 
+    // phone menu
+    var menuBtn = document.querySelector(".sitehead-menu"), menu = document.getElementById("sitemenu");
+    if (menuBtn && menu) {
+      if (menu.parentElement !== document.body) document.body.appendChild(menu);
+      var close = menu.querySelector(".sitemenu-close");
+      var setOpen = function (open) {
+        menu.hidden = !open; menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.body.classList.toggle("menu-open", open);
+        if (open) close.focus(); else menuBtn.focus();
+      };
+      menuBtn.addEventListener("click", function () { setOpen(true); });
+      close.addEventListener("click", function () { setOpen(false); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setOpen(false); });
+    }
+
+    // copy the email address (falls back to selecting it)
+    document.querySelectorAll(".op-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var label = b.querySelector(".op-copy-label");
+        var done = function () {
+          b.classList.add("is-copied"); if (label) label.textContent = "Copied";
+          setTimeout(function () { b.classList.remove("is-copied"); if (label) label.textContent = "Copy"; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, function () {});
+      });
+    });
+
+    // reading progress on case studies and essays
+    var doc = document.getElementById("quarto-document-content");
+    if (doc && !document.body.classList.contains("home") && !document.body.classList.contains("resume")) {
+      var bar = document.createElement("div"); bar.className = "readbar"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var tick = false;
+      var update = function () {
+        tick = false;
+        var r = doc.getBoundingClientRect(), total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+        bar.style.transform = "scaleX(" + p + ")";
+      };
+      window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update); update();
+    }
+
     var btn = document.querySelector(".sitehead-theme");
     if (!btn) return;
     setIcon();
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+    function toggle() {
       if (window.quartoToggleColorScheme) {
         window.quartoToggleColorScheme();
       } else {
@@ -480,6 +521,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         document.documentElement.dataset.bsTheme = dark ? "light" : "dark";
         try { localStorage.setItem("quarto-color-scheme", dark ? "light" : "dark"); } catch (err) {}
       }
+      setIcon();
+    }
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // cross-fade between themes where the browser supports view transitions
+      if (document.startViewTransition && !reduce) document.startViewTransition(toggle);
+      else toggle();
       setTimeout(setIcon, 60);
     });
   });
@@ -497,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Building a multi-task learning model for sentence classification and named entity recognition using BGE-M3 transformer embeddings.
+    One frozen BGE-M3 encoder, two small heads. Each receipt line gets a sentence class and token-level name and price tags, trained and tested on the public CORD-v2 corpus.
   </div>
 </div>
 
@@ -536,197 +584,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>This project implements an end-to-end receipt processing system that combines optical character recognition (OCR) with a multi-task neural network for sentence classification and named entity recognition (NER). The system scans receipt images, extracts text using OCR, and then processes the text with a BGE-M3 transformer backbone to classify sentences and extract entities. By leveraging pre-trained sentence embeddings and joint optimization, the model learns shared representations that benefit both tasks.</p>
+<p>A receipt is a list of short lines. For each line I want two answers. What kind of line is it, and which words are the product name and which are the price? This project answers both with one transformer encoder and two small heads on top of it. The encoder runs once per line and both heads read its output.</p>
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/sentence-project">github.com/olivia-jackson-lambert/sentence-project</a></p>
-<section id="system-overview" class="level1">
+<section id="system-overview" class="level1 page-columns page-full">
 <h1>System Overview</h1>
-<p>The complete receipt processing pipeline consists of three main stages:</p>
-<ol type="1">
-<li><strong>OCR Stage</strong>: Converts receipt images to text using optical character recognition</li>
-<li><strong>Text Preprocessing</strong>: Cleans and segments OCR output into individual sentences</li>
-<li><strong>Multi-Task NLP Model</strong>: Classifies sentences and extracts entities using transformer embeddings</li>
-</ol>
-<p><img src="assets/system_pipeline.png" class="img-fluid" style="width:100.0%" alt="Complete receipt processing pipeline from image to structured data"></p>
-<p>This end-to-end approach enables users to simply photograph a receipt and automatically extract structured information like product names, prices, store information, and totals.</p>
-</section>
-<section id="ocr-integration" class="level1">
-<h1>OCR Integration</h1>
-<section id="receipt-image-processing" class="level2">
-<h2 class="anchored" data-anchor-id="receipt-image-processing">Receipt Image Processing</h2>
-<p>The system begins with receipt images captured via camera or uploaded as files. OCR technology extracts text from these images, handling challenges like:</p>
-<ul>
-<li><strong>Varied receipt formats</strong>: Different store layouts, fonts, and structures</li>
-<li><strong>Image quality</strong>: Blurry photos, poor lighting, or low resolution</li>
-<li><strong>Text orientation</strong>: Rotated or skewed text</li>
-<li><strong>Mixed content</strong>: Barcodes, logos, and text</li>
-</ul>
-</section>
-<section id="ocr-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="ocr-implementation">OCR Implementation</h2>
-<p>The project uses Tesseract OCR (via <code>pytesseract</code>) for text extraction, with preprocessing steps to improve accuracy:</p>
-<ul>
-<li><strong>Image preprocessing</strong>: Grayscale conversion, noise reduction, contrast enhancement</li>
-<li><strong>Text detection</strong>: Automatic text region detection and orientation correction</li>
-<li><strong>Line segmentation</strong>: Splitting OCR output into individual lines and sentences</li>
-</ul>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/system_pipeline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="The receipt processing pipeline, from photograph to structured line data."><img loading="lazy" decoding="async" width="2229" height="555" src="assets/system_pipeline.webp" class="img-fluid figure-img" style="width:100.0%" alt="Six boxes in a row joined by arrows: Receipt Image, OCR with Tesseract, Segmentation into lines, the BGE-M3 encoder (24 layers, frozen, 1024-dimensional states), the two task heads, and Structured Data holding a line class plus name and price spans."></a></p>
+<figcaption class="margin-caption">The receipt processing pipeline, from photograph to structured line data.</figcaption>
+</figure>
+</div>
+<p>The OCR stage converts the photo to grayscale, denoises it, binarises it with Otsu thresholding and passes it to Tesseract. The text is then split into lines on newlines and periods.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytesseract</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_receipt_image(image_path):</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Preprocess receipt image for better OCR accuracy"""</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> cv2.imread(image_path)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    gray <span class="op">=</span> cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply denoising and thresholding</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    denoised <span class="op">=</span> cv2.fastNlMeansDenoising(gray)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    _, thresh <span class="op">=</span> cv2.threshold(denoised, <span class="dv">0</span>, <span class="dv">255</span>, cv2.THRESH_BINARY <span class="op">+</span> cv2.THRESH_OTSU)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> thresh</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_text_from_receipt(image_path):</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract text from receipt image using OCR"""</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    processed_img <span class="op">=</span> preprocess_receipt_image(image_path)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> pytesseract.image_to_string(processed_img, config<span class="op">=</span><span class="st">'--psm 6'</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_receipt_image(image_path):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Preprocess receipt image for better OCR accuracy"""</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> cv2.imread(image_path)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    gray <span class="op">=</span> cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    denoised <span class="op">=</span> cv2.fastNlMeansDenoising(gray, h<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    _, thresh <span class="op">=</span> cv2.threshold(denoised, <span class="dv">0</span>, <span class="dv">255</span>, cv2.THRESH_BINARY <span class="op">+</span> cv2.THRESH_OTSU)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> thresh</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_text_from_receipt(image_path):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract text from receipt image using OCR"""</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pytesseract.image_to_string(preprocess_receipt_image(image_path), config<span class="op">=</span><span class="st">'--psm 6'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The results below do not use this stage. They run on CORD’s own transcribed lines, so OCR error is not measured. I come back to this under Limitations.</p>
 </section>
-<section id="text-segmentation" class="level2">
-<h2 class="anchored" data-anchor-id="text-segmentation">Text Segmentation</h2>
-<p>After OCR extraction, the raw text is segmented into sentences using:</p>
-<ul>
-<li><strong>Rule-based segmentation</strong>: Period, newline, and punctuation-based splitting</li>
-<li><strong>Sentence boundary detection</strong>: Handling abbreviations and decimal numbers</li>
-<li><strong>Line grouping</strong>: Combining related lines that belong to the same logical sentence</li>
-</ul>
-<p>The segmented sentences are then tokenized and prepared for the transformer model.</p>
-<p><img src="assets/ocr_pipeline.png" class="img-fluid" style="width:100.0%" alt="OCR pipeline showing image preprocessing, text extraction, and segmentation"></p>
+<section id="the-model" class="level1 page-columns page-full">
+<h1>The Model</h1>
+<section id="backbone" class="level2">
+<h2 class="anchored" data-anchor-id="backbone">Backbone</h2>
+<p>The encoder is BGE-M3 from the Beijing Academy of Artificial Intelligence. It is an XLM-RoBERTa-large model with 24 layers, 1024 hidden dimensions, a 250,000 token vocabulary and a 2.3 GB checkpoint. That is big for a receipt parser. It gives strong general sentence representations, and its multilingual coverage matters here because the CORD receipts are Indonesian.</p>
+<p>The “M3” in the name means multi-lingual, multi-granularity and multi-functionality. Multi-functionality refers to dense, sparse and ColBERT-style retrieval. The model has no built-in classification or NER. I added the multi-task structure on top.</p>
 </section>
-</section>
-<section id="sentence-transformer-foundation" class="level1">
-<h1>Sentence Transformer Foundation</h1>
-<section id="model-choice-bge-m3" class="level2">
-<h2 class="anchored" data-anchor-id="model-choice-bge-m3">Model Choice: BGE-M3</h2>
-<p>The project uses the BGE-M3 (BAAI General Embedding) model by the Beijing Academy of Artificial Intelligence, selected for its strong general-purpose sentence representations. It is an XLM-RoBERTa-large backbone: 24 layers, 1024 hidden dimensions, a 250,000 token vocabulary and a 2.3 GB checkpoint. That is a substantial model rather than a lightweight one, which is a real constraint on deployment.</p>
-<p>What it offers this project:</p>
-<ul>
-<li><strong>Generalized embeddings</strong>: High-quality sentence representations that capture semantic meaning</li>
-<li><strong>Rich token-level representations</strong>: Essential for token-level tasks like NER</li>
-<li><strong>Multilingual coverage</strong>: Useful for receipts that mix languages or currencies</li>
-</ul>
-<p>One clarification worth making, since the name invites it: the “M3” in BGE-M3 stands for multi-lingual, multi-granularity and multi-functionality, where multi-functionality means dense, sparse and ColBERT-style retrieval. It does not mean the model is pre-built for multi-task classification and NER. The multi-task structure here is added on top.</p>
-<p>The model generates 1024-dimensional embeddings that encode semantic information in a dense vector space, enabling downstream tasks to leverage these rich representations.</p>
-</section>
-<section id="sentence-embeddings" class="level2">
-<h2 class="anchored" data-anchor-id="sentence-embeddings">Sentence Embeddings</h2>
-<p>Each sentence is encoded into a fixed-length vector where semantically similar sentences are positioned close together in the embedding space. The BGE-M3 model processes input text and produces normalized embeddings that capture:</p>
-<ul>
-<li>Semantic meaning and context</li>
-<li>Syntactic structure</li>
-<li>Domain-specific patterns</li>
-</ul>
-<p>For a batch of 15 example sentences, the model produces embeddings of shape <code>[15, 1024]</code>, where each row represents one sentence’s encoding in the 1024-dimensional space.</p>
-<p><img src="assets/embedding_heatmap.png" class="img-fluid" style="width:100.0%" alt="Heatmap visualization of a single sentence embedding showing 1024-dimensional vector"></p>
-</section>
-<section id="sentence-similarity" class="level2">
-<h2 class="anchored" data-anchor-id="sentence-similarity">Sentence Similarity</h2>
-<p>The embedding space enables similarity computation between sentences. Cosine similarity measures the angle between embedding vectors, with values close to 1 indicating high semantic similarity and values near 0 indicating dissimilarity.</p>
-<p>This property is crucial for: - <strong>Semantic search</strong>: Finding documents or sentences similar to a query - <strong>Clustering</strong>: Grouping related sentences together - <strong>Classification</strong>: Using similarity as a feature for downstream tasks</p>
-</section>
-<section id="clustering-and-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="clustering-and-visualization">Clustering and Visualization</h2>
-<p>Using K-Means clustering on the embeddings reveals natural groupings of semantically similar sentences. When visualized with t-SNE dimensionality reduction, sentences cluster together based on shared themes, topics, or structures.</p>
-<p>The figures below are computed on a set of 15 general-purpose sentences covering unrelated topics, which is what the notebook encodes. They demonstrate that the embedding space separates distinct subject matter cleanly, but they are not evidence about receipt text specifically. Confirming that product, price and store lines separate would require running the same analysis on a labelled receipt corpus.</p>
-<p><img src="assets/similarity_matrix.png" class="img-fluid" style="width:100.0%" alt="Cosine similarity matrix heatmap showing semantic relationships between sentences"></p>
-<p><img src="assets/tsne_clustering.png" class="img-fluid" style="width:100.0%" alt="t-SNE 2D visualization of sentence embeddings colored by K-means clusters"></p>
-</section>
-</section>
-<section id="multi-task-learning-architecture" class="level1">
-<h1>Multi-Task Learning Architecture</h1>
-<p>The multi-task architecture enables the model to perform both sentence classification and named entity recognition simultaneously, sharing the transformer backbone for efficient learning.</p>
-<p><img src="assets/architecture_diagram.png" class="img-fluid" style="width:100.0%" alt="Multi-task model architecture diagram showing transformer backbone with classification and NER heads"></p>
-<section id="shared-transformer-backbone" class="level2">
-<h2 class="anchored" data-anchor-id="shared-transformer-backbone">Shared Transformer Backbone</h2>
-<p>The architecture builds on the pre-trained BGE-M3 transformer, which serves as a shared backbone for both tasks. The transformer processes input text and produces:</p>
-<ul>
-<li><strong>CLS token embedding</strong>: A global sentence representation from the special classification token</li>
-<li><strong>Token-level embeddings</strong>: Per-token representations for the entire sequence</li>
-</ul>
-<p>These outputs are routed to two separate task-specific heads that learn specialized patterns for their respective tasks.</p>
-</section>
-<section id="sentence-classification-head" class="level2">
-<h2 class="anchored" data-anchor-id="sentence-classification-head">Sentence Classification Head</h2>
-<p>The classification head categorizes entire sentences into predefined classes (Product Name, Store Name, Price, Other). The architecture consists of:</p>
-<ol type="1">
-<li><strong>First Linear Layer</strong>: Maps the 1024-dimensional CLS embedding to 128 dimensions, reducing dimensionality for efficiency</li>
-<li><strong>ReLU Activation</strong>: Introduces non-linearity to learn complex patterns while promoting sparse activations</li>
-<li><strong>Second Linear Layer</strong>: Maps to the final number of classes (4 categories)</li>
-</ol>
-<p>The head uses only the CLS token representation, which is trained to capture global sentence meaning during pre-training.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.classifier <span class="op">=</span> nn.Sequential(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    nn.Linear(base_model.config.hidden_size, <span class="dv">128</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    nn.ReLU(),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    nn.Linear(<span class="dv">128</span>, num_classes)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="named-entity-recognition-head" class="level2">
-<h2 class="anchored" data-anchor-id="named-entity-recognition-head">Named Entity Recognition Head</h2>
-<p>The NER head performs token-level classification to identify entities within sentences. Unlike sentence classification, NER requires predictions for each token in the sequence.</p>
-<p>The architecture is simpler, being a single linear layer that maps each token’s hidden state to NER label logits:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.ner_head <span class="op">=</span> nn.Linear(base_model.config.hidden_size, num_ner_labels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The model predicts one of five labels per token: - <strong>O</strong>: Outside entity (not part of any entity) - <strong>B-PRODUCT</strong>: Beginning of a product name - <strong>I-PRODUCT</strong>: Inside of a product name - <strong>B-PRICE</strong>: Beginning of a price entity - <strong>I-PRICE</strong>: Inside of a price entity</p>
-<p>This BIO tagging scheme allows the model to identify multi-token entities like “500g Organic Canned Tomatoes” or “$32.66”.</p>
-</section>
-<section id="architecture-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="architecture-visualization">Architecture Visualization</h2>
-<p>The diagram below illustrates how input text flows through the transformer backbone and is routed to both task-specific heads:</p>
-<ul>
-<li><strong>Input</strong>: Tokenized receipt sentences</li>
-<li><strong>Transformer</strong>: BGE-M3 processes tokens and produces hidden states</li>
-<li><strong>CLS Token</strong>: Extracted for sentence-level classification</li>
-<li><strong>All Tokens</strong>: Used for token-level NER predictions</li>
-<li><strong>Outputs</strong>: Classification logits and NER label logits</li>
-</ul>
-<p><img src="assets/forward_pass_flow.png" class="img-fluid" style="width:100.0%" alt="Detailed forward pass flow showing data transformation through each layer"></p>
-</section>
-</section>
-<section id="training-considerations" class="level1">
-<h1>Training Considerations</h1>
-<section id="freezing-strategy" class="level2">
-<h2 class="anchored" data-anchor-id="freezing-strategy">Freezing Strategy</h2>
-<p>The write-up below sets out the freezing strategy the architecture was designed around. It is worth stating plainly that the current code does not implement it: <code>MultiTaskModel.__init__</code> never sets <code>requires_grad = False</code>, and the optimizer receives <code>model.parameters()</code>, so gradients would flow through the whole backbone. Freezing is the intended design, not the present behaviour.</p>
-<section id="freezing-the-transformer-backbone" class="level3">
-<h3 class="anchored" data-anchor-id="freezing-the-transformer-backbone">Freezing the Transformer Backbone</h3>
-<p><strong>Advantages:</strong> - Only task-specific heads are updated, significantly reducing computational cost - Training is faster since the large transformer parameters remain fixed - Leverages high-quality pre-trained embeddings without modification</p>
-<p><strong>Trade-offs:</strong> - Limited adaptation if the target domain differs significantly from pre-training data - May not capture domain-specific nuances in the transformer layers</p>
-<p>For receipt processing, freezing the backbone is effective because: - BGE-M3 embeddings are general enough to capture receipt text patterns - The task-specific heads can adapt to receipt-specific categories - Computational efficiency is important for practical deployment</p>
-</section>
-<section id="alternative-freezing-strategies" class="level3">
-<h3 class="anchored" data-anchor-id="alternative-freezing-strategies">Alternative Freezing Strategies</h3>
-<p><strong>Freezing the entire network</strong>: Fastest but least flexible, and useful only for inference.</p>
-<p><strong>Freezing one task head</strong>: Useful when one task is well-learned but the other needs adaptation, though this risks imbalanced learning.</p>
-</section>
-</section>
-<section id="transfer-learning" class="level2">
-<h2 class="anchored" data-anchor-id="transfer-learning">Transfer Learning</h2>
-<section id="pre-trained-model-selection" class="level3">
-<h3 class="anchored" data-anchor-id="pre-trained-model-selection">Pre-Trained Model Selection</h3>
-<p>BGE-M3 was chosen because it: - Supports multi-task learning natively - Provides both sentence-level and token-level representations - Is efficient and scalable for production use - Was trained on diverse text, making it suitable for receipt processing</p>
-</section>
-<section id="layer-freezing-rationale" class="level3">
-<h3 class="anchored" data-anchor-id="layer-freezing-rationale">Layer Freezing Rationale</h3>
-<p>The intended design freezes the transformer backbone while task-specific heads remain trainable. This approach: - Prevents catastrophic forgetting of general language knowledge - Allows heads to adapt to receipt-specific patterns - Reduces training time and memory requirements - Maintains strong baseline performance from pre-trained embeddings</p>
-<p>Implementing it is a two-line change, and is the first thing to do before any training run.</p>
-</section>
-</section>
-</section>
-<section id="training-loop-implementation" class="level1">
-<h1>Training Loop Implementation</h1>
-<section id="dataset-structure" class="level2">
-<h2 class="anchored" data-anchor-id="dataset-structure">Dataset Structure</h2>
-<p>Training data comes from <strong>CORD-v2</strong>, the Consolidated Receipt Dataset, which provides 1,000 photographed receipts with line-level annotations. CORD groups the lines of a receipt into rows using a <code>group_id</code>, so a single row becomes one training sentence:</p>
-<pre><code>menu.cnt    "1"
-menu.nm     "REAL GANACHE"    -&gt;   "1 REAL GANACHE 16,500"
-menu.price  "16,500"</code></pre>
-<p>This grouping is what makes the problem genuinely multi-task rather than two views of the same label. The sentence class describes what kind of line it is, while the entity tags mark which tokens inside it are the product name and which are the price.</p>
-<p>The two label sets map onto the heads the model already declares, so no architectural change was needed:</p>
+<section id="two-heads" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="two-heads">Two Heads</h2>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/architecture_diagram.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="The multi-task architecture. Both heads read the same frozen encoder output."><img loading="lazy" decoding="async" width="1820" height="1300" src="assets/architecture_diagram.webp" class="img-fluid figure-img" style="width:100.0%" alt="Flow diagram. Input tokens go into the frozen BGE-M3 backbone (XLM-RoBERTa, 24 layers, 16 heads, hidden size 1024). The CLS token state of size 1024 feeds a classification head (Linear 1024 to 128, ReLU with dropout 0.1, Linear 128 to 4) that outputs four sentence classes. All token states feed an NER head (Linear 1024 to 5) that outputs one of five BIO tags per token. Only the heads are marked trainable."></a></p>
+<figcaption class="margin-caption">The multi-task architecture. Both heads read the same frozen encoder output.</figcaption>
+</figure>
+</div>
+<p>The classification head reads the CLS token state and passes it through a 128-unit hidden layer to four classes. The entity head is a single linear layer applied to every token state.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.cls_head <span class="op">=</span> nn.Sequential(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    nn.Linear(<span class="dv">1024</span>, <span class="dv">128</span>), nn.ReLU(), nn.Dropout(<span class="fl">0.1</span>), nn.Linear(<span class="dv">128</span>, <span class="dv">4</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.ner_head <span class="op">=</span> nn.Linear(<span class="dv">1024</span>, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -745,6 +649,18 @@ menu.price  "16,500"</code></pre>
 </tr>
 </tbody>
 </table>
+<p>The entity tags use the BIO scheme. B marks the first word of a name or price, I marks the words that continue it and O marks everything else. That lets the model pick out multi-word names such as <code>Sambal Gabus Asin Cb</code>.</p>
+</section>
+</section>
+<section id="the-data" class="level1">
+<h1>The Data</h1>
+<p>Training data comes from <strong>CORD-v2</strong>, the Consolidated Receipt Dataset. It has 1,000 photographed Indonesian receipts with line-level annotations. CORD groups the lines of a receipt into rows with a <code>group_id</code>, and I use each row as one training sentence:</p>
+<pre><code>menu.cnt    "1"
+menu.nm     "REAL GANACHE"    -&gt;   "1 REAL GANACHE 16,500"
+menu.price  "16,500"</code></pre>
+<p>This grouping is what makes the problem genuinely multi-task. The sentence class says what kind of row it is. The entity tags say which words inside it are the name and which are the price. Here is one training sentence:</p>
+<pre><code>[ITEM]  1/O  x/O  Nasi/B-NAME  Campur/I-NAME  Bali/I-NAME  75,000/B-PRICE</code></pre>
+<p>CORD tags the whole value field of a subtotal or total row as price, so a label word such as <code>Subtotal</code> also carries a price tag.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -783,51 +699,30 @@ menu.price  "16,500"</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Word-level tags are aligned to BGE-M3 subword tokens using the tokenizer’s <code>word_ids()</code> mapping. Only the first subword of each word carries the label; continuation subwords and padding are masked to <code>-100</code> so they contribute nothing to the loss.</p>
-<p>A worked example of one training sentence:</p>
-<pre><code>[ITEM]  1/O  x/O  Nasi/B-NAME  Campur/I-NAME  Bali/I-NAME  75,000/B-PRICE</code></pre>
+<p>Word tags are aligned to BGE-M3 subword tokens with the tokenizer’s <code>word_ids()</code> mapping. Only the first subword of each word carries the tag. Continuation subwords and padding are set to <code>-100</code>, so they add nothing to the loss.</p>
 </section>
-<section id="forward-pass-design" class="level2">
-<h2 class="anchored" data-anchor-id="forward-pass-design">Forward Pass Design</h2>
-<section id="gpu-acceleration" class="level3">
-<h3 class="anchored" data-anchor-id="gpu-acceleration">GPU Acceleration</h3>
-<p>The model and tensors are moved to CUDA when available, enabling parallel computation on GPUs for faster training.</p>
+<section id="training" class="level1 page-columns page-full">
+<h1>Training</h1>
+<p>The backbone is frozen. Its token states are computed once, cached, and reused every epoch, so only the heads train. That is 137K trainable parameters against 568M frozen, or 0.024 percent of the model, which is what makes the run practical on a laptop. The loss is the sum of the two cross-entropy losses. I trained with AdamW at a learning rate of 0.001 and a batch size of 64 for 30 epochs.</p>
+<p>The original notebook’s <code>MultiTaskModel</code> did not freeze anything. It never set <code>requires_grad = False</code> and passed <code>model.parameters()</code> to the optimiser. The training script behind these results, <code>train_heads.py</code>, adds the freeze.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/training_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Training and validation loss for each head over 30 epochs."><img loading="lazy" decoding="async" width="2474" height="827" src="assets/training_curves.webp" class="img-fluid figure-img" style="width:100.0%" alt="Two line charts of cross-entropy loss by epoch. Left, sentence classification: validation loss reaches its minimum of about 0.068 at epoch 4 and then climbs to about 0.11 by epoch 30, while training loss falls to near zero. Right, entity tagging: training and validation loss both fall steadily from about 0.7 to about 0.25 and are still falling at epoch 30."></a></p>
+<figcaption class="margin-caption">Training and validation loss for each head over 30 epochs.</figcaption>
+</figure>
+</div>
+<p>The two tasks want different amounts of training. Classification validation loss bottoms out at <strong>epoch 4</strong> and then climbs while training loss goes to zero. The model has already solved that task and is now overfitting it. Entity tagging validation loss is still falling at epoch 30.</p>
+<p>So one stopping point means compromising one task. Stopping early protects classification and leaves entity tagging undertrained. Running to 30 epochs does the reverse. Separate learning rates, or a loss weight that decays the classification term, would serve both.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/accuracy_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Accuracy and F1 for each head over 30 epochs."><img loading="lazy" decoding="async" width="2474" height="827" src="assets/accuracy_curves.webp" class="img-fluid figure-img" style="width:100.0%" alt="Two line charts of score by epoch. Left, sentence classification: validation accuracy and weighted F1 reach about 0.98 by epoch 2 and stay flat, while training accuracy rises to 1.0. Right, entity tagging: validation token accuracy and macro-F1 climb from about 0.79 to about 0.93 and are still rising at epoch 30."></a></p>
+<figcaption class="margin-caption">Accuracy and F1 for each head over 30 epochs.</figcaption>
+</figure>
+</div>
 </section>
-<section id="mini-batch-processing" class="level3">
-<h3 class="anchored" data-anchor-id="mini-batch-processing">Mini-Batch Processing</h3>
-<p>Training uses mini-batches to: - Optimize memory usage - Stabilize gradient updates - Enable parallel processing on GPUs</p>
-</section>
-<section id="task-specific-outputs" class="level3">
-<h3 class="anchored" data-anchor-id="task-specific-outputs">Task-Specific Outputs</h3>
-<ul>
-<li><strong>Classification</strong>: Uses only the CLS token embedding for sentence-level prediction</li>
-<li><strong>NER</strong>: Uses all token embeddings for sequence-level prediction</li>
-</ul>
-</section>
-<section id="joint-optimization" class="level3">
-<h3 class="anchored" data-anchor-id="joint-optimization">Joint Optimization</h3>
-<p>Both tasks are optimized together: - Losses are computed independently for each head - Total loss is the sum of classification and NER losses - Gradients flow through the shared transformer backbone - This allows shared knowledge to improve both tasks simultaneously</p>
-</section>
-<section id="gradient-clipping" class="level3">
-<h3 class="anchored" data-anchor-id="gradient-clipping">Gradient Clipping</h3>
-<p>Gradient clipping prevents exploding gradients that could destabilize multi-task learning, especially important when optimizing multiple objectives simultaneously.</p>
-</section>
-</section>
-<section id="evaluation-metrics" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation-metrics">Evaluation Metrics</h2>
-<p>The training loop tracks: - <strong>Classification accuracy</strong>: Percentage of correctly classified sentences - <strong>Classification F1 score</strong>: Weighted F1 to handle class imbalance - <strong>NER accuracy</strong>: Token-level classification accuracy - <strong>Separate loss tracking</strong>: Monitors each task’s loss independently to detect task imbalance</p>
-<p>Both training and validation metrics are computed to ensure the model generalizes well to unseen receipt text.</p>
-</section>
-<section id="training-results" class="level2">
-<h2 class="anchored" data-anchor-id="training-results">Training Results</h2>
-<p>The backbone is frozen, so its token states are computed once and cached and only the heads are trained. That is 137K trainable parameters against 568M frozen, or 0.024 percent of the model, which is what makes the run finish in under a minute on a laptop GPU.</p>
-<p><img src="assets/training_curves.png" class="img-fluid" style="width:100.0%" alt="Classification and NER loss curves over 30 epochs, showing classification overfitting after epoch 4 while NER keeps improving"></p>
-<p>The two tasks want different amounts of training, and this is the most interesting thing in the run. Classification validation loss reaches its minimum at <strong>epoch 4</strong> and then climbs steadily while training loss goes to zero, which is straightforward overfitting on a task the model has essentially already solved. NER validation loss is still falling at epoch 30.</p>
-<p>Training both heads to a single stopping point therefore means choosing which task to compromise. Stopping early protects classification and leaves entity tagging undertrained; running to 30 epochs does the reverse. Separate learning rates, or a loss weighting that decays the classification term, would be the way to serve both.</p>
-<p><img src="assets/accuracy_curves.png" class="img-fluid" style="width:100.0%" alt="Classification and NER accuracy and F1 curves across training"></p>
-<p>Classification accuracy saturates near 98 percent within a handful of epochs. NER climbs more slowly and is still improving at the end of training.</p>
-<section id="held-out-test-results" class="level3">
-<h3 class="anchored" data-anchor-id="held-out-test-results">Held-Out Test Results</h3>
+<section id="results" class="level1 page-columns page-full">
+<h1>Results</h1>
+<p>Scores on the 414 held-out test lines:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -859,74 +754,50 @@ menu.price  "16,500"</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Token accuracy is reported alongside macro-F1 deliberately. Roughly a quarter of tokens carry the <code>O</code> tag, so token accuracy is flattered by the majority class; macro-F1 weights all five tags equally and is the number worth quoting.</p>
-</section>
-</section>
-</section>
-<section id="example-predictions" class="level1">
-<h1>Example Predictions</h1>
-<p>All predictions below come from the trained heads running on held-out test sentences. A dashed outline marks a token where the model disagrees with the reference tag.</p>
-<section id="product-line" class="level2">
-<h2 class="anchored" data-anchor-id="product-line">Product Line</h2>
-<p><img src="assets/example_product_classification.png" class="img-fluid" style="width:100.0%" alt="A product line with per-token entity tags and predicted class probabilities"></p>
-</section>
-<section id="price-extraction" class="level2">
-<h2 class="anchored" data-anchor-id="price-extraction">Price Extraction</h2>
-<p><img src="assets/example_price_extraction.png" class="img-fluid" style="width:100.0%" alt="A receipt line where a multi-token price span is tagged B-PRICE then I-PRICE"></p>
-</section>
-<section id="total-line" class="level2">
-<h2 class="anchored" data-anchor-id="total-line">Total Line</h2>
-<p><img src="assets/example_total_line.png" class="img-fluid" style="width:100.0%" alt="A total line classified by the same heads, showing a different sentence class"></p>
-<p>The same two heads handle all three, which is the point of the shared backbone: one encoder pass produces both the sentence label and the token tags.</p>
-</section>
-<section id="complete-receipt" class="level2">
-<h2 class="anchored" data-anchor-id="complete-receipt">Complete Receipt</h2>
-<p><img src="assets/complete_receipt_example.png" class="img-fluid" style="width:100.0%" alt="A receipt photograph beside the model's line-by-line classification and extracted name and price spans"></p>
-<p>Running every line of one receipt through the model gives a structured parse of the whole thing. Eleven of the twelve rows are handled correctly.</p>
-<p>The twelfth is worth pointing at rather than hiding. The line <code>1 Nasi Tambah 7.000</code> is split as name <code>Nasi</code> and price <code>Tambah 7.000</code>, so the model has taken an Indonesian word it does not recognise as part of a product name and pushed it into the price span. Every other name on the receipt is a dish it has seen patterns for. This is the expected failure mode for a frozen multilingual encoder on a vocabulary it was never fine-tuned on, and it is the clearest argument for unfreezing the top layers.</p>
-</section>
-</section>
-<section id="implementation-highlights" class="level1">
-<h1>Implementation Highlights</h1>
-<section id="multi-task-model-class" class="level2">
-<h2 class="anchored" data-anchor-id="multi-task-model-class">Multi-Task Model Class</h2>
-<p>The <code>MultiTaskModel</code> class inherits from PyTorch’s <code>nn.Module</code> and implements:</p>
+<p>Macro-F1 is the entity number I quote. It weights all five tags equally, so the rarer tags count as much as the common ones. In the test labels B-PRICE is the most common tag at about 30 percent of words and O is about 16 percent.</p>
+<section id="example-predictions" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="example-predictions">Example Predictions</h2>
+<p>The predictions below come from the trained heads running on held-out test lines.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/example_price_extraction.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="One item line from the test set, with the entity tag and class probabilities the model predicted."><img loading="lazy" decoding="async" width="2363" height="628" src="assets/example_price_extraction.webp" class="img-fluid figure-img" style="width:100.0%" alt="Eight words of a receipt line, each in a coloured box with its predicted tag below: 1 is O; 35.000, Rp and 35.000 are each B-PRICE; NASI is B-NAME; GOR, SFD and TLR are I-NAME. The second 35.000 has a dashed outline because the reference tags it I-PRICE. The line reads: Sentence class ITEM (correct), tags matching the reference 7 of 8. A bar chart below puts nearly all class probability on ITEM."></a></p>
+<figcaption class="margin-caption">One item line from the test set, with the entity tag and class probabilities the model predicted.</figcaption>
+</figure>
+</div>
+<p>The name span is right and the sentence class is right. The one miss is the price. The reference treats <code>Rp 35.000</code> as one span, but the model starts a new span at <code>35.000</code> instead of continuing it.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><a href="assets/complete_receipt_example.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="A full test receipt run through the model one line at a time."><img loading="lazy" decoding="async" width="2175" height="946" src="assets/complete_receipt_example.webp" class="img-fluid figure-img" style="width:100.0%" alt="Left, a photograph of an Indonesian restaurant receipt from the CORD-v2 test set. Right, a table of 13 lines with the predicted class, the line text, the name span and the price span. Eleven ITEM rows, one SUBTOTAL and one TOTAL, all classified correctly. Four rows have dashed boxes where the tags differ from the reference: Nasi Tambah, Ikan Bawal Besa, the subtotal row and the total row."></a></p>
+<figcaption class="margin-caption">A full test receipt run through the model one line at a time.</figcaption>
+</figure>
+</div>
+<p>All 13 lines get the right sentence class. The tags match the reference exactly on 9 of them. The four misses are different kinds of error:</p>
 <ul>
-<li><strong>Initialization</strong>: Sets up the transformer backbone and both task heads</li>
-<li><strong>Forward pass</strong>: Routes transformer outputs to classification and NER heads</li>
-<li><strong>Flexible architecture</strong>: Configurable number of classes and NER labels</li>
+<li><code>1 Nasi Tambah 7.000</code> gives the name as <code>Nasi</code> and the price as <code>Tambah 7.000</code>. The model has pushed part of a product name into the price.</li>
+<li><code>1 Ikan Bawal Besa 28.500</code> extracts the right name, but tags <code>Bawal</code> as the start of a second name.</li>
+<li>The subtotal row tags part of the food and drink breakdown as price. CORD leaves those words outside any span.</li>
+<li>The total row pulls the item count <code>14</code> into the price span.</li>
 </ul>
 </section>
-<section id="training-function" class="level2">
-<h2 class="anchored" data-anchor-id="training-function">Training Function</h2>
-<p>The training loop implements: - <strong>Epoch-based iteration</strong>: Multiple passes through the dataset - <strong>Train/validation split</strong>: Separate evaluation on held-out data - <strong>Loss computation</strong>: Combined loss for joint optimization - <strong>Metric tracking</strong>: Real-time accuracy and F1 score monitoring - <strong>Model checkpointing</strong>: Ready for saving best models</p>
-</section>
-</section>
-<section id="next-steps" class="level1">
-<h1>Next Steps</h1>
-<p><strong>Domain Adaptation</strong>: Fine-tune the transformer backbone on receipt-specific data if initial results show domain mismatch.</p>
-<p><strong>Architecture Improvements</strong>: Experiment with attention mechanisms or more complex head architectures to improve performance on challenging cases.</p>
-<p><strong>Evaluation</strong>: Add comprehensive evaluation on a held-out test set with detailed per-class metrics and confusion matrices.</p>
-<p><strong>Production Deployment</strong>: Optimize the model for inference, including quantization and model compression for faster prediction.</p>
-<p><strong>Extended Entity Types</strong>: Expand NER to recognize additional entities like dates, locations, and payment methods.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
-<p><strong>The data is not the data the system was designed for.</strong> CORD receipts are Indonesian, and the label scheme is CORD’s hierarchy mapped onto this model’s four classes and five tags. A deployment on English grocery receipts would need its own labelled sample.</p>
-<p><strong>The backbone is frozen, so the encoder never adapts.</strong> The <code>Nasi Tambah</code> error above is a direct consequence. Unfreezing the top few layers is the obvious next experiment, at the cost of needing real GPU time rather than a cached forward pass.</p>
-<p><strong>Entity scoring is token-level, not span-level.</strong> A prediction that gets <code>B-NAME</code> right and one <code>I-NAME</code> wrong still scores well on macro-F1, where a strict span match would count the entity as missed. Span-level scoring would give a lower and more honest number.</p>
-<p><strong>One stopping point serves two tasks badly.</strong> Classification is overfitting from epoch 4 while NER is still improving at 30, and the current run simply picks 30.</p>
-<p><strong>OCR is not in the measured loop.</strong> The end-to-end figure uses CORD’s transcribed lines, not Tesseract output on the photograph. Real OCR error would degrade both tasks, and that degradation is unmeasured.</p>
+<p><strong>The data is not what the system was designed for.</strong> CORD receipts are Indonesian, and the labels are CORD’s hierarchy mapped onto four classes and five tags. English grocery receipts would need their own labelled sample.</p>
+<p><strong>The encoder never adapts.</strong> With the backbone frozen, errors like <code>Nasi Tambah</code> cannot be fixed by the encoder, only by the heads. Unfreezing the top layers needs real GPU time instead of a cached forward pass.</p>
+<p><strong>Entity scoring is per token.</strong> A name with one wrong I-NAME tag still earns most of its credit. Strict span matching would count the whole entity as missed, and would likely give a lower number.</p>
+<p><strong>One stopping point serves two tasks badly.</strong> Classification overfits from epoch 4 while entity tagging is still improving at 30. This run picks 30.</p>
+<p><strong>OCR is outside the measured loop.</strong> Real Tesseract output would add errors to both tasks, and I have not measured how many. The segmentation step also splits on periods, and CORD prices use a period as the thousands separator (<code>7.000</code>). As written it would cut prices in two, so it needs fixing before the OCR path is used.</p>
 </section>
-<section id="next-steps-1" class="level1">
+<section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Unfreeze the top encoder layers</strong>: The most likely source of improvement on entity tagging, and a direct test of the frozen-backbone assumption.</p>
-<p><strong>Weight the two losses</strong>: Decay the classification term once it saturates so the shared representation keeps serving NER.</p>
-<p><strong>Score entities at span level</strong>: Replace token macro-F1 with strict and relaxed span matching.</p>
-<p><strong>Close the OCR loop</strong>: Run Tesseract over the receipt photographs and re-measure both tasks on its output, to find how much accuracy the OCR stage actually costs.</p>
+<p><strong>Unfreeze the top encoder layers.</strong> This is the most likely gain for entity tagging and a direct test of the frozen-backbone choice.</p>
+<p><strong>Weight the two losses.</strong> Decay the classification term once it saturates so training keeps serving entity tagging.</p>
+<p><strong>Score entities at span level.</strong> Report strict and relaxed span matches alongside token macro-F1.</p>
+<p><strong>Close the OCR loop.</strong> Fix the period split, run Tesseract over the CORD photographs and re-measure both tasks on its output.</p>
 
 
 <div class="page-tags"><div class="page-tags-label">Also covered</div><div class="chips"><span class="chip">Machine Learning</span><span class="chip">Multi-Task Learning</span><span class="chip">PyTorch</span><span class="chip">Transformers</span><span class="chip">Sentence Embeddings</span><span class="chip">Named Entity Recognition</span><span class="chip">Transfer Learning</span><span class="chip">OCR</span><span class="chip">Python</span></div></div>
+<nav class="cs-next" aria-label="Next case study"><a href="../../../writing/posts/mlops-future-data-science.html"><span class="cs-next-text"><span class="cs-next-label">Next</span><span class="cs-next-title">MLOps: The Bridge Between Research and Production</span></span><span class="cs-next-img"><img src="../../../project/cover_assets/thumbs/web/essay.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -1016,7 +887,7 @@ menu.price  "16,500"</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io\/");
+        var filterRegex = new RegExp("https:\/\/olivia-jackson-lambert\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1344,6 +1215,38 @@ menu.price  "16,500"</code></pre>
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
