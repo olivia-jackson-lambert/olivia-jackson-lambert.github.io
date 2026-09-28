@@ -16,10 +16,12 @@ aliases:
 <div class="op">
 
 <section class="op-hero">
-  <div class="op-hero-text">
-    <h1 class="op-display">I lead data teams for <em>mission&#8209;driven</em> organisations.</h1>
-  </div>
   <div class="op-photo op-headshot"><img src="/assets/headshot-colour.jpg" alt="Portrait of Olivia Jackson Lambert"></div>
+  <div class="op-hero-text">
+    <span class="op-label">Data Team Lead · Hockeystick</span>
+    <h1 class="op-display">I lead data teams for <em>mission&#8209;driven</em> organisations.</h1>
+    <p class="op-lede">Previously at the Democratic National Committee and Kenvue. Studying data science at UC Berkeley.</p>
+  </div>
 </section>
 
 <section id="work" class="op-section">
@@ -98,7 +100,7 @@ aliases:
     <div class="op-value">
       <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 31 31 9"/><path d="M15 9h16v16"/></svg>
       <h3>Model Proactivity</h3>
-      <p>Empower people to look for answers so that they can ask better questions. Provide resources and signposts over an answer every time.</p>
+      <p>Empower people to search for solutions so that they can ask better questions. Provide resources and signposts over an answer every time.</p>
     </div>
     <div class="op-value">
       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="4" class="fill"/></svg>
@@ -108,7 +110,7 @@ aliases:
     <div class="op-value">
       <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31 21a11 11 0 1 1-3.2-7.8"/><path d="M29 6.5v7h-7"/></svg>
       <h3>Iterate on Imperfection</h3>
-      <p>In the age of AI, ideas can be prototyped much faster. Test multiple bets and converge on what works.</p>
+      <p>In the age of AI, ideas and experiments can be prototyped faster than ever. Test multiple bets and converge on what works.</p>
     </div>
     <div class="op-value">
       <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 16h24"/><path d="M8 24h24"/><path d="M27 8 13 32"/></svg>
@@ -148,7 +150,7 @@ aliases:
     <li class="is-current">
       <span class="op-label op-when">2026 to Present</span><span class="op-dot" aria-hidden="true"></span>
       <strong>Data Team Lead</strong><span class="op-org">Hockeystick</span>
-      <p>Growing the data team and expanding product strategy, technical capabilities and culture.</p>
+      <p>Building the data team from the ground up and driving product strategy, technical excellence and culture.</p>
     </li>
     <li>
       <span class="op-label op-when">2024</span><span class="op-dot" aria-hidden="true"></span>

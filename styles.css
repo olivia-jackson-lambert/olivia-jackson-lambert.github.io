@@ -411,13 +411,13 @@ body {
 
 /* hero: photo and text share one height */
 .op-hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 26vw, 340px);
+  display: grid; grid-template-columns: clamp(260px, 30vw, 380px) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px); align-items: stretch;
 }
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
 .op-display {
   font-family: var(--font-display); font-weight: 500;
-  font-size: clamp(44px, 6.4vw, 92px); line-height: 1.02; letter-spacing: -.012em;
+  font-size: clamp(44px, 6vw, 84px); line-height: 1.02; letter-spacing: -.012em;
   margin: 0; text-wrap: balance;
 }
 .op-display em { font-style: italic; font-weight: 400; }
@@ -426,6 +426,7 @@ body {
    rather than setting it from their own proportions. */
 .op-photo { position: relative; overflow: hidden; min-height: 280px; }
 .op-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.op-headshot { aspect-ratio: 4 / 5; min-height: 0; }
 .op-headshot img { object-position: 50% 28%; }
 
 /* section heads: more air under the rule */
