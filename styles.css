@@ -362,7 +362,7 @@ body {
   border-bottom: 1px solid var(--op-hair);
 }
 .sitehead-inner {
-  max-width: 1280px; margin: 0 auto; height: 64px;
+  max-width: 1160px; margin: 0 auto; height: 64px;
   padding: 0 clamp(16px, 4vw, 48px);
   display: flex; align-items: center; gap: 28px;
 }
@@ -397,7 +397,7 @@ body {
     One-page home
     ========================================================================== */
 .op {
-  max-width: 1280px; margin: 0 auto;
+  max-width: 1160px; margin: 0 auto;
   padding: clamp(40px, 6vw, 88px) clamp(16px, 4vw, 48px) 0;
   display: flex; flex-direction: column; gap: clamp(60px, 7vw, 96px);
 }
@@ -419,6 +419,8 @@ body {
 .op-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; container-type: inline-size; }
 .op-hero-text .op-display { font-size: 12.3cqi; }
 .op-hero-text .op-lede { max-width: none; }
+.op-hero-text .op-lede { font-size: 18px; }
+@media (max-width: 1160px) { .op-hero-text .op-display { font-size: 10.4cqi; } }
 @media (max-width: 1100px) { .op-hero-text .op-display { font-size: 10.5cqi; } }
 .op-display {
   font-family: var(--font-display); font-weight: 500;
