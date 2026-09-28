@@ -386,7 +386,7 @@ body {
 .sitehead-links a:focus-visible, .sitehead-theme:focus-visible, .sitehead-sections a:focus-visible {
   outline: 2px solid var(--bs-body-color); outline-offset: 2px;
 }
-.sitehead iconify-icon { font-size: 17px; width: 17px; height: 17px; }
+.sitehead .ph { width: 17px; height: 17px; }
 @media (max-width: 760px) {
   .sitehead-sections { display: none; }
   .sitehead-links { margin-left: auto; border-left: 0; padding-left: 0; }
@@ -543,7 +543,7 @@ body.quarto-dark .op-band { --band-bg: #17191e; --band-hair: #30343c; }
 .op-band-icons { display: flex; flex-wrap: wrap; gap: 28px; }
 .op-band-icons a { color: var(--band-ink); display: inline-flex; opacity: .85; transition: opacity .2s ease, transform .2s ease; }
 .op-band-icons a:hover { opacity: 1; transform: translateY(-2px); }
-.op-band-icons iconify-icon { font-size: 30px; width: 30px; height: 30px; }
+.op-band-icons .ph { width: 30px; height: 30px; }
 .op-band a:focus-visible { outline: 2px solid var(--band-ink); outline-offset: 4px; }
 .op-band-foot { align-self: stretch; display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--band-hair); padding-top: 20px; margin-top: 28px; }
 .op-band-foot .op-label { color: var(--band-muted); }
@@ -560,8 +560,8 @@ body.quarto-dark .op-band { --band-bg: #17191e; --band-hair: #30343c; }
 .totop[hidden] { display: none !important; }
 .totop:hover { border-color: var(--bs-body-color); }
 .totop:focus-visible { outline: 2px solid var(--bs-body-color); outline-offset: 2px; }
-.totop iconify-icon { font-size: 19px; width: 19px; height: 19px; }
-.sitehead iconify-icon { font-size: 19px; width: 19px; height: 19px; }
+.totop .ph { width: 19px; height: 19px; }
+.sitehead .ph { width: 19px; height: 19px; }
 
 /* responsive */
 @media (max-width: 1100px) {
@@ -714,3 +714,85 @@ body:not(.home):not(.resume) .quarto-title-meta-heading { font-family: var(--fon
   text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 4px;
 }
 .op-404-links a:hover { background-size: 0 1px; background-position: 100% 100%; transition: background-size .35s ease; }
+
+/* Icons are inline Phosphor SVGs (no runtime icon service) */
+.ph { display: block; width: 1em; height: 1em; flex: none; }
+.sitehead-theme .i-sun { display: none; }
+body.quarto-dark .sitehead-theme .i-sun { display: block; }
+body.quarto-dark .sitehead-theme .i-moon { display: none; }
+
+/* Phone menu: a quiet "menu" button that opens a full-screen overlay in the display serif */
+.sitehead-menu { display: none; background: none; border: 0; padding: 6px; color: var(--bs-body-color); cursor: pointer; }
+@media (max-width: 760px) { .sitehead-menu { display: inline-flex; } }
+.sitemenu {
+  position: fixed; inset: 0; z-index: 1100; display: flex; flex-direction: column; justify-content: center;
+  padding: 32px clamp(24px, 8vw, 64px); gap: 24px;
+  background: color-mix(in srgb, var(--bs-body-bg) 94%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+}
+.sitemenu[hidden] { display: none !important; }
+.sitemenu nav { display: flex; flex-direction: column; gap: 10px; }
+.sitemenu nav a {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 12vw, 64px); line-height: 1.1;
+  color: var(--bs-body-color); text-decoration: none;
+}
+.sitemenu-close { position: absolute; top: 16px; right: 16px; background: none; border: 0; padding: 10px; color: var(--bs-body-color); cursor: pointer; }
+.sitemenu-close .ph { width: 26px; height: 26px; }
+html.js-reveal .sitemenu:not([hidden]) nav a { animation: menu-in .5s cubic-bezier(.2, .7, .2, 1) both; }
+.sitemenu nav a:nth-child(2) { animation-delay: .05s; } .sitemenu nav a:nth-child(3) { animation-delay: .1s; } .sitemenu nav a:nth-child(4) { animation-delay: .15s; }
+@keyframes menu-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+body.menu-open { overflow: hidden; }
+
+/* Copy email */
+.op-band-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; }
+.op-copy {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; cursor: pointer;
+  background: none; color: var(--band-ink); border: 1px solid var(--band-hair);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  transition: border-color .2s ease;
+}
+.op-copy:hover { border-color: var(--band-ink); }
+.op-copy .ph { width: 15px; height: 15px; }
+.op-copy .i-check, .op-copy.is-copied .i-copy { display: none; }
+.op-copy.is-copied .i-check { display: block; }
+
+/* Reading progress on case studies: a hairline under the header that fills as you read */
+.readbar { position: fixed; left: 0; top: 64px; height: 2px; width: 100%; z-index: 1029; pointer-events: none;
+  background: var(--bs-body-color); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* Figures in case studies: mono captions, zoom cursor */
+main.content .figure-caption, main.content figcaption {
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.6; letter-spacing: .02em; color: var(--op-muted);
+}
+main.content .quarto-figure img, main.content figure img { cursor: zoom-in; }
+
+/* Text selection in the thumbnail slate */
+::selection { background: color-mix(in srgb, #7189a6 32%, transparent); }
+
+/* Next case study, at the foot of each article */
+.cs-next { margin: 72px 0 24px; border-top: 1px solid var(--bs-body-color); padding-top: 20px; }
+.cs-next a { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 28px; align-items: center; color: var(--bs-body-color); text-decoration: none; background: none; }
+.cs-next-text { display: flex; flex-direction: column; gap: 8px; }
+.cs-next-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--op-muted); }
+.cs-next-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.15; }
+.cs-next-title::after { content: "\2192"; display: inline-block; margin-left: .3em; font-family: var(--font-sans); font-weight: 300; font-size: .75em; transition: transform .45s cubic-bezier(.2, .7, .2, 1); }
+.cs-next a:hover .cs-next-title::after { transform: translateX(6px); }
+.cs-next-img { display: block; overflow: hidden; aspect-ratio: 3 / 2; }
+.cs-next-img img { width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; transition: transform .6s cubic-bezier(.2, .7, .2, 1); cursor: pointer; }
+.cs-next a:hover .cs-next-img img { transform: scale(1.03); }
+@media (max-width: 600px) { .cs-next a { grid-template-columns: 1fr; } .cs-next-img { order: -1; } }
+
+/* Article pages: Quarto's article grid keeps an empty sidebar column on the left, which
+   pushed the text off centre. Replace it with the homepage's 1160px frame: the text column
+   starts under the header name and the contents / margin notes sit on the right. */
+@media (min-width: 992px) {
+  body:not(.home) #quarto-content.page-columns.page-layout-article {
+    grid-template-columns:
+      [screen-start] minmax(clamp(16px, 4vw, 48px), 1fr)
+      [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 740px)
+      [body-content-end] 64px
+      [body-end body-end-outset] 260px
+      [page-end-inset page-end screen-end-inset] minmax(clamp(16px, 4vw, 48px), 1fr)
+      [screen-end] !important;
+  }
+}
