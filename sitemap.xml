@@ -1,59 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://olivia-jackson-lambert.github.io/writing/writing.html</loc>
-    <lastmod>2026-09-27T05:53:28.983Z</lastmod>
-  </url>
-  <url>
     <loc>https://olivia-jackson-lambert.github.io/writing/posts/mlops-future-data-science.html</loc>
     <lastmod>2026-09-27T05:53:28.983Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/digit-vae/digit-vae.html</loc>
-    <lastmod>2026-09-27T06:16:09.923Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/mars-terrain/mars-terrain.html</loc>
-    <lastmod>2026-09-27T06:16:09.924Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/flight-delay-spark/flight-delay-spark.html</loc>
-    <lastmod>2026-09-27T06:16:09.924Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/muon-momentum-regression/muon-momentum-regression.html</loc>
-    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/index.html</loc>
-    <lastmod>2026-09-27T06:18:12.980Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/resume.html</loc>
-    <lastmod>2026-09-27T05:53:28.976Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/about.html</loc>
-    <lastmod>2026-09-27T05:53:28.894Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</loc>
-    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
-  </url>
-  <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/nba-travel/nba-travel.html</loc>
-    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
   </url>
   <url>
     <loc>https://olivia-jackson-lambert.github.io/project/projects_files/sentence-transformer/sentence-transformer.html</loc>
     <lastmod>2026-09-27T06:16:09.926Z</lastmod>
   </url>
   <url>
-    <loc>https://olivia-jackson-lambert.github.io/project/projects.html</loc>
-    <lastmod>2026-09-27T05:53:28.914Z</lastmod>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/nba-travel/nba-travel.html</loc>
+    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
   </url>
   <url>
-    <loc>https://olivia-jackson-lambert.github.io/writing/posts/jan-15-25-daylight.html</loc>
-    <lastmod>2026-09-27T05:53:28.983Z</lastmod>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/particle-classifier/particle-classifier.html</loc>
+    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/index.html</loc>
+    <lastmod>2026-09-28T02:30:17.076Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/resume.html</loc>
+    <lastmod>2026-09-28T02:30:17.076Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/muon-momentum-regression/muon-momentum-regression.html</loc>
+    <lastmod>2026-09-27T06:16:09.925Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/flight-delay-spark/flight-delay-spark.html</loc>
+    <lastmod>2026-09-27T06:16:09.924Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/mars-terrain/mars-terrain.html</loc>
+    <lastmod>2026-09-27T06:16:09.924Z</lastmod>
+  </url>
+  <url>
+    <loc>https://olivia-jackson-lambert.github.io/project/projects_files/digit-vae/digit-vae.html</loc>
+    <lastmod>2026-09-27T06:16:09.923Z</lastmod>
   </url>
 </urlset>

@@ -931,32 +931,6 @@ menu.price  "16,500"</code></pre>
 </section>
 
 </main> <!-- /main -->
-<script>
-  // Quarto renders listing categories into the right margin. Move the block above
-  // the grid so it reads as a filter bar. The node is moved, not cloned, so
-  // Quarto's own click handlers survive.
-  (function () {
-    function relocateCategories() {
-      var categories = document.querySelector(".quarto-listing-category");
-      var listing = document.querySelector(".quarto-listing");
-      if (!categories || !listing || !listing.parentNode) return;
-
-      var bar = document.createElement("div");
-      bar.className = "category-filter-bar";
-      bar.appendChild(categories);
-      listing.parentNode.insertBefore(bar, listing);
-
-      var heading = document.querySelector(".quarto-listing-category-title");
-      if (heading) heading.remove();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", relocateCategories);
-    } else {
-      relocateCategories();
-    }
-  })();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

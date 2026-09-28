@@ -483,10 +483,10 @@ President, Physics &amp; Astronomy Society · Carnegie Scholarship recipient · 
 </section>
 <section id="selected-projects" class="level2">
 <h2 class="anchored" data-anchor-id="selected-projects">Selected Projects</h2>
-<p>Full write-ups live under <a href="./project/projects.html">Work</a>.</p>
+<p>Full write-ups live under <a href="./index.html#work">Work</a>.</p>
 <ul>
 <li><strong><a href="./project/projects_files/sentence-transformer/sentence-transformer.html">Multi-Task Sentence Transformer for Receipt Processing</a></strong> — Multi-task transformer pipeline classifying sentences and extracting entities from retail receipts. Transformers, NER, multi-task learning, PyTorch.</li>
-<li><strong><a href="./project/projects_files/particle-classifier/particle-classifier.html">High Energy Particle CNN Classifier</a></strong> — Convolutional network predicting particle types from liquid argon detector tracks, at 93% accuracy. TensorFlow, Keras, hyperparameter optimization.</li>
+<li><strong><a href="./project/projects_files/particle-classifier/particle-classifier.html">High Energy Particle CNN Classifier</a></strong> — Convolutional network predicting particle types from liquid argon detector tracks, at 89.1% validation accuracy. TensorFlow, Keras, hyperparameter optimization.</li>
 <li><strong><a href="./project/projects_files/flight-delay-spark/flight-delay-spark.html">Predicting Flight Delay Severity at Scale</a></strong> — Four-tier delay classifier over 31M flights in PySpark, trading overall accuracy to clear an operational safety gate.</li>
 </ul>
 </section>
@@ -498,32 +498,6 @@ President, Physics &amp; Astronomy Society · Carnegie Scholarship recipient · 
 </section>
 
 </main> <!-- /main -->
-<script>
-  // Quarto renders listing categories into the right margin. Move the block above
-  // the grid so it reads as a filter bar. The node is moved, not cloned, so
-  // Quarto's own click handlers survive.
-  (function () {
-    function relocateCategories() {
-      var categories = document.querySelector(".quarto-listing-category");
-      var listing = document.querySelector(".quarto-listing");
-      if (!categories || !listing || !listing.parentNode) return;
-
-      var bar = document.createElement("div");
-      bar.className = "category-filter-bar";
-      bar.appendChild(categories);
-      listing.parentNode.insertBefore(bar, listing);
-
-      var heading = document.querySelector(".quarto-listing-category-title");
-      if (heading) heading.remove();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", relocateCategories);
-    } else {
-      relocateCategories();
-    }
-  })();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
