@@ -261,6 +261,9 @@ def main():
     ap.add_argument("--preds", help="npz with test_idx, y_true, initial_model, lr_1e-3_baseline")
     args = ap.parse_args()
     apply()
+    # Math labels ($p_x$, Production $x$) default to DejaVu; render them in Lora too.
+    plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.rm": "Lora",
+                         "mathtext.it": "Lora", "mathtext.bf": "Lora:semibold"})
 
     X, truth, train_idx, test_idx = load_data()
     particle_types(X, truth, train_idx)

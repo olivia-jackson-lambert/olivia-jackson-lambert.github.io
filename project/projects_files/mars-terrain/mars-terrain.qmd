@@ -43,11 +43,11 @@ Our central claim was that overall accuracy is a misleading metric for planetary
 
 Stanboli and Wagstaff at NASA collected the dataset in 2017 from three of Curiosity's cameras. It has 6,691 labelled images. Aspect ratios vary, up to 3.0, so we padded each image by reflection to a 256 by 256 square. Stretching would have distorted the instrument shapes the model needs to read.
 
-![One example image per class from the held-out test set.](assets/class_examples.png){fig-alt="A grid of 19 real Curiosity camera images, one per class, each labelled with its class name. Calibration targets show clean circles and checkerboards; instruments such as the drill, DRT, inlet and scoop are grey metal against orange sand." fig-align="center" width="92%"}
+![One example image per class from the held-out test set.](assets/class_examples.png){fig-alt="A grid of 19 real Curiosity camera images, one per class, each labelled with its class name. The APXS Cal Target is a clean circular disc and the Observation Tray shows a checkerboard; instruments such as the drill, DRT, inlet and scoop are grey metal against orange sand." fig-align="center" width="92%"}
 
 Three classes have no examples in the held-out test split: Drill Holes, Sun and Turret. This affects how the headline score is computed, covered further down. Three more (APXS, Portion Box and Portion Tube Opening) have no image file in the archive, so the grid shows 19 of the 22 classes the test set measures.
 
-The grid shows why the task is hard. The calibration targets, with their circles, checkerboards and machined edges, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at a similar scale.
+The grid shows why the task is hard. The calibration targets, with their circles and machined edges, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at a similar scale.
 
 # The Pipeline
 
@@ -69,7 +69,7 @@ Each stage loosens the one before.
 
 The notebooks never printed Stage 2's test figures, only its 0.968 validation accuracy, so we left it out of the table instead of estimating it.
 
-![Stage 3 confusion matrix on held-out images, normalised by true class.](assets/confusion_matrix.png){fig-alt="Confusion matrix for the Stage 3 model across the 22 classes present in the test set, each row normalised to sum to one. Most weight sits on the diagonal. DRT Side is often predicted as Scoop, and DRT Front and Inlet spread across several instrument classes." fig-align="center" width="82%"}
+![Stage 3 confusion matrix on held-out images, normalised by true class.](assets/confusion_matrix.png){fig-alt="Confusion matrix for the Stage 3 model across the 22 classes present in the test set, each row normalised to sum to one. Most weight sits on the diagonal. DRT Side is split almost evenly between DRT Side and Scoop, DRT Front is most often predicted as Wheel, and Inlet spreads across Inlet, Wheel and Rover Rear Deck." fig-align="center" width="95%"}
 
 Stage 2's 0.968 was measured on validation data and chosen on accuracy. A model selected that way can look excellent while doing badly on the rarest classes. Stage 3 selects on macro-F1, which weights every class equally, and its 0.765 test accuracy is the more honest number.
 

@@ -78,7 +78,7 @@ hyperparameter did.
 
 Writing the rule down in advance is what let us defend the final selection later.
 
-![End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.](assets/workflow_pipeline.png){fig-alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation." width="84%"}
+![End-to-end workflow, from the raw OTPW data through cleaning, feature engineering and a temporal split to five model families and a gate-aware evaluation.](assets/workflow_pipeline.png){fig-alt="Flow diagram. The raw OTPW dataset (31M flights, 214 columns, 2015 to 2019) branches into cleaning, column scoping and label construction, which merge into feature engineering. A temporal split (train 2015 to 2018 with three-fold sliding-window CV, test 2019) feeds binomial logistic regression, multinomial logistic regression, random forest, gradient-boosted trees and a multilayer perceptron, all of which feed a gate-aware evaluation." width="80%"}
 
 All of 2019 was held out as a blind test set (7.24M flights). The years 2015 to 2018
 supported three-fold sliding-window cross-validation, with a one-year training window and a
@@ -118,7 +118,7 @@ the splits spread across weak weather and calendar columns. Leaf size barely mat
 Moving `minInstancesPerNode` between 10 and 20 changed every metric by 0.003 or less, so
 the regularization came from bagging and feature subsampling rather than leaf constraints.
 
-![Stage 1 grid on validation folds. Every completed configuration clears Gate 2, and `sqrt` subsetting sits clearly ahead on both axes.](assets/rf_cv_tradeoff.png){fig-alt="Scatter plot of validation severe recall against validation quadratic-weighted kappa for the six completed random forest configurations. The two sqrt points sit at the top right, near kappa 0.257 and recall 0.585 to 0.588, with the selected sqrt, minInstances 10 configuration labeled. The onethird and 0.5 points cluster at the left, near kappa 0.250 and recall 0.565 to 0.571. A dashed line marks the Gate 2 floor at 0.50 recall, below every point." fig-align="center" width="85%"}
+![Stage 1 grid on validation folds. Every completed configuration clears Gate 2, and `sqrt` subsetting sits clearly ahead on both axes.](assets/rf_cv_tradeoff.png){fig-alt="Scatter plot of validation severe recall against validation quadratic-weighted kappa for the six completed random forest configurations. The two sqrt points sit at the top right, near kappa 0.257 and recall 0.585 to 0.588, with the selected sqrt, minInstances 10 configuration labeled. Separate legends give the feature subset (by colour) and minInstancesPerNode of 10 or 20 (by marker shape). The onethird and 0.5 points cluster at the left, near kappa 0.250 and recall 0.565 to 0.571. A dashed line marks the Gate 2 floor at 0.50 recall, below every point." fig-align="center" width="85%"}
 
 **Stage 2** re-ran cross-validation on the winning structure across severe-class
 multipliers. The result is cleanly monotonic, and it tells the story of the whole project.
@@ -189,8 +189,6 @@ each completed configuration and wrapped fits in retry logic. A crash then cost 
 configuration instead of the whole run. That is why the random forest grid produced six
 usable points instead of none.
 
-![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices in a two by two grid for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 35% to 45% down to about 30%." width="100%"}
-
 ## The Ceiling Is in the Features
 
 Feature importance is dominated by delay propagation. `inbound_delay` alone accounts for
@@ -206,6 +204,8 @@ tree models gets them above 46% recall, and they fall to about 30% as the severe
 rises. The confusion matrix shows those flights spreading into the on-time and severe tiers
 more than into each other. Extra severe weight only pulls more of them into the severe
 tier.
+
+![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices in a two by two grid for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 40% to 45% down to about 30%." width="100%"}
 
 The most plausible explanation is that a 20-minute delay and a 90-minute delay look almost
 identical two hours before departure. If so, the binding constraint is the feature set, in

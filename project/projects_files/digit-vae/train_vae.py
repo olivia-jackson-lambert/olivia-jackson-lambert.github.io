@@ -33,7 +33,7 @@ import torch.nn.functional as F
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
-from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM,  # noqa: E402
+from figstyle import (apply, tidy, title_case, INK, SLATE, RUST, DIM, MUTED, SEQ,  # noqa: E402
                       CATEGORICAL)
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -193,8 +193,8 @@ def figures(model, hist, Z, xtr, ytr, xte, yte, Xte, dev, out: Path):
     fig, ax = plt.subplots(figsize=(6.4, 4.0))
     ax.plot(H["epoch"], H["loss"], color=SLATE, label=title_case("Train total"))
     ax.plot(H["epoch"], H["val_loss"], color=RUST, label=title_case("Validation total"))
-    ax.plot(H["epoch"], H["reco"], color=SLATE, lw=1.2, alpha=.5, label=title_case("Train reconstruction"))
-    ax.plot(H["epoch"], H["kl"] * 10, color=DIM, lw=1.2, alpha=.6, label=r"Train KL ($\times$10)")
+    ax.plot(H["epoch"], H["reco"], color=SEQ[3], lw=1.2, label=title_case("Train reconstruction"))
+    ax.plot(H["epoch"], H["kl"] * 10, color=MUTED, lw=1.2, label=r"Train KL ($\times$10)")
     ax.set_xlabel("Epoch"); ax.set_ylabel(title_case("Loss per image"))
     ax.set_xlim(1, len(hist))
     ax.legend(loc="upper right"); tidy(ax)

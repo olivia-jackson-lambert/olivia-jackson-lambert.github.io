@@ -244,7 +244,7 @@ model_pipeline(
                    "Trained Instead"]),
     ],
     ["Training Runs as a Spark Barrier Stage: All Workers Must Survive the Entire Fit,",
-     "So an Interrupted Run Restarts From Boosting Round Zero. All Preprocessing Statistics",
+     "so an Interrupted Run Restarts from Boosting Round Zero. All Preprocessing Statistics",
      "and Class Weights Are Fit on Training Data Only; 2019 Is Never Seen in Training or Tuning."],
     height=7.2,
 )

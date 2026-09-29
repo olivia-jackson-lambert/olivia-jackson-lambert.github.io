@@ -63,9 +63,9 @@ Heavier particles leave shorter, denser tracks. Lighter particles travel farther
 
 ## Truth-Level Feature Distributions
 
-Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is $p = \sqrt{p_x^2 + p_y^2 + p_z^2}$ and is spread fairly evenly across its range. The production coordinates are bounded by the detector volume.
+Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is $p = \sqrt{p_x^2 + p_y^2 + p_z^2}$ and covers a wide range whose shape depends on the particle type; for protons it starts near 300 MeV and rises. The production coordinates are bounded by the detector volume.
 
-![Truth Feature Distributions by Particle Type](assets/truth_arrays.gif){fig-alt="Animated grid of histograms, one frame per particle type. The top row shows total momentum and the three momentum components; the bottom row shows the three production coordinates. Momentum components peak at zero and are symmetric. Total momentum and production coordinates are broad and bounded." width="100%"}
+![Truth Feature Distributions by Particle Type](assets/truth_arrays.gif){fig-alt="Animated grid of histograms, one frame per particle type. The top row shows total momentum and the three momentum components; the bottom row shows the three production coordinates. Momentum components are symmetric around zero; they peak at zero for every class except the proton, whose components have two humps either side of zero. Total momentum is flat for most classes but starts near 300 MeV and rises for protons. Production coordinates are broad and bounded." width="100%"}
 
 # Initial Model
 
@@ -104,7 +104,7 @@ Protons and electrons are the easiest classes, at 97% and 90% recall on the test
 
 # Hyperparameter Optimization
 
-### First Round Results
+## First Round Results
 
 The first sweep varied one choice at a time against the baseline. Learning rate had the largest effect. Raising it to 2e-3 gave the best validation accuracy of the round, 83.2%.
 
@@ -122,15 +122,15 @@ Wider filters and a larger dense head both made the model worse. Removing batch 
 | Larger dense head      | Wider dense layer                         | 0.759 | 0.515 |
 | Lower learning rate    | Learning rate lowered to 3e-4             | 0.721 | 0.607 |
 
-### Second Round Results
+## Second Round Results
 
 The second round tested initial learning rates between 1e-3 and 3e-3. The first sweep had used plateau scheduling, which cuts the learning rate when validation loss stops improving. I switched it off here to isolate the effect of the starting rate, then ran each rate again with it switched back on.
 
-### Impact of Learning Rate Scheduling
+## Impact of Learning Rate Scheduling
 
 Plateau scheduling improved every starting rate. The best configuration, 1e-3 with plateau scheduling, reached 89.1% validation accuracy. That is 5.7 points above the same rate without it.
 
-| Initial learning rate | Best val acc (no plateau) | Best val acc (with plateau) | Improvement |
+| Initial Learning Rate | Best Val Acc (No Plateau) | Best Val Acc (With Plateau) | Improvement |
 |-----------------------|---------------------------|-----------------------------|-------------|
 | 1.0e-3 | 0.834 | **0.891** | +5.7pp |
 | 1.2e-3 | 0.679 | 0.735 | +5.6pp |
@@ -167,7 +167,7 @@ On the 40,000 test events the final model scores 88.2%, up 5.3 points from the i
 
 The grid below shows the first 20 test events in the XY plane, unselected. Seventeen are correct. Two of the three errors are photons called electrons.
 
-![First 20 Test Events With Final Model Predictions](assets/cnn_example_predictions.png){fig-alt="Four by five grid of detector images in the XY plane, each titled with its true class. Seventeen are correct. Three misclassified panels are outlined in red: two photons called electrons and one pion called a proton." width="100%"}
+![First 20 Test Events With Final Model Predictions](assets/cnn_example_predictions.png){fig-alt="Four by five grid of detector images in the XY plane, each titled with its true class. Seventeen are correct. Three misclassified panels are outlined in red: two photons called electrons and one pion called a proton." fig-align="center" width="90%"}
 
 # Next Steps
 

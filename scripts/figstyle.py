@@ -129,6 +129,11 @@ def apply():
         "legend.fontsize": 9.5,
         "lines.linewidth": 2,
         "image.cmap": "site_slate",
+        # maths labels ($p_T$, $\\Delta$) in Lora too, not matplotlib's default face
+        "mathtext.fontset": "custom",
+        "mathtext.rm": SANS,
+        "mathtext.it": SANS,
+        "mathtext.bf": SANS + ":semibold",
     })
 
 

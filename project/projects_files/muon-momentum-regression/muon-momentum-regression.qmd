@@ -44,7 +44,7 @@ A charged track bends in a magnetic field with a radius proportional to its mome
 
 # Data Exploration
 
-Momentum spans a wide range. Transverse momentum $p_t$ is concentrated at low values.
+Momentum spans a wide range. Transverse momentum $p_T$ is concentrated at low values.
 
 ::: {.columns}
 ::: {.column width="48%"}
@@ -57,13 +57,13 @@ Momentum spans a wide range. Transverse momentum $p_t$ is concentrated at low va
 :::
 :::
 
-The longitudinal component follows from $p_z = \sqrt{p^2 - p_t^2}$, which gives the target resolution ratio $\Delta p_z / p_z$.
-
 ![Momentum Resolution Against Momentum](assets/fitted_track_momentum.png){fig-alt="Scatter of momentum resolution against momentum from 0 to 400 GeV/c with a rising median line. A narrow spike of tracks below 25 GeV/c climbs to about 0.0095, well above the main band. At higher momentum the main band splits into two branches." fig-align="center" width="88%"}
 
 Resolution degrades steadily with momentum, as expected. Faster tracks bend less, so their curvature is harder to measure. The median line shows the trend through the dense region.
 
 The more interesting feature is a **secondary cluster** well above the main band between roughly 10 and 25 GeV/c. It reaches resolutions near 0.0095 where the main band sits around 0.0045. At higher momentum the main band also splits into two branches. The population is not unimodal, and that limits what the model can be expected to do.
+
+The longitudinal component follows from $p_Z = \sqrt{p^2 - p_T^2}$, which gives the target resolution ratio $\Delta p_Z / p_Z$.
 
 ![Resolution Against Longitudinal Momentum](assets/fitted_track_momentum_z.png){fig-alt="Scatter of longitudinal momentum resolution against longitudinal momentum, showing the same spike below 25 GeV/c and the same split into two branches at higher momentum." fig-align="center" width="88%"}
 
@@ -72,7 +72,7 @@ Taking the tracks between 8 and 25 GeV/c and splitting them at a resolution of 0
 | Variable | Upper cluster | Main band | Cohen's $d$ |
 |---|--:|--:|--:|
 | $\eta$ | 4.48 | 3.54 | **+2.21** |
-| $p_t$ | 0.288 | 1.002 | **-1.31** |
+| $p_T$ | 0.288 | 1.002 | **-1.31** |
 | $t_x$, $t_y$, $z_V$, pol, $\phi$ | | | 0.06 or less |
 
 These are very forward tracks, with a mean $\eta$ of 4.48 against a dataset median of 3.53, and they carry very little transverse momentum. A track travelling almost along the beam axis crosses less of the magnetic field. Its bending lever arm is short, so its momentum is measured poorly even when its total momentum is ordinary. Nothing else in the feature set sets these tracks apart.
@@ -84,7 +84,7 @@ The evaluation is built to estimate how well the model does on tracks it has nev
 - **Three-way split** of 60, 20 and 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.
 - **Scaling is fit on the training split only**, so no statistics leak from the validation or test data into the scores.
 - **Two reference points** are scored on the same split: predicting the training mean, and linear regression. They give an $R^2$ of 0.85 its context.
-- **The target is standardised as well as the features.** $\Delta p_z / p_z$ is of order $10^{-3}$. In raw units the squared-error gradients are so small that the networks never converge.
+- **The target is standardised as well as the features.** $\Delta p_Z / p_Z$ is of order $10^{-3}$. In raw units the squared-error gradients are so small that the networks never converge.
 
 # Results
 
@@ -124,11 +124,11 @@ I binned the test error by momentum to see where the model struggles. The answer
 
 Error peaks at 8 to 18 GeV/c at roughly 5.6e-4. It is lowest at 31 to 51 GeV/c at 2.0e-4, almost three times better. The high momentum tail is not the worst region, which the curvature argument alone would predict it to be.
 
-The peak falls in the same momentum range as the high-$\eta$ cluster found above. Two populations with very different resolutions overlap there. The model does receive $\eta$ and $p_t$, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.
+The peak falls in the same momentum range as the high-$\eta$ cluster found above. Two populations with very different resolutions overlap there. The model does receive $\eta$ and $p_T$, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.
 
 Bias stays small and positive across almost the whole range and turns slightly negative only in the highest bin. The model mildly over-estimates resolution at low and middle momenta, and is slightly optimistic for the straightest tracks.
 
-# What Changed From the Original Notebook
+# What Changed from the Original Notebook
 
 The original analysis reported a cross-validated $R^2$ of 0.734. It concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis changes that conclusion.
 
@@ -142,13 +142,13 @@ The original notebook also imports `tensorflow.keras.wrappers.scikit_learn.Keras
 
 **The architecture search is shallow.** I tried four hand-chosen configurations. The trend suggests wider networks would keep improving, and I have not tested where that stops.
 
-**Only kinematic inputs are used.** Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that $\eta$ and $p_t$ already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.
+**Only kinematic inputs are used.** Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that $\eta$ and $p_T$ already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.
 
 **The data is simulation.** These are Monte Carlo tracks, so the model has learned how a detector simulation behaves. Real detector data may differ.
 
 # Next Steps
 
-**Test the high-$\eta$ explanation.** Score the forward, low-$p_t$ cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.
+**Test the high-$\eta$ explanation.** Score the forward, low-$p_T$ cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.
 
 **Extend the architecture sweep.** Continue past forty units to find where the gains flatten.
 

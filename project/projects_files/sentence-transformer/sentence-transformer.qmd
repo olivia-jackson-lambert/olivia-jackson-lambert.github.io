@@ -150,7 +150,7 @@ The predictions below come from the trained heads running on held-out test lines
 
 The name span is right and the sentence class is right. The one miss is the price. The reference treats `Rp 35.000` as one span, but the model starts a new span at `35.000` instead of continuing it.
 
-![A full test receipt run through the model one line at a time.](assets/complete_receipt_example.png){fig-alt="Top, a photograph of an Indonesian restaurant receipt from the CORD-v2 test set. Below it, a table of 13 lines with the predicted class, the line text, the name span and the price span. Eleven ITEM rows, one SUBTOTAL and one TOTAL, all classified correctly. Four rows are shaded and outlined with dashes where the tags differ from the reference: Nasi Tambah, Ikan Bawal Besa, the subtotal row and the total row." width="68%"}
+![A full test receipt run through the model one line at a time.](assets/complete_receipt_example.png){fig-alt="Top, a photograph of an Indonesian restaurant receipt from the CORD-v2 test set. Below it, a table of 13 lines with the predicted class, the line text, the name span and the price span. Eleven ITEM rows, one SUBTOTAL and one TOTAL, all classified correctly. Four rows are shaded and outlined with dashes where the tags differ from the reference: Nasi Tambah, Ikan Bawal Besa, the subtotal row and the total row." width="64%"}
 
 All 13 lines get the right sentence class. The tags match the reference exactly on 9 of them. The four misses are different kinds of error:
 

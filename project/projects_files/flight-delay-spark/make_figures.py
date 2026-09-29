@@ -51,14 +51,14 @@ marker = {10: "o", 20: "s"}
 fig, ax = plt.subplots(figsize=(7.2, 4.4))
 for subset, mi, k, r in grid:
     ax.scatter(k, r, s=90, marker=marker[mi], color=colour[subset],
-               edgecolors="white", linewidths=1.2, zorder=3)
+               edgecolors="white", linewidths=1.2, zorder=4 if mi == 10 else 3)
 
 ax.axhline(0.50, color=MUTED, lw=1, ls=(0, (4, 3)), zorder=1)
 ax.text(0.2494, 0.503, "Gate 2 Floor: 0.50 Severe Recall", color=MUTED,
         fontsize=9, va="bottom", ha="left")
 
 ax.annotate("Selected: sqrt, minInstances 10", xy=(0.2573, 0.5849),
-            xytext=(0.2548, 0.5775), fontsize=9.5, color=RUST, ha="center",
+            xytext=(0.2566, 0.5700), fontsize=9.5, color=RUST, ha="right", va="center",
             arrowprops=dict(arrowstyle="-", color=RUST, lw=0.9,
                             shrinkA=2, shrinkB=6))
 
@@ -68,15 +68,20 @@ ax.set_xlabel("Validation Quadratic-Weighted Kappa ($\\kappa_w$)")
 ax.set_ylabel("Validation Severe Recall (2+ hr Tier)")
 tidy(ax)
 
-handles = [
+subset_handles = [
     Line2D([0], [0], marker="o", ls="", color=RUST, markersize=8, label="sqrt"),
     Line2D([0], [0], marker="o", ls="", color=SLATE, markersize=8, label="onethird"),
     Line2D([0], [0], marker="o", ls="", color=DIM, markersize=8, label="0.5"),
-    Line2D([0], [0], marker="o", ls="", color=MUTED, markersize=7, label="minInstances 10"),
-    Line2D([0], [0], marker="s", ls="", color=MUTED, markersize=7, label="minInstances 20"),
 ]
-ax.legend(handles=handles, loc="center left", bbox_to_anchor=(1.01, 0.5),
-          title="Feature Subset", title_fontsize=9.5, alignment="left")
+leaf_handles = [
+    Line2D([0], [0], marker="o", ls="", color=MUTED, markersize=7, label="10"),
+    Line2D([0], [0], marker="s", ls="", color=MUTED, markersize=7, label="20"),
+]
+leg1 = ax.legend(handles=subset_handles, loc="upper left", bbox_to_anchor=(1.01, 0.92),
+                 title="Feature Subset", title_fontsize=9.5, alignment="left")
+ax.add_artist(leg1)
+ax.legend(handles=leaf_handles, loc="upper left", bbox_to_anchor=(1.01, 0.45),
+          title="minInstancesPerNode", title_fontsize=9.5, alignment="left")
 fig.savefig(OUT / "rf_cv_tradeoff.png", dpi=200, bbox_inches="tight", facecolor="white")
 plt.close(fig)
 

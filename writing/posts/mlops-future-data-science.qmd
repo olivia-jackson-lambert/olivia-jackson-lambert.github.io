@@ -32,7 +32,7 @@ Uber ran into this with its arrival time predictions. Traffic behaves differentl
 
 ## Why It Matters Now
 
-For years, machine learning lived in the back office. It powered internal analytics and batch jobs that ran overnight. That era is over. Millions of people now talk to chatbots every day. Voice assistants respond in real time ([OpenAI Realtime API](https://openai.com/index/introducing-gpt-realtime/)). Recommendation systems shape what people watch and buy. Search engines have started generating answers instead of pointing to them.
+For years, machine learning lived in the back office. It powered internal analytics and batch jobs that ran overnight. That era is over. Chatbots now sit in everyday products. Voice assistants respond in real time ([OpenAI Realtime API](https://openai.com/index/introducing-gpt-realtime/)). Recommendation systems shape what people watch and buy. Search engines have started generating answers instead of pointing to them.
 
 Moving machine learning from analytics into the product changes the requirements. A notebook model can take hours to run. A consumer product has to respond in milliseconds, and it has to keep adapting without going dark.
 
