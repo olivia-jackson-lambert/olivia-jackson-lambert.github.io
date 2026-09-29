@@ -11,7 +11,7 @@ Diagrams and panel re-grids for the flight delay severity case study.
    - XGBoost: the blind-tested model is max_depth 5, n_estimators 100, m3 1.0,
      as the old diagram said. Kept as is.
 
-2. tree_models_confusion_matrices_4panel.png, tree_models_feature_importance_4panel.png
+2. (the four-panel tree-model figures moved to make_tree_panels.py)
    The numbers behind these live only in DBFS model checkpoints, so the
    existing 1x4 images are cropped panel by panel and re-pasted as 2x2 grids.
    No pixel content changes; only the old in-image super-title is dropped.
@@ -250,32 +250,6 @@ model_pipeline(
 )
 
 
-# ---------------------------------------------------------------------------
-# 2. Re-grid the two 1x4 panel figures into 2x2 (crop and paste only)
-# ---------------------------------------------------------------------------
-# (file, body top row, panel column cuts) measured from whitespace in the 1x4 originals
-REGRID = {
-    "tree_models_confusion_matrices_4panel.png": (90, [0, 843, 1655, 2467, None]),
-    "tree_models_feature_importance_4panel.png": (95, [0, 898, 1792, 2687, None]),
-}
-for fname, (top, cuts) in REGRID.items():
-    im = Image.open(OUT / fname).convert("RGB")
-    w, h = im.size
-    if w / h < 2:          # already re-gridded
-        continue
-    cuts = [c if c is not None else w for c in cuts]
-    panels = [im.crop((cuts[i], top, cuts[i + 1], h)) for i in range(4)]
-    pw = max(p.width for p in panels)
-    ph = max(p.height for p in panels)
-    gx, gy, pad = 40, 50, 20
-    grid = Image.new("RGB", (2 * pw + gx + 2 * pad, 2 * ph + gy + 2 * pad), "white")
-    for i, p in enumerate(panels):
-        r, c = divmod(i, 2)
-        # right-align so the plotting areas line up in each column
-        x = pad + c * (pw + gx) + (pw - p.width)
-        y = pad + r * (ph + gy)
-        grid.paste(p, (x, y))
-    grid.save(OUT / fname)
+# The two four-panel tree-model figures are now drawn from data in make_tree_panels.py.
 
-print("wrote workflow_pipeline.png, rf_pipeline_v2.png, xgb_pipelinev2.png, "
-      "and 2x2 re-grids of the two 4-panel figures")
+print("wrote workflow_pipeline.png, rf_pipeline_v2.png and xgb_pipelinev2.png")

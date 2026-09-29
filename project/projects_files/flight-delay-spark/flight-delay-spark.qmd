@@ -196,7 +196,7 @@ Feature importance is dominated by delay propagation. `inbound_delay` alone acco
 8.5%, about 72% of the model together. Weather contributes roughly 3%, mostly through
 precipitation.
 
-![Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.](assets/tree_models_feature_importance_4panel.png){fig-alt="Four horizontal bar charts of feature importance in percent in a two by two grid, one per tree model. In all three random forests, inbound_delay_imp leads at about 41%, followed by tail_cum_delay_imp at about 22% and origin_cum_delay_rate_imp at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by tail_cum_delay_missing_imp at about 15% and inbound_delay_imp at about 9%." width="100%"}
+![Top 15 features for each tree model on a shared scale. The three random forests are dominated by the same three delay propagation features.](assets/tree_models_feature_importance_4panel.png){fig-alt="Four horizontal bar charts of feature importance in percent in a two by two grid, one per tree model, with the top feature in rust. In all three random forests, inbound delay leads at about 41%, followed by the aircraft's cumulative delay at about 22% and the origin cumulative delay rate at about 8%, with every other feature under 2%. XGBoost spreads importance differently, led by the missing flag for aircraft cumulative delay at about 15% and inbound delay at about 9%." width="94%"}
 
 Per-class test recalls for the selected forest are 0.725, 0.315, 0.295 and 0.644 across the
 four tiers. The middle tiers are the weak spot in every configuration. None of the four
@@ -205,7 +205,7 @@ rises. The confusion matrix shows those flights spreading into the on-time and s
 more than into each other. Extra severe weight only pulls more of them into the severe
 tier.
 
-![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices in a two by two grid for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 40% to 45% down to about 30%." width="100%"}
+![Row-normalized blind-test confusion matrices for the four tree models. Adding severe weight moves predictions into the 2+ hour column.](assets/tree_models_confusion_matrices_4panel.png){fig-alt="Four confusion matrices in a two by two grid for XGBoost, random forest with no severe weight, random forest at 1.2 times and random forest at 1.5 times, the selected model. The 2+ hour recall cell is outlined in each. Severe-tier recall rises from 46.4% and 43.7% to 52.9% and 64.4%. On-time recall falls from about 78% to 72.5%, and middle-tier recall falls from roughly 40% to 45% down to about 30%." width="92%"}
 
 The most plausible explanation is that a 20-minute delay and a 90-minute delay look almost
 identical two hours before departure. If so, the binding constraint is the feature set, in
