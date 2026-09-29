@@ -145,7 +145,7 @@ aliases:
       <span class="op-thumb"><img src="/project/cover_assets/thumbs/web/paper.webp" alt="" width="900" height="600" loading="lazy" decoding="async"></span>
       <div class="op-meta"><span>2024</span><span>Paper</span></div>
       <h3><span class="op-ul">How Many Samples Prove Mars Is Lifeless?</span></h3>
-      <p>Second author, Nature Astronomy. A statistical case that showing a Martian environment is lifeless, with confidence, takes hundreds of samples, which shapes how sample return missions should be planned.</p>
+      <p>Third author, Nature Astronomy. A statistical case that showing a Martian environment is lifeless, with confidence, takes hundreds of samples, which shapes how sample return missions should be planned.</p>
     </a>
 
     <a class="op-tile" href="/project/projects_files/digit-vae/digit-vae.html">
