@@ -558,14 +558,14 @@ ul.task-list li input[type="checkbox"] {
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/class_examples.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="One example image per class from the held-out test set."><img loading="lazy" decoding="async" width="1860" height="1643" src="assets/class_examples.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:92.0%" alt="A grid of 19 real Curiosity camera images, one per class, each labelled with its class name. Calibration targets show clean circles and checkerboards; instruments such as the drill, DRT, inlet and scoop are grey metal against orange sand."></a></p>
+<p><a href="assets/class_examples.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="One example image per class from the held-out test set."><img loading="lazy" decoding="async" width="1860" height="1643" src="assets/class_examples.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:92.0%" alt="A grid of 19 real Curiosity camera images, one per class, each labelled with its class name. The APXS Cal Target is a clean circular disc and the Observation Tray shows a checkerboard; instruments such as the drill, DRT, inlet and scoop are grey metal against orange sand."></a></p>
 </figure>
 </div>
 <figcaption class="margin-caption">One example image per class from the held-out test set.</figcaption>
 </figure>
 </div>
 <p>Three classes have no examples in the held-out test split: Drill Holes, Sun and Turret. This affects how the headline score is computed, covered further down. Three more (APXS, Portion Box and Portion Tube Opening) have no image file in the archive, so the grid shows 19 of the 22 classes the test set measures.</p>
-<p>The grid shows why the task is hard. The calibration targets, with their circles, checkerboards and machined edges, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at a similar scale.</p>
+<p>The grid shows why the task is hard. The calibration targets, with their circles and machined edges, look like nothing else in the set. The drill, the DRT, the scoop and the inlet are all grey metal photographed against the same sand at a similar scale.</p>
 </section>
 <section id="the-pipeline" class="level1">
 <h1>The Pipeline</h1>
@@ -607,7 +607,7 @@ ul.task-list li input[type="checkbox"] {
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Stage 3 confusion matrix on held-out images, normalised by true class."><img loading="lazy" decoding="async" width="1756" height="1519" src="assets/confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%" alt="Confusion matrix for the Stage 3 model across the 22 classes present in the test set, each row normalised to sum to one. Most weight sits on the diagonal. DRT Side is often predicted as Scoop, and DRT Front and Inlet spread across several instrument classes."></a></p>
+<p><a href="assets/confusion_matrix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Stage 3 confusion matrix on held-out images, normalised by true class."><img loading="lazy" decoding="async" width="1756" height="1519" src="assets/confusion_matrix.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="Confusion matrix for the Stage 3 model across the 22 classes present in the test set, each row normalised to sum to one. Most weight sits on the diagonal. DRT Side is split almost evenly between DRT Side and Scoop, DRT Front is most often predicted as Wheel, and Inlet spreads across Inlet, Wheel and Rover Rear Deck."></a></p>
 </figure>
 </div>
 <figcaption class="margin-caption">Stage 3 confusion matrix on held-out images, normalised by true class.</figcaption>

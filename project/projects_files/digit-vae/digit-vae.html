@@ -729,10 +729,10 @@ window.Quarto = {
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/latent_clustering.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Test digits encoded into the latent space, one colour per digit. Each label marks its class centroid."><img loading="lazy" decoding="async" width="1266" height="1267" src="assets/latent_clustering.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%" alt="Scatter plot of 10,000 test digits in the two-dimensional latent space, coloured by digit with a label at each class centroid. Ones form a separate cloud at the top and zeros a wide cloud at the bottom. The other digits crowd the centre. The fours, in rust, and the nines, in dark grey, sit almost on top of each other on the left."></a></p>
+<p><a href="assets/latent_clustering.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Test digits encoded into the latent space, one colour per digit. Each label sits on its class centroid or points to it with a leader line."><img loading="lazy" decoding="async" width="1266" height="1267" src="assets/latent_clustering.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%" alt="Scatter plot of 10,000 test digits in the two-dimensional latent space, coloured by digit with a label at each class centroid. Ones form a separate cloud at the top and zeros a wide cloud at the bottom. The other digits crowd the centre. The fours, in rust, and the nines, in dark grey, sit almost on top of each other on the left."></a></p>
 </figure>
 </div>
-<figcaption class="margin-caption">Test digits encoded into the latent space, one colour per digit. Each label marks its class centroid.</figcaption>
+<figcaption class="margin-caption">Test digits encoded into the latent space, one colour per digit. Each label sits on its class centroid or points to it with a leader line.</figcaption>
 </figure>
 </div>
 <p>Each digit class occupies its own region of the latent space, and the model never saw a label. The clustering comes entirely from pixel structure.</p>
@@ -787,13 +787,13 @@ window.Quarto = {
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/reconstructions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="The first ten test digits, each input beside its reconstruction from the two latent values. Rust outlines mark the three that come back as a different digit."><img loading="lazy" decoding="async" width="797" height="1207" src="assets/reconstructions.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:62.0%" alt="Ten pairs of handwritten digits in five rows of two pairs, each input beside a blurrier reconstruction. The inputs, read left to right, are 7, 2, 1, 0, 4, 1, 4, 9, 5 and 9. Both fours are rebuilt as nines and the five is rebuilt as a six. Each of those three reconstructions has a rust outline and a label saying what it reads as."></a></p>
+<p><a href="assets/reconstructions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="The first ten test digits, each input beside its reconstruction from the two latent values. Rust outlines mark the three that come back as a different digit."><img loading="lazy" decoding="async" width="797" height="1207" src="assets/reconstructions.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:58.0%" alt="Ten pairs of handwritten digits in five rows of two pairs, each input beside a blurrier reconstruction. The inputs, read left to right, are 7, 2, 1, 0, 4, 1, 4, 9, 5 and 9. Both fours are rebuilt as nines and the five is rebuilt as a six. Each of those three reconstructions has a rust outline and a label saying what it reads as."></a></p>
 </figure>
 </div>
 <figcaption class="margin-caption">The first ten test digits, each input beside its reconstruction from the two latent values. Rust outlines mark the three that come back as a different digit.</figcaption>
 </figure>
 </div>
-<p>Reconstructions are recognisable but soft, and the failures are the useful part. Both fours come back as nines and the five comes back as a six. Those are pairs the overlap table already flags, now visible in single images.</p>
+<p>Reconstructions are recognisable but soft, and the failures are the useful part. Both fours come back as nines and the five comes back as a six. Four and nine is the pair the overlap table already flags, now visible in single images.</p>
 </section>
 <section id="generating-digits" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="generating-digits">Generating Digits</h2>

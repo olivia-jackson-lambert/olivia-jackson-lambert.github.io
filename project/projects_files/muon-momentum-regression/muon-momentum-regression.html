@@ -341,7 +341,7 @@ window.Quarto = {
   <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#where-the-model-fails" id="toc-where-the-model-fails" class="nav-link" data-scroll-target="#where-the-model-fails">Where the Model Fails</a></li>
-  <li><a href="#what-changed-from-the-original-notebook" id="toc-what-changed-from-the-original-notebook" class="nav-link" data-scroll-target="#what-changed-from-the-original-notebook">What Changed From the Original Notebook</a></li>
+  <li><a href="#what-changed-from-the-original-notebook" id="toc-what-changed-from-the-original-notebook" class="nav-link" data-scroll-target="#what-changed-from-the-original-notebook">What Changed from the Original Notebook</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul>
@@ -588,7 +588,7 @@ window.Quarto = {
 <p><strong>Source code</strong>: <a href="https://github.com/olivia-jackson-lambert/muon-momentum-regression-model">github.com/olivia-jackson-lambert/muon-momentum-regression-model</a></p>
 <section id="data-exploration" class="level1 page-columns page-full">
 <h1>Data Exploration</h1>
-<p>Momentum spans a wide range. Transverse momentum <span class="math inline">\(p_t\)</span> is concentrated at low values.</p>
+<p>Momentum spans a wide range. Transverse momentum <span class="math inline">\(p_T\)</span> is concentrated at low values.</p>
 <div class="columns page-columns page-full">
 <div class="column page-columns page-full" style="width:48%;">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
@@ -608,7 +608,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The longitudinal component follows from <span class="math inline">\(p_z = \sqrt{p^2 - p_t^2}\)</span>, which gives the target resolution ratio <span class="math inline">\(\Delta p_z / p_z\)</span>.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
@@ -621,6 +620,7 @@ window.Quarto = {
 </div>
 <p>Resolution degrades steadily with momentum, as expected. Faster tracks bend less, so their curvature is harder to measure. The median line shows the trend through the dense region.</p>
 <p>The more interesting feature is a <strong>secondary cluster</strong> well above the main band between roughly 10 and 25 GeV/c.&nbsp;It reaches resolutions near 0.0095 where the main band sits around 0.0045. At higher momentum the main band also splits into two branches. The population is not unimodal, and that limits what the model can be expected to do.</p>
+<p>The longitudinal component follows from <span class="math inline">\(p_Z = \sqrt{p^2 - p_T^2}\)</span>, which gives the target resolution ratio <span class="math inline">\(\Delta p_Z / p_Z\)</span>.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
 <div class="quarto-figure quarto-figure-center">
@@ -649,7 +649,7 @@ window.Quarto = {
 <td style="text-align: right;"><strong>+2.21</strong></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(p_t\)</span></td>
+<td><span class="math inline">\(p_T\)</span></td>
 <td style="text-align: right;">0.288</td>
 <td style="text-align: right;">1.002</td>
 <td style="text-align: right;"><strong>-1.31</strong></td>
@@ -671,7 +671,7 @@ window.Quarto = {
 <li><strong>Three-way split</strong> of 60, 20 and 20 percent into train (125,390), validation (41,797) and test (41,797). Models are selected on validation. The test split is scored once, at the end.</li>
 <li><strong>Scaling is fit on the training split only</strong>, so no statistics leak from the validation or test data into the scores.</li>
 <li><strong>Two reference points</strong> are scored on the same split: predicting the training mean, and linear regression. They give an <span class="math inline">\(R^2\)</span> of 0.85 its context.</li>
-<li><strong>The target is standardised as well as the features.</strong> <span class="math inline">\(\Delta p_z / p_z\)</span> is of order <span class="math inline">\(10^{-3}\)</span>. In raw units the squared-error gradients are so small that the networks never converge.</li>
+<li><strong>The target is standardised as well as the features.</strong> <span class="math inline">\(\Delta p_Z / p_Z\)</span> is of order <span class="math inline">\(10^{-3}\)</span>. In raw units the squared-error gradients are so small that the networks never converge.</li>
 </ul>
 </section>
 <section id="results" class="level1 page-columns page-full">
@@ -812,11 +812,11 @@ window.Quarto = {
 </tbody>
 </table>
 <p>Error peaks at 8 to 18 GeV/c at roughly 5.6e-4. It is lowest at 31 to 51 GeV/c at 2.0e-4, almost three times better. The high momentum tail is not the worst region, which the curvature argument alone would predict it to be.</p>
-<p>The peak falls in the same momentum range as the high-<span class="math inline">\(\eta\)</span> cluster found above. Two populations with very different resolutions overlap there. The model does receive <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span>, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.</p>
+<p>The peak falls in the same momentum range as the high-<span class="math inline">\(\eta\)</span> cluster found above. Two populations with very different resolutions overlap there. The model does receive <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_T\)</span>, but the minority population is only about 2 percent of the band, so the network averages across the boundary and never cleanly separates the two regimes. This is a strong candidate explanation. I have not yet shown it, and it is directly testable by scoring the two clusters separately.</p>
 <p>Bias stays small and positive across almost the whole range and turns slightly negative only in the highest bin. The model mildly over-estimates resolution at low and middle momenta, and is slightly optimistic for the straightest tracks.</p>
 </section>
 <section id="what-changed-from-the-original-notebook" class="level1">
-<h1>What Changed From the Original Notebook</h1>
+<h1>What Changed from the Original Notebook</h1>
 <p>The original analysis reported a cross-validated <span class="math inline">\(R^2\)</span> of 0.734. It concluded that feature scaling mattered far more than architecture, since the model variants sat within about 0.015 of each other. Re-running the analysis changes that conclusion.</p>
 <p>With target standardisation and early stopping in place, the architectures separate clearly, from 0.753 at five units to 0.858 at forty. Capacity is worth roughly 0.105 of <span class="math inline">\(R^2\)</span>. The original ran a fixed 50 epochs with no early stopping and no target scaling, so the larger networks never converged and looked no better than the small ones.</p>
 <p>Scaling the inputs is still the most important preprocessing step. Architecture matters too.</p>
@@ -825,12 +825,12 @@ window.Quarto = {
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
 <p><strong>The architecture search is shallow.</strong> I tried four hand-chosen configurations. The trend suggests wider networks would keep improving, and I have not tested where that stops.</p>
-<p><strong>Only kinematic inputs are used.</strong> Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_t\)</span> already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.</p>
+<p><strong>Only kinematic inputs are used.</strong> Detector geometry, hit multiplicity and track fit quality are all absent. The mid-momentum error peak looks at least partly like a forward-track effect that <span class="math inline">\(\eta\)</span> and <span class="math inline">\(p_T\)</span> already encode. A genuine acceptance or reconstruction variable would likely separate the populations more cleanly.</p>
 <p><strong>The data is simulation.</strong> These are Monte Carlo tracks, so the model has learned how a detector simulation behaves. Real detector data may differ.</p>
 </section>
 <section id="next-steps" class="level1">
 <h1>Next Steps</h1>
-<p><strong>Test the high-<span class="math inline">\(\eta\)</span> explanation.</strong> Score the forward, low-<span class="math inline">\(p_t\)</span> cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.</p>
+<p><strong>Test the high-<span class="math inline">\(\eta\)</span> explanation.</strong> Score the forward, low-<span class="math inline">\(p_T\)</span> cluster separately from the main band. If it carries most of the error at 8 to 18 GeV/c, a sample weight or a dedicated model for forward tracks is the fix. Adding capacity everywhere would not target it.</p>
 <p><strong>Extend the architecture sweep.</strong> Continue past forty units to find where the gains flatten.</p>
 <p><strong>Predict the full distribution.</strong> Quantile regression would give each track an uncertainty band instead of a single point estimate. For a quantity that is itself a measure of uncertainty, that is more useful than a mean.</p>
 

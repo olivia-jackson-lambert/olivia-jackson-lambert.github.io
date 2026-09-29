@@ -681,10 +681,10 @@ window.Quarto = {
 </section>
 <section id="truth-level-feature-distributions" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="truth-level-feature-distributions">Truth-Level Feature Distributions</h2>
-<p>Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is <span class="math inline">\(p = \sqrt{p_x^2 + p_y^2 + p_z^2}\)</span> and is spread fairly evenly across its range. The production coordinates are bounded by the detector volume.</p>
+<p>Each image comes with truth-level kinematics: total momentum, its three components, and the production point. The momentum components are symmetric around zero because particles leave in every direction. Total momentum is <span class="math inline">\(p = \sqrt{p_x^2 + p_y^2 + p_z^2}\)</span> and covers a wide range whose shape depends on the particle type; for protons it starts near 300 MeV and rises. The production coordinates are bounded by the detector volume.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
-<p><a href="assets/truth_arrays.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Truth Feature Distributions by Particle Type"><img loading="lazy" decoding="async" width="1227" height="772" src="assets/truth_arrays.gif" class="img-fluid figure-img" style="width:100.0%" alt="Animated grid of histograms, one frame per particle type. The top row shows total momentum and the three momentum components; the bottom row shows the three production coordinates. Momentum components peak at zero and are symmetric. Total momentum and production coordinates are broad and bounded."></a></p>
+<p><a href="assets/truth_arrays.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Truth Feature Distributions by Particle Type"><img loading="lazy" decoding="async" width="1227" height="772" src="assets/truth_arrays.gif" class="img-fluid figure-img" style="width:100.0%" alt="Animated grid of histograms, one frame per particle type. The top row shows total momentum and the three momentum components; the bottom row shows the three production coordinates. Momentum components are symmetric around zero; they peak at zero for every class except the proton, whose components have two humps either side of zero. Total momentum is flat for most classes but starts near 300 MeV and rises for protons. Production coordinates are broad and bounded."></a></p>
 <figcaption class="margin-caption">Truth Feature Distributions by Particle Type</figcaption>
 </figure>
 </div>
@@ -750,8 +750,8 @@ window.Quarto = {
 </section>
 <section id="hyperparameter-optimization" class="level1">
 <h1>Hyperparameter Optimization</h1>
-<section id="first-round-results" class="level3">
-<h3 class="anchored" data-anchor-id="first-round-results">First Round Results</h3>
+<section id="first-round-results" class="level2">
+<h2 class="anchored" data-anchor-id="first-round-results">First Round Results</h2>
 <p>The first sweep varied one choice at a time against the baseline. Learning rate had the largest effect. Raising it to 2e-3 gave the best validation accuracy of the round, 83.2%.</p>
 <p>Wider filters and a larger dense head both made the model worse. Removing batch normalization cost five points. Changing dropout moved accuracy only slightly. Optimization looked like the better lever.</p>
 <table class="caption-top table">
@@ -827,12 +827,12 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="second-round-results" class="level3">
-<h3 class="anchored" data-anchor-id="second-round-results">Second Round Results</h3>
+<section id="second-round-results" class="level2">
+<h2 class="anchored" data-anchor-id="second-round-results">Second Round Results</h2>
 <p>The second round tested initial learning rates between 1e-3 and 3e-3. The first sweep had used plateau scheduling, which cuts the learning rate when validation loss stops improving. I switched it off here to isolate the effect of the starting rate, then ran each rate again with it switched back on.</p>
 </section>
-<section id="impact-of-learning-rate-scheduling" class="level3">
-<h3 class="anchored" data-anchor-id="impact-of-learning-rate-scheduling">Impact of Learning Rate Scheduling</h3>
+<section id="impact-of-learning-rate-scheduling" class="level2">
+<h2 class="anchored" data-anchor-id="impact-of-learning-rate-scheduling">Impact of Learning Rate Scheduling</h2>
 <p>Plateau scheduling improved every starting rate. The best configuration, 1e-3 with plateau scheduling, reached 89.1% validation accuracy. That is 5.7 points above the same rate without it.</p>
 <table class="caption-top table">
 <colgroup>
@@ -843,9 +843,9 @@ window.Quarto = {
 </colgroup>
 <thead>
 <tr class="header">
-<th>Initial learning rate</th>
-<th>Best val acc (no plateau)</th>
-<th>Best val acc (with plateau)</th>
+<th>Initial Learning Rate</th>
+<th>Best Val Acc (No Plateau)</th>
+<th>Best Val Acc (With Plateau)</th>
 <th>Improvement</th>
 </tr>
 </thead>
@@ -927,7 +927,11 @@ window.Quarto = {
 <p>The grid below shows the first 20 test events in the XY plane, unselected. Seventeen are correct. Two of the three errors are photons called electrons.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
-<p><a href="assets/cnn_example_predictions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="First 20 Test Events With Final Model Predictions"><img loading="lazy" decoding="async" width="1560" height="1466" src="assets/cnn_example_predictions.webp" class="img-fluid figure-img" style="width:100.0%" alt="Four by five grid of detector images in the XY plane, each titled with its true class. Seventeen are correct. Three misclassified panels are outlined in red: two photons called electrons and one pion called a proton."></a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/cnn_example_predictions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="First 20 Test Events With Final Model Predictions"><img loading="lazy" decoding="async" width="1560" height="1466" src="assets/cnn_example_predictions.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="Four by five grid of detector images in the XY plane, each titled with its true class. Seventeen are correct. Three misclassified panels are outlined in red: two photons called electrons and one pion called a proton."></a></p>
+</figure>
+</div>
 <figcaption class="margin-caption">First 20 Test Events With Final Model Predictions</figcaption>
 </figure>
 </div>
